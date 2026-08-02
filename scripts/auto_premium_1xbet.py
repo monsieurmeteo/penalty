@@ -337,14 +337,7 @@ def main():
         pen = m.get("pen_oui")
         if pen and pen <= SEUIL_S8:
             return (0, m["timestamp"])
-        elif pen:
-            return (1, m["timestamp"])
-        else:
-            return (2, m["timestamp"])
-
-    sorted_audit_matches = sorted(scanned_results, key=audit_sort_key)
-
-    # section 8: Penalty Cote Directe
+        elif    # section 8: Penalty Cote Directe
     report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL SELECTION ≤ {SEUIL_S8})")
     if sorted_audit_matches:
         report.append("| Horaire | Championnat | Match | Cote Penalty | Décision / Statut |")
@@ -379,12 +372,44 @@ def main():
         report.append("*Aucun combiné double disponible.*")
     report.append("\n" + "─" * 50 + "\n")
 
+    # section 4: AUDIT OVER 2.5 COTE DIRECTE
+    def o25_sort_key(m):
+        o25 = m.get("over25")
+        if o25 and o25 <= SEUIL_S4:
+            return (0, m["timestamp"])
+        elif o25:
+            return (1, m["timestamp"])
+        else:
+            return (2, m["timestamp"])
+
+    sorted_o25_matches = sorted(scanned_results, key=o25_sort_key)
+
+    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL SELECTION ≤ {SEUIL_S4})")
+    if sorted_o25_matches:
+        report.append("| Horaire | Championnat | Match | Cote Over 2.5 | Décision / Statut |")
+        report.append("| :---: | :--- | :--- | :---: | :---: |")
+        for m in sorted_o25_matches:
+            o25 = m.get('over25')
+            if o25 and o25 <= SEUIL_S4:
+                decision = "🟢 **RETENU**"
+                cote_str = f"**{o25}**"
+            elif o25:
+                decision = "⚪ ÉLIMINÉ (> 1.87)"
+                cote_str = f"{o25}"
+            else:
+                decision = "❌ NON PROPOSÉ"
+                cote_str = "N/A"
+            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {decision} |")
+    else:
+        report.append("*Aucun match scanné.*")
+    report.append("\n" + "─" * 50 + "\n")
+
     # Save report to report.md
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
         
     print("Report generated and saved to report.md")
-    
+
     # 6. Send Email if Configured
     if SMTP_USER and SMTP_PASS:
         try:
@@ -427,6 +452,42 @@ def main():
                       <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{cote_display}{drop_html}</td>
                       <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
                     </tr>
+                    """
+            else:
+                pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"
+
+            # 6a2. Over 2.5 table rows
+            o25_rows = ""
+            if sorted_o25_matches:
+                for m in sorted_o25_matches:
+                    o25 = m.get('over25')
+                    if o25 and o25 <= SEUIL_S4:
+                        pill_bg = "#eff6ff"
+                        pill_color = "#2563eb"
+                        badge_text = "🟢 RETENU"
+                        cote_display = f"{o25}"
+                    elif o25:
+                        pill_bg = "#f8fafc"
+                        pill_color = "#64748b"
+                        badge_text = "⚪ ÉLIMINÉ (> 1.87)"
+                        cote_display = f"{o25}"
+                    else:
+                        pill_bg = "#fff1f2"
+                        pill_color = "#94a3b8"
+                        badge_text = "❌ NON PROPOSÉ"
+                        cote_display = "N/A"
+
+                    o25_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                      <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #2563eb; background-color: #eff6ff; border-radius: 6px;">{cote_display}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
+                    </tr>
+                    """
+            else:
+                o25_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"   </tr>
                     """
             else:
                 pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"
@@ -532,7 +593,7 @@ def main():
                     </tbody>
                   </table>
                   
-                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 STRATÉGIE 4 : OVER 2.5 COTE DIRECTE (Cote &le; {SEUIL_S4})</div>
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL SELECTION &le; {SEUIL_S4})</div>
                   <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px;">
                     <thead>
                       <tr style="border-bottom: 2px solid #e2e8f0;">
@@ -540,10 +601,11 @@ def main():
                         <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Championnat</th>
                         <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Match</th>
                         <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Cote O2.5</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 100px;">Décision</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {s4_rows}
+                      {o25_rows}
                     </tbody>
                   </table>
                   
