@@ -12,6 +12,7 @@ concurrency:
 jobs:
   run-analysis:
     runs-on: ubuntu-latest
+    permissions: write-all
 
     steps:
       - name: 📥 Checkout Repository
