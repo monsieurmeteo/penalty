@@ -2,8 +2,6 @@ name: Premium Football (Penalty & Over 2.5) Automation
 
 on:
   workflow_dispatch: # Allows manual trigger from GitHub UI
-  schedule:
-    - cron: '0 */3 * * *' # Runs automatically every 3 hours
 
 jobs:
   run-analysis:
