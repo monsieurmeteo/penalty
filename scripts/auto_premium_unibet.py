@@ -320,15 +320,26 @@ def main():
                 pen_fair = m.get('pen_oui_fair')
                 d_str = m.get('date_str', 'À venir')
                 if pen and pen <= SEUIL_S8:
-                    pen_rows += f"""
-                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #f0fdf4;">
-                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
-                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
-                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;"><b>{pen}</b> <br><small style="color:#64748b;">(Démargée: {pen_fair})</small></td>
-                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;">🟢 RETENU</td>
-                    </tr>
-                    """
+                    badge = '<span style="color:#16a34a; font-weight:bold;">🟢 RETENU</span>'
+                    cote_d = f"<b>{pen}</b> <br><small style='color:#64748b;'>(Dém. {pen_fair})</small>"
+                    bg = 'background-color: #f0fdf4;'
+                elif pen:
+                    badge = '<span style="color:#64748b;">⚪ ÉLIMINÉ</span>'
+                    cote_d = f"{pen}"
+                    bg = ''
+                else:
+                    badge = '<span style="color:#94a3b8;">❌ NON PROPOSÉ</span>'
+                    cote_d = 'N/A'
+                    bg = ''
+                pen_rows += f"""
+                <tr style="border-bottom: 1px solid #e2e8f0; {bg}">
+                  <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+                  <td style="padding: 8px; color: #334155;">{m['league']}</td>
+                  <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                  <td style="padding: 8px; text-align: center;">{cote_d}</td>
+                  <td style="padding: 8px; text-align: center;">{badge}</td>
+                </tr>
+                """
 
             o25_rows = ""
             for m in scanned_results:
@@ -336,15 +347,26 @@ def main():
                 o25_fair = m.get('over25_fair')
                 d_str = m.get('date_str', 'À venir')
                 if o25 and o25 <= SEUIL_S4:
-                    o25_rows += f"""
-                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #eff6ff;">
-                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
-                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
-                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;"><b>{o25}</b> <br><small style="color:#64748b;">(Démargée: {o25_fair})</small></td>
-                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;">🟢 RETENU</td>
-                    </tr>
-                    """
+                    badge = '<span style="color:#2563eb; font-weight:bold;">🟢 RETENU</span>'
+                    cote_d = f"<b>{o25}</b> <br><small style='color:#64748b;'>(Dém. {o25_fair})</small>"
+                    bg = 'background-color: #eff6ff;'
+                elif o25:
+                    badge = '<span style="color:#64748b;">⚪ ÉLIMINÉ</span>'
+                    cote_d = f"{o25}"
+                    bg = ''
+                else:
+                    badge = '<span style="color:#94a3b8;">❌ NON PROPOSÉ</span>'
+                    cote_d = 'N/A'
+                    bg = ''
+                o25_rows += f"""
+                <tr style="border-bottom: 1px solid #e2e8f0; {bg}">
+                  <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+                  <td style="padding: 8px; color: #334155;">{m['league']}</td>
+                  <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                  <td style="padding: 8px; text-align: center;">{cote_d}</td>
+                  <td style="padding: 8px; text-align: center;">{badge}</td>
+                </tr>
+                """
 
             yt_rows = ""
             yt_c = 0
