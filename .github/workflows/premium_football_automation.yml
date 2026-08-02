@@ -2,7 +2,7 @@ name: Premium Football (Penalty & Over 2.5) Automation
 
 on:
   schedule:
-    - cron: '0 */3 * * *' # Runs automatically every 3 hours 24/7
+    - cron: '0 */2 * * *' # Runs automatically every 2 hours 24/7
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
 concurrency:

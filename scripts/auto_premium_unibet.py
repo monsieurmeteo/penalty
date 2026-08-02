@@ -60,7 +60,6 @@ def get_unibet_active_games():
         for f in as_completed(futs):
             all_match_urls.update(f.result())
             
-    # Also fetch main football page links
     try:
         r_main = requests.get("https://www.unibet.fr/paris-football", headers=H, timeout=10)
         soup_m = BeautifulSoup(r_main.text, "html.parser")
@@ -181,30 +180,83 @@ def scan_unibet_match_details(game):
     return None
 
 def main():
-    print("=== DEBUT DE L'AUTOMATISATION UNIBET FRANCE ===")
+    print("=== DEBUT DE L'AUTOMATISATION UNIBET FRANCE (FENÊTRE 48H) ===")
     matches_to_scan = get_unibet_active_games()
-    print(f"Total matchs à auditer sur Unibet.fr : {len(matches_to_scan)}")
     
-    scanned_results = []
+    scanned_all = []
     with ThreadPoolExecutor(max_workers=20) as ex:
         futs = [ex.submit(scan_unibet_match_details, g) for g in matches_to_scan]
         for f in as_completed(futs):
             res = f.result()
-            if res: scanned_results.append(res)
+            if res: scanned_all.append(res)
             
-    scanned_results.sort(key=lambda x: x.get("start_iso", ""))
+    # Filter strictly for next 48 hours
+    now_utc = datetime.now(timezone.utc)
+    limit_48h = now_utc + timedelta(hours=48)
     
-    # 1. Apply Strategies
-    s4_matches = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
+    scanned_results = []
+    for m in scanned_all:
+        start_iso = m.get("start_iso")
+        if start_iso:
+            try:
+                m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
+                if now_utc <= m_dt <= limit_48h:
+                    m["dt_obj"] = m_dt
+                    scanned_results.append(m)
+            except Exception:
+                scanned_results.append(m)
+        else:
+            scanned_results.append(m)
+            
+    scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
+    print(f"Total matchs retenus dans la fenêtre des 48h : {len(scanned_results)}")
+
+    # 1. Apply Strategy Filters (ONLY RETAINED MATCHES)
     s8_matches = [r for r in scanned_results if r.get("pen_oui") and r["pen_oui"] <= SEUIL_S8]
+    s4_matches = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
     s3_yt_matches = [r for r in scanned_results if r.get("s22") and r["s22"] <= 12.00]
-    
-    # 2. Generate Combinés Doubles
-    s8_matches.sort(key=lambda x: x.get("start_iso", ""))
+
+    # 2. Track Odds Variations & History against previous_odds.json
+    history_file = "previous_odds.json"
+    prev_state = {}
+    if os.path.exists(history_file):
+        try:
+            with open(history_file, "r", encoding="utf-8") as f:
+                prev_state = json.load(f)
+        except Exception:
+            pass
+
+    # Build current state maps
+    curr_state = {
+        "pen": {m["id"]: {"match": f"{m['dom']} - {m['ext']}", "league": m["league"], "date_str": m["date_str"], "val": m["pen_oui"], "fair": m["pen_oui_fair"]} for m in s8_matches},
+        "o25": {m["id"]: {"match": f"{m['dom']} - {m['ext']}", "league": m["league"], "date_str": m["date_str"], "val": m["over25"], "fair": m["over25_fair"]} for m in s4_matches},
+        "s3":  {m["id"]: {"match": f"{m['dom']} - {m['ext']}", "league": m["league"], "date_str": m["date_str"], "val": m["s22"], "over25": m.get("over25")} for m in s3_yt_matches}
+    }
+
+    # Compute evolutions for Penalty (S8)
+    prev_pen = prev_state.get("pen", {})
+    new_pen = [v for k, v in curr_state["pen"].items() if k not in prev_pen]
+    drop_pen = [v for k, v in prev_pen.items() if k not in curr_state["pen"]]
+    var_pen = []
+    for k, v in curr_state["pen"].items():
+        if k in prev_pen:
+            old_val = prev_pen[k].get("val")
+            if old_val and old_val != v["val"]:
+                diff = round(v["val"] - old_val, 2)
+                var_pen.append({**v, "old_val": old_val, "diff": diff})
+
+    # Save current state to previous_odds.json
+    try:
+        with open(history_file, "w", encoding="utf-8") as f:
+            json.dump(curr_state, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+    # 3. Generate Combinés Doubles Penalty
+    s8_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
     combines = []
     used_teams = set()
     temp_pair = []
-    
     for m in s8_matches:
         if m["dom"] in used_teams or m["ext"] in used_teams: continue
         temp_pair.append(m)
@@ -213,315 +265,207 @@ def main():
         if len(temp_pair) == 2:
             combines.append(temp_pair)
             temp_pair = []
-            
-    # 3. Generate Markdown Report
+
     now_str = datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')
-    report = []
-    report.append(f"# ⚽ PARIS SPORTIFS - AUDIT ET STRATÉGIES AUTOMATISÉES (UNIBET FRANCE 🇫🇷)")
-    report.append(f"**Généré le** : {now_str}\n")
-    report.append("─" * 50 + "\n")
-    
-    # Section Penalty (S8)
-    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL UNIBET ≤ {SEUIL_S8})")
-    report.append("| Date & Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
-    
-    for m in scanned_results:
-        pen = m.get('pen_oui')
-        pen_fair = m.get('pen_oui_fair')
-        d_str = m.get('date_str', 'À venir')
-        if pen and pen <= SEUIL_S8:
-            decision = "🟢 **RETENU**"
-            cote_str, fair_str = f"**{pen}**", f"**{pen_fair}**"
-        elif pen:
-            decision = "⚪ ÉLIMINÉ (> 2.90)"
-            cote_str, fair_str = f"{pen}", f"{pen_fair}"
-        else:
-            decision = "❌ NON PROPOSÉ"
-            cote_str, fair_str = "N/A", "N/A"
-        report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
+
+    # 4. Build Evolutions HTML Section
+    evo_html = ""
+    if new_pen or var_pen or drop_pen:
+        evo_html += '<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:15px; margin-bottom:25px;">'
+        evo_html += '<h3 style="color:#0f172a; margin-top:0; border-bottom:1px solid #cbd5e1; padding-bottom:5px;">📊 ÉVOLUTIONS DEPUIS LE DERNIER RUN (Il y a ~2h-3h)</h3>'
         
-    report.append("\n" + "─" * 50 + "\n")
-    report.append("### 🔗 COMBINÉS DOUBLE DE LA SESSION (Matchs Retenus)")
-    if combines:
-        for idx, pair in enumerate(combines, 1):
-            cote_globale = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
-            report.append(f"**Double {idx} (Cote globale: {cote_globale})** :")
-            report.append(f"*   {pair[0].get('date_str')} : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Unibet: {pair[0]['pen_oui']}, Démargée: {pair[0]['pen_oui_fair']})")
-            report.append(f"*   {pair[1].get('date_str')} : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Unibet: {pair[1]['pen_oui']}, Démargée: {pair[1]['pen_oui_fair']})\n")
+        if new_pen:
+            evo_html += '<p style="color:#16a34a; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs ajoutés à la sélection Penalty :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            for item in new_pen:
+                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> (Cote Penalty: <b>{item['val']}</b>)</li>"
+            evo_html += '</ul>'
+
+        if var_pen:
+            evo_html += '<p style="color:#2563eb; font-weight:bold; margin-bottom:5px;">📈📉 Variations de cotes (Penalty Oui) :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            for item in var_pen:
+                arrow = "🔺" if item["diff"] > 0 else "🔻"
+                evo_html += f"<li><b>{item['match']}</b> : {item['old_val']} &rarr; <b>{item['val']}</b> ({arrow} {item['diff']:+0.2f})</li>"
+            evo_html += '</ul>'
+
+        if drop_pen:
+            evo_html += '<p style="color:#dc2626; font-weight:bold; margin-bottom:5px;">❌ Matchs retirés de la sélection (seuil dépassé ou cote fermée) :</p><ul style="margin:0 0 5px 0; font-size:13px;">'
+            for item in drop_pen:
+                evo_html += f"<li><b>{item['match']}</b> ({item['league']})</li>"
+            evo_html += '</ul>'
+            
+        evo_html += '</div>'
     else:
-        report.append("Aucun combiné double disponible sur cette session.\n")
-        
-    report.append("─" * 50 + "\n")
-    
-    # Section Over 2.5 (S4)
-    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL UNIBET ≤ {SEUIL_S4})")
-    report.append("| Date & Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
-    
-    for m in scanned_results:
+        evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation majeure de cotes ni nouveau match depuis le dernier run.</div>'
+
+    # 5. Build HTML Email Body (ONLY RETAINED MATCHES)
+    pen_rows = ""
+    for m in s8_matches:
+        pen = m['pen_oui']
+        pen_fair = m['pen_oui_fair']
+        d_str = m['date_str']
+        pen_rows += f"""
+        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #f0fdf4;">
+          <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+          <td style="padding: 8px; color: #334155;">{m['league']}</td>
+          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;"><b>{pen}</b> <br><small style="color:#64748b;">(Dém. {pen_fair})</small></td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;">🟢 RETENU</td>
+        </tr>
+        """
+
+    if not pen_rows:
+        pen_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Penalty &le; 2.90 dans les 48h.</td></tr>'
+
+    o25_rows = ""
+    for m in s4_matches:
+        o25 = m['over25']
+        o25_fair = m['over25_fair']
+        d_str = m['date_str']
+        o25_rows += f"""
+        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #eff6ff;">
+          <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+          <td style="padding: 8px; color: #334155;">{m['league']}</td>
+          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;"><b>{o25}</b> <br><small style="color:#64748b;">(Dém. {o25_fair})</small></td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;">🟢 RETENU</td>
+        </tr>
+        """
+
+    if not o25_rows:
+        o25_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Over 2.5 &le; 1.87 dans les 48h.</td></tr>'
+
+    yt_rows = ""
+    for m in s3_yt_matches:
+        s22 = m['s22']
+        s22_f = round(s22 * 1.15, 2)
         o25 = m.get('over25')
         o25_fair = m.get('over25_fair')
-        d_str = m.get('date_str', 'À venir')
-        if o25 and o25 <= SEUIL_S4:
-            decision = "🟢 **RETENU**"
-            cote_str, fair_str = f"**{o25}**", f"**{o25_fair}**"
-        elif o25:
-            decision = "⚪ ÉLIMINÉ (> 1.87)"
-            cote_str, fair_str = f"{o25}", f"{o25_fair}"
-        else:
-            decision = "❌ NON PROPOSÉ"
-            cote_str, fair_str = "N/A", "N/A"
-        report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
+        d_str = m['date_str']
+        o25_d = f"O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small>" if o25 else "O2.5: N/A"
+        yt_rows += f"""
+        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #fefce8;">
+          <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+          <td style="padding: 8px; color: #334155;">{m['league']}</td>
+          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+          <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>{o25_d}</td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #d97706;">🟢 RETENU S3</td>
+        </tr>
+        """
 
-    report.append("\n" + "─" * 50 + "\n")
+    if not yt_rows:
+        yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</td></tr>'
 
-    # Section YouTube Over 2.5 (S3)
-    report.append(f"## 🎥 MÉTHODE YOUTUBE OVER 2.5 (SEUIL SCORE 2-2 ≤ 12.00)")
-    report.append("| Date & Horaire | Championnat | Match | Cote Score 2-2 | Cote Over 2.5 | Décision / Statut |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
-    
-    for m in scanned_results:
-        s22 = m.get('s22')
-        o25 = m.get('over25')
-        d_str = m.get('date_str', 'À venir')
-        if s22 and s22 <= 12.00:
-            decision = "🟢 **RETENU S3**"
-            s22_str = f"**{s22}**"
-            o25_str = f"**{o25}**" if o25 else "N/A"
-            report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {s22_str} | {o25_str} | {decision} |")
+    combine_h = ""
+    if combines:
+        for idx, pair in enumerate(combines, 1):
+            c_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
+            combine_h += f"""
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+              <b style="color: #16a34a;">Double #{idx} (Cote Globale Unibet: {c_tot})</b>
+              <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 13px; color: #1e293b;">
+                <li><b>{pair[0].get('date_str')}</b> : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Penalty: <b>{pair[0]['pen_oui']}</b>)</li>
+                <li><b>{pair[1].get('date_str')}</b> : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Penalty: <b>{pair[1]['pen_oui']}</b>)</li>
+              </ul>
+            </div>
+            """
+    else:
+        combine_h = "<p style='color:#64748b;'>Pas assez de matchs penalty retenus pour former un combiné double dans les 48h.</p>"
 
+    html_body = f"""
+    <html>
+      <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
+        <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
+          <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT UNIBET (SELECTION 48H)</h1>
+          <p style="text-align: center; color: #64748b;">Fenêtre des 48 prochaines heures ({len(scanned_results)} matchs scannés au total) - {now_str}</p>
+          
+          {evo_html}
+
+          <h3 style="color: #16a34a; border-bottom: 2px solid #16a34a; padding-bottom: 5px;">🎯 AUDIT PENALTY RETENUS (SEUIL UNIBET &le; 2.90)</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
+                <th style="padding: 8px; text-align: left;">Ligue</th>
+                <th style="padding: 8px; text-align: left;">Match</th>
+                <th style="padding: 8px;">Cote Pen.</th>
+                <th style="padding: 8px;">Décision</th>
+              </tr>
+            </thead>
+            <tbody>{pen_rows}</tbody>
+          </table>
+
+          <h4 style="color: #15803d; margin-top: 15px;">🔗 Combinés Doubles Penalty (48h)</h4>
+          {combine_h}
+
+          <h3 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 5px; margin-top: 30px;">⚡ AUDIT OVER 2.5 RETENUS (SEUIL UNIBET &le; 1.87)</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
+                <th style="padding: 8px; text-align: left;">Ligue</th>
+                <th style="padding: 8px; text-align: left;">Match</th>
+                <th style="padding: 8px;">Cote O2.5</th>
+                <th style="padding: 8px;">Décision</th>
+              </tr>
+            </thead>
+            <tbody>{o25_rows}</tbody>
+          </table>
+
+          <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 5px; margin-top: 30px;">🎥 MÉTHODE YOUTUBE OVER 2.5 (SEUIL SCORE 2-2 &le; 12.00)</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
+                <th style="padding: 8px; text-align: left;">Ligue</th>
+                <th style="padding: 8px; text-align: left;">Match</th>
+                <th style="padding: 8px;">Cotes (2-2 / O2.5)</th>
+                <th style="padding: 8px;">Décision</th>
+              </tr>
+            </thead>
+            <tbody>{yt_rows}</tbody>
+          </table>
+        </div>
+      </body>
+    </html>
+    """
+
+    # 6. Generate report.md
+    report = []
+    report.append("# ⚽ PARIS SPORTIFS - SELECTION 48H & SUIVI DES VARIATIONS DE COTES")
+    report.append(f"**Généré le** : {now_str}\n")
+    report.append("## 🎯 MATCHS PENALTY RETENUS (48h)")
+    report.append("| Date & Horaire | Ligue | Match | Cote Unibet (Brut) | Cote Démargée |")
+    report.append("| :---: | :--- | :--- | :---: | :---: |")
+    for m in s8_matches:
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}** | **{m['pen_oui_fair']}** |")
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
-        
-    print("Report generated successfully and saved to report.md!")
 
-    # 4. Email Sending logic
+    # 7. Email Sending logic (Gmail SMTP primary)
     recipients = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
-    SMTP_USER = os.environ.get("SMTP_USER", "")
-    SMTP_PASS = os.environ.get("SMTP_PASS", "")
+    gmail_email = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
+    gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
     
-    # Try reading mail skill config if env vars are empty
-    if not SMTP_USER or not SMTP_PASS:
+    sender_email = gmail_email if gmail_password else "gregory.langlet@sfr.fr"
+    
+    msg = MIMEMultipart("alternative")
+    msg["Subject"] = f"PRONOSTICS FOOTBALL (48H) - UNIBET FRANCE AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
+    msg["From"] = f"Gregory LANGLET <{sender_email}>"
+    msg["To"] = ", ".join(recipients)
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
+
+    if gmail_password:
         try:
-            cfg_p = r"C:\Users\grego\.gemini\config\skills\mail\config.json"
-            if os.path.exists(cfg_p):
-                with open(cfg_p, "r", encoding="utf-8") as f_cfg:
-                    cfg_data = json.load(f_cfg)
-                    SMTP_USER = cfg_data.get("email", "")
-                    SMTP_PASS = cfg_data.get("password", "")
-        except Exception:
-            pass
-
-    if SMTP_USER and SMTP_PASS:
-        try:
-            pen_rows = ""
-            for m in scanned_results:
-                pen = m.get('pen_oui')
-                pen_fair = m.get('pen_oui_fair')
-                d_str = m.get('date_str', 'À venir')
-                if pen and pen <= SEUIL_S8:
-                    badge = '<span style="color:#16a34a; font-weight:bold;">🟢 RETENU</span>'
-                    cote_d = f"<b>{pen}</b> <br><small style='color:#64748b;'>(Dém. {pen_fair})</small>"
-                    bg = 'background-color: #f0fdf4;'
-                elif pen:
-                    badge = '<span style="color:#64748b;">⚪ ÉLIMINÉ</span>'
-                    cote_d = f"{pen}"
-                    bg = ''
-                else:
-                    badge = '<span style="color:#94a3b8;">❌ NON PROPOSÉ</span>'
-                    cote_d = 'N/A'
-                    bg = ''
-                pen_rows += f"""
-                <tr style="border-bottom: 1px solid #e2e8f0; {bg}">
-                  <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
-                  <td style="padding: 8px; color: #334155;">{m['league']}</td>
-                  <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                  <td style="padding: 8px; text-align: center;">{cote_d}</td>
-                  <td style="padding: 8px; text-align: center;">{badge}</td>
-                </tr>
-                """
-
-            o25_rows = ""
-            for m in scanned_results:
-                o25 = m.get('over25')
-                o25_fair = m.get('over25_fair')
-                d_str = m.get('date_str', 'À venir')
-                if o25 and o25 <= SEUIL_S4:
-                    badge = '<span style="color:#2563eb; font-weight:bold;">🟢 RETENU</span>'
-                    cote_d = f"<b>{o25}</b> <br><small style='color:#64748b;'>(Dém. {o25_fair})</small>"
-                    bg = 'background-color: #eff6ff;'
-                elif o25:
-                    badge = '<span style="color:#64748b;">⚪ ÉLIMINÉ</span>'
-                    cote_d = f"{o25}"
-                    bg = ''
-                else:
-                    badge = '<span style="color:#94a3b8;">❌ NON PROPOSÉ</span>'
-                    cote_d = 'N/A'
-                    bg = ''
-                o25_rows += f"""
-                <tr style="border-bottom: 1px solid #e2e8f0; {bg}">
-                  <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
-                  <td style="padding: 8px; color: #334155;">{m['league']}</td>
-                  <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                  <td style="padding: 8px; text-align: center;">{cote_d}</td>
-                  <td style="padding: 8px; text-align: center;">{badge}</td>
-                </tr>
-                """
-
-            yt_rows = ""
-            yt_c = 0
-            for m in scanned_results:
-                s22 = m.get('s22')
-                o25 = m.get('over25')
-                o25_fair = m.get('over25_fair')
-                d_str = m.get('date_str', 'À venir')
-                if s22 and s22 <= 12.00:
-                    yt_c += 1
-                    s22_f = round(s22 * 1.15, 2)
-                    o25_d = f"O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small>" if o25 else "O2.5: N/A"
-                    yt_rows += f"""
-                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #fefce8;">
-                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
-                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
-                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>{o25_d}</td>
-                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #d97706;">🟢 RETENU S3</td>
-                    </tr>
-                    """
-
-            if yt_c == 0:
-                yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Score 2-2 &le; 12.00 sur la période.</td></tr>'
-
-            combine_h = ""
-            if combines:
-                for idx, pair in enumerate(combines, 1):
-                    c_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
-                    combine_h += f"""
-                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
-                      <b style="color: #16a34a;">Double #{idx} (Cote Globale Unibet: {c_tot})</b>
-                      <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 13px; color: #1e293b;">
-                        <li><b>{pair[0].get('date_str')}</b> : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Penalty: <b>{pair[0]['pen_oui']}</b>)</li>
-                        <li><b>{pair[1].get('date_str')}</b> : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Penalty: <b>{pair[1]['pen_oui']}</b>)</li>
-                      </ul>
-                    </div>
-                    """
-            else:
-                combine_h = "<p style='color:#64748b;'>Pas assez de matchs penalty retenus pour former un combiné double.</p>"
-
-            html_body = f"""
-            <html>
-              <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
-                <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                  <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT UNIBET FRANCE (DEEP CATALOG 330+ MATCHS)</h1>
-                  <p style="text-align: center; color: #64748b;">Rapport d'analyse global ({len(scanned_results)} matchs au programme) - {now_str}</p>
-                  
-                  <h3 style="color: #16a34a; border-bottom: 2px solid #16a34a; padding-bottom: 5px;">🎯 AUDIT PENALTY (SEUIL UNIBET &le; 2.90)</h3>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead>
-                      <tr style="background: #f8fafc;">
-                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
-                        <th style="padding: 8px; text-align: left;">Ligue</th>
-                        <th style="padding: 8px; text-align: left;">Match</th>
-                        <th style="padding: 8px;">Cote Pen.</th>
-                        <th style="padding: 8px;">Décision</th>
-                      </tr>
-                    </thead>
-                    <tbody>{pen_rows}</tbody>
-                  </table>
-
-                  <h4 style="color: #15803d; margin-top: 15px;">🔗 Combinés Doubles Penalty</h4>
-                  {combine_h}
-
-                  <h3 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 5px; margin-top: 30px;">⚡ AUDIT OVER 2.5 (SEUIL UNIBET &le; 1.87)</h3>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead>
-                      <tr style="background: #f8fafc;">
-                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
-                        <th style="padding: 8px; text-align: left;">Ligue</th>
-                        <th style="padding: 8px; text-align: left;">Match</th>
-                        <th style="padding: 8px;">Cote O2.5</th>
-                        <th style="padding: 8px;">Décision</th>
-                      </tr>
-                    </thead>
-                    <tbody>{o25_rows}</tbody>
-                  </table>
-
-                  <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 5px; margin-top: 30px;">🎥 MÉTHODE YOUTUBE OVER 2.5 (Score 2-2 &le; 12.00 &amp; Over 2.5 &le; 1.87)</h3>
-                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <thead>
-                      <tr style="background: #f8fafc;">
-                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
-                        <th style="padding: 8px; text-align: left;">Ligue</th>
-                        <th style="padding: 8px; text-align: left;">Match</th>
-                        <th style="padding: 8px;">Cotes (2-2 / O2.5)</th>
-                        <th style="padding: 8px;">Décision</th>
-                      </tr>
-                    </thead>
-                    <tbody>{yt_rows}</tbody>
-                  </table>
-                </div>
-              </body>
-            </html>
-            """
-            
-            gmail_email = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
-            gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
-            
-            sender_email = gmail_email if gmail_password else SMTP_USER
-            
-            msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"PRONOSTICS FOOTBALL - UNIBET FRANCE DEEP AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
-            msg["From"] = f"Gregory LANGLET <{sender_email}>"
-            msg["To"] = ", ".join(recipients)
-            msg.attach(MIMEText(html_body, "html", "utf-8"))
-            
-            email_sent = False
-            
-            if gmail_password:
-                try:
-                    print(f"Attempting email send to {recipients} via Gmail SMTP (smtp.gmail.com:587)...")
-                    with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
-                        server.ehlo()
-                        server.starttls()
-                        server.ehlo()
-                        server.login(gmail_email, gmail_password)
-                        server.sendmail(gmail_email, recipients, msg.as_string())
-                    print("SUCCESS! Email sent via Gmail SMTP.")
-                    email_sent = True
-                except Exception as e_gmail:
-                    print(f"Gmail SMTP attempt failed: {e_gmail}")
-                    
-            if not email_sent:
-                SMTP_HOST = os.environ.get("SMTP_HOST", os.environ.get("SMTP_SERVER", "smtp.sfr.fr"))
-                SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
-                
-                if SMTP_PORT == 465:
-                    try:
-                        print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} SSL...")
-                        server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15)
-                        server.login(SMTP_USER, SMTP_PASS)
-                        server.sendmail(SMTP_USER, recipients, msg.as_string())
-                        server.quit()
-                        print(f"Email sent successfully via {SMTP_HOST} SSL.")
-                        email_sent = True
-                    except Exception as e_ssl:
-                        print(f"Port 465 SSL attempt failed: {e_ssl}")
-                        
-                if not email_sent:
-                    try:
-                        print(f"Attempting email send to {recipients} via {SMTP_HOST}:587 TLS...")
-                        server = smtplib.SMTP(SMTP_HOST, 587, timeout=15)
-                        server.starttls()
-                        server.login(SMTP_USER, SMTP_PASS)
-                        server.sendmail(SMTP_USER, recipients, msg.as_string())
-                        server.quit()
-                        print(f"Email sent successfully via {SMTP_HOST} TLS.")
-                        email_sent = True
-                    except Exception as e_tls:
-                        print(f"TLS attempt failed: {e_tls}")
+            print(f"Sending email to {recipients} via Gmail SMTP...")
+            with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login(gmail_email, gmail_password)
+                server.sendmail(gmail_email, recipients, msg.as_string())
+            print("SUCCESS! Email sent via Gmail SMTP.")
         except Exception as e:
-            print(f"Failed to send email: {e}")
+            print(f"Failed sending email via Gmail SMTP: {e}")
 
 if __name__ == "__main__":
     main()
