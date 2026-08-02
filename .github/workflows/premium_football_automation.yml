@@ -29,13 +29,13 @@ jobs:
         run: |
           python scripts/parse_pronosoft.py
 
-      - name: ⚡ Run Premium 1XBET Scan (Over 2.5 & Penalty)
+      - name: ⚡ Run Premium Unibet France Scan (Over 2.5 & Penalty)
         env:
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           EMAIL_TO: "gregory.langlet@sfr.fr"
         run: |
-          python scripts/auto_premium_1xbet.py
+          python scripts/auto_premium_unibet.py
 
       - name: 📄 Upload Premium Report Artifact
         uses: actions/upload-artifact@v4
