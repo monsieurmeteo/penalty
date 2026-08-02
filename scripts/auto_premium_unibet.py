@@ -161,43 +161,46 @@ def scan_unibet_match_details(game):
                 for g in grouped_markets:
                     markets = g.get("markets", [])
                     for m in markets:
-                        m_desc = m.get("description", "").lower()
+                        m_desc = (m.get("description") or "").lower()
+                        
+                        # Skip half-time, period, and team-specific sub-markets
+                        if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
+                            continue
+                            
                         outcomes = m.get("outcomes", [])
                         
-                        # 1N2
-                        if m_desc == "1 n 2" or m_desc == "1n2":
+                        # 1N2 (Primary)
+                        if m_desc in ["1 n 2", "1n2", "résultat du match"] and c1 is None:
                             for o in outcomes:
-                                o_desc = o.get("description", "").lower()
-                                price = float(o.get("price", "0").replace(",", "."))
-                                if dom.lower() in o_desc: c1 = price
-                                elif ext.lower() in o_desc: c2 = price
-                                elif "nul" in o_desc: cx = price
+                                o_desc = (o.get("description") or "").lower()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if dom.lower() in o_desc or "1" in o_desc: c1 = p_val
+                                elif ext.lower() in o_desc or "2" in o_desc: c2 = p_val
+                                elif "nul" in o_desc: cx = p_val
                                 
-                        # Over / Under 2.5
-                        if "plus / moins 2.5" in m_desc or "nombre de buts" in m_desc:
-                            for o in outcomes:
-                                o_desc = o.get("description", "").lower()
-                                price = float(o.get("price", "0").replace(",", "."))
-                                if "plus 2.5" in o_desc or "plus 2,5" in o_desc: over25 = price
-                                elif "moins 2.5" in o_desc or "moins 2,5" in o_desc: under25 = price
-                                
-                        # Penalty
-                        if "penalty" in m_desc:
-                            for o in outcomes:
-                                o_desc = o.get("description", "").lower()
-                                price = float(o.get("price", "0").replace(",", "."))
-                                if "une des 2" in o_desc or "oui" in o_desc:
-                                    pen_oui = price
-                                elif "pas de penalty" in o_desc or "non" in o_desc:
-                                    pen_non = price
+                        # Over / Under 2.5 (Primary match total)
+                        if ("plus / moins 2.5" in m_desc or "plus / moins 2,5" in m_desc) and over25 is None:
+                            if not any(t in m_desc for t in [dom.lower(), ext.lower(), "équipe"]):
+                                for o in outcomes:
+                                    o_desc = (o.get("description") or "").lower()
+                                    p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                    if "plus" in o_desc: over25 = p_val
+                                    elif "moins" in o_desc: under25 = p_val
                                     
-                        # Score 2-2
-                        if "score exact" in m_desc and "mi-temps" not in m_desc:
+                        # Penalty
+                        if "penalty" in m_desc and pen_oui is None:
                             for o in outcomes:
-                                o_desc = o.get("description", "").strip()
-                                price = float(o.get("price", "0").replace(",", "."))
-                                if o_desc in ["2 - 2", "2-2"]:
-                                    s22 = price
+                                o_desc = (o.get("description") or "").lower()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if "une des 2" in o_desc or "oui" in o_desc: pen_oui = p_val
+                                elif "non" in o_desc or "pas de penalty" in o_desc: pen_non = p_val
+                                
+                        # Score 2-2
+                        if "score exact" in m_desc and s22 is None:
+                            for o in outcomes:
+                                o_desc = (o.get("description") or "").strip()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if o_desc in ["2 - 2", "2-2"]: s22 = p_val
                                     
                 return {
                     **game,
