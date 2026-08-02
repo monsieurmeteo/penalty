@@ -347,7 +347,8 @@ def main():
     # Send Email if SMTP configured
     SMTP_USER = os.environ.get("SMTP_USER")
     SMTP_PASS = os.environ.get("SMTP_PASS")
-    EMAIL_TO = os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr")
+    EMAIL_TO_RAW = os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com")
+    recipients = [e.strip() for e in EMAIL_TO_RAW.replace(";", ",").split(",") if e.strip()]
     
     if SMTP_USER and SMTP_PASS:
         try:
@@ -441,16 +442,16 @@ def main():
             msg = MIMEMultipart("alternative")
             msg["Subject"] = f"\u26bd [UNIBET FR] Pronostics Foot & Audit - {now_str}"
             msg["From"] = SMTP_USER
-            msg["To"] = EMAIL_TO
+            msg["To"] = ", ".join(recipients)
             msg.attach(MIMEText(html_body, "html", "utf-8"))
             
             email_sent = False
             # Try Port 465 SSL first (bypasses Spamhaus port 587 filter on cloud runners)
             try:
-                print("Attempting email send via SFR SMTP SSL (port 465)...")
+                print(f"Attempting email send to {recipients} via SFR SMTP SSL (port 465)...")
                 server = smtplib.SMTP_SSL("smtp.sfr.fr", 465, timeout=15)
                 server.login(SMTP_USER, SMTP_PASS)
-                server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
+                server.sendmail(SMTP_USER, recipients, msg.as_string())
                 server.quit()
                 print("Email sent successfully via SFR SMTP SSL (port 465).")
                 email_sent = True
@@ -461,7 +462,7 @@ def main():
                 server = smtplib.SMTP("smtp.sfr.fr", 587, timeout=15)
                 server.starttls()
                 server.login(SMTP_USER, SMTP_PASS)
-                server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
+                server.sendmail(SMTP_USER, recipients, msg.as_string())
                 server.quit()
                 print("Email sent successfully via SFR SMTP TLS (port 587).")
         except Exception as e:
