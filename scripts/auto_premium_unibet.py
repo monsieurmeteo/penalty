@@ -341,5 +341,114 @@ def main():
         
     print("Report generated successfully and saved to report.md!")
 
+    # Send Email if SMTP configured
+    SMTP_USER = os.environ.get("SMTP_USER")
+    SMTP_PASS = os.environ.get("SMTP_PASS")
+    EMAIL_TO = os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr")
+    
+    if SMTP_USER and SMTP_PASS:
+        try:
+            import smtplib
+            from email.mime.text import MIMEText
+            from email.mime.multipart import MIMEMultipart
+            
+            now_str = datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')
+            
+            pen_rows = ""
+            for m in scanned_results:
+                pen = m.get('pen_oui')
+                if m.get("not_found"):
+                    pill_bg, pill_color, badge_text, cote_display = "#fef2f2", "#dc2626", "🔴 NON TROUVÉ", "N/A"
+                elif pen and pen <= SEUIL_S8:
+                    pill_bg, pill_color, badge_text, cote_display = "#f0fdf4", "#16a34a", "🟢 RETENU", f"{pen}"
+                elif pen:
+                    pill_bg, pill_color, badge_text, cote_display = "#f8fafc", "#64748b", "⚪ ÉLIMINÉ (> 2.90)", f"{pen}"
+                else:
+                    pill_bg, pill_color, badge_text, cote_display = "#fff1f2", "#94a3b8", "❌ NON PROPOSÉ", "N/A"
+                pen_rows += f"""
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                  <td style="padding: 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                  <td style="padding: 10px; color: #334155;">{m['league']}</td>
+                  <td style="padding: 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                  <td style="padding: 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{cote_display}</td>
+                  <td style="padding: 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
+                </tr>
+                """
+                
+            o25_rows = ""
+            for m in scanned_results:
+                o25 = m.get('over25')
+                if m.get("not_found"):
+                    pill_bg, pill_color, badge_text, cote_display = "#fef2f2", "#dc2626", "🔴 NON TROUVÉ", "N/A"
+                elif o25 and o25 <= SEUIL_S4:
+                    pill_bg, pill_color, badge_text, cote_display = "#eff6ff", "#2563eb", "🟢 RETENU", f"{o25}"
+                elif o25:
+                    pill_bg, pill_color, badge_text, cote_display = "#f8fafc", "#64748b", "⚪ ÉLIMINÉ (> 1.87)", f"{o25}"
+                else:
+                    pill_bg, pill_color, badge_text, cote_display = "#fff1f2", "#94a3b8", "❌ NON PROPOSÉ", "N/A"
+                o25_rows += f"""
+                <tr style="border-bottom: 1px solid #e2e8f0;">
+                  <td style="padding: 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                  <td style="padding: 10px; color: #334155;">{m['league']}</td>
+                  <td style="padding: 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                  <td style="padding: 10px; text-align: center; font-weight: bold; color: #2563eb; background-color: #eff6ff; border-radius: 6px;">{cote_display}</td>
+                  <td style="padding: 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
+                </tr>
+                """
+
+            html_body = f"""
+            <html>
+              <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
+                <div style="max-width: 650px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                  <h1 style="color: #1e3a8a; text-align: center;">\u26bd METRIC-FOOT UNIBET FRANCE 🇫🇷</h1>
+                  <p style="text-align: center; color: #64748b;">Rapport du {now_str}</p>
+                  
+                  <h3 style="color: #16a34a;">🎯 AUDIT PENALTY (SEUIL &le; {SEUIL_S8})</h3>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                      <tr style="background: #f8fafc;">
+                        <th style="padding: 8px; text-align: left;">Horaire</th>
+                        <th style="padding: 8px; text-align: left;">Ligue</th>
+                        <th style="padding: 8px; text-align: left;">Match</th>
+                        <th style="padding: 8px;">Cote Pen.</th>
+                        <th style="padding: 8px;">Décision</th>
+                      </tr>
+                    </thead>
+                    <tbody>{pen_rows}</tbody>
+                  </table>
+
+                  <h3 style="color: #2563eb; margin-top: 25px;">⚡ AUDIT OVER 2.5 (SEUIL &le; {SEUIL_S4})</h3>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                      <tr style="background: #f8fafc;">
+                        <th style="padding: 8px; text-align: left;">Horaire</th>
+                        <th style="padding: 8px; text-align: left;">Ligue</th>
+                        <th style="padding: 8px; text-align: left;">Match</th>
+                        <th style="padding: 8px;">Cote O2.5</th>
+                        <th style="padding: 8px;">Décision</th>
+                      </tr>
+                    </thead>
+                    <tbody>{o25_rows}</tbody>
+                  </table>
+                </div>
+              </body>
+            </html>
+            """
+            
+            msg = MIMEMultipart("alternative")
+            msg["Subject"] = f"\u26bd [UNIBET FR] Pronostics Foot & Audit - {now_str}"
+            msg["From"] = SMTP_USER
+            msg["To"] = EMAIL_TO
+            msg.attach(MIMEText(html_body, "html", "utf-8"))
+            
+            server = smtplib.SMTP("smtp.sfr.fr", 587, timeout=15)
+            server.starttls()
+            server.login(SMTP_USER, SMTP_PASS)
+            server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
+            server.quit()
+            print("Email sent successfully via SFR SMTP server.")
+        except Exception as e:
+            print(f"Failed to send email: {e}")
+
 if __name__ == "__main__":
     main()
