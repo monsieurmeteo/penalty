@@ -219,6 +219,7 @@ def main():
     if parsed_input:
         print(f"Fichier matches_input.txt trouvé avec {len(parsed_input)} matchs.")
         active_games = get_active_games(scan_all_leagues=True)
+        seen_ids = set()
         for p in parsed_input:
             best, best_sc = None, 0
             for g in active_games:
@@ -227,7 +228,11 @@ def main():
                     best_sc = sc
                     best = g
             if best and best_sc >= 0.52:
-                # Keep user custom horaire along with actual date
+                if best["id"] in seen_ids:
+                    continue
+                if "paris sp" in best["league"].lower() or "paris sp" in best["dom"].lower() or "paris sp" in best["ext"].lower():
+                    continue
+                seen_ids.add(best["id"])
                 if p["time"]: 
                     best["start_time"] = f"{get_paris_time_str(best['timestamp'], '%d/%m')} à {p['time']}"
                 matches_to_scan.append(best)
