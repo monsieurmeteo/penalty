@@ -301,11 +301,11 @@ def main():
         if m.get("not_found"):
             decision = "🔴 NON TROUVÉ (UNIBET)"
             cote_str, fair_str = "N/A", "N/A"
-        elif pen_fair and pen_fair <= SEUIL_S8:
+        elif pen and pen <= SEUIL_S8:
             decision = "🟢 **RETENU**"
-            cote_str, fair_str = f"{pen}", f"**{pen_fair}**"
+            cote_str, fair_str = f"**{pen}**", f"**{pen_fair}**"
         elif pen:
-            decision = "⚪ ÉLIMINÉ (> 2.90 Eq.)"
+            decision = "⚪ ÉLIMINÉ (> 2.90)"
             cote_str, fair_str = f"{pen}", f"{pen_fair}"
         else:
             decision = "❌ NON PROPOSÉ"
@@ -336,11 +336,11 @@ def main():
         if m.get("not_found"):
             decision = "🔴 NON TROUVÉ (UNIBET)"
             cote_str, fair_str = "N/A", "N/A"
-        elif o25_fair and o25_fair <= SEUIL_S4:
+        elif o25 and o25 <= SEUIL_S4:
             decision = "🟢 **RETENU**"
-            cote_str, fair_str = f"{o25}", f"**{o25_fair}**"
+            cote_str, fair_str = f"**{o25}**", f"**{o25_fair}**"
         elif o25:
-            decision = "⚪ ÉLIMINÉ (> 1.87 Eq.)"
+            decision = "⚪ ÉLIMINÉ (> 1.87)"
             cote_str, fair_str = f"{o25}", f"{o25_fair}"
         else:
             decision = "❌ NON PROPOSÉ"
