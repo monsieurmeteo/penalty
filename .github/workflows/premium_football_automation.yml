@@ -31,9 +31,11 @@ jobs:
 
       - name: ⚡ Run Premium Unibet France Scan (Over 2.5 & Penalty)
         env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          EMAIL_TO: "gregory.langlet@sfr.fr"
+          EMAIL_TO: "gregory.langlet@sfr.fr, langlet.gregory@gmail.com"
         run: |
           python scripts/auto_premium_unibet.py
 

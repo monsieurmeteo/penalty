@@ -453,26 +453,36 @@ def main():
             msg["To"] = ", ".join(recipients)
             msg.attach(MIMEText(html_body, "html", "utf-8"))
             
+            SMTP_HOST = os.environ.get("SMTP_HOST", os.environ.get("SMTP_SERVER", "smtp.sfr.fr"))
+            SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+            
             email_sent = False
-            # Try Port 465 SSL first (bypasses Spamhaus port 587 filter on cloud runners)
-            try:
-                print(f"Attempting email send to {recipients} via SFR SMTP SSL (port 465)...")
-                server = smtplib.SMTP_SSL("smtp.sfr.fr", 465, timeout=15)
-                server.login(SMTP_USER, SMTP_PASS)
-                server.sendmail(SMTP_USER, recipients, msg.as_string())
-                server.quit()
-                print("Email sent successfully via SFR SMTP SSL (port 465).")
-                email_sent = True
-            except Exception as e_ssl:
-                print(f"Port 465 SSL attempt failed ({e_ssl}), falling back to Port 587 TLS...")
-                
+            # 1. Try Port 465 SSL if port == 465
+            if SMTP_PORT == 465:
+                try:
+                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} SSL...")
+                    server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15)
+                    server.login(SMTP_USER, SMTP_PASS)
+                    server.sendmail(SMTP_USER, recipients, msg.as_string())
+                    server.quit()
+                    print(f"Email sent successfully via {SMTP_HOST} SSL.")
+                    email_sent = True
+                except Exception as e_ssl:
+                    print(f"Port 465 SSL attempt failed: {e_ssl}")
+                    
+            # 2. Try STARTTLS on port 587 or fallback
             if not email_sent:
-                server = smtplib.SMTP("smtp.sfr.fr", 587, timeout=15)
-                server.starttls()
-                server.login(SMTP_USER, SMTP_PASS)
-                server.sendmail(SMTP_USER, recipients, msg.as_string())
-                server.quit()
-                print("Email sent successfully via SFR SMTP TLS (port 587).")
+                try:
+                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} TLS...")
+                    server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15)
+                    server.starttls()
+                    server.login(SMTP_USER, SMTP_PASS)
+                    server.sendmail(SMTP_USER, recipients, msg.as_string())
+                    server.quit()
+                    print(f"Email sent successfully via {SMTP_HOST} TLS.")
+                    email_sent = True
+                except Exception as e_tls:
+                    print(f"TLS attempt failed on {SMTP_HOST}:{SMTP_PORT}: {e_tls}")
         except Exception as e:
             print(f"Failed to send email: {e}")
 
