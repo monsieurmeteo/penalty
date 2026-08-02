@@ -384,6 +384,22 @@ def main():
     if not s8b_rows:
         s8b_rows = '<tr><td colspan="6" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Option B Bi-Directionnelle (Ratio entre 0.65 et 1.55) dans les 48h.</td></tr>'
 
+    combine_h = ""
+    if combines:
+        for idx, pair in enumerate(combines, 1):
+            c_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
+            combine_h += f"""
+            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+              <b style="color: #16a34a;">Double #{idx} (Cote Globale Unibet: {c_tot})</b>
+              <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 13px; color: #1e293b;">
+                <li><b>{pair[0].get('date_str')}</b> : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Penalty: <b>{pair[0]['pen_oui']}</b>)</li>
+                <li><b>{pair[1].get('date_str')}</b> : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Penalty: <b>{pair[1]['pen_oui']}</b>)</li>
+              </ul>
+            </div>
+            """
+    else:
+        combine_h = "<p style='color:#64748b;'>Pas assez de matchs penalty retenus pour former un combiné double dans les 48h.</p>"
+
     html_body = f"""
     <html>
       <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
