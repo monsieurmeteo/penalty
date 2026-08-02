@@ -69,10 +69,35 @@ PRIORITY_LEAGUES = [
     "Chili", "Colombie", "Équateur", "Pologne", "Autriche", "Suisse", "Écosse", "Russie", "Ukraine"
 ]
 
+import unicodedata
+
+ALIASES = {
+    "kups": "kuopion palloseura",
+    "ch odessa": "chornomorets odesa",
+    "st johnstone": "saint johnstone",
+    "fktukums2000": "tukums 2000",
+    "fkliepaja": "liepaja"
+}
+
+def clean_team_name(name):
+    if not name: return ""
+    n = unicodedata.normalize('NFD', str(name))
+    n = "".join(c for c in n if unicodedata.category(c) != 'Mn')
+    n = n.lower().strip()
+    if n in ALIASES:
+        return ALIASES[n]
+    words = re.split(r"[\s\.\-]+", n)
+    ignored = {"fc", "fk", "cs", "sd", "jk", "ff", "sc", "sk", "ac", "nk", "cd", "ca", "mfk", "msk", "rks", "gks", "vsc", "osk", "sa", "ii", "u19", "u21", "de", "del", "la", "el", "club", "univesitatea", "universitatea", "sporting", "deportes", "deportivo", "atletico"}
+    cleaned_words = [w for w in words if w not in ignored and len(w) > 1]
+    if not cleaned_words:
+        return n
+    return " ".join(cleaned_words)
+
 def sim(a, b):
-    a, b = a.lower().strip(), b.lower().strip()
-    if a in b or b in a: return 0.85 + 0.15 * SequenceMatcher(None, a, b).ratio()
-    return SequenceMatcher(None, a, b).ratio()
+    ca, cb = clean_team_name(a), clean_team_name(b)
+    if ca in cb or cb in ca:
+        return 0.85 + 0.15 * SequenceMatcher(None, ca, cb).ratio()
+    return SequenceMatcher(None, ca, cb).ratio()
 
 def fetch_url(url, timeout=15, retries=5):
     for i in range(retries):
@@ -121,8 +146,7 @@ def get_active_games(scan_all_leagues=False):
     now_ts = int(time.time())
     
     # Fetch games for selected leagues in parallel or loop
-    # If scanning all leagues, limit to 250 leagues to avoid performance bottleneck
-    target_leagues = selected_leagues if not scan_all_leagues else selected_leagues[:250]
+    target_leagues = selected_leagues
     
     def process_lg(lg):
         games = []
