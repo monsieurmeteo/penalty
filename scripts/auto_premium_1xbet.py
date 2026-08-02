@@ -194,6 +194,8 @@ def parse_input_file(filepath):
 
 def scan_match_details(game_info):
     try:
+        if game_info.get("not_found"):
+            return game_info
         url = f"{BASE}/LineFeed/GetGameZip?id={game_info['id']}&lng=fr"
         data = fetch_url(url, timeout=10, retries=3)
         if not data: return None
@@ -207,9 +209,9 @@ def scan_match_details(game_info):
             if T == 1: c1 = C
             if T == 2: cx = C
             if T == 3: c2 = C
-            if T == 9 and P == 2.5: over25 = C
-            if T == 10 and P == 2.5: under25 = C
-            if T == 8617 and str(P) == "2.002": s22 = C
+            if (T == 9 and P == 2.5) or (G == 17 and P == 2.5 and T in [9, 17]): over25 = C
+            if (T == 10 and P == 2.5) or (G == 17 and P == 2.5 and T in [10, 18]): under25 = C
+            if (T == 8617 and str(P) in ["2.002", "2-2"]) or (G == 15 and str(P) in ["2.002", "2-2"]): s22 = C
             if G == 50:
                 if T == 518: pen_oui = C
                 if T == 519: pen_non = C
@@ -245,14 +247,17 @@ def main():
         print(f"Fichier matches_input.txt trouvé avec {len(parsed_input)} matchs.")
         active_games = get_active_games(scan_all_leagues=True)
         seen_ids = set()
+        unmatched_count = 0
         for p in parsed_input:
             best, best_sc = None, 0
             for g in active_games:
-                sc = (sim(p["home"], g["dom"]) + sim(p["away"], g["ext"])) / 2
-                if sc > best_sc:
-                    best_sc = sc
+                sc_direct = (sim(p["home"], g["dom"]) + sim(p["away"], g["ext"])) / 2
+                sc_inverse = (sim(p["home"], g["ext"]) + sim(p["away"], g["dom"])) / 2
+                sc_final = max(sc_direct, sc_inverse)
+                if sc_final > best_sc:
+                    best_sc = sc_final
                     best = g
-            if best and best_sc >= 0.52:
+            if best and best_sc >= 0.58:
                 if best["id"] in seen_ids:
                     continue
                 if "paris sp" in best["league"].lower() or "paris sp" in best["dom"].lower() or "paris sp" in best["ext"].lower():
@@ -261,6 +266,17 @@ def main():
                 if p["time"]: 
                     best["start_time"] = f"{get_paris_time_str(best['timestamp'], '%d/%m')} à {p['time']}"
                 matches_to_scan.append(best)
+            else:
+                unmatched_count += 1
+                matches_to_scan.append({
+                    "id": f"unmatched_{unmatched_count}",
+                    "dom": p["home"],
+                    "ext": p["away"],
+                    "league": "Pronosoft (Non rattaché)",
+                    "start_time": f"Prochainement à {p['time']}" if p['time'] else "Horaire Pronosoft",
+                    "timestamp": int(time.time()) + 86400,
+                    "not_found": True
+                })
     else:
         print("matches_input.txt absent ou vide. Lancement du Scan Automatique des ligues majeures...")
         matches_to_scan = get_active_games(scan_all_leagues=False)
@@ -381,7 +397,10 @@ def main():
         report.append("| :---: | :--- | :--- | :---: | :---: |")
         for m in sorted_audit_matches:
             pen = m.get('pen_oui')
-            if pen and pen <= SEUIL_S8:
+            if m.get("not_found"):
+                decision = "🔴 NON TROUVÉ (1XBET)"
+                cote_str = "N/A"
+            elif pen and pen <= SEUIL_S8:
                 decision = "🟢 **RETENU**"
                 cote_str = f"**{pen}**"
             elif pen:
@@ -427,7 +446,10 @@ def main():
         report.append("| :---: | :--- | :--- | :---: | :---: |")
         for m in sorted_o25_matches:
             o25 = m.get('over25')
-            if o25 and o25 <= SEUIL_S4:
+            if m.get("not_found"):
+                decision = "🔴 NON TROUVÉ (1XBET)"
+                cote_str = "N/A"
+            elif o25 and o25 <= SEUIL_S4:
                 decision = "🟢 **RETENU**"
                 cote_str = f"**{o25}**"
             elif o25:

@@ -41,7 +41,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: premium-football-report
-          path: rapport_premium_1xbet.md
+          path: report.md
 
       - name: 💾 Commit and Push Odds History
         run: |
