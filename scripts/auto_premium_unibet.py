@@ -463,40 +463,61 @@ def main():
             </html>
             """
             
+            gmail_email = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
+            gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
+            
+            sender_email = gmail_email if gmail_password else SMTP_USER
+            
             msg = MIMEMultipart("alternative")
             msg["Subject"] = f"PRONOSTICS FOOTBALL - UNIBET FRANCE DEEP AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
-            msg["From"] = SMTP_USER
+            msg["From"] = f"Gregory LANGLET <{sender_email}>"
             msg["To"] = ", ".join(recipients)
             msg.attach(MIMEText(html_body, "html", "utf-8"))
             
-            SMTP_HOST = os.environ.get("SMTP_HOST", os.environ.get("SMTP_SERVER", "smtp.sfr.fr"))
-            SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
-            
             email_sent = False
-            if SMTP_PORT == 465:
+            
+            if gmail_password:
                 try:
-                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} SSL...")
-                    server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15)
-                    server.login(SMTP_USER, SMTP_PASS)
-                    server.sendmail(SMTP_USER, recipients, msg.as_string())
-                    server.quit()
-                    print(f"Email sent successfully via {SMTP_HOST} SSL.")
+                    print(f"Attempting email send to {recipients} via Gmail SMTP (smtp.gmail.com:587)...")
+                    with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
+                        server.ehlo()
+                        server.starttls()
+                        server.ehlo()
+                        server.login(gmail_email, gmail_password)
+                        server.sendmail(gmail_email, recipients, msg.as_string())
+                    print("SUCCESS! Email sent via Gmail SMTP.")
                     email_sent = True
-                except Exception as e_ssl:
-                    print(f"Port 465 SSL attempt failed: {e_ssl}")
+                except Exception as e_gmail:
+                    print(f"Gmail SMTP attempt failed: {e_gmail}")
                     
             if not email_sent:
-                try:
-                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:587 TLS...")
-                    server = smtplib.SMTP(SMTP_HOST, 587, timeout=15)
-                    server.starttls()
-                    server.login(SMTP_USER, SMTP_PASS)
-                    server.sendmail(SMTP_USER, recipients, msg.as_string())
-                    server.quit()
-                    print(f"Email sent successfully via {SMTP_HOST} TLS.")
-                    email_sent = True
-                except Exception as e_tls:
-                    print(f"TLS attempt failed: {e_tls}")
+                SMTP_HOST = os.environ.get("SMTP_HOST", os.environ.get("SMTP_SERVER", "smtp.sfr.fr"))
+                SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
+                
+                if SMTP_PORT == 465:
+                    try:
+                        print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} SSL...")
+                        server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT, timeout=15)
+                        server.login(SMTP_USER, SMTP_PASS)
+                        server.sendmail(SMTP_USER, recipients, msg.as_string())
+                        server.quit()
+                        print(f"Email sent successfully via {SMTP_HOST} SSL.")
+                        email_sent = True
+                    except Exception as e_ssl:
+                        print(f"Port 465 SSL attempt failed: {e_ssl}")
+                        
+                if not email_sent:
+                    try:
+                        print(f"Attempting email send to {recipients} via {SMTP_HOST}:587 TLS...")
+                        server = smtplib.SMTP(SMTP_HOST, 587, timeout=15)
+                        server.starttls()
+                        server.login(SMTP_USER, SMTP_PASS)
+                        server.sendmail(SMTP_USER, recipients, msg.as_string())
+                        server.quit()
+                        print(f"Email sent successfully via {SMTP_HOST} TLS.")
+                        email_sent = True
+                    except Exception as e_tls:
+                        print(f"TLS attempt failed: {e_tls}")
         except Exception as e:
             print(f"Failed to send email: {e}")
 
