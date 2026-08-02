@@ -441,12 +441,26 @@ def main():
             msg["To"] = EMAIL_TO
             msg.attach(MIMEText(html_body, "html", "utf-8"))
             
-            server = smtplib.SMTP("smtp.sfr.fr", 587, timeout=15)
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASS)
-            server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
-            server.quit()
-            print("Email sent successfully via SFR SMTP server.")
+            email_sent = False
+            # Try Port 465 SSL first (bypasses Spamhaus port 587 filter on cloud runners)
+            try:
+                print("Attempting email send via SFR SMTP SSL (port 465)...")
+                server = smtplib.SMTP_SSL("smtp.sfr.fr", 465, timeout=15)
+                server.login(SMTP_USER, SMTP_PASS)
+                server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
+                server.quit()
+                print("Email sent successfully via SFR SMTP SSL (port 465).")
+                email_sent = True
+            except Exception as e_ssl:
+                print(f"Port 465 SSL attempt failed ({e_ssl}), falling back to Port 587 TLS...")
+                
+            if not email_sent:
+                server = smtplib.SMTP("smtp.sfr.fr", 587, timeout=15)
+                server.starttls()
+                server.login(SMTP_USER, SMTP_PASS)
+                server.sendmail(SMTP_USER, [EMAIL_TO], msg.as_string())
+                server.quit()
+                print("Email sent successfully via SFR SMTP TLS (port 587).")
         except Exception as e:
             print(f"Failed to send email: {e}")
 
