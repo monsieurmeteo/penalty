@@ -3,6 +3,10 @@ name: Premium Football (Penalty & Over 2.5) Automation
 on:
   workflow_dispatch: # Allows manual trigger from GitHub UI
 
+concurrency:
+  group: penalty-scan
+  cancel-in-progress: true
+
 jobs:
   run-analysis:
     runs-on: ubuntu-latest
