@@ -123,21 +123,28 @@ def get_active_games(scan_all_leagues=False):
     # If scanning all leagues, limit to 250 leagues to avoid performance bottleneck
     target_leagues = selected_leagues if not scan_all_leagues else selected_leagues[:250]
     
-    for lg in target_leagues:
+    def process_lg(lg):
+        games = []
         d = fetch_url(f"{BASE}/LineFeed/GetChampZip?champ={lg['id']}&lng=fr", timeout=8, retries=2)
-        if not d: continue
-        for g in d.get("Value", {}).get("G", []):
-            st = g.get("S", 0)
-            # Next 36 hours limit
-            if now_ts < st < now_ts + 129600:
-                all_games.append({
-                    "dom": g["O1"],
-                    "ext": g["O2"],
-                    "id": g["I"],
-                    "league": lg["name"],
-                    "start_time": get_paris_time_str(st),
-                    "timestamp": st
-                })
+        if d:
+            for g in d.get("Value", {}).get("G", []):
+                st = g.get("S", 0)
+                if now_ts < st < now_ts + 129600:
+                    games.append({
+                        "dom": g["O1"],
+                        "ext": g["O2"],
+                        "id": g["I"],
+                        "league": lg["name"],
+                        "start_time": get_paris_time_str(st),
+                        "timestamp": st
+                    })
+        return games
+
+    with ThreadPoolExecutor(max_workers=25) as ex:
+        results = ex.map(process_lg, target_leagues)
+        for g_list in results:
+            all_games.extend(g_list)
+            
     return all_games
 
 def parse_input_file(filepath):
@@ -244,7 +251,7 @@ def main():
     s3_matches = []
     s4_matches = []
     s8_matches = []
-    s8b_matches = []
+    all_pen_matches = []
     
     for r in scanned_results:
         # S3 YouTube: 2-2 <= 10.00
@@ -253,15 +260,16 @@ def main():
         # S4 Cote Directe Over 2.5 <= 1.87
         if r.get("over25") and r["over25"] <= SEUIL_S4:
             s4_matches.append(r)
-        # S8 Penalty global <= 2.90
-        if r.get("pen_oui") and r["pen_oui"] <= SEUIL_S8:
-            s8_matches.append(r)
-            # S8B Option B Bi-Directionnelle
-            if r.get("ratio") and 0.70 <= r["ratio"] <= 1.50:
-                s8b_matches.append(r)
+        # All Penalty matches
+        if r.get("pen_oui"):
+            all_pen_matches.append(r)
+            if r["pen_oui"] <= SEUIL_S8:
+                s8_matches.append(r)
                 
-    # 4. Generate Combinés Doubles for Penalty (Neighbor Pairing)
+    # 4. Generate Combinés Doubles for Penalty (Retained matches only)
     s8_matches.sort(key=lambda x: x["timestamp"])
+    all_pen_matches.sort(key=lambda x: x["pen_oui"])
+    
     combines = []
     used_teams = set()
     temp_pair = []
@@ -277,24 +285,25 @@ def main():
             temp_pair = []
             
     # 5. Format Report
-    now_str = time.strftime('%d/%m/%Y à %H:%M')
+    now_str = get_paris_time_str(fmt='%d/%m/%Y à %H:%M')
     report = []
     report.append(f"# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM")
     report.append(f"Généré le {now_str}\n")
     
     # section 8: Penalty Cote Directe
-    report.append(f"## 🎯 STRATÉGIE 8 : PENALTY ACCORDÉ DIRECT (Cote ≤ {SEUIL_S8})")
-    if s8_matches:
-        report.append("| Horaire | Championnat | Match | Cote Penalty Global |")
-        report.append("| :---: | :--- | :--- | :---: |")
-        for m in s8_matches:
-            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}** |")
+    report.append(f"## 🎯 TOUS LES MATCHS PENALTY DÉTECTÉS (SEUIL SELECTION ≤ {SEUIL_S8})")
+    if all_pen_matches:
+        report.append("| Horaire | Championnat | Match | Cote Penalty | Décision |")
+        report.append("| :---: | :--- | :--- | :---: | :---: |")
+        for m in all_pen_matches:
+            decision = "🟢 **RETENU**" if m['pen_oui'] <= SEUIL_S8 else "⚪ ÉLIMINÉ (> 2.90)"
+            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}** | {decision} |")
     else:
-        report.append("*Aucun match éligible trouvé.*")
+        report.append("*Aucun match avec marché Penalty disponible.*")
     report.append("")
     
     # section 8: Combinés
-    report.append(f"### 🔗 COMBINÉS DOUBLE DE LA SESSION (Penalty)")
+    report.append(f"### 🔗 COMBINÉS DOUBLE DE LA SESSION (Matchs Retenus)")
     if combines:
         for idx, pair in enumerate(combines, 1):
             cote_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
@@ -347,18 +356,23 @@ def main():
             
             # 6a. Penalty table rows
             pen_rows = ""
-            if s8_matches:
-                for m in s8_matches:
+            if all_pen_matches:
+                for m in all_pen_matches:
+                    is_retained = m['pen_oui'] <= SEUIL_S8
+                    pill_bg = "#f0fdf4" if is_retained else "#f8fafc"
+                    pill_color = "#16a34a" if is_retained else "#64748b"
+                    badge_text = "🟢 RETENU" if is_retained else "⚪ ÉLIMINÉ (> 2.90)"
                     pen_rows += f"""
                     <tr style="border-bottom: 1px solid #e2e8f0;">
                       <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
                       <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
                       <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
                       <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{m['pen_oui']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
                     </tr>
                     """
             else:
-                pen_rows = "<tr><td colspan='4' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match éligible trouvé.</td></tr>"
+                pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match avec marché Penalty disponible.</td></tr>"
 
             # 6b. Double cards
             double_cards = ""
@@ -426,7 +440,7 @@ def main():
                     <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px; font-weight: 500;">Rapport d'analyse du {now_str}</p>
                   </div>
                   
-                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #1e3a8a; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 STRATÉGIE 8 : PENALTY ACCORDÉ DIRECT (Cote &le; {SEUIL_S8})</div>
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #1e3a8a; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 TOUS LES MATCHS PENALTY (SEUIL SELECTION &le; {SEUIL_S8})</div>
                   <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px;">
                     <thead>
                       <tr style="border-bottom: 2px solid #e2e8f0;">
@@ -434,6 +448,7 @@ def main():
                         <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Championnat</th>
                         <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Match</th>
                         <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Cote Pen.</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 100px;">Décision</th>
                       </tr>
                     </thead>
                     <tbody>
