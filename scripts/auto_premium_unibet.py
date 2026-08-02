@@ -46,8 +46,14 @@ def clean_team_name(name):
 
 def sim(a, b):
     ca, cb = clean_team_name(a), clean_team_name(b)
+    if not ca or not cb: return 0.0
     if ca in cb or cb in ca:
         return 0.85 + 0.15 * SequenceMatcher(None, ca, cb).ratio()
+    # Token overlap check
+    words_a = set(ca.split())
+    words_b = set(cb.split())
+    if words_a & words_b:
+        return 0.75 + 0.25 * SequenceMatcher(None, ca, cb).ratio()
     return SequenceMatcher(None, ca, cb).ratio()
 
 def parse_input_file(filepath):
@@ -239,7 +245,7 @@ def main():
             if sc_final > best_sc:
                 best_sc = sc_final
                 best = g
-        if best and best_sc >= 0.58:
+        if best and best_sc >= 0.48:
             if best["id"] in seen_ids: continue
             seen_ids.add(best["id"])
             if p["time"]: best["start_time"] = f"{p['time']}"
