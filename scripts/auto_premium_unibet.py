@@ -69,42 +69,64 @@ def parse_input_file(filepath):
     return matches
 
 def get_unibet_active_games():
-    print("Scraping Unibet France football catalog...")
-    url = "https://www.unibet.fr/paris-football"
+    print("Scraping Unibet France complete football catalog across all leagues...")
+    main_url = "https://www.unibet.fr/paris-football"
     try:
-        r = requests.get(url, headers=H, timeout=15)
+        r = requests.get(main_url, headers=H, timeout=15)
         soup = BeautifulSoup(r.text, "html.parser")
         match_links = soup.find_all("a", href=lambda h: h and "/paris-football/" in h)
         
-        games = []
-        seen_hrefs = set()
-        
+        league_paths = set()
         for a in match_links:
             href = a.get("href", "")
-            if href in seen_hrefs: continue
-            seen_hrefs.add(href)
-            
-            # Format: /paris-football/pays/ligue/id/equipe1-vs-equipe2
             parts = href.strip("/").split("/")
+            if len(parts) >= 3 and not href.startswith("http"):
+                league_path = f"https://www.unibet.fr/{'/'.join(parts[:3])}"
+                league_paths.add(league_path)
+                
+        all_match_urls = set()
+        for a in match_links:
+            href = a.get("href", "")
+            if "vs" in href and len(href.split("/")) >= 5:
+                all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
+                
+        # Crawl all league sub-pages in parallel to gather 100% of fixtures
+        print(f"Crawling {len(league_paths)} league sub-pages on Unibet France...")
+        def fetch_league(url):
+            try:
+                r_l = requests.get(url, headers=H, timeout=8)
+                soup_l = BeautifulSoup(r_l.text, "html.parser")
+                m_links = soup_l.find_all("a", href=lambda h: h and "/paris-football/" in h and "vs" in h)
+                return [f"https://www.unibet.fr{a.get('href')}" if a.get('href').startswith("/") else a.get('href') for a in m_links]
+            except Exception:
+                return []
+
+        with ThreadPoolExecutor(max_workers=10) as ex:
+            futs = [ex.submit(fetch_league, lp) for lp in league_paths]
+            for f in as_completed(futs):
+                for m_url in f.result():
+                    all_match_urls.add(m_url)
+                    
+        games = []
+        for url in all_match_urls:
+            parts = url.strip("/").split("/")
             if len(parts) >= 5 and "vs" in parts[-1]:
                 teams_slug = parts[-1].split("-vs-")
                 if len(teams_slug) == 2:
                     dom_name = teams_slug[0].replace("-", " ").title()
                     ext_name = teams_slug[1].replace("-", " ").title()
                     league_name = parts[1].replace("-", " ").title() + " " + parts[2].replace("-", " ").title()
-                    
-                    full_url = f"https://www.unibet.fr{href}" if href.startswith("/") else href
                     games.append({
                         "id": parts[-2],
                         "dom": dom_name,
                         "ext": ext_name,
                         "league": league_name,
-                        "url": full_url,
+                        "url": url,
                         "timestamp": int(time.time()),
                         "start_time": "À venir"
                     })
                     
-        print(f"Extracted {len(games)} active football fixtures from Unibet France.")
+        print(f"Extracted {len(games)} total active football fixtures from Unibet France.")
         return games
     except Exception as e:
         print(f"Error fetching Unibet catalog: {e}")
