@@ -103,7 +103,7 @@ def scan_unibet_match_details(game):
         if not json_scripts:
             return None
             
-        c1 = cx = c2 = over25 = under25 = s22 = pen_oui = pen_non = None
+        c1 = cx = c2 = over25 = under25 = s22 = pen_oui = pen_non = pen_eq1 = pen_eq2 = None
         start_iso = ""
         
         for js in json_scripts:
@@ -145,12 +145,14 @@ def scan_unibet_match_details(game):
                                     if "plus" in o_desc: over25 = p_val
                                     elif "moins" in o_desc: under25 = p_val
                                     
-                        if "penalty" in m_desc and pen_oui is None:
+                        if "penalty" in m_desc:
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").lower()
                                 p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                                if "une des 2" in o_desc or "oui" in o_desc: pen_oui = p_val
-                                elif "non" in o_desc or "pas de penalty" in o_desc: pen_non = p_val
+                                if "une des 2" in o_desc or "une des deux" in o_desc: pen_oui = p_val
+                                elif "pas de penalty" in o_desc: pen_non = p_val
+                                elif "equipe 1" in o_desc or "équipe 1" in o_desc: pen_eq1 = p_val
+                                elif "equipe 2" in o_desc or "équipe 2" in o_desc: pen_eq2 = p_val
                                 
                         if "score exact" in m_desc and s22 is None:
                             for o in outcomes:
@@ -173,7 +175,8 @@ def scan_unibet_match_details(game):
                     "c1": c1, "cx": cx, "c2": c2,
                     "over25": over25, "under25": under25, "over25_fair": over25_fair,
                     "s22": s22,
-                    "pen_oui": pen_oui, "pen_non": pen_non, "pen_oui_fair": pen_oui_fair
+                    "pen_oui": pen_oui, "pen_non": pen_non, "pen_oui_fair": pen_oui_fair,
+                    "pen_eq1": pen_eq1, "pen_eq2": pen_eq2
                 }
     except Exception as e:
         return None
@@ -215,6 +218,15 @@ def main():
     s8_matches = [r for r in scanned_results if r.get("pen_oui") and r["pen_oui"] <= SEUIL_S8]
     s4_matches = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
     s3_yt_matches = [r for r in scanned_results if r.get("s22") and r["s22"] <= 12.00]
+    
+    s8b_bi_matches = []
+    for r in scanned_results:
+        p_oui, p1, p2 = r.get("pen_oui"), r.get("pen_eq1"), r.get("pen_eq2")
+        if p_oui and p_oui <= SEUIL_S8 and p1 and p2 and p2 > 0:
+            ratio = round(p1 / p2, 2)
+            r["ratio_bi"] = ratio
+            if 0.65 <= ratio <= 1.55:
+                s8b_bi_matches.append(r)
 
     # 2. Track Odds Variations & History against previous_odds.json
     history_file = "previous_odds.json"
@@ -352,24 +364,25 @@ def main():
         </tr>
         """
 
-    if not yt_rows:
-        yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</td></tr>'
-
-    combine_h = ""
-    if combines:
-        for idx, pair in enumerate(combines, 1):
-            c_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
-            combine_h += f"""
-            <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
-              <b style="color: #16a34a;">Double #{idx} (Cote Globale Unibet: {c_tot})</b>
-              <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 13px; color: #1e293b;">
-                <li><b>{pair[0].get('date_str')}</b> : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Penalty: <b>{pair[0]['pen_oui']}</b>)</li>
-                <li><b>{pair[1].get('date_str')}</b> : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Penalty: <b>{pair[1]['pen_oui']}</b>)</li>
-              </ul>
-            </div>
-            """
-    else:
-        combine_h = "<p style='color:#64748b;'>Pas assez de matchs penalty retenus pour former un combiné double dans les 48h.</p>"
+    s8b_rows = ""
+    for m in s8b_bi_matches:
+        p_oui = m['pen_oui']
+        p1 = m.get('pen_eq1', 'N/A')
+        p2 = m.get('pen_eq2', 'N/A')
+        ratio = m.get('ratio_bi', 'N/A')
+        d_str = m['date_str']
+        s8b_rows += f"""
+        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #faf5ff;">
+          <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+          <td style="padding: 8px; color: #334155;">{m['league']}</td>
+          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+          <td style="padding: 8px; text-align: center;">Global: <b>{p_oui}</b><br><small style="color:#7e22ce;">Eq1: {p1} | Eq2: {p2}</small></td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #6b21a8;">Ratio: {ratio} <small style="color:#7e22ce;">(Équilibré)</small></td>
+          <td style="padding: 8px; text-align: center; font-weight: bold; color: #9333ea;">⭐ DOUBLE DANGER</td>
+        </tr>
+        """
+    if not s8b_rows:
+        s8b_rows = '<tr><td colspan="6" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Option B Bi-Directionnelle (Ratio entre 0.65 et 1.55) dans les 48h.</td></tr>'
 
     html_body = f"""
     <html>
@@ -392,6 +405,21 @@ def main():
               </tr>
             </thead>
             <tbody>{pen_rows}</tbody>
+          </table>
+
+          <h3 style="color: #9333ea; border-bottom: 2px solid #9333ea; padding-bottom: 5px; margin-top: 30px;">⭐ OPTION B BI-DIRECTIONNELLE (DOUBLE DANGER PENALTY - STRATÉGIE 8B)</h3>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
+                <th style="padding: 8px; text-align: left;">Ligue</th>
+                <th style="padding: 8px; text-align: left;">Match</th>
+                <th style="padding: 8px;">Cotes Penalty (Eq1 / Eq2)</th>
+                <th style="padding: 8px;">Ratio Symétrie</th>
+                <th style="padding: 8px;">Décision</th>
+              </tr>
+            </thead>
+            <tbody>{s8b_rows}</tbody>
           </table>
 
           <h4 style="color: #15803d; margin-top: 15px;">🔗 Combinés Doubles Penalty (48h)</h4>
