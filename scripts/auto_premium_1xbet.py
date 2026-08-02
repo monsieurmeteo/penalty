@@ -129,7 +129,8 @@ def get_active_games(scan_all_leagues=False):
         if d:
             for g in d.get("Value", {}).get("G", []):
                 st = g.get("S", 0)
-                if now_ts < st < now_ts + 129600:
+                # Next 5 days limit (covers up to J+4)
+                if now_ts < st < now_ts + 432000:
                     games.append({
                         "dom": g["O1"],
                         "ext": g["O2"],
