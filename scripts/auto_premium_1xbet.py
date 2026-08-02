@@ -1,4 +1,16 @@
 import gzip, json, re, sys, time, os
+from datetime import datetime, timezone, timedelta
+
+def get_paris_time_str(ts=None, fmt='%d/%m à %H:%M'):
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo("Europe/Paris")
+        dt = datetime.now(tz) if ts is None else datetime.fromtimestamp(ts, tz=tz)
+    except Exception:
+        tz = timezone(timedelta(hours=2))
+        dt = datetime.now(timezone.utc).astimezone(tz) if ts is None else datetime.fromtimestamp(ts, timezone.utc).astimezone(tz)
+    return dt.strftime(fmt)
+
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from difflib import SequenceMatcher
 
@@ -123,7 +135,7 @@ def get_active_games(scan_all_leagues=False):
                     "ext": g["O2"],
                     "id": g["I"],
                     "league": lg["name"],
-                    "start_time": time.strftime('%d/%m %H:%M', time.localtime(st)),
+                    "start_time": get_paris_time_str(st),
                     "timestamp": st
                 })
     return all_games
@@ -209,7 +221,7 @@ def main():
             if best and best_sc >= 0.52:
                 # Keep user custom horaire along with actual date
                 if p["time"]: 
-                    best["start_time"] = f"{time.strftime('%d/%m', time.localtime(best['timestamp']))} à {p['time']}"
+                    best["start_time"] = f"{get_paris_time_str(best['timestamp'], '%d/%m')} à {p['time']}"
                 matches_to_scan.append(best)
     else:
         print("matches_input.txt absent ou vide. Lancement du Scan Automatique des ligues majeures...")
@@ -331,7 +343,7 @@ def main():
             from email.mime.multipart import MIMEMultipart
             
             # Format HTML contents programmatically
-            now_str = time.strftime('%d/%m/%Y à %H:%M')
+            now_str = get_paris_time_str(fmt='%d/%m/%Y à %H:%M')
             
             # 6a. Penalty table rows
             pen_rows = ""
@@ -476,7 +488,7 @@ def main():
             msg = MIMEMultipart()
             msg["From"] = SMTP_USER
             msg["To"] = EMAIL_TO
-            msg["Subject"] = f"⚽ Rapport Premium 1XBET - {time.strftime('%d/%m')}"
+            msg["Subject"] = f"⚽ Rapport Premium 1XBET - {get_paris_time_str(fmt='%d/%m')}"
             msg.attach(MIMEText(html_body, "html"))
             
             with smtplib.SMTP_SSL("smtp.sfr.fr", 465) as server:

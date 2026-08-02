@@ -34,7 +34,7 @@ Jeju - Incheon FC
 Ulsan - FC Anyang
 13h55
 Midtjylland - Horsens
-Brommapojkarna - Malm
+Brommapojkarna - Malmö
 FC Vaduz - Saint Gall
 14h25
 Epitsentr - Obolon Kiev
@@ -43,15 +43,15 @@ Bukovyna - LNZ Cherkasy
 Ujpest - Debrecen
 15h55
 Paide - FC Kuressaare
-Brndby - Viborg FF
+Brøndby - Viborg FF
 AC Oulu - Ilves
 Arsenal - Man. City
 16h25
-AIK Solna - rgryte
+AIK Solna - Örgryte
 Sion - Lucerne
 16h55
 Riga FC - SC Grobinas
-Aalesunds - Troms
+Aalesunds - Tromsø
 Molde - Sarpsborg 08
 Kups - Uni.Craiova
 Inter Turku - FC Vaduz
@@ -74,10 +74,10 @@ Paide - Rapid Vienne
 18h25
 FK Panevezys - Dziugas
 Aarhus GF - Sabah FK
-Cfr Cluj - Troms
+Cfr Cluj - Tromsø
 18h55
 FK RFS - SK Super Nova
-Odense - Snderjyske
+Odense - Sønderjyske
 Salzbourg - Pafos FC
 RKS Rakow - Hammarby
 Espanyol - Levante
