@@ -248,6 +248,44 @@ def main():
                 
     scanned_results.sort(key=lambda x: x["timestamp"])
     
+    # Load previous odds history for drop tracking
+    prev_odds_file = "previous_odds.json"
+    prev_odds_data = {}
+    if os.path.exists(prev_odds_file):
+        try:
+            with open(prev_odds_file, "r", encoding="utf-8") as f:
+                prev_odds_data = json.load(f)
+        except Exception:
+            prev_odds_data = {}
+
+    for r in scanned_results:
+        gid = str(r["id"])
+        prev_entry = prev_odds_data.get(gid)
+        r["drop_info"] = ""
+        if prev_entry and r.get("pen_oui") and prev_entry.get("pen_oui"):
+            old_pen = prev_entry["pen_oui"]
+            new_pen = r["pen_oui"]
+            diff = round(new_pen - old_pen, 2)
+            if diff < 0:
+                r["drop_info"] = f" 🔥 📉 **CHUTE!** ({old_pen} ➔ **{new_pen}**, {diff})"
+            elif diff > 0:
+                r["drop_info"] = f" 📈 Hausse ({old_pen} ➔ {new_pen}, +{diff})"
+
+    # Save current odds to history
+    new_odds_data = dict(prev_odds_data)
+    for r in scanned_results:
+        gid = str(r["id"])
+        new_odds_data[gid] = {
+            "pen_oui": r.get("pen_oui"),
+            "over25": r.get("over25"),
+            "updated": get_paris_time_str()
+        }
+    try:
+        with open(prev_odds_file, "w", encoding="utf-8") as f:
+            json.dump(new_odds_data, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"Could not save {prev_odds_file}: {e}")
+    
     # 3. Apply Strategies
     s3_matches = []
     s4_matches = []
@@ -298,7 +336,8 @@ def main():
         report.append("| :---: | :--- | :--- | :---: | :---: |")
         for m in all_pen_matches:
             decision = "🟢 **RETENU**" if m['pen_oui'] <= SEUIL_S8 else "⚪ ÉLIMINÉ (> 2.90)"
-            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}** | {decision} |")
+            drop_str = f" ({m['drop_info']})" if m.get('drop_info') else ""
+            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}**{drop_str} | {decision} |")
     else:
         report.append("*Aucun match avec marché Penalty disponible.*")
     report.append("")
@@ -363,12 +402,15 @@ def main():
                     pill_bg = "#f0fdf4" if is_retained else "#f8fafc"
                     pill_color = "#16a34a" if is_retained else "#64748b"
                     badge_text = "🟢 RETENU" if is_retained else "⚪ ÉLIMINÉ (> 2.90)"
+                    drop_html = ""
+                    if m.get("drop_info"):
+                        drop_html = f"<div style='font-size:11px; font-weight:bold; color:#e11d48; margin-top:2px;'>{m['drop_info']}</div>"
                     pen_rows += f"""
                     <tr style="border-bottom: 1px solid #e2e8f0;">
                       <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
                       <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
                       <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{m['pen_oui']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{m['pen_oui']}{drop_html}</td>
                       <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
                     </tr>
                     """
