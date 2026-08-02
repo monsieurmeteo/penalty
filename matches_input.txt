@@ -1,26 +1,51 @@
 00h40
 America - Boyaca Chico
+01h55
+Emelec - SD Aucas
+D. Limache - Nublense
+LDU Quito - Delfin SC
+02h10
+CA Huracan - Tucuman
 02h25
-CA Lanus - Instituto Atl.
+Kansas City - Houston
 02h55
-Ind.SantaFe - OnceCaldas
-03h05
-Dep. Toluca - Club Necaxa
-03h30
-LiaoningShe. - ShanghaiShe.
+Cavalry - Inter Toronto
+Bucaramanga - Cucuta
+03h00
+Atlas FC - Monterrey
+03h01
+FC Leon - CF Pachuca
+03h25
+Colorado - Austin FC
+03h55
+Tigres UANL - Salt Lake
+04h25
+LA Galaxy - Dallas FC
+Vancouver - Atlante FC
+04h40
+Portland - Seattle
+04h55
+Cruz Azul - Atlante FC
+11h55
+Ch.Odessa - Zhytomyr
+12h25
+Daejeon - Gwangju FC
+Jeju - Incheon FC
+Ulsan - FC Anyang
 13h55
 Midtjylland - Horsens
 Brommapojkarna - Malmö
 FC Vaduz - Saint Gall
 14h25
 Epitsentr - Obolon Kiev
+Bukovyna - LNZ Cherkasy
 15h25
 Ujpest - Debrecen
 15h55
 Paide - FC Kuressaare
 Brøndby - Viborg FF
-IAAkranes - VikingurReyk.
 AC Oulu - Ilves
+Arsenal - Man. City
 16h25
 AIK Solna - Örgryte
 Sion - Lucerne
@@ -28,40 +53,83 @@ Sion - Lucerne
 Riga FC - SC Grobinas
 Aalesunds - Tromsø
 Molde - Sarpsborg 08
-Austria Luste. - SV Ried
-Wolfsberger. - AustriaVien.
+FK Auda - Ogre United
+Kups - Uni.Craiova
+Inter Turku - FC Vaduz
+Santander - Villarreal
 17h25
 Hibernian - Motherwell
 Hunedoara - ACS Sepsi
-Bohemians19. - HradecKralo.
 Siwelele - TS Galaxy FC
+Zalaegerszeg - Paksi SE
+17h40
+FA Siauliai - FK Banga
 17h55
 FC Flora - Harju JK
 NK Radomlje - NK Bravo
+FK Auda - Dinamo Tirana
+Jagiellonia - Rangers
+FC Noah - Sion
+FK Jablonec - FK RFS
+Paide - Rapid Vienne
 18h25
-DeportesConc. - Uni.Catolica
+FK Panevezys - Dziugas
+Aarhus GF - Sabah FK
+Cfr Cluj - Tromsø
 18h55
 FK RFS - SK Super Nova
+Odense - Sønderjyske
+Salzbourg - Pafos FC
+RKS Rakow - Hammarby
+Espanyol - Levante
 19h10
 SK Brann - Rosenborg
 19h25
-Dep.Riestra - BarracasCent.
+Alaves - Getafe
 19h55
-Ind.DelValle - Dep.Cuenca
 FK Zemun - Radnicki Nis
-Parti.Belgr. - IMTN.Belgra.
 Bohemians - Galway
+Sparta Prague - Lyon
+Fenerbahce - Sturm Graz
+Ajax - Shelbourne FC
+Twente - FK DAC 1904
 20h10
 Grosuplje - FC Koper
 O.Ljubljana - Aluminij
+20h25
+York City - Crawley
+Celtic - Dundee FC
+FCSB - FC Constanta
+Braga - Dynamo Minsk
+FC Lugano - Runavik
+20h40
+Bohemians - Midtjylland
+HNK Rijeka - Ilves
+Boulogne - Nancy
+Clermont - Reims
+Dunkerque - Grenoble
+Metz - Guingamp
+Montpellier - Dijon
+Nantes - Red Star
+Pau - Annecy FC
+Rodez - Laval
+Sochaux - St Etienne
+Lens - Paris SG
 20h55
 HNK Rijeka - NK Rudes
 La Serena - O'Higgins
-Olimp.Asuncion - Rubio Nu
+FC Larne - Iberia 1999
+Shamrock - KS Egnatia
+Benfica - Hearts
+Tre Fiori FC - KF Drita
+Paris SG - Aston Villa
+La Corogne - Elche
+Atl. Madrid - Malaga
+21h25
+Celta Vigo - Osasuna
 22h40
 Jaguares - Atl.Nacional
 23h25
-Uni.DeChile - CDHuachipato
 Guarani - Libertad
 23h55
 HFX Wanderers - Forge

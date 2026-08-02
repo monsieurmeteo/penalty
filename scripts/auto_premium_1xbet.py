@@ -329,17 +329,41 @@ def main():
     report.append(f"# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM")
     report.append(f"Généré le {now_str}\n")
     
+    # Sort all scanned results for the audit table:
+    # 1. RETENU (<= 2.90)
+    # 2. ELIMINE (> 2.90)
+    # 3. NON PROPOSÉ (No penalty market)
+    def audit_sort_key(m):
+        pen = m.get("pen_oui")
+        if pen and pen <= SEUIL_S8:
+            return (0, m["timestamp"])
+        elif pen:
+            return (1, m["timestamp"])
+        else:
+            return (2, m["timestamp"])
+
+    sorted_audit_matches = sorted(scanned_results, key=audit_sort_key)
+
     # section 8: Penalty Cote Directe
-    report.append(f"## 🎯 TOUS LES MATCHS PENALTY DÉTECTÉS (SEUIL SELECTION ≤ {SEUIL_S8})")
-    if all_pen_matches:
-        report.append("| Horaire | Championnat | Match | Cote Penalty | Décision |")
+    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL SELECTION ≤ {SEUIL_S8})")
+    if sorted_audit_matches:
+        report.append("| Horaire | Championnat | Match | Cote Penalty | Décision / Statut |")
         report.append("| :---: | :--- | :--- | :---: | :---: |")
-        for m in all_pen_matches:
-            decision = "🟢 **RETENU**" if m['pen_oui'] <= SEUIL_S8 else "⚪ ÉLIMINÉ (> 2.90)"
+        for m in sorted_audit_matches:
+            pen = m.get('pen_oui')
+            if pen and pen <= SEUIL_S8:
+                decision = "🟢 **RETENU**"
+                cote_str = f"**{pen}**"
+            elif pen:
+                decision = "⚪ ÉLIMINÉ (> 2.90)"
+                cote_str = f"{pen}"
+            else:
+                decision = "❌ NON PROPOSÉ"
+                cote_str = "N/A"
             drop_str = f" ({m['drop_info']})" if m.get('drop_info') else ""
-            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['pen_oui']}**{drop_str} | {decision} |")
+            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str}{drop_str} | {decision} |")
     else:
-        report.append("*Aucun match avec marché Penalty disponible.*")
+        report.append("*Aucun match scanné.*")
     report.append("")
     
     # section 8: Combinés
@@ -354,35 +378,12 @@ def main():
     else:
         report.append("*Aucun combiné double disponible.*")
     report.append("\n" + "─" * 50 + "\n")
-    
-    # section 3: YouTube
-    report.append(f"## 🎥 STRATÉGIE 3 : OVER 2.5 YOUTUBE (Score 2-2 ≤ {SEUIL_S3})")
-    if s3_matches:
-        report.append("| Horaire | Championnat | Match | Cote 2-2 | Over 2.5 Direct |")
-        report.append("| :---: | :--- | :--- | :---: | :---: |")
-        for m in s3_matches:
-            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['s22']}** | {m.get('over25', 'N/A')} |")
-    else:
-        report.append("*Aucun match éligible trouvé.*")
-    report.append("\n" + "─" * 50 + "\n")
-    
-    # section 4: Cote Directe
-    report.append(f"## 🎯 STRATÉGIE 4 : OVER 2.5 COTE DIRECTE (Cote ≤ {SEUIL_S4})")
-    if s4_matches:
-        report.append("| Horaire | Championnat | Match | Cote Over 2.5 |")
-        report.append("| :---: | :--- | :--- | :---: |")
-        for m in s4_matches:
-            report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['over25']}** |")
-    else:
-        report.append("*Aucun match éligible trouvé.*")
+
+    # Save report to report.md
+    with open("report.md", "w", encoding="utf-8") as f:
+        f.write("\n".join(report))
         
-    report_content = "\n".join(report)
-    
-    # Save report locally
-    output_path = "rapport_premium_1xbet.md"
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(report_content)
-    print(f"Rapport sauvegardé sous: {output_path}")
+    print("Report generated and saved to report.md")
     
     # 6. Send Email if Configured
     if SMTP_USER and SMTP_PASS:
@@ -396,12 +397,25 @@ def main():
             
             # 6a. Penalty table rows
             pen_rows = ""
-            if all_pen_matches:
-                for m in all_pen_matches:
-                    is_retained = m['pen_oui'] <= SEUIL_S8
-                    pill_bg = "#f0fdf4" if is_retained else "#f8fafc"
-                    pill_color = "#16a34a" if is_retained else "#64748b"
-                    badge_text = "🟢 RETENU" if is_retained else "⚪ ÉLIMINÉ (> 2.90)"
+            if sorted_audit_matches:
+                for m in sorted_audit_matches:
+                    pen = m.get('pen_oui')
+                    if pen and pen <= SEUIL_S8:
+                        pill_bg = "#f0fdf4"
+                        pill_color = "#16a34a"
+                        badge_text = "🟢 RETENU"
+                        cote_display = f"{pen}"
+                    elif pen:
+                        pill_bg = "#f8fafc"
+                        pill_color = "#64748b"
+                        badge_text = "⚪ ÉLIMINÉ (> 2.90)"
+                        cote_display = f"{pen}"
+                    else:
+                        pill_bg = "#fff1f2"
+                        pill_color = "#94a3b8"
+                        badge_text = "❌ NON PROPOSÉ"
+                        cote_display = "N/A"
+                        
                     drop_html = ""
                     if m.get("drop_info"):
                         drop_html = f"<div style='font-size:11px; font-weight:bold; color:#e11d48; margin-top:2px;'>{m['drop_info']}</div>"
@@ -410,12 +424,12 @@ def main():
                       <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
                       <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
                       <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{m['pen_oui']}{drop_html}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{cote_display}{drop_html}</td>
                       <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
                     </tr>
                     """
             else:
-                pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match avec marché Penalty disponible.</td></tr>"
+                pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"
 
             # 6b. Double cards
             double_cards = ""
