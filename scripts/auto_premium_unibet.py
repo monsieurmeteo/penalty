@@ -1,78 +1,29 @@
-# -*- coding: utf-8 -*-
-"""
-Automation Module for Unibet France (ANJ Approved)
-Scrapes odds for Penalty, Over 2.5, and Score 2-2 directly from Unibet.fr
-"""
-
-import requests
-from bs4 import BeautifulSoup
-import json, re, os, sys, time, unicodedata
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import os, sys, time, json, re, smtplib, unicodedata, requests
 from datetime import datetime, timezone, timedelta
+from bs4 import BeautifulSoup
 from difflib import SequenceMatcher
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
-# Configuration
-SEUIL_S8 = 2.90   # Penalty Oui <= 2.90
-SEUIL_S4 = 1.87   # Over 2.5 Direct <= 1.87
-SEUIL_S3 = 10.00  # Score exact 2-2 <= 10.00
+SEUIL_S8 = 2.90
+SEUIL_S4 = 1.87
 
 H = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"
 }
 
-ALIASES = {
-    "kups": "kuopion palloseura",
-    "ch odessa": "chornomorets odesa",
-    "st johnstone": "saint johnstone",
-    "fktukums2000": "tukums 2000",
-    "fkliepaja": "liepaja"
-}
-
-def clean_team_name(name):
-    if not name: return ""
-    n = unicodedata.normalize('NFD', str(name))
-    n = "".join(c for c in n if unicodedata.category(c) != 'Mn')
-    n = n.lower().strip()
-    if n in ALIASES:
-        return ALIASES[n]
-    words = re.split(r"[\s\.\-]+", n)
-    ignored = {"fc", "fk", "cs", "sd", "jk", "ff", "sc", "sk", "ac", "nk", "cd", "ca", "mfk", "msk", "rks", "gks", "vsc", "osk", "sa", "ii", "u19", "u21"}
-    cleaned_words = [w for w in words if w not in ignored and len(w) > 1]
-    if not cleaned_words:
-        return n
-    return " ".join(cleaned_words)
-
-def sim(a, b):
-    ca, cb = clean_team_name(a), clean_team_name(b)
-    if not ca or not cb: return 0.0
-    if ca in cb or cb in ca:
-        return 0.85 + 0.15 * SequenceMatcher(None, ca, cb).ratio()
-    # Token overlap check
-    words_a = set(ca.split())
-    words_b = set(cb.split())
-    if words_a & words_b:
-        return 0.75 + 0.25 * SequenceMatcher(None, ca, cb).ratio()
-    return SequenceMatcher(None, ca, cb).ratio()
-
-def parse_input_file(filepath):
-    if not os.path.exists(filepath):
-        return []
-    matches = []
-    current_time = ''
-    with open(filepath, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith('#') or line.startswith('//'):
-                continue
-            if re.match(r"^\d{2}h\d{2}$", line):
-                current_time = line
-            elif "-" in line:
-                parts = line.split("-")
-                if len(parts) == 2:
-                    matches.append({"time": current_time, "home": parts[0].strip(), "away": parts[1].strip()})
-    return matches
+def format_french_date(iso_str):
+    if not iso_str: return "À venir"
+    try:
+        dt = datetime.fromisoformat(iso_str.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=2)))
+        days = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+        day_name = days[dt.weekday()]
+        return dt.strftime(f"{day_name} %d/%m à %HH%M").replace("H", "h")
+    except Exception:
+        return iso_str
 
 def get_unibet_active_games():
     print("Scraping Unibet France complete football catalog across all leagues...")
@@ -96,7 +47,6 @@ def get_unibet_active_games():
             if "vs" in href and len(href.split("/")) >= 5:
                 all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
                 
-        # Crawl all league sub-pages in parallel to gather 100% of fixtures
         print(f"Crawling {len(league_paths)} league sub-pages on Unibet France...")
         def fetch_league(url):
             try:
@@ -135,7 +85,7 @@ def get_unibet_active_games():
         print(f"Extracted {len(games)} total active football fixtures from Unibet France.")
         return games
     except Exception as e:
-        print(f"Error fetching Unibet catalog: {e}")
+        print(f"Error scraping Unibet: {e}")
         return []
 
 def scan_unibet_match_details(game):
@@ -150,6 +100,7 @@ def scan_unibet_match_details(game):
             return None
             
         c1 = cx = c2 = over25 = under25 = s22 = pen_oui = pen_non = None
+        start_iso = ""
         
         for js in json_scripts:
             content = js.string or ""
@@ -169,13 +120,11 @@ def scan_unibet_match_details(game):
                     for m in markets:
                         m_desc = (m.get("description") or "").lower()
                         
-                        # Skip half-time, period, and team-specific sub-markets
                         if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
                             continue
                             
                         outcomes = m.get("outcomes", [])
                         
-                        # 1N2 (Primary)
                         if m_desc in ["1 n 2", "1n2", "résultat du match"] and c1 is None:
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").lower()
@@ -184,7 +133,6 @@ def scan_unibet_match_details(game):
                                 elif ext.lower() in o_desc or "2" in o_desc: c2 = p_val
                                 elif "nul" in o_desc: cx = p_val
                                 
-                        # Over / Under 2.5 (Primary match total)
                         if ("plus / moins 2.5" in m_desc or "plus / moins 2,5" in m_desc) and over25 is None:
                             if not any(t in m_desc for t in [dom.lower(), ext.lower(), "équipe"]):
                                 for o in outcomes:
@@ -193,7 +141,6 @@ def scan_unibet_match_details(game):
                                     if "plus" in o_desc: over25 = p_val
                                     elif "moins" in o_desc: under25 = p_val
                                     
-                        # Penalty
                         if "penalty" in m_desc and pen_oui is None:
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").lower()
@@ -201,7 +148,6 @@ def scan_unibet_match_details(game):
                                 if "une des 2" in o_desc or "oui" in o_desc: pen_oui = p_val
                                 elif "non" in o_desc or "pas de penalty" in o_desc: pen_non = p_val
                                 
-                        # Score 2-2
                         if "score exact" in m_desc and s22 is None:
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").strip()
@@ -218,6 +164,8 @@ def scan_unibet_match_details(game):
                     **game,
                     "dom": dom,
                     "ext": ext,
+                    "start_iso": start_iso,
+                    "date_str": format_french_date(start_iso),
                     "c1": c1, "cx": cx, "c2": c2,
                     "over25": over25, "under25": under25, "over25_fair": over25_fair,
                     "s22": s22,
@@ -239,14 +187,15 @@ def main():
             res = f.result()
             if res: scanned_results.append(res)
             
-    scanned_results.sort(key=lambda x: x["timestamp"])
+    scanned_results.sort(key=lambda x: x.get("start_iso", ""))
     
-    # 3. Apply Strategies
+    # 1. Apply Strategies
     s4_matches = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
     s8_matches = [r for r in scanned_results if r.get("pen_oui") and r["pen_oui"] <= SEUIL_S8]
+    s3_yt_matches = [r for r in scanned_results if r.get("s22") and r["s22"] <= 12.00 and r.get("over25") and r["over25"] <= SEUIL_S4]
     
-    # 4. Generate Combinés Doubles
-    s8_matches.sort(key=lambda x: x["timestamp"])
+    # 2. Generate Combinés Doubles
+    s8_matches.sort(key=lambda x: x.get("start_iso", ""))
     combines = []
     used_teams = set()
     temp_pair = []
@@ -260,22 +209,23 @@ def main():
             combines.append(temp_pair)
             temp_pair = []
             
-    # 5. Generate Markdown Report
+    # 3. Generate Markdown Report
+    now_str = datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')
     report = []
     report.append(f"# ⚽ PARIS SPORTIFS - AUDIT ET STRATÉGIES AUTOMATISÉES (UNIBET FRANCE 🇫🇷)")
-    report.append(f"**Généré le** : {datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')}\n")
+    report.append(f"**Généré le** : {now_str}\n")
     report.append("─" * 50 + "\n")
     
-    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL ÉQUIV. 1XBET ≤ {SEUIL_S8})")
-    report.append("| Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
+    # Section Penalty (S8)
+    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL UNIBET ≤ {SEUIL_S8})")
+    report.append("| Date & Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
+    
     for m in scanned_results:
         pen = m.get('pen_oui')
         pen_fair = m.get('pen_oui_fair')
-        if m.get("not_found"):
-            decision = "🔴 NON TROUVÉ (UNIBET)"
-            cote_str, fair_str = "N/A", "N/A"
-        elif pen and pen <= SEUIL_S8:
+        d_str = m.get('date_str', 'À venir')
+        if pen and pen <= SEUIL_S8:
             decision = "🟢 **RETENU**"
             cote_str, fair_str = f"**{pen}**", f"**{pen_fair}**"
         elif pen:
@@ -284,33 +234,31 @@ def main():
         else:
             decision = "❌ NON PROPOSÉ"
             cote_str, fair_str = "N/A", "N/A"
-        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
+        report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
         
     report.append("\n" + "─" * 50 + "\n")
-    
-    report.append(f"### 🔗 COMBINÉS DOUBLE DE LA SESSION (Matchs Retenus)")
+    report.append("### 🔗 COMBINÉS DOUBLE DE LA SESSION (Matchs Retenus)")
     if combines:
         for idx, pair in enumerate(combines, 1):
-            cote_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
-            report.append(f"**Double {idx} (Cote globale: {cote_tot})** :")
-            report.append(f"*   {pair[0]['start_time']} : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Unibet: {pair[0]['pen_oui']}, Démargée: {pair[0].get('pen_oui_fair')})")
-            report.append(f"*   {pair[1]['start_time']} : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Unibet: {pair[1]['pen_oui']}, Démargée: {pair[1].get('pen_oui_fair')})")
-            report.append("")
+            cote_globale = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
+            report.append(f"**Double {idx} (Cote globale: {cote_globale})** :")
+            report.append(f"*   {pair[0].get('date_str')} : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Unibet: {pair[0]['pen_oui']}, Démargée: {pair[0]['pen_oui_fair']})")
+            report.append(f"*   {pair[1].get('date_str')} : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Unibet: {pair[1]['pen_oui']}, Démargée: {pair[1]['pen_oui_fair']})\n")
     else:
-        report.append("*Aucun combiné double disponible.*")
+        report.append("Aucun combiné double disponible sur cette session.\n")
         
-    report.append("\n" + "─" * 50 + "\n")
+    report.append("─" * 50 + "\n")
     
-    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL ÉQUIV. 1XBET ≤ {SEUIL_S4})")
-    report.append("| Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
+    # Section Over 2.5 (S4)
+    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL UNIBET ≤ {SEUIL_S4})")
+    report.append("| Date & Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
+    
     for m in scanned_results:
         o25 = m.get('over25')
         o25_fair = m.get('over25_fair')
-        if m.get("not_found"):
-            decision = "🔴 NON TROUVÉ (UNIBET)"
-            cote_str, fair_str = "N/A", "N/A"
-        elif o25 and o25 <= SEUIL_S4:
+        d_str = m.get('date_str', 'À venir')
+        if o25 and o25 <= SEUIL_S4:
             decision = "🟢 **RETENU**"
             cote_str, fair_str = f"**{o25}**", f"**{o25_fair}**"
         elif o25:
@@ -319,81 +267,131 @@ def main():
         else:
             decision = "❌ NON PROPOSÉ"
             cote_str, fair_str = "N/A", "N/A"
-        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
-        
+        report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
+
+    report.append("\n" + "─" * 50 + "\n")
+
+    # Section YouTube Over 2.5 (S3)
+    report.append(f"## 🎥 MÉTHODE YOUTUBE OVER 2.5 (SEUIL SCORE 2-2 ≤ 12.00 & OVER 2.5 ≤ 1.87)")
+    report.append("| Date & Horaire | Championnat | Match | Cote Score 2-2 | Cote Over 2.5 | Décision / Statut |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
+    
+    for m in scanned_results:
+        s22 = m.get('s22')
+        o25 = m.get('over25')
+        d_str = m.get('date_str', 'À venir')
+        if s22 and s22 <= 12.00 and o25 and o25 <= SEUIL_S4:
+            decision = "🟢 **RETENU S3**"
+            s22_str, o25_str = f"**{s22}**", f"**{o25}**"
+            report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {s22_str} | {o25_str} | {decision} |")
+
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
         
     print("Report generated successfully and saved to report.md!")
 
-    # Send Email if SMTP configured
-    SMTP_USER = os.environ.get("SMTP_USER")
-    SMTP_PASS = os.environ.get("SMTP_PASS")
-    EMAIL_TO_RAW = os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com")
-    recipients = [e.strip() for e in EMAIL_TO_RAW.replace(";", ",").split(",") if e.strip()]
+    # 4. Email Sending logic
+    recipients = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
+    SMTP_USER = os.environ.get("SMTP_USER", "")
+    SMTP_PASS = os.environ.get("SMTP_PASS", "")
     
+    # Try reading mail skill config if env vars are empty
+    if not SMTP_USER or not SMTP_PASS:
+        try:
+            cfg_p = r"C:\Users\grego\.gemini\config\skills\mail\config.json"
+            if os.path.exists(cfg_p):
+                with open(cfg_p, "r", encoding="utf-8") as f_cfg:
+                    cfg_data = json.load(f_cfg)
+                    SMTP_USER = cfg_data.get("email", "")
+                    SMTP_PASS = cfg_data.get("password", "")
+        except Exception:
+            pass
+
     if SMTP_USER and SMTP_PASS:
         try:
-            import smtplib
-            from email.mime.text import MIMEText
-            from email.mime.multipart import MIMEMultipart
-            
-            now_str = datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')
-            
             pen_rows = ""
             for m in scanned_results:
                 pen = m.get('pen_oui')
-                if m.get("not_found"):
-                    pill_bg, pill_color, badge_text, cote_display = "#fef2f2", "#dc2626", "🔴 NON TROUVÉ", "N/A"
-                elif pen and pen <= SEUIL_S8:
-                    pill_bg, pill_color, badge_text, cote_display = "#f0fdf4", "#16a34a", "🟢 RETENU", f"{pen}"
-                elif pen:
-                    pill_bg, pill_color, badge_text, cote_display = "#f8fafc", "#64748b", "⚪ ÉLIMINÉ (> 2.90)", f"{pen}"
-                else:
-                    pill_bg, pill_color, badge_text, cote_display = "#fff1f2", "#94a3b8", "❌ NON PROPOSÉ", "N/A"
-                pen_rows += f"""
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td style="padding: 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
-                  <td style="padding: 10px; color: #334155;">{m['league']}</td>
-                  <td style="padding: 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                  <td style="padding: 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{cote_display}</td>
-                  <td style="padding: 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
-                </tr>
-                """
-                
+                pen_fair = m.get('pen_oui_fair')
+                d_str = m.get('date_str', 'À venir')
+                if pen and pen <= SEUIL_S8:
+                    pen_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #f0fdf4;">
+                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;"><b>{pen}</b> <br><small style="color:#64748b;">(Démargée: {pen_fair})</small></td>
+                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #16a34a;">🟢 RETENU</td>
+                    </tr>
+                    """
+
             o25_rows = ""
             for m in scanned_results:
                 o25 = m.get('over25')
-                if m.get("not_found"):
-                    pill_bg, pill_color, badge_text, cote_display = "#fef2f2", "#dc2626", "🔴 NON TROUVÉ", "N/A"
-                elif o25 and o25 <= SEUIL_S4:
-                    pill_bg, pill_color, badge_text, cote_display = "#eff6ff", "#2563eb", "🟢 RETENU", f"{o25}"
-                elif o25:
-                    pill_bg, pill_color, badge_text, cote_display = "#f8fafc", "#64748b", "⚪ ÉLIMINÉ (> 1.87)", f"{o25}"
-                else:
-                    pill_bg, pill_color, badge_text, cote_display = "#fff1f2", "#94a3b8", "❌ NON PROPOSÉ", "N/A"
-                o25_rows += f"""
-                <tr style="border-bottom: 1px solid #e2e8f0;">
-                  <td style="padding: 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
-                  <td style="padding: 10px; color: #334155;">{m['league']}</td>
-                  <td style="padding: 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                  <td style="padding: 10px; text-align: center; font-weight: bold; color: #2563eb; background-color: #eff6ff; border-radius: 6px;">{cote_display}</td>
-                  <td style="padding: 10px; text-align: center; font-weight: bold; color: {pill_color}; background-color: {pill_bg}; border-radius: 6px;">{badge_text}</td>
-                </tr>
-                """
+                o25_fair = m.get('over25_fair')
+                d_str = m.get('date_str', 'À venir')
+                if o25 and o25 <= SEUIL_S4:
+                    o25_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #eff6ff;">
+                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;"><b>{o25}</b> <br><small style="color:#64748b;">(Démargée: {o25_fair})</small></td>
+                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;">🟢 RETENU</td>
+                    </tr>
+                    """
+
+            yt_rows = ""
+            yt_c = 0
+            for m in scanned_results:
+                s22 = m.get('s22')
+                o25 = m.get('over25')
+                o25_fair = m.get('over25_fair')
+                d_str = m.get('date_str', 'À venir')
+                if s22 and s22 <= 12.00 and o25 and o25 <= SEUIL_S4:
+                    yt_c += 1
+                    s22_f = round(s22 * 1.15, 2)
+                    yt_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0; background-color: #fefce8;">
+                      <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
+                      <td style="padding: 8px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small></td>
+                      <td style="padding: 8px; text-align: center; font-weight: bold; color: #d97706;">🟢 RETENU S3</td>
+                    </tr>
+                    """
+
+            if yt_c == 0:
+                yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide la combinaison Score 2-2 &le; 12.00 + Over 2.5 &le; 1.87.</td></tr>'
+
+            combine_h = ""
+            if combines:
+                for idx, pair in enumerate(combines, 1):
+                    c_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
+                    combine_h += f"""
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                      <b style="color: #16a34a;">Double #{idx} (Cote Globale Unibet: {c_tot})</b>
+                      <ul style="margin: 5px 0 0 0; padding-left: 20px; font-size: 13px; color: #1e293b;">
+                        <li><b>{pair[0].get('date_str')}</b> : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Penalty: <b>{pair[0]['pen_oui']}</b>)</li>
+                        <li><b>{pair[1].get('date_str')}</b> : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Penalty: <b>{pair[1]['pen_oui']}</b>)</li>
+                      </ul>
+                    </div>
+                    """
+            else:
+                combine_h = "<p style='color:#64748b;'>Pas assez de matchs penalty retenus pour former un combiné double.</p>"
 
             html_body = f"""
             <html>
               <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
-                <div style="max-width: 650px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                  <h1 style="color: #1e3a8a; text-align: center;">\u26bd METRIC-FOOT UNIBET FRANCE 🇫🇷</h1>
-                  <p style="text-align: center; color: #64748b;">Rapport du {now_str}</p>
+                <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                  <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT UNIBET FRANCE</h1>
+                  <p style="text-align: center; color: #64748b;">Rapport d'analyse global ({len(scanned_results)} matchs au programme) - {now_str}</p>
                   
-                  <h3 style="color: #16a34a;">🎯 AUDIT PENALTY (SEUIL &le; {SEUIL_S8})</h3>
+                  <h3 style="color: #16a34a; border-bottom: 2px solid #16a34a; padding-bottom: 5px;">🎯 AUDIT PENALTY (SEUIL UNIBET &le; 2.90)</h3>
                   <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <thead>
                       <tr style="background: #f8fafc;">
-                        <th style="padding: 8px; text-align: left;">Horaire</th>
+                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
                         <th style="padding: 8px; text-align: left;">Ligue</th>
                         <th style="padding: 8px; text-align: left;">Match</th>
                         <th style="padding: 8px;">Cote Pen.</th>
@@ -403,11 +401,14 @@ def main():
                     <tbody>{pen_rows}</tbody>
                   </table>
 
-                  <h3 style="color: #2563eb; margin-top: 25px;">⚡ AUDIT OVER 2.5 (SEUIL &le; {SEUIL_S4})</h3>
+                  <h4 style="color: #15803d; margin-top: 15px;">🔗 Combinés Doubles Penalty</h4>
+                  {combine_h}
+
+                  <h3 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 5px; margin-top: 30px;">⚡ AUDIT OVER 2.5 (SEUIL UNIBET &le; 1.87)</h3>
                   <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
                     <thead>
                       <tr style="background: #f8fafc;">
-                        <th style="padding: 8px; text-align: left;">Horaire</th>
+                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
                         <th style="padding: 8px; text-align: left;">Ligue</th>
                         <th style="padding: 8px; text-align: left;">Match</th>
                         <th style="padding: 8px;">Cote O2.5</th>
@@ -416,22 +417,35 @@ def main():
                     </thead>
                     <tbody>{o25_rows}</tbody>
                   </table>
+
+                  <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 5px; margin-top: 30px;">🎥 MÉTHODE YOUTUBE OVER 2.5 (Score 2-2 &le; 12.00 &amp; Over 2.5 &le; 1.87)</h3>
+                  <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <thead>
+                      <tr style="background: #f8fafc;">
+                        <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
+                        <th style="padding: 8px; text-align: left;">Ligue</th>
+                        <th style="padding: 8px; text-align: left;">Match</th>
+                        <th style="padding: 8px;">Cotes (2-2 / O2.5)</th>
+                        <th style="padding: 8px;">Décision</th>
+                      </tr>
+                    </thead>
+                    <tbody>{yt_rows}</tbody>
+                  </table>
                 </div>
               </body>
             </html>
             """
             
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"\u26bd [UNIBET FR] Pronostics Foot & Audit - {now_str}"
+            msg["Subject"] = f"PRONOSTICS FOOTBALL 5 JOURS - UNIBET FRANCE AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
             msg["From"] = SMTP_USER
             msg["To"] = ", ".join(recipients)
             msg.attach(MIMEText(html_body, "html", "utf-8"))
             
             SMTP_HOST = os.environ.get("SMTP_HOST", os.environ.get("SMTP_SERVER", "smtp.sfr.fr"))
-            SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+            SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
             
             email_sent = False
-            # 1. Try Port 465 SSL if port == 465
             if SMTP_PORT == 465:
                 try:
                     print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} SSL...")
@@ -444,11 +458,10 @@ def main():
                 except Exception as e_ssl:
                     print(f"Port 465 SSL attempt failed: {e_ssl}")
                     
-            # 2. Try STARTTLS on port 587 or fallback
             if not email_sent:
                 try:
-                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:{SMTP_PORT} TLS...")
-                    server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=15)
+                    print(f"Attempting email send to {recipients} via {SMTP_HOST}:587 TLS...")
+                    server = smtplib.SMTP(SMTP_HOST, 587, timeout=15)
                     server.starttls()
                     server.login(SMTP_USER, SMTP_PASS)
                     server.sendmail(SMTP_USER, recipients, msg.as_string())
@@ -456,7 +469,7 @@ def main():
                     print(f"Email sent successfully via {SMTP_HOST} TLS.")
                     email_sent = True
                 except Exception as e_tls:
-                    print(f"TLS attempt failed on {SMTP_HOST}:{SMTP_PORT}: {e_tls}")
+                    print(f"TLS attempt failed: {e_tls}")
         except Exception as e:
             print(f"Failed to send email: {e}")
 
