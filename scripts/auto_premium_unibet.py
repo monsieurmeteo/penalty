@@ -197,7 +197,7 @@ def main():
     # 1. Apply Strategies
     s4_matches = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
     s8_matches = [r for r in scanned_results if r.get("pen_oui") and r["pen_oui"] <= SEUIL_S8]
-    s3_yt_matches = [r for r in scanned_results if r.get("s22") and r["s22"] <= 12.00 and r.get("over25") and r["over25"] <= SEUIL_S4]
+    s3_yt_matches = [r for r in scanned_results if r.get("s22") and r["s22"] <= 12.00]
     
     # 2. Generate Combinés Doubles
     s8_matches.sort(key=lambda x: x.get("start_iso", ""))
@@ -277,7 +277,7 @@ def main():
     report.append("\n" + "─" * 50 + "\n")
 
     # Section YouTube Over 2.5 (S3)
-    report.append(f"## 🎥 MÉTHODE YOUTUBE OVER 2.5 (SEUIL SCORE 2-2 ≤ 12.00 & OVER 2.5 ≤ 1.87)")
+    report.append(f"## 🎥 MÉTHODE YOUTUBE OVER 2.5 (SEUIL SCORE 2-2 ≤ 12.00)")
     report.append("| Date & Horaire | Championnat | Match | Cote Score 2-2 | Cote Over 2.5 | Décision / Statut |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
     
@@ -285,9 +285,10 @@ def main():
         s22 = m.get('s22')
         o25 = m.get('over25')
         d_str = m.get('date_str', 'À venir')
-        if s22 and s22 <= 12.00 and o25 and o25 <= SEUIL_S4:
+        if s22 and s22 <= 12.00:
             decision = "🟢 **RETENU S3**"
-            s22_str, o25_str = f"**{s22}**", f"**{o25}**"
+            s22_str = f"**{s22}**"
+            o25_str = f"**{o25}**" if o25 else "N/A"
             report.append(f"| {d_str} | {m['league']} | {m['dom']} vs {m['ext']} | {s22_str} | {o25_str} | {decision} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
@@ -375,21 +376,22 @@ def main():
                 o25 = m.get('over25')
                 o25_fair = m.get('over25_fair')
                 d_str = m.get('date_str', 'À venir')
-                if s22 and s22 <= 12.00 and o25 and o25 <= SEUIL_S4:
+                if s22 and s22 <= 12.00:
                     yt_c += 1
                     s22_f = round(s22 * 1.15, 2)
+                    o25_d = f"O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small>" if o25 else "O2.5: N/A"
                     yt_rows += f"""
                     <tr style="border-bottom: 1px solid #e2e8f0; background-color: #fefce8;">
                       <td style="padding: 8px; font-weight: bold; color: #475569;">{d_str}</td>
                       <td style="padding: 8px; color: #334155;">{m['league']}</td>
                       <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-                      <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small></td>
+                      <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>{o25_d}</td>
                       <td style="padding: 8px; text-align: center; font-weight: bold; color: #d97706;">🟢 RETENU S3</td>
                     </tr>
                     """
 
             if yt_c == 0:
-                yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide la combinaison Score 2-2 &le; 12.00 + Over 2.5 &le; 1.87.</td></tr>'
+                yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Score 2-2 &le; 12.00 sur la période.</td></tr>'
 
             combine_h = ""
             if combines:
