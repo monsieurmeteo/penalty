@@ -202,14 +202,20 @@ def scan_unibet_match_details(game):
                                 p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                                 if o_desc in ["2 - 2", "2-2"]: s22 = p_val
                                     
+                margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
+                over25_fair = round(over25 * margin_o25, 2) if over25 else None
+                
+                margin_pen = ((1.0/pen_oui) + (1.0/pen_non)) if (pen_oui and pen_non and pen_oui > 0 and pen_non > 0) else 1.15
+                pen_oui_fair = round(pen_oui * margin_pen, 2) if pen_oui else None
+                
                 return {
                     **game,
                     "dom": dom,
                     "ext": ext,
                     "c1": c1, "cx": cx, "c2": c2,
-                    "over25": over25, "under25": under25,
+                    "over25": over25, "under25": under25, "over25_fair": over25_fair,
                     "s22": s22,
-                    "pen_oui": pen_oui, "pen_non": pen_non
+                    "pen_oui": pen_oui, "pen_non": pen_non, "pen_oui_fair": pen_oui_fair
                 }
     except Exception as e:
         return None
@@ -286,24 +292,25 @@ def main():
     report.append(f"**Généré le** : {datetime.now(timezone.utc).strftime('%d/%m/%Y à %H:%M UTC')}\n")
     report.append("─" * 50 + "\n")
     
-    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL ≤ {SEUIL_S8})")
-    report.append("| Horaire | Championnat | Match | Cote Penalty | Décision / Statut |")
-    report.append("| :---: | :--- | :--- | :---: | :---: |")
+    report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL ÉQUIV. 1XBET ≤ {SEUIL_S8})")
+    report.append("| Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
     for m in scanned_results:
         pen = m.get('pen_oui')
+        pen_fair = m.get('pen_oui_fair')
         if m.get("not_found"):
             decision = "🔴 NON TROUVÉ (UNIBET)"
-            cote_str = "N/A"
-        elif pen and pen <= SEUIL_S8:
+            cote_str, fair_str = "N/A", "N/A"
+        elif pen_fair and pen_fair <= SEUIL_S8:
             decision = "🟢 **RETENU**"
-            cote_str = f"**{pen}**"
+            cote_str, fair_str = f"{pen}", f"**{pen_fair}**"
         elif pen:
-            decision = "⚪ ÉLIMINÉ (> 2.90)"
-            cote_str = f"{pen}"
+            decision = "⚪ ÉLIMINÉ (> 2.90 Eq.)"
+            cote_str, fair_str = f"{pen}", f"{pen_fair}"
         else:
             decision = "❌ NON PROPOSÉ"
-            cote_str = "N/A"
-        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {decision} |")
+            cote_str, fair_str = "N/A", "N/A"
+        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
         
     report.append("\n" + "─" * 50 + "\n")
     
@@ -312,32 +319,33 @@ def main():
         for idx, pair in enumerate(combines, 1):
             cote_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
             report.append(f"**Double {idx} (Cote globale: {cote_tot})** :")
-            report.append(f"*   {pair[0]['start_time']} : {pair[0]['dom']} vs {pair[0]['ext']} (Cote: {pair[0]['pen_oui']})")
-            report.append(f"*   {pair[1]['start_time']} : {pair[1]['dom']} vs {pair[1]['ext']} (Cote: {pair[1]['pen_oui']})")
+            report.append(f"*   {pair[0]['start_time']} : {pair[0]['dom']} vs {pair[0]['ext']} (Cote Unibet: {pair[0]['pen_oui']}, Démargée: {pair[0].get('pen_oui_fair')})")
+            report.append(f"*   {pair[1]['start_time']} : {pair[1]['dom']} vs {pair[1]['ext']} (Cote Unibet: {pair[1]['pen_oui']}, Démargée: {pair[1].get('pen_oui_fair')})")
             report.append("")
     else:
         report.append("*Aucun combiné double disponible.*")
         
     report.append("\n" + "─" * 50 + "\n")
     
-    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL ≤ {SEUIL_S4})")
-    report.append("| Horaire | Championnat | Match | Cote Over 2.5 | Décision / Statut |")
-    report.append("| :---: | :--- | :--- | :---: | :---: |")
+    report.append(f"## ⚡ AUDIT OVER 2.5 : TOUS LES MATCHS SCANNÉS (SEUIL ÉQUIV. 1XBET ≤ {SEUIL_S4})")
+    report.append("| Horaire | Championnat | Match | Cote Unibet (Brut) | Cote Démargée (Équiv. 1XBET) | Décision / Statut |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
     for m in scanned_results:
         o25 = m.get('over25')
+        o25_fair = m.get('over25_fair')
         if m.get("not_found"):
             decision = "🔴 NON TROUVÉ (UNIBET)"
-            cote_str = "N/A"
-        elif o25 and o25 <= SEUIL_S4:
+            cote_str, fair_str = "N/A", "N/A"
+        elif o25_fair and o25_fair <= SEUIL_S4:
             decision = "🟢 **RETENU**"
-            cote_str = f"**{o25}**"
+            cote_str, fair_str = f"{o25}", f"**{o25_fair}**"
         elif o25:
-            decision = "⚪ ÉLIMINÉ (> 1.87)"
-            cote_str = f"{o25}"
+            decision = "⚪ ÉLIMINÉ (> 1.87 Eq.)"
+            cote_str, fair_str = f"{o25}", f"{o25_fair}"
         else:
             decision = "❌ NON PROPOSÉ"
-            cote_str = "N/A"
-        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {decision} |")
+            cote_str, fair_str = "N/A", "N/A"
+        report.append(f"| {m['start_time']} | {m['league']} | {m['dom']} vs {m['ext']} | {cote_str} | {fair_str} | {decision} |")
         
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
