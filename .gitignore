@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+*.log
+.env
+rapport_premium_1xbet.md
