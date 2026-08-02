@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gzip, json, re, sys, time, os
 from datetime import datetime, timezone, timedelta
 
@@ -342,7 +343,14 @@ def main():
         pen = m.get("pen_oui")
         if pen and pen <= SEUIL_S8:
             return (0, m["timestamp"])
-        elif    # section 8: Penalty Cote Directe
+        elif pen:
+            return (1, m["timestamp"])
+        else:
+            return (2, m["timestamp"])
+
+    sorted_audit_matches = sorted(scanned_results, key=audit_sort_key)
+
+    # section 8: Penalty Cote Directe
     report.append(f"## 🎯 AUDIT PENALTY : TOUS LES MATCHS SCANNÉS (SEUIL SELECTION ≤ {SEUIL_S8})")
     if sorted_audit_matches:
         report.append("| Horaire | Championnat | Match | Cote Penalty | Décision / Statut |")
@@ -492,10 +500,7 @@ def main():
                     </tr>
                     """
             else:
-                o25_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"   </tr>
-                    """
-            else:
-                pen_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"
+                o25_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match scanné.</td></tr>"
 
             # 6b. Double cards
             double_cards = ""
@@ -559,7 +564,7 @@ def main():
                 <div style="max-width: 650px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
                   
                   <div style="text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px;">
-                    <h1 style="color: #1e3a8a; margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">⚽ METRIC-FOOT PREMIUM</h1>
+                    <h1 style="color: #1e3a8a; margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">\u26bd METRIC-FOOT PREMIUM</h1>
                     <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px; font-weight: 500;">Rapport d'analyse du {now_str}</p>
                   </div>
                   
