@@ -207,8 +207,9 @@ def main():
                     best_sc = sc
                     best = g
             if best and best_sc >= 0.52:
-                # Keep user custom horaire if present
-                if p["time"]: best["start_time"] = p["time"]
+                # Keep user custom horaire along with actual date
+                if p["time"]: 
+                    best["start_time"] = f"{time.strftime('%d/%m', time.localtime(best['timestamp']))} à {p['time']}"
                 matches_to_scan.append(best)
     else:
         print("matches_input.txt absent ou vide. Lancement du Scan Automatique des ligues majeures...")
@@ -329,26 +330,146 @@ def main():
             from email.mime.text import MIMEText
             from email.mime.multipart import MIMEMultipart
             
-            formatted_content = report_content.replace("# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM", "")
-            formatted_content = formatted_content.replace("\n", "<br>")
-            formatted_content = formatted_content.replace("## ", "<h3 style='color:#1e3a8a;'>")
-            formatted_content = formatted_content.replace("### ", "<h4>")
-            formatted_content = formatted_content.replace("|", " ")
-            formatted_content = formatted_content.replace("─", "-")
+            # Format HTML contents programmatically
+            now_str = time.strftime('%d/%m/%Y à %H:%M')
             
-            # Simple markdown-to-HTML formatting for a clean email template
+            # 6a. Penalty table rows
+            pen_rows = ""
+            if s8_matches:
+                for m in s8_matches:
+                    pen_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                      <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #16a34a; background-color: #f0fdf4; border-radius: 6px;">{m['pen_oui']}</td>
+                    </tr>
+                    """
+            else:
+                pen_rows = "<tr><td colspan='4' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match éligible trouvé.</td></tr>"
+
+            # 6b. Double cards
+            double_cards = ""
+            if combines:
+                for idx, pair in enumerate(combines, 1):
+                    cote_tot = round(pair[0]["pen_oui"] * pair[1]["pen_oui"], 2)
+                    double_cards += f"""
+                    <div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 15px; border-left: 4px solid #1e3a8a;">
+                      <div style="margin-bottom: 8px;">
+                        <span style="font-weight: 800; color: #1e3a8a; font-size: 15px; text-transform: uppercase;">Combiné Double #{idx}</span>
+                        <span style="float: right; background-color: #1e3a8a; color: white; padding: 2px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">Cote Totale: {cote_tot}</span>
+                        <div style="clear: both;"></div>
+                      </div>
+                      <ul style="margin: 0; padding-left: 20px; color: #475569; font-size: 14px; line-height: 1.6;">
+                        <li><strong>{pair[0]['start_time']}</strong> : {pair[0]['dom']} - {pair[0]['ext']} (Cote: {pair[0]['pen_oui']})</li>
+                        <li><strong>{pair[1]['start_time']}</strong> : {pair[1]['dom']} - {pair[1]['ext']} (Cote: {pair[1]['pen_oui']})</li>
+                      </ul>
+                    </div>
+                    """
+            else:
+                double_cards = "<p style='color: #94a3b8; font-style: italic; text-align: center; margin: 10px 0;'>Aucun combiné double disponible.</p>"
+
+            # 6c. Strategy 3 rows
+            s3_rows = ""
+            if s3_matches:
+                for m in s3_matches:
+                    s3_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                      <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #e11d48; background-color: #fff1f2; border-radius: 6px;">{m['s22']}</td>
+                      <td style="padding: 12px 10px; text-align: center; color: #475569; font-weight: bold;">{m.get('over25', 'N/A')}</td>
+                    </tr>
+                    """
+            else:
+                s3_rows = "<tr><td colspan='5' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match éligible trouvé.</td></tr>"
+
+            # 6d. Strategy 4 rows
+            s4_rows = ""
+            if s4_matches:
+                for m in s4_matches:
+                    s4_rows += f"""
+                    <tr style="border-bottom: 1px solid #e2e8f0;">
+                      <td style="padding: 12px 10px; font-weight: bold; color: #475569;">{m['start_time']}</td>
+                      <td style="padding: 12px 10px; color: #334155;">{m['league']}</td>
+                      <td style="padding: 12px 10px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
+                      <td style="padding: 12px 10px; text-align: center; font-weight: bold; color: #2563eb; background-color: #eff6ff; border-radius: 6px;">{m['over25']}</td>
+                    </tr>
+                    """
+            else:
+                s4_rows = "<tr><td colspan='4' style='padding: 20px; text-align: center; color: #94a3b8; font-style: italic;'>Aucun match éligible trouvé.</td></tr>"
+
+            # 6e. Main Email Body HTML
             html_body = f"""
             <html>
-            <body style="font-family: Arial, sans-serif; background-color: #f6f6f6; padding: 20px; color: #333;">
-              <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <h2 style="color: #1e3a8a; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">⚽ RAPPORT PREMIUM AUTOMATISÉ</h2>
-                <div style="line-height: 1.6;">
-                  {formatted_content}
+              <head>
+                <meta charset="utf-8">
+              </head>
+              <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 20px;">
+                <div style="max-width: 650px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                  
+                  <div style="text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px;">
+                    <h1 style="color: #1e3a8a; margin: 0; font-size: 24px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">⚽ METRIC-FOOT PREMIUM</h1>
+                    <p style="color: #64748b; margin: 5px 0 0 0; font-size: 14px; font-weight: 500;">Rapport d'analyse du {now_str}</p>
+                  </div>
+                  
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #1e3a8a; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 STRATÉGIE 8 : PENALTY ACCORDÉ DIRECT (Cote &le; {SEUIL_S8})</div>
+                  <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #e2e8f0;">
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569; width: 110px;">Date & Heure</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Championnat</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Match</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Cote Pen.</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {pen_rows}
+                    </tbody>
+                  </table>
+                  
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #1e3a8a; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🔗 COMBINÉS DOUBLE DE LA SESSION (Penalty)</div>
+                  {double_cards}
+                  
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #e11d48; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎥 STRATÉGIE 3 : OVER 2.5 YOUTUBE (Score 2-2 &le; {SEUIL_S3})</div>
+                  <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #e2e8f0;">
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569; width: 110px;">Date & Heure</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Championnat</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Match</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Cote 2-2</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Over 2.5</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {s3_rows}
+                    </tbody>
+                  </table>
+                  
+                  <div style="color: #0f172a; font-size: 16px; font-weight: 700; margin-top: 30px; margin-bottom: 15px; border-left: 4px solid #2563eb; padding-left: 10px; text-transform: uppercase; letter-spacing: 0.5px;">🎯 STRATÉGIE 4 : OVER 2.5 COTE DIRECTE (Cote &le; {SEUIL_S4})</div>
+                  <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px;">
+                    <thead>
+                      <tr style="border-bottom: 2px solid #e2e8f0;">
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569; width: 110px;">Date & Heure</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Championnat</th>
+                        <th style="background-color: #f8fafc; text-align: left; padding: 10px; font-weight: 600; color: #475569;">Match</th>
+                        <th style="background-color: #f8fafc; text-align: center; padding: 10px; font-weight: 600; color: #475569; width: 85px;">Cote O2.5</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {s4_rows}
+                    </tbody>
+                  </table>
+                  
+                  <div style="text-align: center; font-size: 11px; color: #94a3b8; margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px; line-height: 1.5;">
+                    Rapport généré automatiquement toutes les 3 heures par GitHub Actions.<br>
+                    Données pré-match de l'API 1XBET (Miroir dynamique)
+                  </div>
+                  
                 </div>
-                <hr style="border: 0; border-top: 1px solid #e5e7eb; margin-top: 30px;">
-                <p style="font-size: 12px; color: #9ca3af; text-align: center;">Généré automatiquement par GitHub Actions</p>
-              </div>
-            </body>
+              </body>
             </html>
             """
             
