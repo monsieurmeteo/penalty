@@ -329,6 +329,13 @@ def main():
             from email.mime.text import MIMEText
             from email.mime.multipart import MIMEMultipart
             
+            formatted_content = report_content.replace("# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM", "")
+            formatted_content = formatted_content.replace("\n", "<br>")
+            formatted_content = formatted_content.replace("## ", "<h3 style='color:#1e3a8a;'>")
+            formatted_content = formatted_content.replace("### ", "<h4>")
+            formatted_content = formatted_content.replace("|", " ")
+            formatted_content = formatted_content.replace("─", "-")
+            
             # Simple markdown-to-HTML formatting for a clean email template
             html_body = f"""
             <html>
@@ -336,7 +343,7 @@ def main():
               <div style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
                 <h2 style="color: #1e3a8a; border-bottom: 2px solid #e5e7eb; padding-bottom: 10px;">⚽ RAPPORT PREMIUM AUTOMATISÉ</h2>
                 <div style="line-height: 1.6;">
-                  {report_content.replace("# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM", "").replace("\n", "<br>").replace("## ", "<h3 style='color:#1e3a8a;'>").replace("### ", "<h4>").replace("|", " ").replace("─", "-")}
+                  {formatted_content}
                 </div>
                 <hr style="border: 0; border-top: 1px solid #e5e7eb; margin-top: 30px;">
                 <p style="font-size: 12px; color: #9ca3af; text-align: center;">Généré automatiquement par GitHub Actions</p>
