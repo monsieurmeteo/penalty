@@ -356,7 +356,7 @@ def main():
     # 5. Format Report
     now_str = get_paris_time_str(fmt='%d/%m/%Y à %H:%M')
     report = []
-    report.append(f"# ⚽ RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM")
+    report.append(f"# \u26bd RAPPORT AUTOMATIQUE METRIC-FOOT PREMIUM")
     report.append(f"Généré le {now_str}\n")
     
     # Sort all scanned results for the audit table:
@@ -656,7 +656,7 @@ def main():
             msg = MIMEMultipart()
             msg["From"] = SMTP_USER
             msg["To"] = EMAIL_TO
-            msg["Subject"] = f"⚽ Rapport Premium 1XBET - {get_paris_time_str(fmt='%d/%m')}"
+            msg["Subject"] = f"\u26bd Rapport Premium 1XBET - {get_paris_time_str(fmt='%d/%m')}"
             msg.attach(MIMEText(html_body, "html"))
             
             with smtplib.SMTP_SSL("smtp.sfr.fr", 465) as server:
