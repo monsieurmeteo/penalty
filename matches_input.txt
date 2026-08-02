@@ -1,5 +1,8 @@
 00h40
 America - Boyaca Chico
+00h55
+ATL Dream - LV Aces
+NY Liberty - SEA Storm
 01h55
 Emelec - SD Aucas
 D. Limache - Nublense
@@ -10,6 +13,7 @@ CA Huracan - Tucuman
 Kansas City - Houston
 02h55
 Cavalry - Inter Toronto
+CHI Sky - PHX Mercury
 Bucaramanga - Cucuta
 03h00
 Atlas FC - Monterrey
@@ -32,6 +36,8 @@ Ch.Odessa - Zhytomyr
 Daejeon - Gwangju FC
 Jeju - Incheon FC
 Ulsan - FC Anyang
+13h25
+États-Unis - Pologne
 13h55
 Midtjylland - Horsens
 Brommapojkarna - Malmö
@@ -77,6 +83,7 @@ FK Panevezys - Dziugas
 Aarhus GF - Sabah FK
 Cfr Cluj - Tromsø
 18h55
+MIN Lynx - IND Fever
 FK RFS - SK Super Nova
 Odense - Sønderjyske
 Salzbourg - Pafos FC
@@ -95,7 +102,6 @@ Ajax - Shelbourne FC
 Twente - FK DAC 1904
 20h10
 Grosuplje - FC Koper
-O.Ljubljana - Aluminij
 20h25
 York City - Crawley
 Celtic - Dundee FC
@@ -126,6 +132,7 @@ Paris SG - Aston Villa
 La Corogne - Elche
 Atl. Madrid - Malaga
 21h25
+POR Fire - LA Sparks
 Celta Vigo - Osasuna
 22h40
 Jaguares - Atl.Nacional

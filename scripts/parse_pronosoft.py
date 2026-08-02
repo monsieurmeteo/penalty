@@ -7,69 +7,61 @@ H = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0"
 }
 
-print(f"Fetching Pronosoft matches from {URL}...")
+print(f"Fetching Pronosoft matches directly from {URL}...")
 try:
-    # Use Jina Reader first, if forbidden fallback to direct fetch
-    jina_url = f"https://r.jina.ai/{URL}"
-    r = requests.get(jina_url, headers=H, timeout=15)
+    r = requests.get(URL, headers=H, timeout=15)
+    soup = BeautifulSoup(r.text, "html.parser")
     
-    html = ""
-    if r.status_code == 200 and "Forbidden" not in r.text and "Cloudflare" not in r.text:
-        print("Fetched via Jina Reader successfully.")
-        # Jina returns markdown, so let's extract matches using regex
-        matches = []
-        current_time = "00h00"
-        for line in r.text.split("\n"):
-            line = line.strip()
-            # Time regex (ex: **16h55**) or similar
-            time_match = re.search(r"\b(\d{2}h\d{2})\b", line)
-            if time_match:
-                current_time = time_match.group(1)
-            # Match regex: Team A - Team B
-            # Ex: [sport] Team A - Team B [details]
-            if " - " in line and not line.startswith("|") and not line.startswith("["):
-                parts = line.split(" - ")
-                if len(parts) == 2:
-                    home = re.sub(r"\[.*?\]", "", parts[0]).strip()
-                    away = re.sub(r"\[.*?\]", "", parts[1]).strip()
-                    # Clean up bold/markdown artifacts
-                    home = home.replace("*", "").replace("`", "")
-                    away = away.replace("*", "").replace("`", "")
-                    matches.append({"time": current_time, "home": home, "away": away})
-                    
-        html = "" # Skip bs4 if Jina worked
-    else:
-        # Fallback to direct fetch
-        print("Jina blocked or failed, fetching Pronosoft directly...")
-        r = requests.get(URL, headers=H, timeout=15)
-        html = r.text
-        
+    rows = soup.find_all("tr")
     football_matches = []
+    current_sport = "football"
     
-    if html:
-        soup = BeautifulSoup(html, "html.parser")
-        rows = soup.find_all("tr")
-        for row in rows:
-            sport_span = row.find("span", class_="sport")
-            if sport_span and "football" in sport_span.get("class", []):
+    for row in rows:
+        text = row.text.lower()
+        if "tennis" in text and len(text) < 40:
+            current_sport = "tennis"
+        elif "rugby" in text and len(text) < 40:
+            current_sport = "rugby"
+        elif "basket" in text and len(text) < 40:
+            current_sport = "basket"
+        elif "volley" in text and len(text) < 40:
+            current_sport = "volley"
+        elif "football" in text and len(text) < 40:
+            current_sport = "football"
+            
+        sport_span = row.find("span", class_="sport")
+        if sport_span:
+            classes = " ".join(sport_span.get("class", []))
+            if "football" in classes or "foot" in classes:
+                current_sport = "football"
+            elif "tennis" in classes:
+                current_sport = "tennis"
+            elif "rugby" in classes:
+                current_sport = "rugby"
+                
+        a_tag = row.find("a", class_="infos")
+        if a_tag:
+            match_name = "".join(child for child in a_tag.children if isinstance(child, str)).strip()
+            parts = match_name.split(" - ")
+            if len(parts) == 2:
                 time_tag = row.find("span", {"data-date-format": "hour"})
                 time_str = time_tag.text.strip() if time_tag else "00h00"
-                a_tag = row.find("a", class_="infos")
-                if a_tag:
-                    match_name = "".join(child for child in a_tag.children if isinstance(child, str)).strip()
-                    parts = match_name.split(" - ")
-                    if len(parts) == 2:
+                
+                # Exclude tennis initial names (e.g. B.Nakashima - T.Fritz)
+                is_tennis = re.search(r"\b[A-Z]\.[A-Z]", match_name)
+                
+                if current_sport == "football" and not is_tennis:
+                    home, away = parts[0].strip(), parts[1].strip()
+                    # Exclude generic non-match lines
+                    if "paris sp" not in home.lower() and "paris sp" not in away.lower():
                         football_matches.append({
                             "time": time_str,
-                            "home": parts[0].strip(),
-                            "away": parts[1].strip()
+                            "home": home,
+                            "away": away
                         })
-    else:
-        football_matches = matches
 
-    print(f"Parsed {len(football_matches)} football matches.")
+    print(f"Parsed ALL {len(football_matches)} football matches from Pronosoft.")
     
-    # Save to matches_input.txt
     output_path = "matches_input.txt"
     by_time = {}
     for m in football_matches:
@@ -81,7 +73,7 @@ try:
             for m in list_m:
                 f.write(f"{m['home']} - {m['away']}\n")
                 
-    print(f"Successfully saved to {output_path}")
+    print(f"Successfully saved {len(football_matches)} matches to {output_path}")
 
 except Exception as e:
     print(f"Error parsing Pronosoft: {e}")
