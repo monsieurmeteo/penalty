@@ -15,6 +15,15 @@ H = {
     "Accept-Language": "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7"
 }
 
+COUNTRIES = [
+    "france", "angleterre", "espagne", "italie", "allemagne", "portugal", "pays-bas",
+    "belgique", "ecosse", "suisse", "autriche", "turquie", "grece", "pologne", "croatie",
+    "serbie", "roumanie", "ukraine", "republique-tcheque", "hongrie", "bulgarie", "slovaquie",
+    "suede", "norvege", "danemark", "finlande", "irlande", "islande", "lettonie", "lituanie", "estonie",
+    "bresil", "argentine", "colombie", "mexique", "chili", "equateur", "paraguay", "uruguay", "usa", "canada",
+    "japon", "coree-du-sud", "australie", "coupes-d-europe", "international"
+]
+
 def format_french_date(iso_str):
     if not iso_str: return "À venir"
     try:
@@ -26,67 +35,63 @@ def format_french_date(iso_str):
         return iso_str
 
 def get_unibet_active_games():
-    print("Scraping Unibet France complete football catalog across all leagues...")
-    main_url = "https://www.unibet.fr/paris-football"
-    try:
-        r = requests.get(main_url, headers=H, timeout=15)
-        soup = BeautifulSoup(r.text, "html.parser")
-        match_links = soup.find_all("a", href=lambda h: h and "/paris-football/" in h)
-        
-        league_paths = set()
-        for a in match_links:
-            href = a.get("href", "")
-            parts = href.strip("/").split("/")
-            if len(parts) >= 3 and not href.startswith("http"):
-                league_path = f"https://www.unibet.fr/{'/'.join(parts[:3])}"
-                league_paths.add(league_path)
-                
-        all_match_urls = set()
-        for a in match_links:
-            href = a.get("href", "")
-            if "vs" in href and len(href.split("/")) >= 5:
-                all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
-                
-        print(f"Crawling {len(league_paths)} league sub-pages on Unibet France...")
-        def fetch_league(url):
-            try:
-                r_l = requests.get(url, headers=H, timeout=8)
-                soup_l = BeautifulSoup(r_l.text, "html.parser")
-                m_links = soup_l.find_all("a", href=lambda h: h and "/paris-football/" in h and "vs" in h)
-                return [f"https://www.unibet.fr{a.get('href')}" if a.get('href').startswith("/") else a.get('href') for a in m_links]
-            except Exception:
-                return []
+    print(f"Deep scraping Unibet France football catalog across all {len(COUNTRIES)} country categories...")
+    
+    all_match_urls = set()
+    
+    def fetch_country(c):
+        url = f"https://www.unibet.fr/paris-football/{c}"
+        urls_found = set()
+        try:
+            r = requests.get(url, headers=H, timeout=8)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "html.parser")
+                for a in soup.find_all("a", href=True):
+                    href = a['href']
+                    if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
+                        full_url = f"https://www.unibet.fr{href}" if href.startswith("/") else href
+                        urls_found.add(full_url)
+        except Exception:
+            pass
+        return urls_found
 
-        with ThreadPoolExecutor(max_workers=10) as ex:
-            futs = [ex.submit(fetch_league, lp) for lp in league_paths]
-            for f in as_completed(futs):
-                for m_url in f.result():
-                    all_match_urls.add(m_url)
-                    
-        games = []
-        for url in all_match_urls:
-            parts = url.strip("/").split("/")
-            if len(parts) >= 5 and "vs" in parts[-1]:
-                teams_slug = parts[-1].split("-vs-")
-                if len(teams_slug) == 2:
-                    dom_name = teams_slug[0].replace("-", " ").title()
-                    ext_name = teams_slug[1].replace("-", " ").title()
-                    league_name = parts[1].replace("-", " ").title() + " " + parts[2].replace("-", " ").title()
-                    games.append({
-                        "id": parts[-2],
-                        "dom": dom_name,
-                        "ext": ext_name,
-                        "league": league_name,
-                        "url": url,
-                        "timestamp": int(time.time()),
-                        "start_time": "À venir"
-                    })
-                    
-        print(f"Extracted {len(games)} total active football fixtures from Unibet France.")
-        return games
-    except Exception as e:
-        print(f"Error scraping Unibet: {e}")
-        return []
+    with ThreadPoolExecutor(max_workers=15) as ex:
+        futs = [ex.submit(fetch_country, c) for c in COUNTRIES]
+        for f in as_completed(futs):
+            all_match_urls.update(f.result())
+            
+    # Also fetch main football page links
+    try:
+        r_main = requests.get("https://www.unibet.fr/paris-football", headers=H, timeout=10)
+        soup_m = BeautifulSoup(r_main.text, "html.parser")
+        for a in soup_m.find_all("a", href=True):
+            href = a['href']
+            if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
+                all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
+    except Exception:
+        pass
+
+    games = []
+    for url in all_match_urls:
+        parts = url.strip("/").split("/")
+        if len(parts) >= 5 and "vs" in parts[-1]:
+            teams_slug = parts[-1].split("-vs-")
+            if len(teams_slug) == 2:
+                dom_name = teams_slug[0].replace("-", " ").title()
+                ext_name = teams_slug[1].replace("-", " ").title()
+                league_name = parts[1].replace("-", " ").title() + " " + parts[2].replace("-", " ").title()
+                games.append({
+                    "id": parts[-2],
+                    "dom": dom_name,
+                    "ext": ext_name,
+                    "league": league_name,
+                    "url": url,
+                    "timestamp": int(time.time()),
+                    "start_time": "À venir"
+                })
+                
+    print(f"Extracted {len(games)} total active football fixtures across all countries on Unibet France.")
+    return games
 
 def scan_unibet_match_details(game):
     if game.get("not_found"):
@@ -181,7 +186,7 @@ def main():
     print(f"Total matchs à auditer sur Unibet.fr : {len(matches_to_scan)}")
     
     scanned_results = []
-    with ThreadPoolExecutor(max_workers=15) as ex:
+    with ThreadPoolExecutor(max_workers=20) as ex:
         futs = [ex.submit(scan_unibet_match_details, g) for g in matches_to_scan]
         for f in as_completed(futs):
             res = f.result()
@@ -384,7 +389,7 @@ def main():
             <html>
               <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
                 <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                  <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT UNIBET FRANCE</h1>
+                  <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT UNIBET FRANCE (DEEP CATALOG 330+ MATCHS)</h1>
                   <p style="text-align: center; color: #64748b;">Rapport d'analyse global ({len(scanned_results)} matchs au programme) - {now_str}</p>
                   
                   <h3 style="color: #16a34a; border-bottom: 2px solid #16a34a; padding-bottom: 5px;">🎯 AUDIT PENALTY (SEUIL UNIBET &le; 2.90)</h3>
@@ -437,7 +442,7 @@ def main():
             """
             
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"PRONOSTICS FOOTBALL 5 JOURS - UNIBET FRANCE AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
+            msg["Subject"] = f"PRONOSTICS FOOTBALL - UNIBET FRANCE DEEP AUDIT DU {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')}"
             msg["From"] = SMTP_USER
             msg["To"] = ", ".join(recipients)
             msg.attach(MIMEText(html_body, "html", "utf-8"))
