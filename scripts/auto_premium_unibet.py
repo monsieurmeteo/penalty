@@ -229,39 +229,7 @@ def scan_unibet_match_details(game):
 
 def main():
     print("=== DEBUT DE L'AUTOMATISATION UNIBET FRANCE ===")
-    parsed_input = parse_input_file("matches_input.txt")
-    unibet_games = get_unibet_active_games()
-    
-    matches_to_scan = []
-    seen_ids = set()
-    unmatched_count = 0
-    
-    for p in parsed_input:
-        best, best_sc = None, 0
-        for g in unibet_games:
-            sc_direct = (sim(p["home"], g["dom"]) + sim(p["away"], g["ext"])) / 2
-            sc_inverse = (sim(p["home"], g["ext"]) + sim(p["away"], g["dom"])) / 2
-            sc_final = max(sc_direct, sc_inverse)
-            if sc_final > best_sc:
-                best_sc = sc_final
-                best = g
-        if best and best_sc >= 0.48:
-            if best["id"] in seen_ids: continue
-            seen_ids.add(best["id"])
-            if p["time"]: best["start_time"] = f"{p['time']}"
-            matches_to_scan.append(best)
-        else:
-            unmatched_count += 1
-            matches_to_scan.append({
-                "id": f"unmatched_{unmatched_count}",
-                "dom": p["home"],
-                "ext": p["away"],
-                "league": "Pronosoft (Non rattaché)",
-                "start_time": f"{p['time']}" if p['time'] else "Pronosoft",
-                "timestamp": int(time.time()) + 86400,
-                "not_found": True
-            })
-            
+    matches_to_scan = get_unibet_active_games()
     print(f"Total matchs à auditer sur Unibet.fr : {len(matches_to_scan)}")
     
     scanned_results = []

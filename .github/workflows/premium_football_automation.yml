@@ -27,10 +27,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install curl_cffi requests typing_extensions beautifulsoup4
 
-      - name: 🌐 Scrape Matches from Pronosoft
-        run: |
-          python scripts/parse_pronosoft.py
-
       - name: ⚡ Run Premium Unibet France Scan (Over 2.5 & Penalty)
         env:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
