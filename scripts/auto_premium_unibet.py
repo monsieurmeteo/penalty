@@ -358,32 +358,28 @@ def main():
                 <th style="padding: 8px;">Décision</th>
               </tr>
             </thead>
-            <tbody>{o25_rows}</tbody>
-          </table>
-
-          <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 5px; margin-top: 30px;">🎥 MÉTHODE YOUTUBE — SCORE 2-2 &le; 12.00 (signal Over 2.5)</h3>
-          <p style="font-size:12px; color:#64748b; margin-top:-5px;">
-            Transposé depuis 1XBET ≤ 10.00 (ratio Unibet/1XBET = 1.115) &nbsp;|&nbsp;
-            Probabilité implicite 2-2 : {round(1/SEUIL_S3*100,1)}% (≥ 2× la normale)
-          </p>
+          <!-- TABLEAU PRINCIPAL -->
+          <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 6px; margin-top:0;">
+            🎥 SÉLECTION — MÉTHODE YOUTUBE OVER 2.5
+            <span style="font-size:13px; color:#64748b; font-weight:normal;">({len(s3_matches)} retenu{'s' if len(s3_matches) > 1 else ''})</span>
+          </h3>
           <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
             <thead>
-              <tr style="background: #f8fafc;">
-                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
-                <th style="padding: 8px; text-align: left;">Ligue</th>
-                <th style="padding: 8px; text-align: left;">Match</th>
-                <th style="padding: 8px;">Cotes (2-2 / O2.5)</th>
-                <th style="padding: 8px;">Décision</th>
+              <tr style="background: #1e3a8a; color: white;">
+                <th style="padding: 10px 8px; text-align: left;">Date &amp; Horaire</th>
+                <th style="padding: 10px 8px; text-align: left;">Ligue</th>
+                <th style="padding: 10px 8px; text-align: left;">Match</th>
+                <th style="padding: 10px 8px; text-align: center;">Cotes clés</th>
+                <th style="padding: 10px 8px; text-align: center;">Décision</th>
               </tr>
             </thead>
             <tbody>{yt_rows}</tbody>
           </table>
 
-          <div style="margin-top:25px; padding:12px; background:#f0f9ff; border-radius:8px; font-size:12px; color:#475569;">
-            <b>📐 Rappel calibrage :</b>
-            S4 Over 2.5 ≤ <b>1.87</b> (Unibet ARJEL) &nbsp;|&nbsp;
-            S3 Score 2-2 ≤ <b>12.00</b> Unibet = ≤ <b>10.00</b> 1XBET
+          <div style="margin-top:20px; padding:10px 14px; background:#fef9c3; border-radius:8px; font-size:11px; color:#713f12; text-align:center;">
+            ⚠️ Ce rapport est généré automatiquement toutes les 2h. Pariez de manière responsable. Aucune garantie de gains.
           </div>
+
         </div>
       </body>
     </html>
@@ -391,36 +387,31 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ OVER 2.5 — SÉLECTION 48H UNIBET",
-        f"**Généré le** : {now_str}\n",
-        "## ⚡ OVER 2.5 RETENUS (S4 — cote ≤ 1.87)",
-        "| Date & Horaire | Ligue | Match | Cote Brute | Cote Démargée |",
-        "| :---: | :--- | :--- | :---: | :---: |",
-    ]
-    for m in s4_matches:
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['over25']}** | **{m['over25_fair']}** |")
-
-    report += [
-        "\n## 🎥 MÉTHODE YOUTUBE — SCORE 2-2 ≤ 12.00 (S3)",
-        "| Date & Horaire | Ligue | Match | Score 2-2 | Over 2.5 |",
-        "| :---: | :--- | :--- | :---: | :---: |",
+        "# ⚽ MÉTHODE YOUTUBE OVER 2.5 — SÉLECTION 48H",
+        f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}\n",
+        f"**Total retenus** : {len(s3_matches)} ({nb_double} ⭐⭐ Double Confirmation, {nb_simple} 🎥 Signal S3)\n",
+        "| Décision | Date | Ligue | Match | Score 2-2 | Over 2.5 |",
+        "| :---: | :---: | :--- | :--- | :---: | :---: |",
     ]
     for m in s3_matches:
-        o25 = m.get('over25', 'N/A')
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | **{m['s22']}** | {o25} |")
+        badge = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
+        o25 = m.get("over25", "N/A")
+        report.append(f"| {badge} | {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | {o25} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
 
     # ── Envoi Gmail SMTP ─────────────────────────────────────────────────────
-    recipients = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
-    gmail_email = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
+    recipients     = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
+    gmail_email    = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
     gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
 
+    nb_s3 = len(s3_matches)
+    subject_flag = f"🔥 {nb_double} DOUBLE + {nb_simple} S3" if nb_double else (f"🎥 {nb_s3} S3 détecté{'s' if nb_s3>1 else ''}" if nb_s3 else "ℹ️ Aucun signal")
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"OVER 2.5 UNIBET (48H) — {datetime.now(timezone.utc).strftime('%d/%m/%Y %H:%M')} UTC"
-    msg["From"] = f"Gregory LANGLET <{gmail_email if gmail_password else 'gregory.langlet@sfr.fr'}>"
-    msg["To"] = ", ".join(recipients)
+    msg["Subject"] = f"OVER 2.5 UNIBET — {subject_flag} — {datetime.now(timezone.utc).strftime('%d/%m %H:%M')} UTC"
+    msg["From"]    = f"Gregory LANGLET <{gmail_email if gmail_password else 'gregory.langlet@sfr.fr'}>"
+    msg["To"]      = ", ".join(recipients)
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     if gmail_password:
