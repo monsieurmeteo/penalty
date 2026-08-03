@@ -77,6 +77,8 @@ def get_unibet_active_games():
         if len(parts) >= 5 and "vs" in parts[-1]:
             teams_slug = parts[-1].split("-vs-")
             if len(teams_slug) == 2:
+                dom_name = teams_slug[0].replace("-", " ").title()
+                ext_name = teams_slug[1].replace("-", " ").title()
                 country = parts[4].replace("-", " ").title() if len(parts) >= 6 else ""
                 league = parts[5].replace("-", " ").title() if len(parts) >= 6 else parts[3].replace("-", " ").title()
                 league_name = f"{country} • {league}" if country else league
