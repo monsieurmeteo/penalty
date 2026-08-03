@@ -77,9 +77,9 @@ def get_unibet_active_games():
         if len(parts) >= 5 and "vs" in parts[-1]:
             teams_slug = parts[-1].split("-vs-")
             if len(teams_slug) == 2:
-                dom_name = teams_slug[0].replace("-", " ").title()
-                ext_name = teams_slug[1].replace("-", " ").title()
-                league_name = parts[1].replace("-", " ").title() + " " + parts[2].replace("-", " ").title()
+                country = parts[4].replace("-", " ").title() if len(parts) >= 6 else ""
+                league = parts[5].replace("-", " ").title() if len(parts) >= 6 else parts[3].replace("-", " ").title()
+                league_name = f"{country} • {league}" if country else league
                 games.append({
                     "id": parts[-2],
                     "dom": dom_name,
@@ -403,43 +403,23 @@ def main():
             </table>
           </div>
 
+          <!-- SECTION ÉVOLUTIONS -->
           {evo_html}
 
-          <h3 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 5px;">⚡ AUDIT OVER 2.5 RETENUS (SEUIL UNIBET &le; 1.87)</h3>
-          <p style="font-size:12px; color:#64748b; margin-top:-5px;">
-            Cote juste estimée 1.75 × marge Unibet 1.07 = <b>1.87</b> &nbsp;|&nbsp;
-            Probabilité implicite : {round(1/SEUIL_S4*100,1)}%
-          </p>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-            <thead>
-              <tr style="background: #f8fafc;">
-                <th style="padding: 8px; text-align: left;">Date &amp; Horaire</th>
-                <th style="padding: 8px; text-align: left;">Ligue</th>
-                <th style="padding: 8px; text-align: left;">Match</th>
-                <th style="padding: 8px;">Cote O2.5</th>
-                <th style="padding: 8px;">Décision</th>
-              </tr>
-            </thead>
-          <!-- TABLEAU PRINCIPAL -->
-          <h3 style="color: #d97706; border-bottom: 2px solid #d97706; padding-bottom: 6px; margin-top:0;">
-            🎥 SÉLECTION — MÉTHODE YOUTUBE OVER 2.5
-            <span style="font-size:13px; color:#64748b; font-weight:normal;">({len(s3_matches)} retenu{'s' if len(s3_matches) > 1 else ''})</span>
-          </h3>
-          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-            <thead>
-              <tr style="background: #1e3a8a; color: white;">
-                <th style="padding: 10px 8px; text-align: left;">Date &amp; Horaire</th>
-                <th style="padding: 10px 8px; text-align: left;">Ligue</th>
-                <th style="padding: 10px 8px; text-align: left;">Match</th>
-                <th style="padding: 10px 8px; text-align: center;">Cotes clés</th>
-                <th style="padding: 10px 8px; text-align: center;">Décision</th>
-              </tr>
-            </thead>
-            <tbody>{yt_rows}</tbody>
-          </table>
+          <!-- SECTION CARTES MATCHS -->
+          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="color: #0f172a; margin:0; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">
+              🎥 SÉLECTION MATCHS ({len(s3_matches)})
+            </h3>
+            <span style="font-size:12px; color:#64748b;">Trié par niveau de confiance</span>
+          </div>
 
-          <div style="margin-top:20px; padding:10px 14px; background:#fef9c3; border-radius:8px; font-size:11px; color:#713f12; text-align:center;">
-            ⚠️ Ce rapport est généré automatiquement toutes les 2h. Pariez de manière responsable. Aucune garantie de gains.
+          <!-- LISTE DES CARTES DE MATCHS -->
+          {yt_cards}
+
+          <!-- FOOTER -->
+          <div style="margin-top:28px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:11px; color:#713f12; text-align:center; border:1px solid #fef08a;">
+            ⚠️ Rapport automatisé Unibet France (48h). Les paris sportifs comportent des risques. Jouez avec modération.
           </div>
 
         </div>
