@@ -174,7 +174,7 @@ def scan_unibet_match_details(game):
     return None
 
 def main():
-    print("=== AUTOMATISATION UNIBET OVER 2.5 (FENÊTRE 48H) ===")
+    print("=== AUTOMATISATION UNIBET — MÉTHODE YOUTUBE OVER 2.5 (48H) ===")
     matches_to_scan = get_unibet_active_games()
 
     scanned_all = []
@@ -205,11 +205,26 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
-    # ── Stratégies retenues ──────────────────────────────────────────────────
-    s4_matches  = [r for r in scanned_results if r.get("over25") and r["over25"] <= SEUIL_S4]
-    s3_matches  = [r for r in scanned_results if r.get("s22") and r["s22"] <= SEUIL_S3]
+    # ── Sélection S3 : Score 2-2 ≤ 12.00 (stratégie principale) ────────────
+    # Niveau 1 : S3 seul     → signal YouTube (score 2-2 anormalement bas)
+    # Niveau 2 : S3 + S4     → DOUBLE CONFIRMATION (score 2-2 ≤ 12 ET Over 2.5 ≤ 1.87)
+    s3_matches = []
+    for r in scanned_results:
+        if not (r.get("s22") and r["s22"] <= SEUIL_S3):
+            continue
+        o25 = r.get("over25")
+        double = bool(o25 and o25 <= SEUIL_S4)
+        r["double_confirm"] = double
+        s3_matches.append(r)
 
-    # ── Évolutions Over 2.5 vs run précédent ────────────────────────────────
+    # Trier : doubles en premier, puis par date
+    s3_matches.sort(key=lambda x: (not x["double_confirm"], x.get("dt_obj", now_utc)))
+
+    nb_double = sum(1 for m in s3_matches if m["double_confirm"])
+    nb_simple = len(s3_matches) - nb_double
+    print(f"S3 retenus : {len(s3_matches)} ({nb_double} double confirmation, {nb_simple} signal seul)")
+
+    # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
     prev_state = {}
     if os.path.exists(history_file):
@@ -220,24 +235,29 @@ def main():
             pass
 
     curr_state = {
-        "o25": {m["id"]: {"match": f"{m['dom']} - {m['ext']}", "league": m["league"],
-                           "date_str": m["date_str"], "val": m["over25"], "fair": m["over25_fair"]}
-                for m in s4_matches},
-        "s3":  {m["id"]: {"match": f"{m['dom']} - {m['ext']}", "league": m["league"],
-                           "date_str": m["date_str"], "val": m["s22"], "over25": m.get("over25")}
-                for m in s3_matches},
+        "s3": {
+            m["id"]: {
+                "match": f"{m['dom']} - {m['ext']}",
+                "league": m["league"],
+                "date_str": m["date_str"],
+                "val_s22": m["s22"],
+                "val_o25": m.get("over25"),
+                "double": m["double_confirm"],
+            }
+            for m in s3_matches
+        }
     }
 
-    prev_o25 = prev_state.get("o25", {})
-    new_o25  = [v for k, v in curr_state["o25"].items() if k not in prev_o25]
-    drop_o25 = [v for k, v in prev_o25.items() if k not in curr_state["o25"]]
-    var_o25  = []
-    for k, v in curr_state["o25"].items():
-        if k in prev_o25:
-            old_val = prev_o25[k].get("val")
-            if old_val and old_val != v["val"]:
-                diff = round(v["val"] - old_val, 2)
-                var_o25.append({**v, "old_val": old_val, "diff": diff})
+    prev_s3 = prev_state.get("s3", {})
+    new_s3   = [v for k, v in curr_state["s3"].items() if k not in prev_s3]
+    drop_s3  = [v for k, v in prev_s3.items() if k not in curr_state["s3"]]
+    var_s3   = []
+    for k, v in curr_state["s3"].items():
+        if k in prev_s3:
+            old_s22 = prev_s3[k].get("val_s22")
+            if old_s22 and old_s22 != v["val_s22"]:
+                diff = round(v["val_s22"] - old_s22, 2)
+                var_s3.append({**v, "old_s22": old_s22, "diff": diff})
 
     try:
         with open(history_file, "w", encoding="utf-8") as f:
@@ -249,73 +269,75 @@ def main():
 
     # ── Bloc Évolutions HTML ─────────────────────────────────────────────────
     evo_html = ""
-    if new_o25 or var_o25 or drop_o25:
-        evo_html += '<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:15px; margin-bottom:25px;">'
-        evo_html += '<h3 style="color:#0f172a; margin-top:0; border-bottom:1px solid #cbd5e1; padding-bottom:5px;">📊 ÉVOLUTIONS DEPUIS LE DERNIER RUN (~2h)</h3>'
+    if new_s3 or var_s3 or drop_s3:
+        evo_html += '<div style="background:#fefce8; border:1px solid #fde68a; border-radius:8px; padding:15px; margin-bottom:25px;">'
+        evo_html += '<h3 style="color:#92400e; margin-top:0; border-bottom:1px solid #fde68a; padding-bottom:5px;">📊 ÉVOLUTIONS DEPUIS LE DERNIER RUN (~2h)</h3>'
 
-        if new_o25:
-            evo_html += '<p style="color:#16a34a; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs Over 2.5 :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
-            for item in new_o25:
-                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> (Cote O2.5: <b>{item['val']}</b>)</li>"
+        if new_s3:
+            evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            for item in new_s3:
+                badge = " ⭐⭐ DOUBLE" if item.get("double") else ""
+                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — 2-2: <b>{item['val_s22']}</b>{badge}</li>"
             evo_html += '</ul>'
 
-        if var_o25:
-            evo_html += '<p style="color:#2563eb; font-weight:bold; margin-bottom:5px;">📈📉 Variations de cotes Over 2.5 :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
-            for item in var_o25:
+        if var_s3:
+            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote Score 2-2 :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            for item in var_s3:
                 arrow = "🔺" if item["diff"] > 0 else "🔻"
-                evo_html += f"<li><b>{item['match']}</b> : {item['old_val']} &rarr; <b>{item['val']}</b> ({arrow} {item['diff']:+0.2f})</li>"
+                evo_html += f"<li><b>{item['match']}</b> : Score 2-2 {item['old_s22']} &rarr; <b>{item['val_s22']}</b> ({arrow} {item['diff']:+0.2f})</li>"
             evo_html += '</ul>'
 
-        if drop_o25:
-            evo_html += '<p style="color:#dc2626; font-weight:bold; margin-bottom:5px;">❌ Matchs retirés (seuil dépassé) :</p><ul style="margin:0 0 5px 0; font-size:13px;">'
-            for item in drop_o25:
+        if drop_s3:
+            evo_html += '<p style="color:#dc2626; font-weight:bold; margin-bottom:5px;">❌ Matchs sortis de la sélection :</p><ul style="margin:0 0 5px 0; font-size:13px;">'
+            for item in drop_s3:
                 evo_html += f"<li><b>{item['match']}</b> ({item['league']})</li>"
             evo_html += '</ul>'
 
         evo_html += '</div>'
     else:
-        evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation majeure depuis le dernier run.</div>'
+        evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Tableau S4 Over 2.5 ──────────────────────────────────────────────────
-    o25_rows = ""
-    for m in s4_matches:
-        o25_rows += f"""
-        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #eff6ff;">
-          <td style="padding: 8px; font-weight: bold; color: #475569;">{m['date_str']}</td>
-          <td style="padding: 8px; color: #334155;">{m['league']}</td>
-          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-          <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;"><b>{m['over25']}</b> <br><small style="color:#64748b;">(Dém. {m['over25_fair']})</small></td>
-          <td style="padding: 8px; text-align: center; font-weight: bold; color: #2563eb;">🟢 RETENU</td>
-        </tr>
-        """
-    if not o25_rows:
-        o25_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Over 2.5 &le; 1.87 dans les 48h.</td></tr>'
-
-    # ── Tableau S3 YouTube Score 2-2 ─────────────────────────────────────────
+    # ── Tableau principal S3 ─────────────────────────────────────────────────
     yt_rows = ""
     for m in s3_matches:
-        s22 = m['s22']
-        s22_f = round(s22 * 1.15, 2)
-        o25 = m.get('over25')
-        o25_fair = m.get('over25_fair')
-        o25_d = f"O2.5: <b>{o25}</b> <small>(Dém. {o25_fair})</small>" if o25 else "O2.5: N/A"
+        s22     = m["s22"]
+        s22_f   = round(s22 * 1.15, 2)
+        o25     = m.get("over25")
+        o25_f   = m.get("over25_fair")
+        double  = m["double_confirm"]
+
+        if double:
+            bg             = "#f0fdf4"
+            border_color   = "#16a34a"
+            decision_html  = '<span style="background:#16a34a; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">⭐⭐ DOUBLE CONFIRMATION</span>'
+            o25_html       = f'<br><span style="color:#15803d; font-weight:bold;">✅ O2.5: {o25}</span> <small style="color:#64748b;">(Dém. {o25_f})</small>'
+        else:
+            bg             = "#fefce8"
+            border_color   = "#d97706"
+            decision_html  = '<span style="background:#d97706; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">🎥 SIGNAL S3</span>'
+            o25_html       = f'<br><small style="color:#94a3b8;">O2.5: {o25 if o25 else "N/A"}</small>'
+
         yt_rows += f"""
-        <tr style="border-bottom: 1px solid #e2e8f0; background-color: #fefce8;">
-          <td style="padding: 8px; font-weight: bold; color: #475569;">{m['date_str']}</td>
-          <td style="padding: 8px; color: #334155;">{m['league']}</td>
-          <td style="padding: 8px; font-weight: bold; color: #0f172a;">{m['dom']} - {m['ext']}</td>
-          <td style="padding: 8px; text-align: center; color: #b45309;">2-2: <b>{s22}</b> <small>(Dém. {s22_f})</small><br>{o25_d}</td>
-          <td style="padding: 8px; text-align: center; font-weight: bold; color: #d97706;">🟢 RETENU S3</td>
+        <tr style="border-bottom: 2px solid {border_color}; background-color: {bg};">
+          <td style="padding: 10px 8px; font-weight: bold; color: #475569; white-space:nowrap;">{m['date_str']}</td>
+          <td style="padding: 10px 8px; color: #334155; font-size:12px;">{m['league']}</td>
+          <td style="padding: 10px 8px; font-weight: bold; color: #0f172a; font-size:14px;">{m['dom']}<br><span style="color:#94a3b8; font-size:11px; font-weight:normal;">vs</span><br>{m['ext']}</td>
+          <td style="padding: 10px 8px; text-align: center; color: #b45309;">
+            Score 2-2: <b style="font-size:15px;">{s22}</b><br>
+            <small style="color:#94a3b8;">(Dém. {s22_f})</small>
+            {o25_html}
+          </td>
+          <td style="padding: 10px 8px; text-align: center;">{decision_html}</td>
         </tr>
         """
+
     if not yt_rows:
-        yt_rows = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#64748b;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</td></tr>'
+        yt_rows = '<tr><td colspan="5" style="padding:20px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</td></tr>'
 
     # ── Corps du mail HTML ───────────────────────────────────────────────────
     html_body = f"""
     <html>
       <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
-        <div style="max-width: 800px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 10px; border: 1px solid #e2e8f0;">
           <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT — OVER 2.5 (48H)</h1>
           <p style="text-align: center; color: #64748b;">{len(scanned_results)} matchs scannés — Fenêtre 48h — {now_str}</p>
 
