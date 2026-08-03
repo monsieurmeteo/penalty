@@ -307,15 +307,19 @@ def main():
         double  = m["double_confirm"]
 
         if double:
-            bg             = "#f0fdf4"
-            border_color   = "#16a34a"
-            decision_html  = '<span style="background:#16a34a; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">⭐⭐ DOUBLE CONFIRMATION</span>'
-            o25_html       = f'<br><span style="color:#15803d; font-weight:bold;">✅ O2.5: {o25}</span> <small style="color:#64748b;">(Dém. {o25_f})</small>'
+            bg            = "#f0fdf4"
+            border_color  = "#16a34a"
+            mise          = 6
+            decision_html = '<span style="background:#16a34a; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">⭐⭐ DOUBLE CONFIRMATION</span>'
+            o25_html      = f'<br><span style="color:#15803d; font-weight:bold;">✅ O2.5: {o25}</span> <small style="color:#64748b;">(Dém. {o25_f})</small>'
         else:
-            bg             = "#fefce8"
-            border_color   = "#d97706"
-            decision_html  = '<span style="background:#d97706; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">🎥 SIGNAL S3</span>'
-            o25_html       = f'<br><small style="color:#94a3b8;">O2.5: {o25 if o25 else "N/A"}</small>'
+            bg            = "#fefce8"
+            border_color  = "#d97706"
+            mise          = 3
+            decision_html = '<span style="background:#d97706; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">🎥 SIGNAL S3</span>'
+            o25_html      = f'<br><small style="color:#94a3b8;">O2.5: {o25 if o25 else "N/A"}</small>'
+
+        mise_html = f'<div style="margin-top:6px; background:{border_color}; color:white; border-radius:8px; padding:4px 0; font-size:13px; font-weight:bold;">💶 {mise}€</div>'
 
         yt_rows += f"""
         <tr style="border-bottom: 2px solid {border_color}; background-color: {bg};">
@@ -327,7 +331,7 @@ def main():
             <small style="color:#94a3b8;">(Dém. {s22_f})</small>
             {o25_html}
           </td>
-          <td style="padding: 10px 8px; text-align: center;">{decision_html}</td>
+          <td style="padding: 10px 8px; text-align: center;">{decision_html}{mise_html}</td>
         </tr>
         """
 
