@@ -306,16 +306,27 @@ def main():
         o25_f   = m.get("over25_fair")
         double  = m["double_confirm"]
 
+        # ── Calcul de la mise dynamique selon la cote Over 2.5 ──────────────────
+        o25_val = o25 if (o25 and o25 > 0) else 1.85
+        if o25_val < 1.70:
+            mise_base = 4
+        elif 1.70 <= o25_val <= 1.89:
+            mise_base = 3
+        elif 1.90 <= o25_val <= 2.09:
+            mise_base = 2
+        else:
+            mise_base = 1
+
+        mise = mise_base * 2 if double else mise_base
+
         if double:
             bg            = "#f0fdf4"
             border_color  = "#16a34a"
-            mise          = 6
             decision_html = '<span style="background:#16a34a; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">⭐⭐ DOUBLE CONFIRMATION</span>'
             o25_html      = f'<br><span style="color:#15803d; font-weight:bold;">✅ O2.5: {o25}</span> <small style="color:#64748b;">(Dém. {o25_f})</small>'
         else:
             bg            = "#fefce8"
             border_color  = "#d97706"
-            mise          = 3
             decision_html = '<span style="background:#d97706; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">🎥 SIGNAL S3</span>'
             o25_html      = f'<br><small style="color:#94a3b8;">O2.5: {o25 if o25 else "N/A"}</small>'
 
@@ -341,9 +352,62 @@ def main():
     # ── Corps du mail HTML ───────────────────────────────────────────────────
     html_body = f"""
     <html>
-      <body style="font-family: Arial, sans-serif; background-color: #f1f5f9; padding: 20px;">
-          <h1 style="color: #1e3a8a; text-align: center;">⚽ METRIC-FOOT — OVER 2.5 (48H)</h1>
-          <p style="text-align: center; color: #64748b;">{len(scanned_results)} matchs scannés — Fenêtre 48h — {now_str}</p>
+      <body style="font-family: 'Arial', sans-serif; background-color: #f1f5f9; padding: 20px;">
+        <div style="max-width: 750px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+
+          <!-- HEADER -->
+          <div style="text-align:center; margin-bottom:20px;">
+            <h1 style="color: #1e3a8a; margin:0; font-size:22px;">⚽ METRIC-FOOT — OVER 2.5</h1>
+            <p style="color:#64748b; margin:6px 0 0 0; font-size:13px;">Méthode YouTube · Fenêtre 48h · {now_str}</p>
+          </div>
+
+          <!-- STATS RAPIDES -->
+          <div style="display:flex; gap:10px; margin-bottom:20px; text-align:center;">
+            <div style="flex:1; background:#eff6ff; border-radius:8px; padding:12px;">
+              <div style="font-size:22px; font-weight:bold; color:#1d4ed8;">{len(scanned_results)}</div>
+              <div style="font-size:11px; color:#64748b;">Matchs scannés</div>
+            </div>
+            <div style="flex:1; background:#fefce8; border-radius:8px; padding:12px;">
+              <div style="font-size:22px; font-weight:bold; color:#d97706;">{nb_simple}</div>
+              <div style="font-size:11px; color:#64748b;">🎥 Signal S3 seul</div>
+            </div>
+            <div style="flex:1; background:#f0fdf4; border-radius:8px; padding:12px;">
+              <div style="font-size:22px; font-weight:bold; color:#16a34a;">{nb_double}</div>
+              <div style="font-size:11px; color:#64748b;">⭐⭐ Double Confirm.</div>
+            </div>
+          </div>
+
+          <!-- LÉGENDE DE GESTION DE CAPITAL (STAKING SCALE) -->
+          <div style="background:#f8fafc; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:12px; color:#475569; border:1px solid #e2e8f0;">
+            <b style="color:#0f172a; font-size:13px;">📐 BARÈME DE MISES PAR TRANCHE DE COTE (CAPITAL 100€) :</b>
+            <table style="width:100%; margin-top:6px; font-size:11px; text-align:center; border-collapse:collapse;">
+              <tr style="background:#e2e8f0; font-weight:bold; color:#334155;">
+                <td style="padding:4px;">Cote Over 2.5</td>
+                <td style="padding:4px;">Mise Signal S3 🎥</td>
+                <td style="padding:4px;">Mise Double Confirm. ⭐⭐</td>
+              </tr>
+              <tr>
+                <td style="padding:4px; font-weight:bold; color:#16a34a;">1.50 à 1.69</td>
+                <td style="padding:4px;"><b>4,00 €</b></td>
+                <td style="padding:4px; color:#16a34a; font-weight:bold;">8,00 €</td>
+              </tr>
+              <tr style="background:#f1f5f9;">
+                <td style="padding:4px; font-weight:bold; color:#2563eb;">1.70 à 1.89</td>
+                <td style="padding:4px;"><b>3,00 €</b></td>
+                <td style="padding:4px; color:#16a34a; font-weight:bold;">6,00 €</td>
+              </tr>
+              <tr>
+                <td style="padding:4px; font-weight:bold; color:#d97706;">1.90 à 2.09</td>
+                <td style="padding:4px;"><b>2,00 €</b></td>
+                <td style="padding:4px; color:#16a34a; font-weight:bold;">4,00 €</td>
+              </tr>
+              <tr style="background:#f1f5f9;">
+                <td style="padding:4px; font-weight:bold; color:#dc2626;">&ge; 2.10</td>
+                <td style="padding:4px;"><b>1,00 €</b></td>
+                <td style="padding:4px; color:#16a34a; font-weight:bold;">2,00 €</td>
+              </tr>
+            </table>
+          </div>
 
           {evo_html}
 
