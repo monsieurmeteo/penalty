@@ -297,103 +297,85 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Tableau principal S3 ─────────────────────────────────────────────────
-    yt_rows = ""
+    # ── Génération des cartes de matchs ──────────────────────────────────────
+    yt_cards = ""
     for m in s3_matches:
-        s22     = m["s22"]
-        s22_f   = round(s22 * 1.15, 2)
-        o25     = m.get("over25")
-        o25_f   = m.get("over25_fair")
-        double  = m["double_confirm"]
+        s22 = m["s22"]
+        o25 = m.get("over25")
+        o25_f = m.get("over25_fair")
+        double = m["double_confirm"]
 
-        # ── Calcul de la mise dynamique (Gamme 3€ à 6€) ─────────────────────────
+        # ── Calcul de la mise dynamique (Chiffres ronds sans décimales) ─────────
         o25_val = o25 if (o25 and o25 > 0) else 1.85
         if o25_val < 1.70:
-            mise_base = 3.0
+            mise_base = 3
         elif 1.70 <= o25_val <= 1.89:
-            mise_base = 2.5
+            mise_base = 2
         else:
-            mise_base = 2.0
+            mise_base = 1
 
-        mise = round(mise_base * 2 if double else mise_base, 2)
-        mise_str = f"{mise:.2f}".replace(".00", "").replace(".", ",")
+        mise = mise_base * 2 if double else mise_base
 
         if double:
-            bg            = "#f0fdf4"
-            border_color  = "#16a34a"
-            decision_html = '<span style="background:#16a34a; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">⭐⭐ DOUBLE CONFIRMATION</span>'
-            o25_html      = f'<br><span style="color:#15803d; font-weight:bold;">✅ O2.5: {o25}</span> <small style="color:#64748b;">(Dém. {o25_f})</small>'
+            card_bg       = "#f0fdf4"
+            card_border   = "#22c55e"
+            badge_bg      = "#15803d"
+            badge_text    = "⭐⭐ DOUBLE CONFIRMATION"
+            o25_badge     = f'<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block;">✅ Over 2.5: <b>{o25}</b> <small style="color:#64748b;">(Dém. {o25_f})</small></span>'
+            btn_bg        = "#15803d"
         else:
-            bg            = "#fefce8"
-            border_color  = "#d97706"
-            decision_html = '<span style="background:#d97706; color:white; padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;">🎥 SIGNAL S3</span>'
-            o25_html      = f'<br><small style="color:#94a3b8;">O2.5: {o25 if o25 else "N/A"}</small>'
+            card_bg       = "#fffbeb"
+            card_border   = "#f59e0b"
+            badge_bg      = "#b45309"
+            badge_text    = "🎥 SIGNAL S3 (MÉTHODE YOUTUBE)"
+            o25_badge     = f'<span style="background:#fef3c7; color:#92400e; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block;">Over 2.5: <b>{o25 if o25 else "N/A"}</b></span>'
+            btn_bg        = "#d97706"
 
-        mise_html = f'<div style="margin-top:6px; background:{border_color}; color:white; border-radius:8px; padding:4px 0; font-size:13px; font-weight:bold;">💶 {mise_str}€</div>'
+        yt_cards += f"""
+        <div style="background:{card_bg}; border:2px solid {card_border}; border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 
-        yt_rows += f"""
-        <tr style="border-bottom: 2px solid {border_color}; background-color: {bg};">
-          <td style="padding: 10px 8px; font-weight: bold; color: #475569; white-space:nowrap;">{m['date_str']}</td>
-          <td style="padding: 10px 8px; color: #334155; font-size:12px;">{m['league']}</td>
-          <td style="padding: 10px 8px; font-weight: bold; color: #0f172a; font-size:14px;">{m['dom']}<br><span style="color:#94a3b8; font-size:11px; font-weight:normal;">vs</span><br>{m['ext']}</td>
-          <td style="padding: 10px 8px; text-align: center; color: #b45309;">
-            Score 2-2: <b style="font-size:15px;">{s22}</b><br>
-            <small style="color:#94a3b8;">(Dém. {s22_f})</small>
-            {o25_html}
-          </td>
-          <td style="padding: 10px 8px; text-align: center;">{decision_html}{mise_html}</td>
-        </tr>
+          <!-- LIGNE HAUT : DATETIME & BADGE STRATEGIE -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,0.06); padding-bottom:8px;">
+            <div style="font-size:12px; font-weight:bold; color:#475569;">
+              📅 {m['date_str']} &nbsp;|&nbsp; <span style="color:#64748b; font-weight:normal;">{m['league']}</span>
+            </div>
+            <div style="background:{badge_bg}; color:white; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:bold; letter-spacing:0.3px;">
+              {badge_text}
+            </div>
+          </div>
+
+          <!-- LIGNE MILIEU : AFFICHAGE DU MATCH -->
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
+            <div style="flex:1;">
+              <div style="font-size:17px; font-weight:800; color:#0f172a; line-height:1.3;">
+                {m['dom']} <span style="color:#94a3b8; font-weight:400; font-size:14px;">vs</span> {m['ext']}
+              </div>
+            </div>
+          </div>
+
+          <!-- LIGNE BAS : COTES ET BOUTON MISE -->
+          <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.7); padding:10px 14px; border-radius:8px; border:1px solid rgba(0,0,0,0.05);">
+            <div style="font-size:13px; color:#334155;">
+              <span style="background:#e2e8f0; color:#1e293b; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; margin-right:6px; display:inline-block;">
+                Score 2-2: <b style="color:#0f172a; font-size:14px;">{s22}</b>
+              </span>
+              {o25_badge}
+            </div>
+            <div style="background:{btn_bg}; color:white; padding:8px 16px; border-radius:8px; font-size:14px; font-weight:800; letter-spacing:0.5px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+              💶 MISER {mise} €
+            </div>
+          </div>
+
+        </div>
         """
 
-    if not yt_rows:
-        yt_rows = '<tr><td colspan="5" style="padding:20px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</td></tr>'
+    if not yt_cards:
+        yt_cards = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:24px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</div>'
 
     # ── Corps du mail HTML ───────────────────────────────────────────────────
     html_body = f"""
+    <!DOCTYPE html>
     <html>
-      <body style="font-family: 'Arial', sans-serif; background-color: #f1f5f9; padding: 20px;">
-        <div style="max-width: 750px; margin: 0 auto; background: #ffffff; padding: 30px; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-
-          <!-- HEADER -->
-          <div style="text-align:center; margin-bottom:20px;">
-            <h1 style="color: #1e3a8a; margin:0; font-size:22px;">⚽ METRIC-FOOT — OVER 2.5</h1>
-            <p style="color:#64748b; margin:6px 0 0 0; font-size:13px;">Méthode YouTube · Fenêtre 48h · {now_str}</p>
-          </div>
-
-          <!-- STATS RAPIDES -->
-          <div style="display:flex; gap:10px; margin-bottom:20px; text-align:center;">
-            <div style="flex:1; background:#eff6ff; border-radius:8px; padding:12px;">
-              <div style="font-size:22px; font-weight:bold; color:#1d4ed8;">{len(scanned_results)}</div>
-              <div style="font-size:11px; color:#64748b;">Matchs scannés</div>
-            </div>
-            <div style="flex:1; background:#fefce8; border-radius:8px; padding:12px;">
-              <div style="font-size:22px; font-weight:bold; color:#d97706;">{nb_simple}</div>
-              <div style="font-size:11px; color:#64748b;">🎥 Signal S3 seul</div>
-            </div>
-            <div style="flex:1; background:#f0fdf4; border-radius:8px; padding:12px;">
-              <div style="font-size:22px; font-weight:bold; color:#16a34a;">{nb_double}</div>
-              <div style="font-size:11px; color:#64748b;">⭐⭐ Double Confirm.</div>
-            </div>
-          </div>
-
-          <!-- LÉGENDE DE GESTION DE CAPITAL (STAKING SCALE 3€ À 6€) -->
-          <div style="background:#f8fafc; border-radius:8px; padding:12px 16px; margin-bottom:20px; font-size:12px; color:#475569; border:1px solid #e2e8f0;">
-            <b style="color:#0f172a; font-size:13px;">📐 BARÈME DE MISES OPTIMISÉ (GAMME 3€ À 6€) :</b>
-            <table style="width:100%; margin-top:6px; font-size:11px; text-align:center; border-collapse:collapse;">
-              <tr style="background:#e2e8f0; font-weight:bold; color:#334155;">
-                <td style="padding:4px;">Cote Over 2.5</td>
-                <td style="padding:4px;">Mise Signal S3 🎥</td>
-                <td style="padding:4px;">Mise Double Confirm. ⭐⭐</td>
-              </tr>
-              <tr>
-                <td style="padding:4px; font-weight:bold; color:#16a34a;">1.50 à 1.69</td>
-                <td style="padding:4px;"><b>3,00 €</b></td>
-                <td style="padding:4px; color:#16a34a; font-weight:bold;">6,00 €</td>
-              </tr>
-              <tr style="background:#f1f5f9;">
-                <td style="padding:4px; font-weight:bold; color:#2563eb;">1.70 à 1.89</td>
-                <td style="padding:4px;"><b>2,50 €</b></td>
-                <td style="padding:4px; color:#16a34a; font-weight:bold;">5,00 €</td>
               </tr>
               <tr>
                 <td style="padding:4px; font-weight:bold; color:#d97706;">&ge; 1.90</td>
