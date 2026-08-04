@@ -518,20 +518,48 @@ def main():
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
 
-    # ── Envoi Gmail SMTP ─────────────────────────────────────────────────────
+    # ── Envoi d'email Multi-Fournisseurs (SFR + Gmail SMTP) ─────────────────
     recipients     = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
     gmail_email    = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
     gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
+    smtp_host      = os.environ.get("SMTP_HOST", "")
+    smtp_port      = int(os.environ.get("SMTP_PORT", "587"))
+    smtp_user      = os.environ.get("SMTP_USER", "")
+    smtp_pass      = os.environ.get("SMTP_PASS", "")
 
     nb_s3 = len(s3_matches)
     subject_flag = f"🔥 {nb_double} DOUBLE + {nb_simple} S3" if nb_double else (f"🎥 {nb_s3} S3 détecté{'s' if nb_s3>1 else ''}" if nb_s3 else "ℹ️ Aucun signal")
+    
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"OVER 2.5 UNIBET — {subject_flag} — {datetime.now(timezone.utc).strftime('%d/%m %H:%M')} UTC"
-    msg["From"]    = f"Gregory LANGLET <{gmail_email if gmail_password else 'gregory.langlet@sfr.fr'}>"
+    msg["From"]    = f"Gregory LANGLET <{smtp_user if smtp_user else gmail_email}>"
     msg["To"]      = ", ".join(recipients)
     msg.attach(MIMEText(html_body, "html", "utf-8"))
 
-    if gmail_password:
+    sent_success = False
+
+    # Option A: SFR / Custom SMTP
+    if smtp_host and smtp_user and smtp_pass:
+        try:
+            print(f"Sending email to {recipients} via {smtp_host}:{smtp_port}...")
+            if smtp_port == 465:
+                with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=30) as server:
+                    server.login(smtp_user, smtp_pass)
+                    server.sendmail(smtp_user, recipients, msg.as_string())
+            else:
+                with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login(smtp_user, smtp_pass)
+                    server.sendmail(smtp_user, recipients, msg.as_string())
+            print(f"SUCCESS! Email sent via {smtp_host}.")
+            sent_success = True
+        except Exception as e:
+            print(f"Failed sending email via {smtp_host}: {e}")
+
+    # Option B: Gmail SMTP (en secours ou en complément)
+    if not sent_success and gmail_password:
         try:
             print(f"Sending email to {recipients} via Gmail SMTP...")
             with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
@@ -541,8 +569,12 @@ def main():
                 server.login(gmail_email, gmail_password)
                 server.sendmail(gmail_email, recipients, msg.as_string())
             print("SUCCESS! Email sent via Gmail SMTP.")
+            sent_success = True
         except Exception as e:
             print(f"Failed sending email via Gmail SMTP: {e}")
+
+    if not sent_success:
+        print("WARNING: Email could not be delivered through any SMTP provider.")
 
 if __name__ == "__main__":
     main()
