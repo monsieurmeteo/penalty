@@ -13,7 +13,7 @@
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 04/08 à 18h00",
       "val_s22": 11.5,
-      "val_o25": 1.82,
+      "val_o25": 1.85,
       "double": true
     },
     "3368034": {
@@ -32,20 +32,20 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3365819": {
-      "match": "Saint-Gilloise - Bodø/Glimt",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 20h00",
-      "val_s22": 9.4,
-      "val_o25": 1.5,
-      "double": true
-    },
     "3368613": {
       "match": "Atert Bissen - F91 Dudelange",
       "league": "Luxembourg • D1 Luxembourg",
       "date_str": "Mar. 04/08 à 20h00",
       "val_s22": 11.0,
       "val_o25": 1.52,
+      "double": true
+    },
+    "3365819": {
+      "match": "Saint-Gilloise - Bodø/Glimt",
+      "league": "Coupes D Europe • Championsleague",
+      "date_str": "Mar. 04/08 à 20h00",
+      "val_s22": 9.4,
+      "val_o25": 1.5,
       "double": true
     },
     "3367570": {
@@ -92,8 +92,8 @@
       "match": "Minnesota Utd - FC Juarez",
       "league": "Amerique • Leagues Cup",
       "date_str": "Mer. 05/08 à 02h30",
-      "val_s22": 11.5,
-      "val_o25": 1.62,
+      "val_s22": 11.0,
+      "val_o25": 1.55,
       "double": true
     },
     "3362487": {
@@ -124,7 +124,7 @@
       "match": "Hafnarfjordur - KR Reykjavik",
       "league": "Islande • D1 Islande",
       "date_str": "Mer. 05/08 à 21h15",
-      "val_s22": 9.6,
+      "val_s22": 9.7,
       "val_o25": 1.15,
       "double": true
     },
@@ -142,6 +142,14 @@
       "date_str": "Jeu. 06/08 à 01h30",
       "val_s22": 12.0,
       "val_o25": 1.28,
+      "double": true
+    },
+    "3360948": {
+      "match": "Dallas FC - Queretaro FC",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 06/08 à 02h30",
+      "val_s22": 10.5,
+      "val_o25": 1.52,
       "double": true
     }
   }
