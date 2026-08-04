@@ -1,26 +1,18 @@
 {
   "s3": {
-    "3365631": {
-      "match": "Sparta Prague - Lyon",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 20h00",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3365819": {
-      "match": "Saint-Gilloise - Bodø/Glimt",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 20h00",
-      "val_s22": 9.8,
-      "val_o25": 1.62,
-      "double": true
-    },
     "3367439": {
       "match": "Apol.Limassol - C.Sosnowiec F",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 16h00",
       "val_s22": 12.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3367432": {
+      "match": "St.Polten F - BSC Young Boys",
+      "league": "Coupes D Europe • Ldc F",
+      "date_str": "Mer. 05/08 à 18h00",
+      "val_s22": 11.0,
       "val_o25": 1.6,
       "double": true
     },
@@ -32,20 +24,20 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3363357": {
+      "match": "Los Angeles FC - Chivas",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 06/08 à 04h30",
+      "val_s22": 9.6,
+      "val_o25": 1.6,
+      "double": true
+    },
     "3368173": {
       "match": "Kups - Uni.Craiova",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 17h00",
       "val_s22": 11.5,
       "val_o25": 1.7,
-      "double": true
-    },
-    "3365821": {
-      "match": "Jagiellonia - Rangers",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.0,
-      "val_o25": 1.75,
       "double": true
     },
     "3368197": {
@@ -62,6 +54,62 @@
       "date_str": "Jeu. 06/08 à 18h00",
       "val_s22": 12.0,
       "val_o25": 1.75,
+      "double": true
+    },
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.0,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368200": {
+      "match": "Hradec Kralové - Besiktas",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368227": {
+      "match": "RKS Rakow - Hammarby",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
       "double": true
     }
   }
