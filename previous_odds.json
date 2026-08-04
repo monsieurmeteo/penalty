@@ -40,14 +40,6 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368224": {
-      "match": "Mac.Tel Aviv - CSKA Sofia",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.8,
-      "double": true
-    },
     "3365821": {
       "match": "Jagiellonia - Rangers",
       "league": "Coupes D Europe • Europa League",
@@ -62,6 +54,38 @@
       "date_str": "Jeu. 06/08 à 18h00",
       "val_s22": 10.5,
       "val_o25": 1.6,
+      "double": true
+    },
+    "3368224": {
+      "match": "Mac.Tel Aviv - CSKA Sofia",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 12.0,
+      "val_o25": 1.8,
+      "double": true
+    },
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
       "double": true
     },
     "3368190": {
@@ -80,36 +104,12 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368150": {
-      "match": "Inter Escaldes - FC Flora",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.7,
-      "double": true
-    },
     "3368591": {
       "match": "Dynamo Kiev - FC Qarabag",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.0,
       "val_o25": 1.65,
-      "double": true
-    },
-    "3368305": {
-      "match": "IFK Göteborg - La Gantoise",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.5,
-      "val_o25": 1.7,
       "double": true
     },
     "3368227": {
