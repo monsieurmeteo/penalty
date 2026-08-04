@@ -378,18 +378,91 @@ def main():
     if not yt_cards:
         yt_cards = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:24px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</div>'
 
+    # ── Section Duo Bar Tabac (3 Tickets à 3€) ─────────────────────────────
+    tabac_duo_html = ""
+    doubles_list = [m for m in s3_matches if m["double_confirm"]]
+    if len(doubles_list) >= 2:
+        mA = doubles_list[0]
+        mB = doubles_list[1]
+        cA = mA.get("over25", 1.75)
+        cB = mB.get("over25", 1.80)
+        cComb = round(cA * cB, 2)
+        pay1 = round(3.0 * cA, 2)
+        pay2 = round(3.0 * cB, 2)
+        payComb = round(3.0 * cComb, 2)
+        totMax = round(pay1 + pay2 + payComb, 2)
+        profMax = round(totMax - 9.0, 2)
+        perte1 = round(9.0 - pay1, 2)
+
+        tabac_duo_html = f"""
+        <div style="background:linear-gradient(135deg, #065f46 0%, #047857 100%); border-radius:12px; padding:18px; margin-bottom:24px; color:white; box-shadow:0 4px 12px rgba(4,120,87,0.15);">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:8px; margin-bottom:12px;">
+            <div style="font-weight:800; font-size:15px; letter-spacing:0.5px;">🎟️ DUO CONSEILLÉ BAR TABAC (3 TICKETS À 3€)</div>
+            <div style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">BUDGET TOTAL : 9,00 €</div>
+          </div>
+          
+          <div style="font-size:13px; margin-bottom:10px; line-height:1.5;">
+            <b>Match A :</b> {mA['dom']} vs {mA['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
+            <b>Match B :</b> {mB['dom']} vs {mB['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.2); padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:12px; line-height:1.6;">
+            <b>• Ticket 1 (Simple A) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay1} €</b><br>
+            <b>• Ticket 2 (Simple B) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay2} €</b><br>
+            <b>• Ticket 3 (Combiné A+B) :</b> 3,00 € (Cote {cComb}) &rarr; Gain potentiel : <b>{payComb} €</b>
+          </div>
+
+          <div style="font-size:12px; display:flex; gap:10px;">
+            <div style="flex:1; background:rgba(255,255,255,0.15); padding:8px 12px; border-radius:6px; text-align:center;">
+              🟢 <b>SI 2/2 PASSE :</b><br>Vous touchez <b style="font-size:15px; color:#fef08a;">{totMax} € CASH</b><br>(+{profMax} € net)
+            </div>
+            <div style="flex:1; background:rgba(255,255,255,0.15); padding:8px 12px; border-radius:6px; text-align:center;">
+              🟡 <b>SI 1/2 PASSE :</b><br>Vous touchez <b style="font-size:15px; color:#ffffff;">{pay1} € CASH</b><br>(perte amortie -{perte1} €)
+            </div>
+          </div>
+        </div>
+        """
+
     # ── Corps du mail HTML ───────────────────────────────────────────────────
     html_body = f"""
     <!DOCTYPE html>
     <html>
-              </tr>
-              <tr>
-                <td style="padding:4px; font-weight:bold; color:#d97706;">&ge; 1.90</td>
-                <td style="padding:4px;"><b>2,00 €</b></td>
-                <td style="padding:4px; color:#16a34a; font-weight:bold;">4,00 €</td>
-              </tr>
-            </table>
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin:0; padding: 20px;">
+        <div style="max-width: 680px; margin: 0 auto; background: #ffffff; padding: 28px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
+
+          <!-- BANNIÈRE HEADER ELEGANTE -->
+          <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 24px; color: white;">
+            <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ METRIC-FOOT — OVER 2.5</h1>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd;">Méthode YouTube (Signal Score 2-2 &le; 12.00) · Fenêtre 48h</p>
+            <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">
+              Mise à jour : {now_str}
+            </div>
           </div>
+
+          <!-- KPI BLOCS SYNTHÈSE -->
+          <table style="width:100%; border-collapse:separate; border-spacing:10px; margin-bottom:20px; text-align:center;">
+            <tr>
+              <td style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; width:33%;">
+                <div style="font-size:26px; font-weight:800; color:#1e40af;">{len(scanned_results)}</div>
+                <div style="font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; margin-top:2px;">Matchs scannés</div>
+              </td>
+              <td style="background:#fffbeb; border:1px solid #fef08a; border-radius:10px; padding:14px; width:33%;">
+                <div style="font-size:26px; font-weight:800; color:#b45309;">{nb_simple}</div>
+                <div style="font-size:11px; font-weight:600; color:#854d0e; text-transform:uppercase; margin-top:2px;">🎥 Signal S3 Seul</div>
+              </td>
+              <td style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px; width:33%;">
+                <div style="font-size:26px; font-weight:800; color:#15803d;">{nb_double}</div>
+                <div style="font-size:11px; font-weight:600; color:#166534; text-transform:uppercase; margin-top:2px;">⭐⭐ Double Confirm.</div>
+              </td>
+            </tr>
+          </table>
+
+          <!-- CARTE SPECIALE DUO CONSEILLE BAR TABAC -->
+          {tabac_duo_html}
 
           <!-- SECTION ÉVOLUTIONS -->
           {evo_html}
