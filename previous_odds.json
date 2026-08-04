@@ -1,35 +1,11 @@
 {
   "s3": {
-    "3368036": {
-      "match": "Ararat Armenia - NK Celje",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 18h00",
-      "val_s22": 11.5,
-      "val_o25": 1.85,
-      "double": true
-    },
-    "3368035": {
-      "match": "Mjällby - Slo.Bratislava",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 18h00",
-      "val_s22": 11.5,
-      "val_o25": 1.78,
-      "double": true
-    },
-    "3368034": {
-      "match": "Hap.Beer Sheva - Etoile Rouge",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 19h30",
-      "val_s22": 12.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3365631": {
       "match": "Sparta Prague - Lyon",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 04/08 à 20h00",
       "val_s22": 10.5,
-      "val_o25": 1.62,
+      "val_o25": 1.6,
       "double": true
     },
     "3365819": {
@@ -40,12 +16,12 @@
       "val_o25": 1.62,
       "double": true
     },
-    "3368176": {
-      "match": "Shamrock - KS Egnatia",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Mar. 04/08 à 21h00",
-      "val_s22": 11.5,
-      "val_o25": 1.78,
+    "3367439": {
+      "match": "Apol.Limassol - C.Sosnowiec F",
+      "league": "Coupes D Europe • Ldc F",
+      "date_str": "Mer. 05/08 à 16h00",
+      "val_s22": 12.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3368195": {
@@ -54,6 +30,38 @@
       "date_str": "Mer. 05/08 à 20h15",
       "val_s22": 12.0,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3368173": {
+      "match": "Kups - Uni.Craiova",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 17h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.0,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3368197": {
+      "match": "HJK Helsinki - Motherwell",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3368224": {
+      "match": "Mac.Tel Aviv - CSKA Sofia",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
       "double": true
     }
   }
