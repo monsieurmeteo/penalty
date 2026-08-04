@@ -8,7 +8,7 @@ from email.mime.multipart import MIMEMultipart
 # ── Seuils ──────────────────────────────────────────────────────────────────
 SEUIL_S4      = 1.87   # Over 2.5 direct Unibet  (cote juste 1.75 × marge 1.07)
 SEUIL_S3      = 12.00  # Score exact 2-2 Unibet  (1XBET ≤ 10.00 × ratio 1.115)
-MIN_COTE_O25  = 1.50   # Cote Over 2.5 minimale retenue (filtre anti-piège < 1.50)
+MIN_COTE_O25  = 1.60   # Cote Over 2.5 minimale retenue (filtre anti-piège < 1.60)
 
 H = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
