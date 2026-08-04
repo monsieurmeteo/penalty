@@ -1,19 +1,19 @@
 {
   "s3": {
-    "3368035": {
-      "match": "Mjällby - Slo.Bratislava",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mar. 04/08 à 18h00",
-      "val_s22": 11.5,
-      "val_o25": 1.78,
-      "double": true
-    },
     "3368036": {
       "match": "Ararat Armenia - NK Celje",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 04/08 à 18h00",
       "val_s22": 11.0,
       "val_o25": 1.82,
+      "double": true
+    },
+    "3368035": {
+      "match": "Mjällby - Slo.Bratislava",
+      "league": "Coupes D Europe • Championsleague",
+      "date_str": "Mar. 04/08 à 18h00",
+      "val_s22": 11.5,
+      "val_o25": 1.78,
       "double": true
     },
     "3368034": {
@@ -38,6 +38,14 @@
       "date_str": "Mar. 04/08 à 20h00",
       "val_s22": 10.5,
       "val_o25": 1.62,
+      "double": true
+    },
+    "3365819": {
+      "match": "Saint-Gilloise - Bodø/Glimt",
+      "league": "Coupes D Europe • Championsleague",
+      "date_str": "Mar. 04/08 à 20h00",
+      "val_s22": 9.7,
+      "val_o25": 1.6,
       "double": true
     },
     "3368176": {
