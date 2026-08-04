@@ -40,12 +40,12 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368197": {
-      "match": "HJK Helsinki - Motherwell",
-      "league": "Coupes D Europe • Europa Conference",
+    "3368224": {
+      "match": "Mac.Tel Aviv - CSKA Sofia",
+      "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
+      "val_s22": 12.0,
+      "val_o25": 1.8,
       "double": true
     },
     "3365821": {
@@ -56,19 +56,35 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3368224": {
-      "match": "Mac.Tel Aviv - CSKA Sofia",
-      "league": "Coupes D Europe • Europa League",
+    "3368197": {
+      "match": "HJK Helsinki - Motherwell",
+      "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.8,
+      "val_s22": 10.5,
+      "val_o25": 1.6,
       "double": true
     },
-    "3368227": {
-      "match": "RKS Rakow - Hammarby",
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 10.5,
+      "val_s22": 11.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3368200": {
+      "match": "Hradec Kralové - Besiktas",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
       "val_o25": 1.65,
       "double": true
     },
@@ -88,22 +104,6 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3368200": {
-      "match": "Hradec Kralové - Besiktas",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3368305": {
       "match": "IFK Göteborg - La Gantoise",
       "league": "Coupes D Europe • Europa Conference",
@@ -112,11 +112,11 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
+    "3368227": {
+      "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
+      "val_s22": 10.5,
       "val_o25": 1.65,
       "double": true
     }
