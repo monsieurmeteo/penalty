@@ -378,12 +378,15 @@ def main():
     if not yt_cards:
         yt_cards = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:24px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</div>'
 
-    # ── Section Duo Bar Tabac (3 Tickets à 3€) ─────────────────────────────
+    # ── Section Duos Bar Tabac (3 Tickets à 3€ par Duo) ──────────────────────
     tabac_duo_html = ""
     doubles_list = [m for m in s3_matches if m["double_confirm"]]
-    if len(doubles_list) >= 2:
-        mA = doubles_list[0]
-        mB = doubles_list[1]
+    duo_cards = []
+    
+    for idx in range(0, len(doubles_list) - 1, 2):
+        duo_num = (idx // 2) + 1
+        mA = doubles_list[idx]
+        mB = doubles_list[idx + 1]
         cA = mA.get("over25", 1.75)
         cB = mB.get("over25", 1.80)
         cComb = round(cA * cB, 2)
@@ -394,22 +397,22 @@ def main():
         profMax = round(totMax - 9.0, 2)
         perte1 = round(9.0 - pay1, 2)
 
-        tabac_duo_html = f"""
-        <div style="background:linear-gradient(135deg, #065f46 0%, #047857 100%); border-radius:12px; padding:18px; margin-bottom:24px; color:white; box-shadow:0 4px 12px rgba(4,120,87,0.15);">
+        card = f"""
+        <div style="background:linear-gradient(135deg, #065f46 0%, #047857 100%); border-radius:12px; padding:18px; margin-bottom:16px; color:white; box-shadow:0 4px 12px rgba(4,120,87,0.15);">
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:8px; margin-bottom:12px;">
-            <div style="font-weight:800; font-size:15px; letter-spacing:0.5px;">🎟️ DUO CONSEILLÉ BAR TABAC (3 TICKETS À 3€)</div>
-            <div style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">BUDGET TOTAL : 9,00 €</div>
+            <div style="font-weight:800; font-size:15px; letter-spacing:0.5px;">🎟️ DUO BAR TABAC N°{duo_num} (3 TICKETS À 3€)</div>
+            <div style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">BUDGET DUO : 9,00 €</div>
           </div>
           
           <div style="font-size:13px; margin-bottom:10px; line-height:1.5;">
-            <b>Match A :</b> {mA['dom']} vs {mA['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
-            <b>Match B :</b> {mB['dom']} vs {mB['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
+            <b>Match 1 :</b> {mA['dom']} vs {mA['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
+            <b>Match 2 :</b> {mB['dom']} vs {mB['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
           </div>
 
           <div style="background:rgba(0,0,0,0.2); padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:12px; line-height:1.6;">
-            <b>• Ticket 1 (Simple A) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay1} €</b><br>
-            <b>• Ticket 2 (Simple B) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay2} €</b><br>
-            <b>• Ticket 3 (Combiné A+B) :</b> 3,00 € (Cote {cComb}) &rarr; Gain potentiel : <b>{payComb} €</b>
+            <b>• Ticket 1 (Simple 1) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay1} €</b><br>
+            <b>• Ticket 2 (Simple 2) :</b> 3,00 € &rarr; Gain potentiel : <b>{pay2} €</b><br>
+            <b>• Ticket 3 (Combiné 1+2) :</b> 3,00 € (Cote {cComb}) &rarr; Gain potentiel : <b>{payComb} €</b>
           </div>
 
           <div style="font-size:12px; display:flex; gap:10px;">
@@ -420,6 +423,17 @@ def main():
               🟡 <b>SI 1/2 PASSE :</b><br>Vous touchez <b style="font-size:15px; color:#ffffff;">{pay1} € CASH</b><br>(perte amortie -{perte1} €)
             </div>
           </div>
+        </div>
+        """
+        duo_cards.append(card)
+
+    if duo_cards:
+        tabac_duo_html = f"""
+        <div style="margin-bottom:24px;">
+          <h3 style="color: #0f172a; margin:0 0 12px 0; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">
+            🔥 DUOS CONSEILLÉS BAR TABAC ({len(duo_cards)} DUO{'S' if len(duo_cards)>1 else ''})
+          </h3>
+          {''.join(duo_cards)}
         </div>
         """
 
