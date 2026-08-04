@@ -404,9 +404,9 @@ def main():
             <div style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">BUDGET DUO : 9,00 €</div>
           </div>
           
-          <div style="font-size:13px; margin-bottom:10px; line-height:1.5;">
-            <b>Match 1 :</b> {mA['dom']} vs {mA['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
-            <b>Match 2 :</b> {mB['dom']} vs {mB['ext']} &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
+          <div style="font-size:13px; margin-bottom:10px; line-height:1.6;">
+            <b>Match 1 :</b> <b>{mA['dom']} vs {mA['ext']}</b> <span style="font-size:12px; opacity:0.9;">(📅 {mA['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
+            <b>Match 2 :</b> <b>{mB['dom']} vs {mB['ext']}</b> <span style="font-size:12px; opacity:0.9;">(📅 {mB['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
           </div>
 
           <div style="background:rgba(0,0,0,0.2); padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:12px; line-height:1.6;">
