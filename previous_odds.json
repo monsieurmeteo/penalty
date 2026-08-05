@@ -32,6 +32,14 @@
       "val_o25": 1.78,
       "double": true
     },
+    "3368235": {
+      "match": "FC Noah - Sion",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 9.9,
+      "val_o25": 1.55,
+      "double": true
+    },
     "3365821": {
       "match": "Jagiellonia - Rangers",
       "league": "Coupes D Europe • Europa League",
@@ -48,12 +56,12 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3368235": {
-      "match": "FC Noah - Sion",
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
       "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
       "double": true
     },
     "3368475": {
@@ -64,36 +72,12 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3368150": {
-      "match": "Inter Escaldes - FC Flora",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.75,
-      "double": true
-    },
     "3368305": {
       "match": "IFK Göteborg - La Gantoise",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.5,
       "val_o25": 1.7,
-      "double": true
-    },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
       "double": true
     },
     "3368591": {
@@ -104,12 +88,28 @@
       "val_o25": 1.65,
       "double": true
     },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
     "3368227": {
       "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.0,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3368191": {
@@ -136,20 +136,20 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3363942": {
-      "match": "Sønderjyske - Viborg FF",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Ven. 07/08 à 19h00",
-      "val_s22": 10.0,
-      "val_o25": 1.5,
-      "double": true
-    },
     "3359753": {
       "match": "Sandefjord - Kfum Oslo",
       "league": "Norvege • D1 Norvege",
       "date_str": "Ven. 07/08 à 19h00",
       "val_s22": 10.0,
       "val_o25": 1.6,
+      "double": true
+    },
+    "3363942": {
+      "match": "Sønderjyske - Viborg FF",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Ven. 07/08 à 19h00",
+      "val_s22": 10.0,
+      "val_o25": 1.5,
       "double": true
     },
     "3359752": {
