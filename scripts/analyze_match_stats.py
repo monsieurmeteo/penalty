@@ -196,14 +196,14 @@ def analyze_match(query_home, query_away):
         f"- **Les 2 équipes marquent (BTTS)** : `{btts_oui if btts_oui else 'N/A'}`",
         f"- **Buteur proche de la moyenne** : **{buteur_name}** (@`{buteur_cote}`) [Moy. marché : `{buteur_avg}`]" if buteur_name else "- **Buteur** : *Marché non disponible*",
         "",
-        "## 📊 STATISTIQUES RÉELLES TERRAIN (SPORTRADAR)",
+        "## 📊 STATISTIQUES RÉELLES — 10 DERNIERS MATCHS (TOUTES COMPÉTITIONS)",
     ]
 
     if sr_data:
         report.extend([
             f"- **Indice de Confiance Stats** : **`{sr_data['conf_score']}%`**",
-            f"- **BTTS Réel %** : `{sr_data['btts_real_pct']}%`",
-            f"- **Over 2.5 Réel %** : `{sr_data['o25_real_pct']}%`",
+            f"- **BTTS Réel (10 derniers matchs)** : `{sr_data['btts_real_pct']}%`",
+            f"- **Over 2.5 Réel (10 derniers matchs)** : `{sr_data['o25_real_pct']}%`",
             f"- **Moyenne Buts / Match** : `{sr_data['avg_goals']} buts`",
             f"- **Alerte Piège Stats** : {'⚠️ PIÈGE DÉTECTÉ' if sr_data['is_trap'] else '✅ VALIDE (AUCUN PIÈGE)'}"
         ])
