@@ -97,36 +97,6 @@ def get_unibet_active_games():
     print(f"Fixtures trouvées : {len(games)}")
     return games
 
-def fetch_sr_match_stats(sr_id):
-    if not sr_id: return None
-    url = f"https://s5.sir.sportradar.com/unibet/fr/match/{sr_id}"
-    try:
-        H_sr = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=H_sr, timeout=6)
-        if r.status_code != 200: return None
-        soup = BeautifulSoup(r.text, 'html.parser')
-        for s in soup.find_all('script'):
-            stext = s.string or ""
-            if len(stext) > 10000 and "streamController" in stext:
-                btts_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Deux', stext, re.IGNORECASE)
-                o25_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Plus de 2\.5', stext, re.IGNORECASE)
-                goals_m = re.findall(r'(\d+\.\d{1,2})\s*(?:\\\\")?\s*,\s*(?:\\\\")?Total de Buts', stext, re.IGNORECASE)
-                btts_p = int(btts_m[0]) if btts_m else 55
-                o25_p = int(o25_m[0]) if o25_m else 50
-                g_avg = float(goals_m[0]) if goals_m else 2.65
-                conf = round(btts_p * 0.4 + o25_p * 0.4 + min(g_avg / 3.0, 1.0) * 20)
-                conf = max(15, min(99, conf))
-                is_trap = bool(btts_p < 50 or g_avg < 2.30)
-                return {
-                    "btts_real_pct": btts_p,
-                    "o25_real_pct": o25_p,
-                    "avg_goals": round(g_avg, 2),
-                    "conf_score": conf,
-                    "is_trap": is_trap
-                }
-    except Exception:
-        pass
-    return None
 
 def scan_unibet_match_details(game):
     if game.get("not_found"):
@@ -242,11 +212,6 @@ def scan_unibet_match_details(game):
             margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
 
-            stats_obj = event.get("stats") or {}
-            lmt_obj   = event.get("lmt") or {}
-            sr_id     = stats_obj.get("id") or lmt_obj.get("id")
-            sr_data   = fetch_sr_match_stats(sr_id)
-
             return {
                 **game,
                 "dom": dom,
@@ -260,8 +225,6 @@ def scan_unibet_match_details(game):
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
-                "sr_id": sr_id,
-                "sr_data": sr_data,
             }
     except Exception:
         return None
@@ -308,9 +271,8 @@ def main():
             continue
         o25 = r.get("over25")
         btts = r.get("btts_oui")
-        is_trap = bool(r.get("sr_data") and r["sr_data"].get("is_trap"))
         double = bool(o25 and o25 <= SEUIL_S4)
-        triple = bool(double and btts and btts <= SEUIL_BTTS and not is_trap)
+        triple = bool(double and btts and btts <= SEUIL_BTTS)
         r["double_confirm"] = double
         r["triple_confirm"] = triple
         s3_all.append(r)
@@ -498,14 +460,7 @@ def main():
 
           {buteur_info_html}
 
-          """ + (f"""
-          <div style="margin-top:10px; background:rgba(255,255,255,0.9); padding:8px 12px; border-radius:6px; font-size:12px; color:#334155; border-left:3px solid #7e22ce;">
-            📊 <b>Indice Confiance Stats : <span style="color:#7e22ce; font-weight:800;">{m['sr_data']['conf_score']}%</span></b> &nbsp;|&nbsp;
-            BTTS Réel : <b>{m['sr_data']['btts_real_pct']}%</b> &nbsp;|&nbsp;
-            Over 2.5 Réel : <b>{m['sr_data']['o25_real_pct']}%</b> &nbsp;|&nbsp;
-            Moy. Buts : <b>{m['sr_data']['avg_goals']} / match</b>
-          </div>
-          """ if m.get("sr_data") else "") + f"""
+          """ + f"""
 
         </div>
         """
@@ -616,12 +571,6 @@ def main():
         else:
             buteur_cell = '<span style="color:#94a3b8; font-style:italic;">N/A</span>'
 
-        if m.get("sr_data"):
-            conf = m["sr_data"]["conf_score"]
-            stats_cell = f'<b>{conf}%</b> <span style="font-size:9px; color:#64748b;">(BTTS {m["sr_data"]["btts_real_pct"]}%)</span>'
-        else:
-            stats_cell = '<span style="color:#94a3b8; font-style:italic;">N/A</span>'
-
         all_matches_rows += (
             f'<tr style="background:{row_bg}; border-bottom:1px solid #e2e8f0;">'
             f'<td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m["date_str"]}</td>'
@@ -630,7 +579,6 @@ def main():
             f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{s22_val}</td>'
             f'<td style="padding:7px 10px; text-align:center; font-weight:700; color:{o25_col};">{o25_val}</td>'
             f'<td style="padding:7px 10px; text-align:left; color:#1e293b;">{buteur_cell}</td>'
-            f'<td style="padding:7px 10px; text-align:center; color:#7e22ce;">{stats_cell}</td>'
             f'<td style="padding:7px 10px; text-align:center;"><span style="background:{badge_bg}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{badge_lbl}</span></td>'
             f'</tr>'
         )
@@ -703,7 +651,6 @@ def main():
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Score 2-2</th>
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Over 2.5</th>
                   <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Buteur Moyenne</th>
-                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Conf. Stats</th>
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Niveau</th>
                 </tr>
               </thead>
