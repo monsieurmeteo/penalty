@@ -1,35 +1,27 @@
 {
   "s3": {
-    "3362488": {
-      "match": "Columbus Crew - Atlas FC",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Mer. 05/08 à 01h45",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3360934": {
-      "match": "Charlotte FC - UNAM Pumas",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Mer. 05/08 à 02h00",
-      "val_s22": 9.4,
-      "val_o25": 1.5,
-      "double": true
-    },
     "3362463": {
       "match": "Minnesota Utd - FC Juarez",
       "league": "Amerique • Leagues Cup",
       "date_str": "Mer. 05/08 à 02h30",
-      "val_s22": 10.5,
-      "val_o25": 1.55,
+      "val_s22": 11.0,
+      "val_o25": 1.52,
       "double": true
     },
     "3362487": {
       "match": "Tigres UANL - Salt Lake",
       "league": "Amerique • Leagues Cup",
-      "date_str": "Mer. 05/08 à 04h00",
+      "date_str": "Mer. 05/08 à 04h10",
       "val_s22": 9.3,
       "val_o25": 1.52,
+      "double": true
+    },
+    "3367433": {
+      "match": "Ajax F - Brøndby IF",
+      "league": "Coupes D Europe • Ldc F",
+      "date_str": "Mer. 05/08 à 15h00",
+      "val_s22": 10.5,
+      "val_o25": 1.5,
       "double": true
     },
     "3367439": {
@@ -44,7 +36,7 @@
       "match": "Ferencvaros F - PAOK",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 16h30",
-      "val_s22": 10.5,
+      "val_s22": 11.0,
       "val_o25": 1.55,
       "double": true
     },
@@ -52,7 +44,7 @@
       "match": "St.Polten F - BSC Young Boys",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 18h00",
-      "val_s22": 10.5,
+      "val_s22": 11.0,
       "val_o25": 1.62,
       "double": true
     },
@@ -96,14 +88,6 @@
       "val_o25": 1.5,
       "double": true
     },
-    "3368235": {
-      "match": "FC Noah - Sion",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
-      "double": true
-    },
     "3368224": {
       "match": "Mac.Tel Aviv - CSKA Sofia",
       "league": "Coupes D Europe • Europa League",
@@ -128,6 +112,30 @@
       "val_o25": 1.6,
       "double": true
     },
+    "3368235": {
+      "match": "FC Noah - Sion",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 9.9,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
     "3368475": {
       "match": "SherifTiraspol - Saint Gall",
       "league": "Coupes D Europe • Europa Conference",
@@ -136,17 +144,17 @@
       "val_o25": 1.5,
       "double": true
     },
-    "3368227": {
-      "match": "RKS Rakow - Hammarby",
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
+      "val_s22": 11.0,
+      "val_o25": 1.6,
       "double": true
     },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
+    "3368200": {
+      "match": "Hradec Kralové - Besiktas",
+      "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 12.0,
       "val_o25": 1.65,
@@ -160,28 +168,12 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368200": {
-      "match": "Hradec Kralové - Besiktas",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
+    "3368227": {
+      "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
+      "val_s22": 10.5,
       "val_o25": 1.65,
-      "double": true
-    },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
       "double": true
     },
     "3368150": {
