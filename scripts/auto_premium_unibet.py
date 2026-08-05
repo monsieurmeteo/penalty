@@ -467,7 +467,11 @@ def main():
 
     # ── Section Duos Bar Tabac (3 Tickets à 3€ par Duo) ──────────────────────
     tabac_duo_html = ""
-    doubles_list = [m for m in s3_matches if m["double_confirm"]]
+    # Priorité absolue aux matchs TRIPLE, puis DOUBLE
+    doubles_list = sorted(
+        [m for m in s3_matches if m.get("double_confirm")],
+        key=lambda x: (not x.get("triple_confirm", False), x.get("dt_obj", now_utc))
+    )
     duo_cards = []
     
     for idx in range(0, len(doubles_list) - 1, 2):
@@ -484,16 +488,21 @@ def main():
         profMax = round(totMax - 9.0, 2)
         perte1 = round(9.0 - pay1, 2)
 
+        both_triple = mA.get("triple_confirm") and mB.get("triple_confirm")
+        duo_badge_header = " ⭐⭐⭐ TRIPLE CONFIRMATION" if both_triple else ""
+        mA_badge = " ⭐⭐⭐ TRIPLE" if mA.get("triple_confirm") else " ⭐⭐ DOUBLE"
+        mB_badge = " ⭐⭐⭐ TRIPLE" if mB.get("triple_confirm") else " ⭐⭐ DOUBLE"
+
         card = f"""
         <div style="background:linear-gradient(135deg, #065f46 0%, #047857 100%); border-radius:12px; padding:18px; margin-bottom:16px; color:white; box-shadow:0 4px 12px rgba(4,120,87,0.15);">
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:8px; margin-bottom:12px;">
-            <div style="font-weight:800; font-size:15px; letter-spacing:0.5px;">🎟️ DUO BAR TABAC N°{duo_num} (3 TICKETS À 3€)</div>
+            <div style="font-weight:800; font-size:15px; letter-spacing:0.5px;">🎟️ DUO BAR TABAC N°{duo_num}{duo_badge_header} (3 TICKETS À 3€)</div>
             <div style="background:rgba(255,255,255,0.2); padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">BUDGET DUO : 9,00 €</div>
           </div>
           
           <div style="font-size:13px; margin-bottom:10px; line-height:1.6;">
-            <b>Match 1 :</b> <b>{mA['dom']} vs {mA['ext']}</b> <span style="font-size:12px; opacity:0.9;">(📅 {mA['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
-            <b>Match 2 :</b> <b>{mB['dom']} vs {mB['ext']}</b> <span style="font-size:12px; opacity:0.9;">(📅 {mB['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
+            <b>Match 1 :</b> <b>{mA['dom']} vs {mA['ext']}</b> <span style="font-size:11px; background:rgba(255,255,255,0.25); padding:1px 5px; border-radius:4px;">{mA_badge}</span> <span style="font-size:12px; opacity:0.9;">(📅 {mA['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cA}</span><br>
+            <b>Match 2 :</b> <b>{mB['dom']} vs {mB['ext']}</b> <span style="font-size:11px; background:rgba(255,255,255,0.25); padding:1px 5px; border-radius:4px;">{mB_badge}</span> <span style="font-size:12px; opacity:0.9;">(📅 {mB['date_str']})</span> &nbsp;|&nbsp; <span style="background:rgba(255,255,255,0.2); padding:1px 6px; border-radius:4px;">Cote Over 2.5 : {cB}</span>
           </div>
 
           <div style="background:rgba(0,0,0,0.2); padding:10px 14px; border-radius:8px; font-size:12px; margin-bottom:12px; line-height:1.6;">
