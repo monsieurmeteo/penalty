@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 # ── Seuils ──────────────────────────────────────────────────────────────────
 SEUIL_S4      = 1.87   # Over 2.5 direct Unibet  (cote juste 1.75 × marge 1.07)
 SEUIL_S3      = 12.00  # Score exact 2-2 Unibet  (1XBET ≤ 10.00 × ratio 1.115)
+SEUIL_BTTS    = 1.75   # BTTS Oui Unibet (cote Les 2 équipes marquent ≤ 1.75)
 MIN_COTE_O25  = 1.50   # Cote Over 2.5 minimale retenue (filtre anti-piège < 1.50)
 
 H = {
@@ -107,7 +108,7 @@ def scan_unibet_match_details(game):
         if not json_scripts:
             return None
 
-        c1 = cx = c2 = over25 = under25 = s22 = None
+        c1 = cx = c2 = over25 = under25 = s22 = btts_oui = None
         start_iso = ""
 
         for js in json_scripts:
@@ -159,6 +160,19 @@ def scan_unibet_match_details(game):
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
+                    # BTTS Oui (Les 2 équipes marquent)
+                    if m_desc in ["les 2 équipes marqueront-elles ?", "les 2 équipes marqueront-elles", "deux équipes marqueront-elles ?", "deux équipes marqueront-elles"] and btts_oui is None:
+                        for o in outcomes:
+                            o_desc = (o.get("description") or "").strip().lower()
+                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            if o_desc == "oui": btts_oui = p_val
+                    elif btts_oui is None and m_desc in ["quelle équipe marquera ?", "quelle équipe marquera"]:
+                        for o in outcomes:
+                            o_desc = (o.get("description") or "").strip().lower()
+                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            if "les 2 équipes marquent" in o_desc or "les deux équipes marquent" in o_desc:
+                                btts_oui = p_val
+
             # Buteur le plus proche de la moyenne des cotes
             buteur_name = None
             buteur_cote = None
@@ -206,6 +220,7 @@ def scan_unibet_match_details(game):
                 "c1": c1, "cx": cx, "c2": c2,
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
+                "btts_oui": btts_oui,
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
@@ -254,18 +269,22 @@ def main():
         if not (r.get("s22") and r["s22"] <= SEUIL_S3):
             continue
         o25 = r.get("over25")
+        btts = r.get("btts_oui")
         double = bool(o25 and o25 <= SEUIL_S4)
+        triple = bool(double and btts and btts <= SEUIL_BTTS)
         r["double_confirm"] = double
+        r["triple_confirm"] = triple
         s3_all.append(r)
 
-    s3_all.sort(key=lambda x: (not x["double_confirm"], x.get("dt_obj", now_utc)))
+    s3_all.sort(key=lambda x: (not x["triple_confirm"], not x["double_confirm"], x.get("dt_obj", now_utc)))
 
     # Filtre anti-piège sur MIN_COTE_O25 (uniquement pour les Duos Bar Tabac)
     s3_matches = [m for m in s3_all if not (m.get("over25") and m["over25"] < MIN_COTE_O25)]
 
-    nb_double = sum(1 for m in s3_matches if m["double_confirm"])
-    nb_simple = len(s3_matches) - nb_double
-    print(f"S3 retenus : {len(s3_matches)} ({nb_double} double confirmation, {nb_simple} signal seul)")
+    nb_triple = sum(1 for m in s3_matches if m.get("triple_confirm"))
+    nb_double = sum(1 for m in s3_matches if m.get("double_confirm") and not m.get("triple_confirm"))
+    nb_simple = len(s3_matches) - nb_double - nb_triple
+    print(f"S3 retenus : {len(s3_matches)} ({nb_triple} TRIPLE, {nb_double} DOUBLE, {nb_simple} signal seul)")
     print(f"S3 total sans filtre cote : {len(s3_all)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
@@ -346,8 +365,10 @@ def main():
     for m in s3_matches:
         s22 = m["s22"]
         o25 = m.get("over25")
+        btts_v = m.get("btts_oui")
         o25_f = m.get("over25_fair")
-        double = m["double_confirm"]
+        double = m.get("double_confirm", False)
+        triple = m.get("triple_confirm", False)
 
         # ── Calcul de la mise dynamique (Chiffres ronds sans décimales) ─────────
         o25_val = o25 if (o25 and o25 > 0) else 1.85
@@ -358,21 +379,32 @@ def main():
         else:
             mise_base = 1
 
-        mise = mise_base * 2 if double else mise_base
-
-        if double:
+        if triple:
+            mise = mise_base * 3
+            card_bg       = "#f3e8ff"
+            card_border   = "#9333ea"
+            badge_bg      = "#7e22ce"
+            badge_text    = "⭐⭐⭐ TRIPLE CONFIRMATION"
+            o25_badge     = f'<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block;">✅ Over 2.5: <b>{o25}</b></span>'
+            btts_badge    = f'<span style="background:#e9d5ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block; margin-left:4px;">✅ BTTS: <b>{btts_v}</b></span>'
+            btn_bg        = "#7e22ce"
+        elif double:
+            mise = mise_base * 2
             card_bg       = "#f0fdf4"
             card_border   = "#22c55e"
             badge_bg      = "#15803d"
             badge_text    = "⭐⭐ DOUBLE CONFIRMATION"
             o25_badge     = f'<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block;">✅ Over 2.5: <b>{o25}</b> <small style="color:#64748b;">(Dém. {o25_f})</small></span>'
+            btts_badge    = f'<span style="background:#f1f5f9; color:#475569; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block; margin-left:4px;">BTTS: <b>{btts_v if btts_v else "N/A"}</b></span>'
             btn_bg        = "#15803d"
         else:
+            mise = mise_base
             card_bg       = "#fffbeb"
             card_border   = "#f59e0b"
             badge_bg      = "#b45309"
             badge_text    = "🎥 SIGNAL S3 (MÉTHODE YOUTUBE)"
             o25_badge     = f'<span style="background:#fef3c7; color:#92400e; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block;">Over 2.5: <b>{o25 if o25 else "N/A"}</b></span>'
+            btts_badge    = f'<span style="background:#f1f5f9; color:#475569; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block; margin-left:4px;">BTTS: <b>{btts_v if btts_v else "N/A"}</b></span>'
             btn_bg        = "#d97706"
 
         buteur_info_html = ""
@@ -418,6 +450,7 @@ def main():
                 Score 2-2: <b style="color:#0f172a; font-size:14px;">{s22}</b>
               </span>
               {o25_badge}
+              {btts_badge}
             </div>
             <div style="background:{btn_bg}; color:white; padding:8px 16px; border-radius:8px; font-size:14px; font-weight:800; letter-spacing:0.5px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               💶 MISER {mise} €
@@ -496,10 +529,15 @@ def main():
     for m in scanned_results:
         if not m.get("buteur_name"):   # on n'affiche que les matchs avec un buteur dispo
             continue
+        is_triple = m.get("triple_confirm", False)
         is_double = m.get("double_confirm", False)
         is_s3     = bool(m.get("s22") and m["s22"] <= SEUIL_S3)
-        
-        if is_double:
+
+        if is_triple:
+            row_bg    = "#f3e8ff"
+            badge_bg  = "#7e22ce"
+            badge_lbl = "⭐⭐⭐ TRIPLE"
+        elif is_double:
             row_bg    = "#f0fdf4"
             badge_bg  = "#15803d"
             badge_lbl = "⭐⭐ DOUBLE"
@@ -649,8 +687,10 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    if nb_double:
-        subject_flag = f"{nb_double} conf. double + {nb_simple} signal"
+    if nb_triple:
+        subject_flag = f"{nb_triple} TRIPLE + {nb_double} DOUBLE + {nb_simple} signal"
+    elif nb_double:
+        subject_flag = f"{nb_double} DOUBLE + {nb_simple} signal"
     elif nb_s3:
         subject_flag = f"{nb_s3} signal{'s' if nb_s3>1 else ''} detecte{'s' if nb_s3>1 else ''}"
     else:
