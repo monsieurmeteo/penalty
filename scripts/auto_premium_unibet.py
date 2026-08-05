@@ -494,6 +494,8 @@ def main():
     # ── Pré-construction des lignes du tableau "Tous les matchs" ─────────────
     all_matches_rows = ""
     for m in scanned_results:
+        if not m.get("buteur_name"):   # on n'affiche que les matchs avec un buteur dispo
+            continue
         is_double = m.get("double_confirm", False)
         is_s3     = bool(m.get("s22") and m["s22"] <= SEUIL_S3)
         
