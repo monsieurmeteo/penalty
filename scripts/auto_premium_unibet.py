@@ -209,26 +209,26 @@ def main():
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
     # ── Sélection S3 : Score 2-2 ≤ 12.00 (stratégie principale) ────────────
-    # Niveau 1 : S3 seul     → signal YouTube (score 2-2 anormalement bas)
-    # Niveau 2 : S3 + S4     → DOUBLE CONFIRMATION (score 2-2 ≤ 12 ET Over 2.5 ≤ 1.87)
-    s3_matches = []
+    # s3_all    : TOUS les matchs S3 sans filtre cote (pour l'affichage complet en bas)
+    # s3_matches: matchs S3 avec filtre MIN_COTE_O25 ≥ 1.50 (pour les Duos Bar Tabac)
+    s3_all = []
     for r in scanned_results:
         if not (r.get("s22") and r["s22"] <= SEUIL_S3):
             continue
         o25 = r.get("over25")
-        # Filtre anti-piège : exclure si cote Over 2.5 < 1.50 (mauvais rapport risque/gain)
-        if o25 and o25 < MIN_COTE_O25:
-            continue
         double = bool(o25 and o25 <= SEUIL_S4)
         r["double_confirm"] = double
-        s3_matches.append(r)
+        s3_all.append(r)
 
-    # Trier : doubles en premier, puis par date
-    s3_matches.sort(key=lambda x: (not x["double_confirm"], x.get("dt_obj", now_utc)))
+    s3_all.sort(key=lambda x: (not x["double_confirm"], x.get("dt_obj", now_utc)))
+
+    # Filtre anti-piège sur MIN_COTE_O25 (uniquement pour les Duos Bar Tabac)
+    s3_matches = [m for m in s3_all if not (m.get("over25") and m["over25"] < MIN_COTE_O25)]
 
     nb_double = sum(1 for m in s3_matches if m["double_confirm"])
     nb_simple = len(s3_matches) - nb_double
     print(f"S3 retenus : {len(s3_matches)} ({nb_double} double confirmation, {nb_simple} signal seul)")
+    print(f"S3 total sans filtre cote : {len(s3_all)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -491,6 +491,35 @@ def main():
 
           <!-- LISTE DES CARTES DE MATCHS -->
           {yt_cards}
+
+          <!-- SECTION TOUS LES MATCHS DETECTÉS -->
+          <div style="margin-top:28px;">
+            <h3 style="color:#0f172a; margin:0 0 12px 0; font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e2e8f0; padding-bottom:8px;">
+              📋 TOUS LES MATCHS DÉTECTÉS ({len(s3_all)} au total — sans filtre de cote)
+            </h3>
+            <table style="width:100%; border-collapse:collapse; font-size:12px;">
+              <thead>
+                <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:11px; font-weight:700;">
+                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Date</th>
+                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Match</th>
+                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Score 2-2</th>
+                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Over 2.5</th>
+                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Niveau</th>
+                </tr>
+              </thead>
+              <tbody>
+                {''.join([
+                  f"""<tr style="background:{'#f0fdf4' if m['double_confirm'] else '#fffbeb'}; border-bottom:1px solid #e2e8f0;">
+                    <td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
+                    <td style="padding:7px 10px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']}<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m['league']}</span></td>
+                    <td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{m['s22']}</td>
+                    <td style="padding:7px 10px; text-align:center; font-weight:700; color:{'#15803d' if m.get('over25') and m['over25'] <= SEUIL_S4 else '#b45309'}">{m.get('over25', 'N/A')}</td>
+                    <td style="padding:7px 10px; text-align:center;"><span style="background:{'#15803d' if m['double_confirm'] else '#b45309'}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{'⭐⭐ DOUBLE' if m['double_confirm'] else '🎥 S3'}</span></td>
+                  </tr>""" for m in s3_all
+                ])}
+              </tbody>
+            </table>
+          </div>
 
           <!-- FOOTER -->
           <div style="margin-top:28px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:11px; color:#713f12; text-align:center; border:1px solid #fef08a;">
