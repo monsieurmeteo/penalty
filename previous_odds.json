@@ -1,13 +1,5 @@
 {
   "s3": {
-    "3368855": {
-      "match": "Slavia Prague - Rangers F",
-      "league": "Coupes D Europe • Ldc F",
-      "date_str": "Mer. 05/08 à 20h30",
-      "val_s22": 10.0,
-      "val_o25": 1.5,
-      "double": true
-    },
     "3363356": {
       "match": "Nashville SC - FC Leon",
       "league": "Amerique • Leagues Cup",
@@ -20,16 +12,8 @@
       "match": "Los Angeles FC - Chivas",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 06/08 à 04h30",
-      "val_s22": 10.0,
-      "val_o25": 1.62,
-      "double": true
-    },
-    "3368476": {
-      "match": "Inter Turku - FC Vaduz",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 17h00",
-      "val_s22": 10.5,
-      "val_o25": 1.55,
+      "val_s22": 9.8,
+      "val_o25": 1.6,
       "double": true
     },
     "3368173": {
@@ -40,20 +24,20 @@
       "val_o25": 1.78,
       "double": true
     },
+    "3368476": {
+      "match": "Inter Turku - FC Vaduz",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 17h00",
+      "val_s22": 10.5,
+      "val_o25": 1.55,
+      "double": true
+    },
     "3368197": {
       "match": "HJK Helsinki - Motherwell",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 18h00",
       "val_s22": 10.5,
       "val_o25": 1.6,
-      "double": true
-    },
-    "3368235": {
-      "match": "FC Noah - Sion",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
       "double": true
     },
     "3365821": {
@@ -64,12 +48,20 @@
       "val_o25": 1.8,
       "double": true
     },
-    "3368224": {
-      "match": "Mac.Tel Aviv - CSKA Sofia",
-      "league": "Coupes D Europe • Europa League",
+    "3368235": {
+      "match": "FC Noah - Sion",
+      "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.85,
+      "val_s22": 9.9,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3368305": {
@@ -88,22 +80,6 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3368227": {
       "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
@@ -117,6 +93,14 @@
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
       "val_o25": 1.65,
       "double": true
     },
@@ -148,7 +132,7 @@
       "match": "FC Kuressaare - Harju JK",
       "league": "Estonie • D1 Estonie",
       "date_str": "Ven. 07/08 à 18h00",
-      "val_s22": 11.0,
+      "val_s22": 10.5,
       "val_o25": 1.55,
       "double": true
     },
@@ -174,6 +158,38 @@
       "date_str": "Ven. 07/08 à 20h00",
       "val_s22": 9.4,
       "val_o25": 1.5,
+      "double": true
+    },
+    "3362601": {
+      "match": "Bochum - Hertha Berlin",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Ven. 07/08 à 20h30",
+      "val_s22": 9.8,
+      "val_o25": 1.5,
+      "double": true
+    },
+    "3366640": {
+      "match": "Galway - Drogheda",
+      "league": "Irlande • D1 Irlande",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359087": {
+      "match": "Middlesbrough - Wrexham",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Ven. 07/08 à 21h00",
+      "val_s22": 11.5,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3365827": {
+      "match": "Estoril Praia - Famalicao",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Ven. 07/08 à 21h15",
+      "val_s22": 10.5,
+      "val_o25": 1.72,
       "double": true
     },
     "3366896": {
