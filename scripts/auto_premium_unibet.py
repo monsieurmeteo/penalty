@@ -484,12 +484,27 @@ def main():
 
     # ── Pré-construction des lignes du tableau "Tous les matchs" ─────────────
     all_matches_rows = ""
-    for m in s3_all:
-        row_bg   = "#f0fdf4" if m["double_confirm"] else "#fffbeb"
-        o25_col  = "#15803d" if (m.get("over25") and m["over25"] <= SEUIL_S4) else "#b45309"
-        badge_bg = "#15803d" if m["double_confirm"] else "#b45309"
-        badge_lbl = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
-        o25_val  = m.get("over25", "N/A")
+    for m in scanned_results:
+        is_double = m.get("double_confirm", False)
+        is_s3     = bool(m.get("s22") and m["s22"] <= SEUIL_S3)
+        
+        if is_double:
+            row_bg    = "#f0fdf4"
+            badge_bg  = "#15803d"
+            badge_lbl = "⭐⭐ DOUBLE"
+        elif is_s3:
+            row_bg    = "#fffbeb"
+            badge_bg  = "#b45309"
+            badge_lbl = "🎥 S3"
+        else:
+            row_bg    = "#ffffff"
+            badge_bg  = "#64748b"
+            badge_lbl = "➖ STANDARD"
+
+        s22_val = m.get("s22", "N/A")
+        o25_val = m.get("over25", "N/A")
+        o25_col = "#15803d" if (m.get("over25") and m["over25"] <= SEUIL_S4) else "#b45309"
+
         if m.get("buteur_name"):
             buteur_cell = f'<b>{m["buteur_name"]}</b> ({m["buteur_cote"]})'
         else:
@@ -500,7 +515,7 @@ def main():
             f'<td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m["date_str"]}</td>'
             f'<td style="padding:7px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m["league"]}</span></td>'
-            f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{m["s22"]}</td>'
+            f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{s22_val}</td>'
             f'<td style="padding:7px 10px; text-align:center; font-weight:700; color:{o25_col};">{o25_val}</td>'
             f'<td style="padding:7px 10px; text-align:left; color:#1e293b;">{buteur_cell}</td>'
             f'<td style="padding:7px 10px; text-align:center;"><span style="background:{badge_bg}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{badge_lbl}</span></td>'
@@ -565,7 +580,7 @@ def main():
           <!-- SECTION TOUS LES MATCHS DETECTÉS -->
           <div style="margin-top:28px;">
             <h3 style="color:#0f172a; margin:0 0 12px 0; font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e2e8f0; padding-bottom:8px;">
-              📋 TOUS LES MATCHS DÉTECTÉS ({len(s3_all)} au total — sans filtre de cote)
+              📋 TOUS LES MATCHS SCANNÉS UNIBET ({len(scanned_results)} au total — Analyse Buteurs Moyenne)
             </h3>
             <table style="width:100%; border-collapse:collapse; font-size:12px;">
               <thead>
