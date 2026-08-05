@@ -198,8 +198,11 @@ def scan_unibet_match_details(game):
                     break
 
             if buteur_prices:
-                avg_p = sum(p for n, p in buteur_prices) / len(buteur_prices)
-                closest = min(buteur_prices, key=lambda x: abs(x[1] - avg_p))
+                # Filtre anti-longshot : on ne considère que les cotes ≤ 6.00
+                # ponytail: seuil 6.00 empirique, upgrade → seuil configurable si besoin
+                pool = [(n, p) for n, p in buteur_prices if p <= 6.0] or buteur_prices
+                avg_p = sum(p for n, p in pool) / len(pool)
+                closest = min(pool, key=lambda x: abs(x[1] - avg_p))
                 # Corriger le format "Nom, Prénom" → "Prénom Nom" (format API Unibet)
                 raw_name = closest[0]
                 if "," in raw_name:
