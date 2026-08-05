@@ -437,6 +437,25 @@ def main():
         </div>
         """
 
+    # ── Pré-construction des lignes du tableau "Tous les matchs" ─────────────
+    all_matches_rows = ""
+    for m in s3_all:
+        row_bg   = "#f0fdf4" if m["double_confirm"] else "#fffbeb"
+        o25_col  = "#15803d" if (m.get("over25") and m["over25"] <= SEUIL_S4) else "#b45309"
+        badge_bg = "#15803d" if m["double_confirm"] else "#b45309"
+        badge_lbl = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
+        o25_val  = m.get("over25", "N/A")
+        all_matches_rows += (
+            f'<tr style="background:{row_bg}; border-bottom:1px solid #e2e8f0;">'
+            f'<td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m["date_str"]}</td>'
+            f'<td style="padding:7px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
+            f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m["league"]}</span></td>'
+            f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{m["s22"]}</td>'
+            f'<td style="padding:7px 10px; text-align:center; font-weight:700; color:{o25_col};">{o25_val}</td>'
+            f'<td style="padding:7px 10px; text-align:center;"><span style="background:{badge_bg}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{badge_lbl}</span></td>'
+            f'</tr>'
+        )
+
     # ── Corps du mail HTML ───────────────────────────────────────────────────
     html_body = f"""
     <!DOCTYPE html>
@@ -508,15 +527,7 @@ def main():
                 </tr>
               </thead>
               <tbody>
-                {''.join([
-                  f"""<tr style="background:{'#f0fdf4' if m['double_confirm'] else '#fffbeb'}; border-bottom:1px solid #e2e8f0;">
-                    <td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
-                    <td style="padding:7px 10px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']}<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m['league']}</span></td>
-                    <td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{m['s22']}</td>
-                    <td style="padding:7px 10px; text-align:center; font-weight:700; color:{'#15803d' if m.get('over25') and m['over25'] <= SEUIL_S4 else '#b45309'}">{m.get('over25', 'N/A')}</td>
-                    <td style="padding:7px 10px; text-align:center;"><span style="background:{'#15803d' if m['double_confirm'] else '#b45309'}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{'⭐⭐ DOUBLE' if m['double_confirm'] else '🎥 S3'}</span></td>
-                  </tr>""" for m in s3_all
-                ])}
+                {all_matches_rows}
               </tbody>
             </table>
           </div>
