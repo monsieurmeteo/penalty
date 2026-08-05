@@ -4,16 +4,8 @@
       "match": "Ajax F - Brøndby IF",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 15h00",
-      "val_s22": 10.0,
+      "val_s22": 10.5,
       "val_o25": 1.5,
-      "double": true
-    },
-    "3367439": {
-      "match": "Apol.Limassol - C.Sosnowiec F",
-      "league": "Coupes D Europe • Ldc F",
-      "date_str": "Mer. 05/08 à 16h00",
-      "val_s22": 11.5,
-      "val_o25": 1.6,
       "double": true
     },
     "3367437": {
@@ -28,7 +20,7 @@
       "match": "St.Polten F - BSC Young Boys",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 18h00",
-      "val_s22": 11.0,
+      "val_s22": 12.0,
       "val_o25": 1.65,
       "double": true
     },
@@ -37,7 +29,7 @@
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Mer. 05/08 à 18h00",
       "val_s22": 10.5,
-      "val_o25": 1.5,
+      "val_o25": 1.52,
       "double": true
     },
     "3368038": {
@@ -60,15 +52,15 @@
       "match": "Nashville SC - FC Leon",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 06/08 à 02h30",
-      "val_s22": 11.5,
-      "val_o25": 1.55,
+      "val_s22": 11.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3363357": {
       "match": "Los Angeles FC - Chivas",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 06/08 à 04h30",
-      "val_s22": 9.8,
+      "val_s22": 10.0,
       "val_o25": 1.62,
       "double": true
     },
@@ -88,22 +80,6 @@
       "val_o25": 1.78,
       "double": true
     },
-    "3368235": {
-      "match": "FC Noah - Sion",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3365821": {
-      "match": "Jagiellonia - Rangers",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.0,
-      "val_o25": 1.8,
-      "double": true
-    },
     "3368197": {
       "match": "HJK Helsinki - Motherwell",
       "league": "Coupes D Europe • Europa Conference",
@@ -118,6 +94,62 @@
       "date_str": "Jeu. 06/08 à 18h00",
       "val_s22": 12.0,
       "val_o25": 1.85,
+      "double": true
+    },
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.0,
+      "val_o25": 1.8,
+      "double": true
+    },
+    "3368235": {
+      "match": "FC Noah - Sion",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 9.9,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368200": {
+      "match": "Hradec Kralové - Besiktas",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.72,
+      "double": true
+    },
+    "3368475": {
+      "match": "SherifTiraspol - Saint Gall",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 10.0,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3368305": {
@@ -136,45 +168,13 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3368200": {
-      "match": "Hradec Kralové - Besiktas",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 19h00",
+    "3366896": {
+      "match": "Once Caldas - America",
+      "league": "Colombie • D1 Colombie",
+      "date_str": "Jeu. 06/08 à 03h30",
       "val_s22": 12.0,
-      "val_o25": 1.72,
-      "double": true
-    },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3368475": {
-      "match": "SherifTiraspol - Saint Gall",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.65,
-      "double": true
+      "val_o25": 1.95,
+      "double": false
     }
   }
 }
