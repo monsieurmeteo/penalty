@@ -12,8 +12,16 @@
       "match": "Los Angeles FC - Chivas",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 06/08 à 04h30",
-      "val_s22": 9.8,
+      "val_s22": 9.5,
       "val_o25": 1.6,
+      "double": true
+    },
+    "3368476": {
+      "match": "Inter Turku - FC Vaduz",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 17h00",
+      "val_s22": 10.5,
+      "val_o25": 1.55,
       "double": true
     },
     "3368173": {
@@ -24,12 +32,12 @@
       "val_o25": 1.78,
       "double": true
     },
-    "3368476": {
-      "match": "Inter Turku - FC Vaduz",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 17h00",
-      "val_s22": 10.5,
-      "val_o25": 1.55,
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.0,
+      "val_o25": 1.8,
       "double": true
     },
     "3368197": {
@@ -48,36 +56,28 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3365821": {
-      "match": "Jagiellonia - Rangers",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.0,
-      "val_o25": 1.8,
-      "double": true
-    },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3368475": {
       "match": "SherifTiraspol - Saint Gall",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 10.0,
       "val_o25": 1.55,
+      "double": true
+    },
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
       "double": true
     },
     "3368305": {
@@ -88,12 +88,20 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368190": {
-      "match": "FK Zalgiris - Hajduk Split",
+    "3368273": {
+      "match": "Debrecen - FC Copenhague",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
+      "val_s22": 12.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3368227": {
@@ -108,14 +116,6 @@
       "match": "Beit.Jerusalem - Austria Vienne",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h30",
-      "val_s22": 12.0,
-      "val_o25": 1.75,
-      "double": true
-    },
-    "3368304": {
-      "match": "Hap.Tel Aviv - GKS Katowice",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 20h00",
       "val_s22": 12.0,
       "val_o25": 1.75,
       "double": true
@@ -136,20 +136,20 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3359753": {
-      "match": "Sandefjord - Kfum Oslo",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Ven. 07/08 à 19h00",
-      "val_s22": 10.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3363942": {
       "match": "Sønderjyske - Viborg FF",
       "league": "Danemark • D1 Danemark",
       "date_str": "Ven. 07/08 à 19h00",
       "val_s22": 10.0,
       "val_o25": 1.5,
+      "double": true
+    },
+    "3359753": {
+      "match": "Sandefjord - Kfum Oslo",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Ven. 07/08 à 19h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
       "double": true
     },
     "3359752": {
