@@ -159,6 +159,32 @@ def scan_unibet_match_details(game):
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
+            # Buteur le plus proche de la moyenne des cotes
+            buteur_name = None
+            buteur_cote = None
+            buteur_avg = None
+
+            buteur_prices = []
+            for g in event.get("groupedMarkets", []):
+                for m in g.get("markets", []):
+                    m_desc_raw = (m.get("description") or "").strip().lower()
+                    if m_desc_raw in ["buteur", "buteurs", "joueur marqueur", "marqueur au cours du match"]:
+                        for o in m.get("outcomes", []):
+                            p_name = (o.get("description") or "").strip()
+                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            if p_val > 1.0 and p_name:
+                                buteur_prices.append((p_name, p_val))
+                        break
+                if buteur_prices:
+                    break
+
+            if buteur_prices:
+                avg_p = sum(p for n, p in buteur_prices) / len(buteur_prices)
+                closest = min(buteur_prices, key=lambda x: abs(x[1] - avg_p))
+                buteur_name = closest[0]
+                buteur_cote = closest[1]
+                buteur_avg = round(avg_p, 2)
+
             margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
 
@@ -171,6 +197,9 @@ def scan_unibet_match_details(game):
                 "c1": c1, "cx": cx, "c2": c2,
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
+                "buteur_name": buteur_name,
+                "buteur_cote": buteur_cote,
+                "buteur_avg": buteur_avg,
             }
     except Exception:
         return None
@@ -337,6 +366,20 @@ def main():
             o25_badge     = f'<span style="background:#fef3c7; color:#92400e; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block;">Over 2.5: <b>{o25 if o25 else "N/A"}</b></span>'
             btn_bg        = "#d97706"
 
+        buteur_info_html = ""
+        if m.get("buteur_name"):
+            buteur_info_html = f"""
+            <div style="margin-top:10px; background:rgba(241,245,249,0.9); padding:8px 12px; border-radius:6px; font-size:12px; color:#1e293b; border-left:3px solid #2563eb;">
+              ⚽ <b>Buteur proche de la moyenne :</b> <b style="color:#0f172a; font-size:13px;">{m['buteur_name']}</b> (Cote : <b style="color:#1d4ed8;">{m['buteur_cote']}</b> &nbsp;|&nbsp; Moy. cotes : {m['buteur_avg']})
+            </div>
+            """
+        else:
+            buteur_info_html = """
+            <div style="margin-top:10px; background:rgba(241,245,249,0.5); padding:6px 12px; border-radius:6px; font-size:11px; color:#64748b; font-style:italic;">
+              ⚽ Buteur proche de la moyenne : <i>Marché Buteurs non encore disponible</i>
+            </div>
+            """
+
         yt_cards += f"""
         <div style="background:{card_bg}; border:2px solid {card_border}; border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
 
@@ -371,6 +414,8 @@ def main():
               💶 MISER {mise} €
             </div>
           </div>
+
+          {buteur_info_html}
 
         </div>
         """
@@ -445,6 +490,11 @@ def main():
         badge_bg = "#15803d" if m["double_confirm"] else "#b45309"
         badge_lbl = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
         o25_val  = m.get("over25", "N/A")
+        if m.get("buteur_name"):
+            buteur_cell = f'<b>{m["buteur_name"]}</b> ({m["buteur_cote"]})'
+        else:
+            buteur_cell = '<span style="color:#94a3b8; font-style:italic;">N/A</span>'
+
         all_matches_rows += (
             f'<tr style="background:{row_bg}; border-bottom:1px solid #e2e8f0;">'
             f'<td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m["date_str"]}</td>'
@@ -452,6 +502,7 @@ def main():
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m["league"]}</span></td>'
             f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{m["s22"]}</td>'
             f'<td style="padding:7px 10px; text-align:center; font-weight:700; color:{o25_col};">{o25_val}</td>'
+            f'<td style="padding:7px 10px; text-align:left; color:#1e293b;">{buteur_cell}</td>'
             f'<td style="padding:7px 10px; text-align:center;"><span style="background:{badge_bg}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{badge_lbl}</span></td>'
             f'</tr>'
         )
@@ -523,6 +574,7 @@ def main():
                   <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Match</th>
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Score 2-2</th>
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Over 2.5</th>
+                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Buteur Moyenne</th>
                   <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Niveau</th>
                 </tr>
               </thead>
@@ -547,13 +599,14 @@ def main():
         "# ⚽ MÉTHODE YOUTUBE OVER 2.5 — SÉLECTION 48H",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}\n",
         f"**Total retenus** : {len(s3_matches)} ({nb_double} ⭐⭐ Double Confirmation, {nb_simple} 🎥 Signal S3)\n",
-        "| Décision | Date | Ligue | Match | Score 2-2 | Over 2.5 |",
-        "| :---: | :---: | :--- | :--- | :---: | :---: |",
+        "| Décision | Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
+        "| :---: | :---: | :--- | :--- | :---: | :---: | :--- |",
     ]
     for m in s3_matches:
         badge = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
         o25 = m.get("over25", "N/A")
-        report.append(f"| {badge} | {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | {o25} |")
+        but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
+        report.append(f"| {badge} | {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | {o25} | {but} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
