@@ -166,16 +166,20 @@ def scan_unibet_match_details(game):
 
             buteur_prices = []
             for g in event.get("groupedMarkets", []):
+                found_market = False
                 for m in g.get("markets", []):
                     m_desc_raw = (m.get("description") or "").strip().lower()
-                    if m_desc_raw in ["buteur", "buteurs", "joueur marqueur", "marqueur au cours du match"]:
+                    # Correspondance partielle pour couvrir toutes les variantes Unibet
+                    if any(kw in m_desc_raw for kw in ["buteur", "buteurs", "joueur marqueur", "marqueur"]) and \
+                       not any(ex in m_desc_raw for ex in ["double", "triple", "combin", "2+", "duel", "ou ", "et ", "trio", "quatuor", "equipe"]):
                         for o in m.get("outcomes", []):
                             p_name = (o.get("description") or "").strip()
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if p_val > 1.0 and p_name:
                                 buteur_prices.append((p_name, p_val))
+                        found_market = True
                         break
-                if buteur_prices:
+                if found_market:
                     break
 
             if buteur_prices:
@@ -636,10 +640,17 @@ def main():
     smtp_pass      = os.environ.get("SMTP_PASS", "")
 
     nb_s3 = len(s3_matches)
-    subject_flag = f"🔥 {nb_double} DOUBLE + {nb_simple} S3" if nb_double else (f"🎥 {nb_s3} S3 détecté{'s' if nb_s3>1 else ''}" if nb_s3 else "ℹ️ Aucun signal")
-    
+    now_dt = datetime.now(timezone.utc)
+    subject_date = now_dt.strftime('%d/%m %Hh%M')
+    if nb_double:
+        subject_flag = f"{nb_double} conf. double + {nb_simple} signal"
+    elif nb_s3:
+        subject_flag = f"{nb_s3} signal{'s' if nb_s3>1 else ''} detecte{'s' if nb_s3>1 else ''}"
+    else:
+        subject_flag = "Rapport de veille"
+
     msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"OVER 2.5 UNIBET — {subject_flag} — {datetime.now(timezone.utc).strftime('%d/%m %H:%M')} UTC"
+    msg["Subject"] = f"Rapport foot du {subject_date} - {subject_flag}"
     msg["From"]    = f"Gregory LANGLET <{smtp_user if smtp_user else gmail_email}>"
     msg["To"]      = ", ".join(recipients)
     msg.attach(MIMEText(html_body, "html", "utf-8"))
