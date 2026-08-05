@@ -185,7 +185,12 @@ def scan_unibet_match_details(game):
             if buteur_prices:
                 avg_p = sum(p for n, p in buteur_prices) / len(buteur_prices)
                 closest = min(buteur_prices, key=lambda x: abs(x[1] - avg_p))
-                buteur_name = closest[0]
+                # Corriger le format "Nom, Prénom" → "Prénom Nom" (format API Unibet)
+                raw_name = closest[0]
+                if "," in raw_name:
+                    parts = raw_name.split(",", 1)
+                    raw_name = f"{parts[1].strip()} {parts[0].strip()}"
+                buteur_name = raw_name
                 buteur_cote = closest[1]
                 buteur_avg = round(avg_p, 2)
 
