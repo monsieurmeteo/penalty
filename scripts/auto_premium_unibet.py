@@ -97,6 +97,37 @@ def get_unibet_active_games():
     print(f"Fixtures trouvées : {len(games)}")
     return games
 
+def fetch_sr_match_stats(sr_id):
+    if not sr_id: return None
+    url = f"https://s5.sir.sportradar.com/unibet/fr/match/{sr_id}"
+    try:
+        H_sr = {'User-Agent': 'Mozilla/5.0'}
+        r = requests.get(url, headers=H_sr, timeout=6)
+        if r.status_code != 200: return None
+        soup = BeautifulSoup(r.text, 'html.parser')
+        for s in soup.find_all('script'):
+            stext = s.string or ""
+            if len(stext) > 10000 and "streamController" in stext:
+                btts_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Deux', stext, re.IGNORECASE)
+                o25_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Plus de 2\.5', stext, re.IGNORECASE)
+                goals_m = re.findall(r'(\d+\.\d{1,2})\s*(?:\\\\")?\s*,\s*(?:\\\\")?Total de Buts', stext, re.IGNORECASE)
+                btts_p = int(btts_m[0]) if btts_m else 55
+                o25_p = int(o25_m[0]) if o25_m else 50
+                g_avg = float(goals_m[0]) if goals_m else 2.65
+                conf = round(btts_p * 0.4 + o25_p * 0.4 + min(g_avg / 3.0, 1.0) * 20)
+                conf = max(15, min(99, conf))
+                is_trap = bool(btts_p < 50 or g_avg < 2.30)
+                return {
+                    "btts_real_pct": btts_p,
+                    "o25_real_pct": o25_p,
+                    "avg_goals": round(g_avg, 2),
+                    "conf_score": conf,
+                    "is_trap": is_trap
+                }
+    except Exception:
+        pass
+    return None
+
 def scan_unibet_match_details(game):
     if game.get("not_found"):
         return game
@@ -207,37 +238,6 @@ def scan_unibet_match_details(game):
                 buteur_name = raw_name
                 buteur_cote = closest[1]
                 buteur_avg = round(avg_p, 2)
-
-def fetch_sr_match_stats(sr_id):
-    if not sr_id: return None
-    url = f"https://s5.sir.sportradar.com/unibet/fr/match/{sr_id}"
-    try:
-        H_sr = {'User-Agent': 'Mozilla/5.0'}
-        r = requests.get(url, headers=H_sr, timeout=6)
-        if r.status_code != 200: return None
-        soup = BeautifulSoup(r.text, 'html.parser')
-        for s in soup.find_all('script'):
-            stext = s.string or ""
-            if len(stext) > 10000 and "streamController" in stext:
-                btts_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Deux', stext, re.IGNORECASE)
-                o25_m = re.findall(r'(\d{1,3})%\s*(?:\\\\")?\s*,\s*(?:\\\\")?Plus de 2\.5', stext, re.IGNORECASE)
-                goals_m = re.findall(r'(\d+\.\d{1,2})\s*(?:\\\\")?\s*,\s*(?:\\\\")?Total de Buts', stext, re.IGNORECASE)
-                btts_p = int(btts_m[0]) if btts_m else 55
-                o25_p = int(o25_m[0]) if o25_m else 50
-                g_avg = float(goals_m[0]) if goals_m else 2.65
-                conf = round(btts_p * 0.4 + o25_p * 0.4 + min(g_avg / 3.0, 1.0) * 20)
-                conf = max(15, min(99, conf))
-                is_trap = bool(btts_p < 50 or g_avg < 2.30)
-                return {
-                    "btts_real_pct": btts_p,
-                    "o25_real_pct": o25_p,
-                    "avg_goals": round(g_avg, 2),
-                    "conf_score": conf,
-                    "is_trap": is_trap
-                }
-    except Exception:
-        pass
-    return None
 
             margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
