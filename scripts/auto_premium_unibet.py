@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 SEUIL_S4      = 1.87   # Over 2.5 direct Unibet  (cote juste 1.75 × marge 1.07)
 SEUIL_S3      = 12.00  # Score exact 2-2 Unibet  (1XBET ≤ 10.00 × ratio 1.115)
 SEUIL_BTTS    = 1.75   # BTTS Oui Unibet (cote Les 2 équipes marquent ≤ 1.75)
-MIN_COTE_O25  = 1.50   # Cote Over 2.5 minimale retenue (filtre anti-piège < 1.50)
+MIN_COTE_O25  = 1.65   # Cote Over 2.5 minimale retenue — backtest: cotes < 1.65 = ROI pire que 1.82-1.87
 
 H = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -274,7 +274,8 @@ def main():
             continue
         o25 = r.get("over25")
         btts = r.get("btts_oui")
-        double = bool(o25 and o25 <= SEUIL_S4)
+        # Plage validée par backtest : 1.65 ≤ Over 2.5 ≤ 1.87 → seule zone ROI positive
+        double = bool(o25 and MIN_COTE_O25 <= o25 <= SEUIL_S4)
         triple = bool(double and btts and btts <= SEUIL_BTTS)
         r["double_confirm"] = double
         r["triple_confirm"] = triple
