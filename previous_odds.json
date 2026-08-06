@@ -4,8 +4,16 @@
       "match": "Kups - Uni.Craiova",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 17h00",
-      "val_s22": 11.0,
+      "val_s22": 11.5,
       "val_o25": 1.78,
+      "double": true
+    },
+    "3368235": {
+      "match": "FC Noah - Sion",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3365821": {
@@ -14,22 +22,6 @@
       "date_str": "Jeu. 06/08 à 18h00",
       "val_s22": 11.0,
       "val_o25": 1.8,
-      "double": true
-    },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368305": {
-      "match": "IFK Göteborg - La Gantoise",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.75,
       "double": true
     },
     "3368227": {
@@ -46,6 +38,30 @@
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 12.0,
       "val_o25": 1.75,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368608": {
+      "match": "Riga FC - Györ ETO FC",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3368191": {
