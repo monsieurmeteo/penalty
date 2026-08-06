@@ -16,6 +16,22 @@
       "val_o25": 1.8,
       "double": true
     },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
+      "double": true
+    },
     "3368227": {
       "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
@@ -32,30 +48,6 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3368305": {
-      "match": "IFK Göteborg - La Gantoise",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.75,
-      "double": true
-    },
-    "3368273": {
-      "match": "Debrecen - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3368191": {
       "match": "Beit.Jerusalem - Austria Vienne",
       "league": "Coupes D Europe • Europa Conference",
@@ -68,7 +60,7 @@
       "match": "Estoril Praia - Famalicao",
       "league": "Portugal • Liga Portugal",
       "date_str": "Ven. 07/08 à 21h15",
-      "val_s22": 10.5,
+      "val_s22": 11.0,
       "val_o25": 1.72,
       "double": true
     },
