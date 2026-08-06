@@ -16,16 +16,16 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3363934": {
-      "match": "Airbus FC - Cardiff",
+    "3362632": {
+      "match": "Flint Town - Barry Town FC",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 07/08 à 20h45",
-      "val_s22": 11.0,
+      "val_s22": 10.5,
       "val_o25": 1.7,
       "double": true
     },
-    "3362632": {
-      "match": "Flint Town - Barry Town FC",
+    "3363934": {
+      "match": "Airbus FC - Cardiff",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 07/08 à 20h45",
       "val_s22": 10.5,
@@ -44,7 +44,7 @@
       "match": "Estoril Praia - Famalicao",
       "league": "Portugal • Liga Portugal",
       "date_str": "Ven. 07/08 à 21h15",
-      "val_s22": 11.0,
+      "val_s22": 10.5,
       "val_o25": 1.8,
       "double": true
     },
@@ -64,20 +64,20 @@
       "val_o25": 1.8,
       "double": true
     },
-    "3369530": {
-      "match": "Cerezo Osaka - Okayama",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 08/08 à 12h00",
-      "val_s22": 11.5,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3369527": {
       "match": "Nagoya Grampus - Shimizu",
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 08/08 à 12h00",
       "val_s22": 11.5,
       "val_o25": 1.72,
+      "double": true
+    },
+    "3369530": {
+      "match": "Cerezo Osaka - Okayama",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 08/08 à 12h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3364517": {
@@ -88,20 +88,20 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3364488": {
-      "match": "Gimcheon - FC Seoul",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 08/08 à 13h00",
-      "val_s22": 11.5,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3364484": {
       "match": "FC Anyang - Daejeon",
       "league": "Coree Du Sud • D1 Coree Du Sud",
       "date_str": "Sam. 08/08 à 13h00",
       "val_s22": 11.5,
       "val_o25": 1.75,
+      "double": true
+    },
+    "3364488": {
+      "match": "Gimcheon - FC Seoul",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3362618": {
@@ -120,8 +120,32 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3359101": {
+      "match": "Grimsby Town - Blackpool",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
     "3359093": {
       "match": "Fleetwood Town - Chesterfield",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3365877": {
+      "match": "St Mirren - St Johnstone",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.72,
+      "double": true
+    },
+    "3359113": {
+      "match": "Leyton Orient - Oxford",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 11.0,
@@ -144,36 +168,12 @@
       "val_o25": 1.8,
       "double": true
     },
-    "3365877": {
-      "match": "St Mirren - St Johnstone",
-      "league": "Ecosse • D1 Ecosse",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.72,
-      "double": true
-    },
     "3359115": {
       "match": "Bromley FC - Reading",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 10.5,
       "val_o25": 1.65,
-      "double": true
-    },
-    "3359101": {
-      "match": "Grimsby Town - Blackpool",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3359113": {
-      "match": "Leyton Orient - Oxford",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.7,
       "double": true
     },
     "3359117": {
@@ -216,20 +216,20 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3367417": {
-      "match": "Lokomo.Sofia - FC CSKA 1948",
-      "league": "Bulgarie • D1 Bulgarie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 11.0,
-      "val_o25": 1.8,
-      "double": true
-    },
     "3359891": {
       "match": "Start - Fredrikstad",
       "league": "Norvege • D1 Norvege",
       "date_str": "Sam. 08/08 à 18h00",
       "val_s22": 10.0,
       "val_o25": 1.65,
+      "double": true
+    },
+    "3367417": {
+      "match": "Lokomo.Sofia - FC CSKA 1948",
+      "league": "Bulgarie • D1 Bulgarie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 11.0,
+      "val_o25": 1.8,
       "double": true
     },
     "3359923": {
@@ -284,6 +284,14 @@
       "match": "Uta Arad - Rapid Bucarest",
       "league": "Roumanie • D1 Roumanie",
       "date_str": "Ven. 07/08 à 20h00",
+      "val_s22": 12.0,
+      "val_o25": 1.9,
+      "double": false
+    },
+    "3365265": {
+      "match": "Remo PA - Atletico MG",
+      "league": "Bresil • D1 Bresil",
+      "date_str": "Sam. 08/08 à 23h30",
       "val_s22": 12.0,
       "val_o25": 1.9,
       "double": false
