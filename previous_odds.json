@@ -5,27 +5,51 @@
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 17h00",
       "val_s22": 11.5,
-      "val_o25": 1.8,
+      "val_o25": 1.85,
       "double": true
     },
     "3368235": {
       "match": "FC Noah - Sion",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
+      "val_s22": 11.0,
+      "val_o25": 1.75,
       "double": true
     },
     "3365821": {
       "match": "Jagiellonia - Rangers",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.5,
+      "val_s22": 11.0,
       "val_o25": 1.8,
       "double": true
     },
     "3368591": {
       "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.8,
+      "double": true
+    },
+    "3368227": {
+      "match": "RKS Rakow - Hammarby",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 10.5,
@@ -36,31 +60,7 @@
       "match": "Hradec Kralové - Besiktas",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.75,
-      "double": true
-    },
-    "3368305": {
-      "match": "IFK Göteborg - La Gantoise",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.5,
-      "val_o25": 1.75,
-      "double": true
-    },
-    "3368150": {
-      "match": "Inter Escaldes - FC Flora",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.5,
-      "val_o25": 1.75,
-      "double": true
-    },
-    "3368227": {
-      "match": "RKS Rakow - Hammarby",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
       "val_o25": 1.7,
       "double": true
     },
@@ -94,6 +94,30 @@
       "date_str": "Sam. 08/08 à 02h00",
       "val_s22": 11.5,
       "val_o25": 1.8,
+      "double": true
+    },
+    "3364488": {
+      "match": "Gimcheon - FC Seoul",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3364484": {
+      "match": "FC Anyang - Daejeon",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.5,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3364517": {
+      "match": "Pohang - Ulsan",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.0,
+      "val_o25": 1.75,
       "double": true
     },
     "3359927": {
