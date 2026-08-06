@@ -4,7 +4,15 @@
       "match": "Kups - Uni.Craiova",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 17h00",
-      "val_s22": 11.5,
+      "val_s22": 12.0,
+      "val_o25": 1.85,
+      "double": true
+    },
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.0,
       "val_o25": 1.85,
       "double": true
     },
@@ -16,36 +24,20 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3365821": {
-      "match": "Jagiellonia - Rangers",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.0,
+    "3368274": {
+      "match": "Cfr Cluj - Tromsø",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 18h30",
+      "val_s22": 12.0,
       "val_o25": 1.8,
       "double": true
     },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
+    "3368190": {
+      "match": "FK Zalgiris - Hajduk Split",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.5,
-      "val_o25": 1.7,
-      "double": true
-    },
-    "3368305": {
-      "match": "IFK Göteborg - La Gantoise",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.0,
-      "val_o25": 1.7,
-      "double": true
-    },
-    "3368150": {
-      "match": "Inter Escaldes - FC Flora",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
-      "val_o25": 1.8,
+      "val_o25": 1.65,
       "double": true
     },
     "3368227": {
@@ -61,6 +53,22 @@
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3368305": {
+      "match": "IFK Göteborg - La Gantoise",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 11.0,
       "val_o25": 1.7,
       "double": true
     },
@@ -96,6 +104,30 @@
       "val_o25": 1.8,
       "double": true
     },
+    "3369530": {
+      "match": "Cerezo Osaka - Okayama",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 08/08 à 12h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3369527": {
+      "match": "Nagoya Grampus - Shimizu",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 08/08 à 12h00",
+      "val_s22": 11.5,
+      "val_o25": 1.72,
+      "double": true
+    },
+    "3364517": {
+      "match": "Pohang - Ulsan",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.0,
+      "val_o25": 1.75,
+      "double": true
+    },
     "3364488": {
       "match": "Gimcheon - FC Seoul",
       "league": "Coree Du Sud • D1 Coree Du Sud",
@@ -112,13 +144,93 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3364517": {
-      "match": "Pohang - Ulsan",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 08/08 à 13h00",
-      "val_s22": 11.0,
-      "val_o25": 1.75,
+    "3362618": {
+      "match": "Radomiak Radom - Gornik Zabrze",
+      "league": "Pologne • D1 Pologne",
+      "date_str": "Sam. 08/08 à 14h45",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
       "double": true
+    },
+    "3359104": {
+      "match": "Queens Park R. - Millwall",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 15h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3365875": {
+      "match": "Dundee FC - Aberdeen",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3359115": {
+      "match": "Bromley FC - Reading",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3359093": {
+      "match": "Fleetwood Town - Chesterfield",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3359100": {
+      "match": "Burton Albion - Blackburn",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 12.0,
+      "val_o25": 1.8,
+      "double": true
+    },
+    "3359113": {
+      "match": "Leyton Orient - Oxford",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3365877": {
+      "match": "St Mirren - St Johnstone",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.72,
+      "double": true
+    },
+    "3359117": {
+      "match": "Swansea - Birmingham",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3359101": {
+      "match": "Grimsby Town - Blackpool",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3369524": {
+      "match": "Gamba Osaka - Urawa Reds",
+      "league": "Japon • D1 Japon",
+      "date_str": "Ven. 07/08 à 12h30",
+      "val_s22": 11.5,
+      "val_o25": 1.9,
+      "double": false
     },
     "3359927": {
       "match": "Uta Arad - Rapid Bucarest",
