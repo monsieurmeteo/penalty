@@ -8,14 +8,6 @@
       "val_o25": 1.8,
       "double": true
     },
-    "3365821": {
-      "match": "Jagiellonia - Rangers",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 06/08 à 18h00",
-      "val_s22": 11.5,
-      "val_o25": 1.8,
-      "double": true
-    },
     "3368235": {
       "match": "FC Noah - Sion",
       "league": "Coupes D Europe • Europa Conference",
@@ -24,11 +16,27 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3368150": {
-      "match": "Inter Escaldes - FC Flora",
+    "3365821": {
+      "match": "Jagiellonia - Rangers",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 18h00",
+      "val_s22": 11.5,
+      "val_o25": 1.8,
+      "double": true
+    },
+    "3368591": {
+      "match": "Dynamo Kiev - FC Qarabag",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 11.5,
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3368200": {
+      "match": "Hradec Kralové - Besiktas",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 06/08 à 19h00",
+      "val_s22": 12.0,
       "val_o25": 1.75,
       "double": true
     },
@@ -40,11 +48,11 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3368200": {
-      "match": "Hradec Kralové - Besiktas",
-      "league": "Coupes D Europe • Europa League",
+    "3368150": {
+      "match": "Inter Escaldes - FC Flora",
+      "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 12.0,
+      "val_s22": 11.5,
       "val_o25": 1.75,
       "double": true
     },
@@ -54,14 +62,6 @@
       "date_str": "Jeu. 06/08 à 19h00",
       "val_s22": 11.0,
       "val_o25": 1.7,
-      "double": true
-    },
-    "3368591": {
-      "match": "Dynamo Kiev - FC Qarabag",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 06/08 à 19h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
       "double": true
     },
     "3368191": {
