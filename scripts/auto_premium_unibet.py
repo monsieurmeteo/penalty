@@ -672,10 +672,10 @@ def main():
     recipients     = [r.strip() for r in os.environ.get("EMAIL_TO", "gregory.langlet@sfr.fr, langlet.gregory@gmail.com").split(",") if r.strip()]
     gmail_email    = os.environ.get("GMAIL_EMAIL", "langlet.gregory@gmail.com")
     gmail_password = os.environ.get("GMAIL_APP_PASSWORD", "")
-    smtp_host      = os.environ.get("SMTP_HOST", "")
-    smtp_port      = int(os.environ.get("SMTP_PORT", "587"))
-    smtp_user      = os.environ.get("SMTP_USER", "")
-    smtp_pass      = os.environ.get("SMTP_PASS", "")
+    smtp_host      = os.environ.get("SMTP_HOST", "smtp.sfr.fr")
+    smtp_port      = int(os.environ.get("SMTP_PORT", "465"))
+    smtp_user      = os.environ.get("SMTP_USER", "gregory.langlet@sfr.fr")
+    smtp_pass      = os.environ.get("SMTP_PASS", "6#P31LcrCX9!")
 
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
