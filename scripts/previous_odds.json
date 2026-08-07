@@ -1,0 +1,164 @@
+{
+  "s3": {
+    "3366853": {
+      "match": "MTK Budapest - Puskas Academy",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Ven. 07/08 à 17h30",
+      "val_s22": 9.8,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3368634": {
+      "match": "FC Kuressaare - Harju JK",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Ven. 07/08 à 18h00",
+      "val_s22": 10.0,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3359753": {
+      "match": "Sandefjord - Kfum Oslo",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Ven. 07/08 à 19h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359752": {
+      "match": "SC Cambuur - Exce.Rotterdam",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Ven. 07/08 à 20h00",
+      "val_s22": 9.8,
+      "val_o25": 1.62,
+      "double": true
+    },
+    "3362601": {
+      "match": "Bochum - Hertha Berlin",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Ven. 07/08 à 20h30",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3369090": {
+      "match": "Cambrian Utd - Briton Ferry L",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 10.5,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3362632": {
+      "match": "Flint Town - Barry Town FC",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3363934": {
+      "match": "Airbus FC - Cardiff",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 10.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3362915": {
+      "match": "Trefelin BGC - Llandudno FC",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 9.9,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359103": {
+      "match": "Preston - Huddersfield",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359099": {
+      "match": "Derby - Lincoln",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359088": {
+      "match": "Barnsley - Wigan",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3359091": {
+      "match": "Sheffield Wed. - Bolton",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359115": {
+      "match": "Bromley FC - Reading",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3359112": {
+      "match": "Bristol Rovers - Peterborough",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 9.6,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3369091": {
+      "match": "Kisvarda - Ujpest",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Sam. 08/08 à 17h30",
+      "val_s22": 10.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3364169": {
+      "match": "MFK Ruzomberok - Podbrezova",
+      "league": "Slovaquie • D1 Slovaquie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 9.9,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3364166": {
+      "match": "MFK Zemplin - KFC Komarno",
+      "league": "Slovaquie • D1 Slovaquie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 9.9,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359891": {
+      "match": "Start - Fredrikstad",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 10.0,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3359881": {
+      "match": "Supra Quebec - Cavalry",
+      "league": "Canada • D1 Canada",
+      "date_str": "Dim. 09/08 à 02h00",
+      "val_s22": 10.0,
+      "val_o25": 1.55,
+      "double": true
+    }
+  }
+}
