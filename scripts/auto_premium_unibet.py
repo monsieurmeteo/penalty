@@ -187,8 +187,12 @@ def scan_unibet_match_details(game):
                     if any(kw in m_desc_raw for kw in ["buteur", "buteurs", "joueur marqueur", "marqueur"]) and \
                        not any(ex in m_desc_raw for ex in ["double", "triple", "combin", "2+", "duel", "trio", "quatuor"]):
                         for o in m.get("outcomes", []):
-                            p_name = (o.get("description") or "").strip()
-                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            p_name = (o.get("description") or o.get("label") or o.get("name") or "").strip()
+                            p_val_str = str(o.get("price") or o.get("currentPrice") or o.get("odds") or 0).replace(",", ".")
+                            try:
+                                p_val = float(p_val_str)
+                            except ValueError:
+                                p_val = 0.0
                             if p_val > 1.0 and p_name:
                                 if not any(nk in p_name.lower() for nk in NON_PLAYER_KEYWORDS):
                                     buteur_prices.append((p_name, p_val))
@@ -482,6 +486,11 @@ def main():
           <div style="padding: 12px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 13px; font-weight: 700; color: #0f172a; display:flex; justify-content:space-between; align-items:center;">
             <span>🔥 <b>{len(s3_matches)} match(s) retenu(s)</b> sur {len(scanned_results)} scannés</span>
             <span style="font-size:11px; color:#64748b; font-weight:normal;">Fenêtre 48h</span>
+          </div>
+
+          <!-- BLOC ÉVOLUTIONS DEPUIS LE DERNIER RUN -->
+          <div style="padding: 15px 15px 0 15px;">
+            {evo_html}
           </div>
 
           <!-- TABLEAU UNIQUE COMPACT DES MATCHS SELECTIONNÉS -->
