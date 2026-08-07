@@ -6,10 +6,9 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # ── Seuils ──────────────────────────────────────────────────────────────────
-SEUIL_S4      = 1.87   # Over 2.5 direct Unibet  (cote juste 1.75 × marge 1.07)
-SEUIL_S3      = 12.00  # Score exact 2-2 Unibet  (1XBET ≤ 10.00 × ratio 1.115)
-SEUIL_BTTS    = 1.75   # BTTS Oui Unibet (cote Les 2 équipes marquent ≤ 1.75)
-MIN_COTE_O25  = 1.65   # Cote Over 2.5 minimale retenue — backtest: cotes < 1.65 = ROI pire que 1.82-1.87
+SEUIL_S3      = 10.50  # Score exact 2-2 Unibet <= 10.50
+MIN_COTE_O25  = 1.55   # Cote Over 2.5 minimale = 1.55
+MAX_COTE_O25  = 1.70   # Cote Over 2.5 maximale = 1.70
 
 H = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
@@ -265,24 +264,23 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
-    # ── Sélection Règle Unique : Score 2-2 ≤ 12.00 ─────────────────────────
-    # ponytail: Règle unique simplifiée : Score 2-2 <= 12.00 -> Over 2.5 BUTS (BTTS garanti)
-    s3_all = []
+    # ── Sélection Stricte : Score 2-2 ≤ 10.50 ET 1.55 ≤ Over 2.5 ≤ 1.70 ───────
+    # ponytail: Règle spécifique utilisateur : Score 2-2 <= 10.50 ET 1.55 <= Over 2.5 <= 1.70
+    s3_matches = []
     for r in scanned_results:
-        if not (r.get("s22") and r["s22"] <= SEUIL_S3):
-            continue
-        # Pari retenu : Over 2.5 Buts (BTTS également garanti par 2-2 <= 12.00)
-        r["double_confirm"] = True
-        r["triple_confirm"] = True
-        s3_all.append(r)
+        s22 = r.get("s22")
+        o25 = r.get("over25")
+        if s22 and s22 <= SEUIL_S3 and o25 and MIN_COTE_O25 <= o25 <= MAX_COTE_O25:
+            r["double_confirm"] = True
+            r["triple_confirm"] = True
+            s3_matches.append(r)
 
-    s3_all.sort(key=lambda x: x.get("dt_obj", now_utc))
-    s3_matches = s3_all
+    s3_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
 
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"Matchs retenus (Score 2-2 ≤ 12.00) : {len(s3_matches)}")
+    print(f"Matchs retenus (Score 2-2 ≤ {SEUIL_S3} & Over 2.5 [{MIN_COTE_O25}-{MAX_COTE_O25}]) : {len(s3_matches)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -359,212 +357,38 @@ def main():
 
     # ── Génération des cartes de matchs ──────────────────────────────────────
     yt_cards = ""
-    for m in s3_matches:
-        s22 = m["s22"]
-        o25 = m.get("over25")
-        btts_v = m.get("btts_oui")
-        o25_f = m.get("over25_fair")
-        double = m.get("double_confirm", False)
-        triple = m.get("triple_confirm", False)
-
-        # ── Calcul de la mise dynamique (Chiffres ronds sans décimales) ─────────
-        o25_val = o25 if (o25 and o25 > 0) else 1.85
-        if o25_val < 1.70:
-            mise_base = 3
-        elif 1.70 <= o25_val <= 1.89:
-            mise_base = 2
-        else:
-            mise_base = 1
-
-        if triple:
-            mise = mise_base * 3
-            card_bg       = "#f3e8ff"
-            card_border   = "#9333ea"
-            badge_bg      = "#7e22ce"
-            badge_text    = "⭐⭐⭐ TRIPLE CONFIRMATION"
-            o25_badge     = f'<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block;">✅ Over 2.5: <b>{o25}</b></span>'
-            btts_badge    = f'<span style="background:#e9d5ff; color:#6b21a8; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block; margin-left:4px;">✅ BTTS: <b>{btts_v}</b></span>'
-            btn_bg        = "#7e22ce"
-        elif double:
-            mise = mise_base * 2
-            card_bg       = "#f0fdf4"
-            card_border   = "#22c55e"
-            badge_bg      = "#15803d"
-            badge_text    = "⭐⭐ DOUBLE CONFIRMATION"
-            o25_badge     = f'<span style="background:#dcfce7; color:#15803d; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; display:inline-block;">✅ Over 2.5: <b>{o25}</b> <small style="color:#64748b;">(Dém. {o25_f})</small></span>'
-            btts_badge    = f'<span style="background:#f1f5f9; color:#475569; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block; margin-left:4px;">BTTS: <b>{btts_v if btts_v else "N/A"}</b></span>'
-            btn_bg        = "#15803d"
-        else:
-            mise = mise_base
-            card_bg       = "#fffbeb"
-            card_border   = "#f59e0b"
-            badge_bg      = "#b45309"
-            badge_text    = "🎥 SIGNAL S3 (MÉTHODE YOUTUBE)"
-            o25_badge     = f'<span style="background:#fef3c7; color:#92400e; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block;">Over 2.5: <b>{o25 if o25 else "N/A"}</b></span>'
-            btts_badge    = f'<span style="background:#f1f5f9; color:#475569; padding:4px 8px; border-radius:6px; font-size:12px; display:inline-block; margin-left:4px;">BTTS: <b>{btts_v if btts_v else "N/A"}</b></span>'
-            btn_bg        = "#d97706"
-
-        buteur_info_html = ""
+    # ── Pré-construction du tableau épuré & compact des matchs validés ─────
+    table_rows_html = ""
+    for idx, m in enumerate(s3_matches):
+        bg = "#ffffff" if idx % 2 == 0 else "#f8fafc"
+        s22 = m.get("s22", "N/A")
+        o25 = m.get("over25", "N/A")
         if m.get("buteur_name"):
-            buteur_info_html = f"""
-            <div style="margin-top:10px; background:rgba(241,245,249,0.9); padding:8px 12px; border-radius:6px; font-size:12px; color:#1e293b; border-left:3px solid #2563eb;">
-              ⚽ <b>Buteur proche de la moyenne :</b> <b style="color:#0f172a; font-size:13px;">{m['buteur_name']}</b> (Cote : <b style="color:#1d4ed8;">{m['buteur_cote']}</b> &nbsp;|&nbsp; Moy. cotes : {m['buteur_avg']})
-            </div>
-            """
-        else:
-            buteur_info_html = """
-            <div style="margin-top:10px; background:rgba(241,245,249,0.5); padding:6px 12px; border-radius:6px; font-size:11px; color:#64748b; font-style:italic;">
-              ⚽ Buteur proche de la moyenne : <i>Marché Buteurs non encore disponible</i>
-            </div>
-            """
-
-        yt_cards += f"""
-        <div style="background:{card_bg}; border:2px solid {card_border}; border-radius:12px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
-
-          <!-- LIGNE HAUT : DATETIME & BADGE STRATEGIE -->
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(0,0,0,0.06); padding-bottom:8px;">
-            <div style="font-size:12px; font-weight:bold; color:#475569;">
-              📅 {m['date_str']} &nbsp;|&nbsp; <span style="color:#64748b; font-weight:normal;">{m['league']}</span>
-            </div>
-            <div style="background:{badge_bg}; color:white; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:bold; letter-spacing:0.3px;">
-              {badge_text}
-            </div>
-          </div>
-
-          <!-- LIGNE MILIEU : AFFICHAGE DU MATCH -->
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px;">
-            <div style="flex:1;">
-              <div style="font-size:17px; font-weight:800; color:#0f172a; line-height:1.3;">
-                {m['dom']} <span style="color:#94a3b8; font-weight:400; font-size:14px;">vs</span> {m['ext']}
-              </div>
-            </div>
-          </div>
-
-          <!-- LIGNE BAS : COTES ET BOUTON MISE -->
-          <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.7); padding:10px 14px; border-radius:8px; border:1px solid rgba(0,0,0,0.05);">
-            <div style="font-size:13px; color:#334155;">
-              <span style="background:#e2e8f0; color:#1e293b; padding:4px 8px; border-radius:6px; font-weight:bold; font-size:12px; margin-right:6px; display:inline-block;">
-                Score 2-2: <b style="color:#0f172a; font-size:14px;">{s22}</b>
-              </span>
-              {o25_badge}
-              {btts_badge}
-            </div>
-            <div style="background:{btn_bg}; color:white; padding:8px 16px; border-radius:8px; font-size:14px; font-weight:800; letter-spacing:0.5px; text-align:center; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
-              💶 MISER {mise} €
-            </div>
-          </div>
-
-          {buteur_info_html}
-
-          """ + f"""
-
-        </div>
-        """
-
-    if not yt_cards:
-        yt_cards = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:24px; text-align:center; color:#64748b; font-style:italic;">Aucun match ne valide le critère Score 2-2 &le; 12.00 dans les 48h.</div>'
-
-    # ── Section Paris Simples à l'Unité (100% Simples — Conseil 5€ par match) ────────
-    tabac_duo_html = ""
-    simples_list = [m for m in s3_matches if m.get("double_confirm")]
-    simple_cards = []
-    
-    for m in simples_list:
-        o25 = m.get("over25", 1.80)
-        gain_pot = round(5.0 * o25, 2)
-        profit_net = round(gain_pot - 5.0, 2)
-        is_triple = m.get("triple_confirm", False)
-        badge_lbl = " ⭐⭐⭐ TRIPLE CONFIRMATION" if is_triple else " ⭐⭐ DOUBLE CONFIRMATION"
-        card_color = "#7e22ce" if is_triple else "#15803d"
-
-        buteur_txt = f"⚽ <b>Buteur Simple conseillé :</b> <b>{m['buteur_name']}</b> (@{m['buteur_cote']})" if m.get("buteur_name") else "⚽ <i>Marché Buteur non dispo</i>"
-
-        card = f"""
-        <div style="background:linear-gradient(135deg, #0f172a 0%, #1e293b 100%); border-radius:12px; padding:16px; margin-bottom:14px; color:white; border-left:5px solid {card_color}; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
-          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:8px; margin-bottom:10px;">
-            <div style="font-size:12px; opacity:0.9;">📅 {m['date_str']} &nbsp;|&nbsp; {m['league']}</div>
-            <div style="background:{card_color}; color:white; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:bold;">{badge_lbl}</div>
-          </div>
-
-          <div style="font-size:16px; font-weight:800; margin-bottom:8px; color:#f8fafc;">
-            {m['dom']} vs {m['ext']}
-          </div>
-
-          <div style="display:flex; align-items:center; justify-content:space-between; background:rgba(255,255,255,0.08); padding:10px 14px; border-radius:8px; margin-bottom:10px;">
-            <div style="font-size:13px;">
-              🎯 Pari recommandé : <b>OVER 2.5 BUTS</b> &nbsp;|&nbsp; Cote : <b style="color:#4ade80; font-size:15px;">{o25}</b>
-            </div>
-            <div style="text-align:right;">
-              <span style="font-size:11px; color:#cbd5e1;">Mise conseillée : <b>5,00 €</b></span><br>
-              <span style="font-size:13px; color:#4ade80; font-weight:800;">Gain net : +{profit_net} €</span>
-            </div>
-          </div>
-
-          <div style="font-size:12px; color:#cbd5e1; background:rgba(0,0,0,0.2); padding:6px 10px; border-radius:6px;">
-            {buteur_txt}
-          </div>
-        </div>
-        """
-        simple_cards.append(card)
-
-    if simple_cards:
-        tabac_duo_html = f"""
-        <div style="margin-bottom:24px;">
-          <h3 style="color: #0f172a; margin:0 0 12px 0; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">
-            🎯 RECOMMANDATIONS 100% PARIS SIMPLES À L'UNITÉ ({len(simple_cards)} MATCH{'S' if len(simple_cards)>1 else ''})
-          </h3>
-          {''.join(simple_cards)}
-        </div>
-        """
-
-    # ── Pré-construction des lignes du tableau "Tous les matchs" ─────────────
-    all_matches_rows = ""
-    for m in scanned_results:
-        if not m.get("buteur_name"):   # on n'affiche que les matchs avec un buteur dispo
-            continue
-        is_triple = m.get("triple_confirm", False)
-        is_double = m.get("double_confirm", False)
-        is_s3     = bool(m.get("s22") and m["s22"] <= SEUIL_S3)
-
-        if is_triple:
-            row_bg    = "#f3e8ff"
-            badge_bg  = "#7e22ce"
-            badge_lbl = "⭐⭐⭐ TRIPLE"
-        elif is_double:
-            row_bg    = "#f0fdf4"
-            badge_bg  = "#15803d"
-            badge_lbl = "⭐⭐ DOUBLE"
-        elif is_s3:
-            row_bg    = "#fffbeb"
-            badge_bg  = "#b45309"
-            badge_lbl = "🎥 S3"
-        else:
-            row_bg    = "#ffffff"
-            badge_bg  = "#64748b"
-            badge_lbl = "➖ STANDARD"
-
-        s22_val = m.get("s22", "N/A")
-        o25_val = m.get("over25", "N/A")
-        o25_col = "#15803d" if (m.get("over25") and m["over25"] <= SEUIL_S4) else "#b45309"
-
-        if m.get("buteur_name"):
-            buteur_cell = f'<b>{m["buteur_name"]}</b> ({m["buteur_cote"]})'
+            buteur_cell = f'<b>{m["buteur_name"]}</b> (@{m["buteur_cote"]})'
         else:
             buteur_cell = '<span style="color:#94a3b8; font-style:italic;">N/A</span>'
 
-        all_matches_rows += (
-            f'<tr style="background:{row_bg}; border-bottom:1px solid #e2e8f0;">'
-            f'<td style="padding:7px 10px; color:#475569; white-space:nowrap;">{m["date_str"]}</td>'
-            f'<td style="padding:7px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
-            f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m["league"]}</span></td>'
-            f'<td style="padding:7px 10px; text-align:center; font-weight:800; color:#1e293b;">{s22_val}</td>'
-            f'<td style="padding:7px 10px; text-align:center; font-weight:700; color:{o25_col};">{o25_val}</td>'
-            f'<td style="padding:7px 10px; text-align:left; color:#1e293b;">{buteur_cell}</td>'
-            f'<td style="padding:7px 10px; text-align:center;"><span style="background:{badge_bg}; color:white; padding:2px 7px; border-radius:10px; font-size:10px; font-weight:700;">{badge_lbl}</span></td>'
+        table_rows_html += (
+            f'<tr style="background:{bg}; border-bottom:1px solid #e2e8f0;">'
+            f'<td style="padding:10px 10px; color:#475569; white-space:nowrap; font-size:12px;">{m["date_str"]}</td>'
+            f'<td style="padding:10px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
+            f'<br><span style="font-size:11px; color:#64748b; font-weight:400;">{m["league"]}</span></td>'
+            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#fffbeb; color:#b45309; border:1px solid #fef08a; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{s22}</span></td>'
+            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{o25}</span></td>'
+            f'<td style="padding:10px 10px; text-align:left; color:#1e293b; font-size:12px;">{buteur_cell}</td>'
             f'</tr>'
         )
 
-    # ── Corps du mail HTML ───────────────────────────────────────────────────
+    if not table_rows_html:
+        table_rows_html = f'''
+        <tr>
+          <td colspan="5" style="padding:24px; text-align:center; color:#64748b; font-style:italic;">
+            Aucun match ne valide les critères stricts (Score 2-2 &le; {SEUIL_S3} et Over 2.5 entre {MIN_COTE_O25} et {MAX_COTE_O25}) dans les prochaines 48h.
+          </td>
+        </tr>
+        '''
+
+    # ── Corps du mail HTML Épuré, Compact & Moderne ──────────────────────────
     html_body = f"""
     <!DOCTYPE html>
     <html>
@@ -572,78 +396,45 @@ def main():
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
-      <body style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background-color: #f1f5f9; margin:0; padding: 20px;">
-        <div style="max-width: 680px; margin: 0 auto; background: #ffffff; padding: 28px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
+      <body style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin:0; padding: 15px; color:#1e293b;">
+        <div style="max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
 
-          <!-- BANNIÈRE HEADER ELEGANTE -->
-          <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 24px; color: white;">
-            <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ METRIC-FOOT — OVER 2.5 & BTTS</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd;">Stratégie Règle Unique · Score 2-2 ≤ 12.00 (Over 2.5 Buts + BTTS Garantis)</p>
-            <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">
+          <!-- BANNIÈRE HEADER -->
+          <div style="background: #0f172a; padding: 20px; text-align: center; color: white;">
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ OVER 2.5 & BTTS — SÉLECTION UNIBET</h1>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">Score 2-2 ≤ {SEUIL_S3} &nbsp;•&nbsp; Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]</p>
+            <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 3px 12px; border-radius: 15px; font-size: 11px; color: #cbd5e1;">
               Mise à jour : {now_str}
             </div>
           </div>
 
-          <!-- KPI BLOCS SYNTHÈSE -->
-          <table style="width:100%; border-collapse:separate; border-spacing:10px; margin-bottom:20px; text-align:center;">
-            <tr>
-              <td style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; width:33%;">
-                <div style="font-size:26px; font-weight:800; color:#1e40af;">{len(scanned_results)}</div>
-                <div style="font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; margin-top:2px;">Matchs scannés</div>
-              </td>
-              <td style="background:#fffbeb; border:1px solid #fef08a; border-radius:10px; padding:14px; width:33%;">
-                <div style="font-size:26px; font-weight:800; color:#b45309;">{nb_simple}</div>
-                <div style="font-size:11px; font-weight:600; color:#854d0e; text-transform:uppercase; margin-top:2px;">🎥 Signal S3 Seul</div>
-              </td>
-              <td style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px; width:33%;">
-                <div style="font-size:26px; font-weight:800; color:#15803d;">{nb_double}</div>
-                <div style="font-size:11px; font-weight:600; color:#166534; text-transform:uppercase; margin-top:2px;">⭐⭐ Double Confirm.</div>
-              </td>
-            </tr>
-          </table>
-
-          <!-- CARTE SPECIALE DUO CONSEILLE BAR TABAC -->
-          {tabac_duo_html}
-
-          <!-- SECTION ÉVOLUTIONS -->
-          {evo_html}
-
-          <!-- SECTION CARTES MATCHS -->
-          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="color: #0f172a; margin:0; font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px;">
-              🎥 SÉLECTION MATCHS ({len(s3_matches)})
-            </h3>
-            <span style="font-size:12px; color:#64748b;">Trié par niveau de confiance</span>
+          <!-- SYNTHÈSE COMPACTE -->
+          <div style="padding: 12px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 13px; font-weight: 700; color: #0f172a; display:flex; justify-content:space-between; align-items:center;">
+            <span>🔥 <b>{len(s3_matches)} match(s) retenu(s)</b> sur {len(scanned_results)} scannés</span>
+            <span style="font-size:11px; color:#64748b; font-weight:normal;">Fenêtre 48h</span>
           </div>
 
-          <!-- LISTE DES CARTES DE MATCHS -->
-          {yt_cards}
-
-          <!-- SECTION TOUS LES MATCHS DETECTÉS -->
-          <div style="margin-top:28px;">
-            <h3 style="color:#0f172a; margin:0 0 12px 0; font-size:15px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; border-bottom:2px solid #e2e8f0; padding-bottom:8px;">
-              📋 TOUS LES MATCHS SCANNÉS UNIBET ({len(scanned_results)} au total — Analyse Buteurs Moyenne)
-            </h3>
-            <table style="width:100%; border-collapse:collapse; font-size:12px;">
+          <!-- TABLEAU UNIQUE COMPACT DES MATCHS SELECTIONNÉS -->
+          <div style="padding: 10px;">
+            <table style="width:100%; border-collapse:collapse; font-size:13px;">
               <thead>
-                <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:11px; font-weight:700;">
-                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Date</th>
-                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Match</th>
-                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Score 2-2</th>
-                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Over 2.5</th>
-                  <th style="padding:8px 10px; text-align:left; border-bottom:2px solid #e2e8f0;">Buteur Moyenne</th>
-                  <th style="padding:8px 10px; text-align:center; border-bottom:2px solid #e2e8f0;">Niveau</th>
+                <tr style="background:#f8fafc; color:#475569; text-transform:uppercase; font-size:11px; font-weight:700; border-bottom:2px solid #e2e8f0;">
+                  <th style="padding:9px 10px; text-align:left;">Date</th>
+                  <th style="padding:9px 10px; text-align:left;">Match & Ligue</th>
+                  <th style="padding:9px 10px; text-align:center;">Score 2-2</th>
+                  <th style="padding:9px 10px; text-align:center;">Over 2.5</th>
+                  <th style="padding:9px 10px; text-align:left;">Buteur Moyenne</th>
                 </tr>
               </thead>
               <tbody>
-                {all_matches_rows}
+                {table_rows_html}
               </tbody>
             </table>
           </div>
 
           <!-- FOOTER -->
-          <div style="margin-top:28px; padding:12px 16px; background:#fef9c3; border-radius:10px; font-size:11px; color:#713f12; text-align:center; border:1px solid #fef08a;">
-            ⚠️ Rapport automatisé Unibet France (48h). Les paris sportifs comportent des risques. Jouez avec modération.
+          <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center;">
+            ⚠️ Paris sportifs à l'unité · Analyse basée sur cotes Unibet France · Jouez avec modération.
           </div>
 
         </div>
@@ -653,17 +444,17 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ MÉTHODE YOUTUBE OVER 2.5 — SÉLECTION 48H",
-        f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}\n",
-        f"**Total retenus** : {len(s3_matches)} ({nb_double} ⭐⭐ Double Confirmation, {nb_simple} 🎥 Signal S3)\n",
-        "| Décision | Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
-        "| :---: | :---: | :--- | :--- | :---: | :---: | :--- |",
+        "# ⚽ SÉLECTION STRICTE OVER 2.5 — UNIBET 48H",
+        f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
+        f"**Critères** : Score 2-2 ≤ {SEUIL_S3}  |  Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]\n",
+        f"**Total retenus** : {len(s3_matches)}\n",
+        "| Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
+        "| :---: | :--- | :--- | :---: | :---: | :--- |",
     ]
     for m in s3_matches:
-        badge = "⭐⭐ DOUBLE" if m["double_confirm"] else "🎥 S3"
         o25 = m.get("over25", "N/A")
         but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {badge} | {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | {o25} | {but} |")
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | **{o25}** | {but} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -680,14 +471,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    if nb_triple:
-        subject_flag = f"{nb_triple} TRIPLE + {nb_double} DOUBLE + {nb_simple} signal"
-    elif nb_double:
-        subject_flag = f"{nb_double} DOUBLE + {nb_simple} signal"
-    elif nb_s3:
-        subject_flag = f"{nb_s3} signal{'s' if nb_s3>1 else ''} detecte{'s' if nb_s3>1 else ''}"
-    else:
-        subject_flag = "Rapport de veille"
+    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (2-2 ≤ 10.50 & O2.5 [1.55-1.70])"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Rapport foot du {subject_date} - {subject_flag}"
