@@ -265,32 +265,24 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
-    # ── Sélection S3 : Score 2-2 ≤ 12.00 (stratégie principale) ────────────
-    # s3_all    : TOUS les matchs S3 sans filtre cote (pour l'affichage complet en bas)
-    # s3_matches: matchs S3 avec filtre MIN_COTE_O25 ≥ 1.50 (pour les Duos Bar Tabac)
+    # ── Sélection Règle Unique : Score 2-2 ≤ 12.00 ─────────────────────────
+    # ponytail: Règle unique simplifiée : Score 2-2 <= 12.00 -> Over 2.5 BUTS (BTTS garanti)
     s3_all = []
     for r in scanned_results:
         if not (r.get("s22") and r["s22"] <= SEUIL_S3):
             continue
-        o25 = r.get("over25")
-        btts = r.get("btts_oui")
-        # Plage validée par backtest : 1.65 ≤ Over 2.5 ≤ 1.87 → seule zone ROI positive
-        double = bool(o25 and MIN_COTE_O25 <= o25 <= SEUIL_S4)
-        triple = bool(double and btts and btts <= SEUIL_BTTS)
-        r["double_confirm"] = double
-        r["triple_confirm"] = triple
+        # Pari retenu : Over 2.5 Buts (BTTS également garanti par 2-2 <= 12.00)
+        r["double_confirm"] = True
+        r["triple_confirm"] = True
         s3_all.append(r)
 
-    s3_all.sort(key=lambda x: (not x["triple_confirm"], not x["double_confirm"], x.get("dt_obj", now_utc)))
+    s3_all.sort(key=lambda x: x.get("dt_obj", now_utc))
+    s3_matches = s3_all
 
-    # Filtre anti-piège sur MIN_COTE_O25 (uniquement pour les Duos Bar Tabac)
-    s3_matches = [m for m in s3_all if not (m.get("over25") and m["over25"] < MIN_COTE_O25)]
-
-    nb_triple = sum(1 for m in s3_matches if m.get("triple_confirm"))
-    nb_double = sum(1 for m in s3_matches if m.get("double_confirm") and not m.get("triple_confirm"))
-    nb_simple = len(s3_matches) - nb_double - nb_triple
-    print(f"S3 retenus : {len(s3_matches)} ({nb_triple} TRIPLE, {nb_double} DOUBLE, {nb_simple} signal seul)")
-    print(f"S3 total sans filtre cote : {len(s3_all)}")
+    nb_triple = len(s3_matches)
+    nb_double = 0
+    nb_simple = 0
+    print(f"Matchs retenus (Score 2-2 ≤ 12.00) : {len(s3_matches)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -585,8 +577,8 @@ def main():
 
           <!-- BANNIÈRE HEADER ELEGANTE -->
           <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); border-radius: 12px; padding: 22px; text-align: center; margin-bottom: 24px; color: white;">
-            <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ METRIC-FOOT — OVER 2.5</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd;">Stratégie 100% Paris Simples à l'Unité · Cotes Validées [1.65 - 1.87]</p>
+            <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ METRIC-FOOT — OVER 2.5 & BTTS</h1>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #93c5fd;">Stratégie Règle Unique · Score 2-2 ≤ 12.00 (Over 2.5 Buts + BTTS Garantis)</p>
             <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;">
               Mise à jour : {now_str}
             </div>
