@@ -300,6 +300,22 @@ def main():
     print(f"Matchs retenus (Score 2-2 ≤ {SEUIL_S3} & Over 2.5 [{MIN_COTE_O25}-{MAX_COTE_O25}]) : {len(s3_matches)}")
     print(f"Matchs rejetés : {len(rejected_matches)}")
 
+    # ── Calcul des statistiques moyennes globales ───────────────────────────
+    all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
+    all_s22 = [m["s22"] for m in scanned_results if m.get("s22") is not None]
+
+    avg_all_o25 = round(sum(all_o25) / len(all_o25), 2) if all_o25 else 0.0
+    avg_all_s22 = round(sum(all_s22) / len(all_s22), 2) if all_s22 else 0.0
+
+    sel_o25 = [m["over25"] for m in s3_matches if m.get("over25") is not None]
+    sel_s22 = [m["s22"] for m in s3_matches if m.get("s22") is not None]
+
+    avg_sel_o25 = round(sum(sel_o25) / len(sel_o25), 2) if sel_o25 else 0.0
+    avg_sel_s22 = round(sum(sel_s22) / len(sel_s22), 2) if sel_s22 else 0.0
+
+    print(f"Moyenne globale Over 2.5 ({len(all_o25)} matchs) : {avg_all_o25:.2f} (Retenus : {avg_sel_o25:.2f})")
+    print(f"Moyenne globale Score 2-2 ({len(all_s22)} matchs) : {avg_all_s22:.2f} (Retenus : {avg_sel_s22:.2f})")
+
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
     prev_state = {}
@@ -448,6 +464,20 @@ def main():
             </div>
           </div>
 
+          <!-- BANNIÈRE STATISTIQUES MOYENNES DU MARCHÉ -->
+          <div style="padding: 12px 15px; background: #f0f9ff; border-bottom: 1px solid #e0f2fe; display: flex; justify-content: space-around; text-align: center;">
+            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #bae6fd;">
+              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne Over 2.5 (Tous)</span>
+              <span style="font-size: 17px; font-weight: 800; color: #0284c7;">{avg_all_o25:.2f}</span>
+              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_o25:.2f})</span>
+            </div>
+            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #fde68a;">
+              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne Score 2-2 (Tous)</span>
+              <span style="font-size: 17px; font-weight: 800; color: #d97706;">{avg_all_s22:.2f}</span>
+              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_s22:.2f})</span>
+            </div>
+          </div>
+
           <!-- SYNTHÈSE COMPACTE -->
           <div style="padding: 12px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 13px; font-weight: 700; color: #0f172a; display:flex; justify-content:space-between; align-items:center;">
             <span>🔥 <b>{len(s3_matches)} match(s) retenu(s)</b> sur {len(scanned_results)} scannés</span>
@@ -508,7 +538,10 @@ def main():
         "# ⚽ SÉLECTION STRICTE OVER 2.5 — UNIBET 48H",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"**Critères** : Score 2-2 ≤ {SEUIL_S3}  |  Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]\n",
-        f"**Total retenus** : {len(s3_matches)}\n",
+        f"### 📈 Statistiques Moyennes du Marché (Unibet France 48h)",
+        f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
+        f"- **Cote Score 2-2 moyenne globale (Tous matchs)** : `{avg_all_s22:.2f}` *(Matchs retenus : `{avg_sel_s22:.2f}`)*",
+        f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
         "## ✅ Matchs Sélectionnés",
         "| Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
         "| :---: | :--- | :--- | :---: | :---: | :--- |",
