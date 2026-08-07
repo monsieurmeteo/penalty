@@ -12,8 +12,8 @@
       "match": "FC Kuressaare - Harju JK",
       "league": "Estonie • D1 Estonie",
       "date_str": "Ven. 07/08 à 18h00",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
+      "val_s22": 10.0,
+      "val_o25": 1.55,
       "double": true
     },
     "3359753": {
@@ -48,22 +48,6 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3363934": {
-      "match": "Airbus FC - Cardiff",
-      "league": "Pays De Galles • D1 P Degalles",
-      "date_str": "Ven. 07/08 à 20h45",
-      "val_s22": 10.5,
-      "val_o25": 1.7,
-      "double": true
-    },
-    "3362915": {
-      "match": "Trefelin BGC - Llandudno FC",
-      "league": "Pays De Galles • D1 P Degalles",
-      "date_str": "Ven. 07/08 à 20h45",
-      "val_s22": 9.9,
-      "val_o25": 1.55,
-      "double": true
-    },
     "3369309": {
       "match": "Caernarfon - Penybont FC",
       "league": "Pays De Galles • D1 P Degalles",
@@ -80,12 +64,28 @@
       "val_o25": 1.55,
       "double": true
     },
+    "3363934": {
+      "match": "Airbus FC - Cardiff",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 10.5,
+      "val_o25": 1.7,
+      "double": true
+    },
     "3362632": {
       "match": "Flint Town - Barry Town FC",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 07/08 à 20h45",
       "val_s22": 10.5,
       "val_o25": 1.65,
+      "double": true
+    },
+    "3362915": {
+      "match": "Trefelin BGC - Llandudno FC",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 9.9,
+      "val_o25": 1.55,
       "double": true
     },
     "3360959": {
@@ -128,12 +128,68 @@
       "val_o25": 1.65,
       "double": true
     },
+    "3359091": {
+      "match": "Sheffield Wed. - Bolton",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359103": {
+      "match": "Preston - Huddersfield",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359092": {
+      "match": "Stockport - Doncaster",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 12.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359112": {
+      "match": "Bristol Rovers - Peterborough",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 9.6,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3359101": {
+      "match": "Grimsby Town - Blackpool",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
     "3359115": {
       "match": "Bromley FC - Reading",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 10.5,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3359088": {
+      "match": "Barnsley - Wigan",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3359094": {
+      "match": "Crewe - Accrington St.",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3359117": {
@@ -152,68 +208,20 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3359101": {
-      "match": "Grimsby Town - Blackpool",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.7,
-      "double": true
-    },
-    "3359094": {
-      "match": "Crewe - Accrington St.",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.5,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3359112": {
-      "match": "Bristol Rovers - Peterborough",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 9.6,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3359092": {
-      "match": "Stockport - Doncaster",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 12.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3359088": {
-      "match": "Barnsley - Wigan",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3359091": {
-      "match": "Sheffield Wed. - Bolton",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3359103": {
-      "match": "Preston - Huddersfield",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3369091": {
       "match": "Kisvarda - Ujpest",
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Sam. 08/08 à 17h30",
       "val_s22": 10.0,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3368789": {
+      "match": "FC Narva - Nomme Kalju",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 12.0,
+      "val_o25": 1.55,
       "double": true
     },
     "3364169": {
@@ -238,14 +246,6 @@
       "date_str": "Sam. 08/08 à 18h00",
       "val_s22": 10.0,
       "val_o25": 1.65,
-      "double": true
-    },
-    "3368789": {
-      "match": "FC Narva - Nomme Kalju",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.55,
       "double": true
     },
     "3364166": {
