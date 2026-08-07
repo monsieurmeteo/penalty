@@ -470,6 +470,7 @@ def main():
 
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
+    subject_date = now_dt.strftime('%d/%m %Hh%M')
     subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (2-2 ≤ 12.00 & O2.5 [1.55-1.70])"
 
     msg = MIMEMultipart("alternative")
