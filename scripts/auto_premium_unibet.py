@@ -632,5 +632,82 @@ def main():
     if not sent_success:
         print("WARNING: Email could not be delivered through any SMTP provider.")
 
+    # ── Export direct vers le Dashboard Web (Alignement 100% avec l'Email) ────
+    try:
+        dash_matches = []
+        for m in s3_matches:
+            dash_matches.append({
+                "id": str(m.get("id")),
+                "dom": m.get("dom"),
+                "ext": m.get("ext"),
+                "league": m.get("league", "Football"),
+                "start_iso": m.get("start_iso"),
+                "date_str": m.get("date_str", "À venir"),
+                "status": "UPCOMING",
+                "score_dom": None,
+                "score_ext": None,
+                "is_selected": True,
+                "selection_status": "PENDING",
+                "rejection_reason": None,
+                "s22": m.get("s22"),
+                "over25": m.get("over25"),
+                "buteur_name": m.get("buteur_name"),
+                "buteur_cote": m.get("buteur_cote"),
+                "profit_units": 0.0
+            })
+
+        for m in rejected_matches:
+            dash_matches.append({
+                "id": str(m.get("id")),
+                "dom": m.get("dom"),
+                "ext": m.get("ext"),
+                "league": m.get("league", "Football"),
+                "start_iso": m.get("start_iso"),
+                "date_str": m.get("date_str", "À venir"),
+                "status": "UPCOMING",
+                "score_dom": None,
+                "score_ext": None,
+                "is_selected": False,
+                "selection_status": "PENDING",
+                "rejection_reason": m.get("rejection_reason"),
+                "s22": m.get("s22"),
+                "over25": m.get("over25"),
+                "buteur_name": m.get("buteur_name"),
+                "buteur_cote": m.get("buteur_cote"),
+                "profit_units": 0.0
+            })
+
+        summary = {
+            "total_live": 0,
+            "total_scanned_upcoming": len(scanned_results),
+            "total_selected_upcoming": len(s3_matches),
+            "total_history_bets": 0,
+            "total_wins": 0,
+            "total_losses": 0,
+            "win_rate_over25": 0.0,
+            "total_profit_units": 0.0,
+            "roi_pct": 0.0,
+            "initial_bankroll": 100.0,
+            "current_bankroll": 100.0,
+            "avg_odds_over25_global": avg_all_o25,
+            "avg_odds_s22_global": avg_all_s22,
+            "last_update": datetime.now(timezone.utc).isoformat()
+        }
+
+        dash_data = {
+            "summary": summary,
+            "bankroll_curve": [],
+            "league_stats": [],
+            "matches": dash_matches
+        }
+
+        dash_path = r"C:\Users\grego\Documents\DEV_DIVERS\penalty\dashboard\public\data\matches.json"
+        os.makedirs(os.path.dirname(dash_path), exist_ok=True)
+        with open(dash_path, "w", encoding="utf-8") as f:
+            json.dump(dash_data, f, ensure_ascii=False, indent=2)
+        print(f"✅ DASHBOARD JSON EXPORTÉ AVEC SUCCÈS (Alignement 100% Email) : {dash_path}")
+    except Exception as e:
+        print(f"⚠️ Erreur d'export Dashboard JSON : {e}")
+
 if __name__ == "__main__":
     main()
