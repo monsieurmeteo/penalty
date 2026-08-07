@@ -6,7 +6,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # ── Seuils ──────────────────────────────────────────────────────────────────
-SEUIL_S3      = 10.50  # Score exact 2-2 Unibet <= 10.50
+SEUIL_S3      = 12.00  # Score exact 2-2 Unibet <= 12.00
 MIN_COTE_O25  = 1.55   # Cote Over 2.5 minimale = 1.55
 MAX_COTE_O25  = 1.70   # Cote Over 2.5 maximale = 1.70
 
@@ -470,8 +470,7 @@ def main():
 
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
-    subject_date = now_dt.strftime('%d/%m %Hh%M')
-    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (2-2 ≤ 10.50 & O2.5 [1.55-1.70])"
+    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (2-2 ≤ 12.00 & O2.5 [1.55-1.70])"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Rapport foot du {subject_date} - {subject_flag}"
