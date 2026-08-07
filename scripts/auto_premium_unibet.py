@@ -634,27 +634,104 @@ def main():
 
     # ── Export direct vers le Dashboard Web (Alignement 100% avec l'Email) ────
     try:
+        # Récupération des scores en direct via l'API officielle LiveScore (HTTP 200)
+        livescore_events = []
+        try:
+            today_date_str = datetime.now().strftime("%Y%m%d")
+            ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{today_date_str}/0"
+            r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
+            if r_ls.status_code == 200:
+                ls_data = r_ls.json()
+                for st in ls_data.get("Stages", []):
+                    stage_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
+                    for m_ev in st.get("Events", []):
+                        eps = str(m_ev.get("Eps", ""))
+                        if eps not in ["NS", "FT", "AP", "AET", "CANC", "POST", "DEFD"]:
+                            h_team = m_ev.get("T1", [{}])[0].get("Nm", "")
+                            a_team = m_ev.get("T2", [{}])[0].get("Nm", "")
+                            h_sc = int(m_ev.get("Tr1", 0) or 0)
+                            a_sc = int(m_ev.get("Tr2", 0) or 0)
+                            livescore_events.append({
+                                "id": str(m_ev.get("Eid", "")),
+                                "home": h_team,
+                                "away": a_team,
+                                "score_dom": h_sc,
+                                "score_ext": a_sc,
+                                "minute": eps + ("'" if eps.isdigit() else ""),
+                                "period_label": "En cours" if eps.isdigit() else eps,
+                                "league": stage_name
+                            })
+            print(f"✅ LiveScore API : {len(livescore_events)} matchs en direct récupérés.")
+        except Exception as e_ls:
+            print(f"⚠️ Erreur sync LiveScore API : {e_ls}")
+
+        def norm_name(name):
+            return re.sub(r'\s+(FC|SC|CF|AS|AC|1\.|FK|BK|SK|IF|IK|GF|FF|VPS|Utd|United|City|Town|Club|Sporting|Real)\b', '', name or '', flags=re.IGNORECASE).strip().lower()
+
+        def match_similarity(a, b):
+            from difflib import SequenceMatcher
+            return SequenceMatcher(None, norm_name(a), norm_name(b)).ratio()
+
         dash_matches = []
         for m in s3_matches:
-            dash_matches.append({
-                "id": str(m.get("id")),
-                "dom": m.get("dom"),
-                "ext": m.get("ext"),
-                "league": m.get("league", "Football"),
-                "start_iso": m.get("start_iso"),
-                "date_str": m.get("date_str", "À venir"),
-                "status": "UPCOMING",
-                "score_dom": None,
-                "score_ext": None,
-                "is_selected": True,
-                "selection_status": "PENDING",
-                "rejection_reason": None,
-                "s22": m.get("s22"),
-                "over25": m.get("over25"),
-                "buteur_name": m.get("buteur_name"),
-                "buteur_cote": m.get("buteur_cote"),
-                "profit_units": 0.0
-            })
+            dom = m.get("dom", "")
+            ext = m.get("ext", "")
+            
+            # Chercher si le match retenu est en direct actuellement sur LiveScore
+            live_info = None
+            best_sim = 0.0
+            for ls in livescore_events:
+                s1 = match_similarity(dom, ls["home"])
+                s2 = match_similarity(ext, ls["away"])
+                sim = (s1 + s2) / 2.0
+                if sim > best_sim:
+                    best_sim = sim
+                    live_info = ls
+
+            if live_info and best_sim >= 0.65:
+                buts = live_info["score_dom"] + live_info["score_ext"]
+                is_won = (buts >= 3)
+                dash_matches.append({
+                    "id": str(m.get("id")),
+                    "dom": dom,
+                    "ext": ext,
+                    "league": m.get("league", live_info["league"]),
+                    "start_iso": m.get("start_iso"),
+                    "date_str": "En Direct",
+                    "status": "LIVE",
+                    "minute": live_info["minute"],
+                    "period_label": live_info["period_label"],
+                    "score_dom": live_info["score_dom"],
+                    "score_ext": live_info["score_ext"],
+                    "is_selected": True,
+                    "selection_status": "WON" if is_won else "PENDING",
+                    "rejection_reason": None,
+                    "s22": m.get("s22"),
+                    "over25": m.get("over25"),
+                    "buteur_name": m.get("buteur_name"),
+                    "buteur_cote": m.get("buteur_cote"),
+                    "profit_units": round(m.get("over25", 1.0) - 1.0, 2) if is_won and m.get("over25") else 0.0
+                })
+            else:
+                dash_matches.append({
+                    "id": str(m.get("id")),
+                    "dom": dom,
+                    "ext": ext,
+                    "league": m.get("league", "Football"),
+                    "start_iso": m.get("start_iso"),
+                    "date_str": m.get("date_str", "À venir"),
+                    "status": "UPCOMING",
+                    "score_dom": None,
+                    "score_ext": None,
+                    "is_selected": True,
+                    "selection_status": "PENDING",
+                    "rejection_reason": None,
+                    "s22": m.get("s22"),
+                    "over25": m.get("over25"),
+                    "buteur_name": m.get("buteur_name"),
+                    "buteur_cote": m.get("buteur_cote"),
+                    "profit_units": 0.0
+                })
 
         for m in rejected_matches:
             dash_matches.append({
@@ -676,6 +753,9 @@ def main():
                 "buteur_cote": m.get("buteur_cote"),
                 "profit_units": 0.0
             })
+
+        total_live_count = len([m for m in dash_matches if m["status"] == "LIVE"])
+
 
         summary = {
             "total_live": 0,
