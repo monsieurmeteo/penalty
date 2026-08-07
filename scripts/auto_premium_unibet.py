@@ -179,30 +179,28 @@ def scan_unibet_match_details(game):
             buteur_avg = None
 
             buteur_prices = []
+            NON_PLAYER_KEYWORDS = ["oui", "non", "condition", "egalité", "égalité", "score", "match", "equipe", "équipe", "nul", "gagne", " 1-0", " 2-0", " 3-0", " 4-0", " 0-1", " 0-2", " 0-3"]
+
             for g in event.get("groupedMarkets", []):
-                found_market = False
                 for m in g.get("markets", []):
                     m_desc_raw = (m.get("description") or "").strip().lower()
-                    # Correspondance partielle pour couvrir toutes les variantes Unibet
                     if any(kw in m_desc_raw for kw in ["buteur", "buteurs", "joueur marqueur", "marqueur"]) and \
-                       not any(ex in m_desc_raw for ex in ["double", "triple", "combin", "2+", "duel", "ou ", "et ", "trio", "quatuor", "equipe"]):
+                       not any(ex in m_desc_raw for ex in ["double", "triple", "combin", "2+", "duel", "trio", "quatuor"]):
                         for o in m.get("outcomes", []):
                             p_name = (o.get("description") or "").strip()
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if p_val > 1.0 and p_name:
-                                buteur_prices.append((p_name, p_val))
-                        found_market = True
-                        break
-                if found_market:
+                                if not any(nk in p_name.lower() for nk in NON_PLAYER_KEYWORDS):
+                                    buteur_prices.append((p_name, p_val))
+                        if buteur_prices:
+                            break
+                if buteur_prices:
                     break
 
             if buteur_prices:
-                # Filtre anti-longshot : on ne considère que les cotes ≤ 6.00
-                # ponytail: seuil 6.00 empirique, upgrade → seuil configurable si besoin
                 pool = [(n, p) for n, p in buteur_prices if p <= 6.0] or buteur_prices
                 avg_p = sum(p for n, p in pool) / len(pool)
                 closest = min(pool, key=lambda x: abs(x[1] - avg_p))
-                # Corriger le format "Nom, Prénom" → "Prénom Nom" (format API Unibet)
                 raw_name = closest[0]
                 if "," in raw_name:
                     parts = raw_name.split(",", 1)
@@ -264,23 +262,43 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
-    # ── Sélection Stricte : Score 2-2 ≤ 10.50 ET 1.55 ≤ Over 2.5 ≤ 1.70 ───────
-    # ponytail: Règle spécifique utilisateur : Score 2-2 <= 10.50 ET 1.55 <= Over 2.5 <= 1.70
+    # ── Sélection Stricte : Score 2-2 ≤ 12.00 ET 1.55 ≤ Over 2.5 ≤ 1.70 ───────
     s3_matches = []
+    rejected_matches = []
+
     for r in scanned_results:
         s22 = r.get("s22")
         o25 = r.get("over25")
-        if s22 and s22 <= SEUIL_S3 and o25 and MIN_COTE_O25 <= o25 <= MAX_COTE_O25:
+
+        reasons = []
+        if s22 is None:
+            reasons.append("Score 2-2 non disponible")
+        elif s22 > SEUIL_S3:
+            reasons.append(f"Score 2-2 = {s22:.2f} (> {SEUIL_S3:.2f})")
+
+        if o25 is None:
+            reasons.append("Over 2.5 non disponible")
+        elif o25 < MIN_COTE_O25:
+            reasons.append(f"Over 2.5 = {o25:.2f} (< {MIN_COTE_O25:.2f})")
+        elif o25 > MAX_COTE_O25:
+            reasons.append(f"Over 2.5 = {o25:.2f} (> {MAX_COTE_O25:.2f})")
+
+        if not reasons:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
+        else:
+            r["rejection_reason"] = " • ".join(reasons)
+            rejected_matches.append(r)
 
     s3_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
+    rejected_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
 
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
     print(f"Matchs retenus (Score 2-2 ≤ {SEUIL_S3} & Over 2.5 [{MIN_COTE_O25}-{MAX_COTE_O25}]) : {len(s3_matches)}")
+    print(f"Matchs rejetés : {len(rejected_matches)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -357,7 +375,7 @@ def main():
 
     # ── Génération des cartes de matchs ──────────────────────────────────────
     yt_cards = ""
-    # ── Pré-construction du tableau épuré & compact des matchs validés ─────
+    # ── Pré-construction du tableau des matchs validés ─────────────────────
     table_rows_html = ""
     for idx, m in enumerate(s3_matches):
         bg = "#ffffff" if idx % 2 == 0 else "#f8fafc"
@@ -388,6 +406,28 @@ def main():
         </tr>
         '''
 
+    # ── Pré-construction du tableau des matchs NON retenus & motifs ────────
+    rejected_rows_html = ""
+    for idx, m in enumerate(rejected_matches):
+        bg = "#ffffff" if idx % 2 == 0 else "#f9fafb"
+        s22_val = f"{m['s22']:.2f}" if m.get("s22") is not None else '<span style="color:#94a3b8;">N/A</span>'
+        o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else '<span style="color:#94a3b8;">N/A</span>'
+        reason = m.get("rejection_reason", "Non éligible")
+
+        rejected_rows_html += (
+            f'<tr style="background:{bg}; border-bottom:1px solid #e5e7eb;">'
+            f'<td style="padding:7px 8px; color:#6b7280; white-space:nowrap; font-size:11px;">{m["date_str"]}</td>'
+            f'<td style="padding:7px 8px; font-weight:600; color:#374151; font-size:12px;">{m["dom"]} vs {m["ext"]}'
+            f'<br><span style="font-size:10px; color:#9ca3af;">{m["league"]}</span></td>'
+            f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{s22_val}</td>'
+            f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{o25_val}</td>'
+            f'<td style="padding:7px 8px; text-align:left; color:#dc2626; font-size:11px; font-weight:600;">{reason}</td>'
+            f'</tr>'
+        )
+
+    if not rejected_rows_html:
+        rejected_rows_html = '<tr><td colspan="5" style="padding:15px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match scanné n\'a été rejeté.</td></tr>'
+
     # ── Corps du mail HTML Épuré, Compact & Moderne ──────────────────────────
     html_body = f"""
     <!DOCTYPE html>
@@ -397,7 +437,7 @@ def main():
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
       </head>
       <body style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin:0; padding: 15px; color:#1e293b;">
-        <div style="max-width: 640px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
 
           <!-- BANNIÈRE HEADER -->
           <div style="background: #0f172a; padding: 20px; text-align: center; color: white;">
@@ -432,6 +472,27 @@ def main():
             </table>
           </div>
 
+          <!-- SECTION MATCHS NON SÉLECTIONNÉS ET MOTIFS DE REJET -->
+          <div style="padding: 15px 10px; border-top: 2px solid #e2e8f0; background: #fafafa;">
+            <div style="font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+              <span>🚫 MATCHS NON SÉLECTIONNÉS ({len(rejected_matches)}) & RAISONS DU REJET</span>
+            </div>
+            <table style="width:100%; border-collapse:collapse; font-size:12px; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
+              <thead>
+                <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:10px; font-weight:700; border-bottom:1px solid #cbd5e1;">
+                  <th style="padding:8px 10px; text-align:left;">Date</th>
+                  <th style="padding:8px 10px; text-align:left;">Match & Ligue</th>
+                  <th style="padding:8px 10px; text-align:center;">Score 2-2</th>
+                  <th style="padding:8px 10px; text-align:center;">Over 2.5</th>
+                  <th style="padding:8px 10px; text-align:left;">Raison du Rejet</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rejected_rows_html}
+              </tbody>
+            </table>
+          </div>
+
           <!-- FOOTER -->
           <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center;">
             ⚠️ Paris sportifs à l'unité · Analyse basée sur cotes Unibet France · Jouez avec modération.
@@ -448,6 +509,7 @@ def main():
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"**Critères** : Score 2-2 ≤ {SEUIL_S3}  |  Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]\n",
         f"**Total retenus** : {len(s3_matches)}\n",
+        "## ✅ Matchs Sélectionnés",
         "| Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
         "| :---: | :--- | :--- | :---: | :---: | :--- |",
     ]
@@ -455,6 +517,15 @@ def main():
         o25 = m.get("over25", "N/A")
         but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
         report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | **{o25}** | {but} |")
+
+    report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
+    report.append("| Date | Ligue | Match | Score 2-2 | Over 2.5 | Raison du Rejet |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    for m in rejected_matches:
+        s22_val = f"{m['s22']:.2f}" if m.get("s22") is not None else "N/A"
+        o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else "N/A"
+        reason = m.get("rejection_reason", "Non éligible")
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {s22_val} | {o25_val} | {reason} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
