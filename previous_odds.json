@@ -16,12 +16,20 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3369309": {
+      "match": "Caernarfon - Penybont FC",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 07/08 à 20h45",
+      "val_s22": 11.0,
+      "val_o25": 1.65,
+      "double": true
+    },
     "3362632": {
       "match": "Flint Town - Barry Town FC",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 07/08 à 20h45",
       "val_s22": 10.5,
-      "val_o25": 1.7,
+      "val_o25": 1.65,
       "double": true
     },
     "3363934": {
@@ -30,14 +38,6 @@
       "date_str": "Ven. 07/08 à 20h45",
       "val_s22": 10.5,
       "val_o25": 1.7,
-      "double": true
-    },
-    "3369309": {
-      "match": "Caernarfon - Penybont FC",
-      "league": "Pays De Galles • D1 P Degalles",
-      "date_str": "Ven. 07/08 à 20h45",
-      "val_s22": 11.5,
-      "val_o25": 1.65,
       "double": true
     },
     "3365827": {
@@ -69,7 +69,7 @@
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 08/08 à 12h00",
       "val_s22": 11.5,
-      "val_o25": 1.72,
+      "val_o25": 1.78,
       "double": true
     },
     "3369530": {
@@ -77,15 +77,7 @@
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 08/08 à 12h00",
       "val_s22": 11.5,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3364517": {
-      "match": "Pohang - Ulsan",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 08/08 à 13h00",
-      "val_s22": 11.0,
-      "val_o25": 1.75,
+      "val_o25": 1.7,
       "double": true
     },
     "3364484": {
@@ -104,6 +96,14 @@
       "val_o25": 1.65,
       "double": true
     },
+    "3364517": {
+      "match": "Pohang - Ulsan",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 11.0,
+      "val_o25": 1.75,
+      "double": true
+    },
     "3362618": {
       "match": "Radomiak Radom - Gornik Zabrze",
       "league": "Pologne • D1 Pologne",
@@ -120,12 +120,28 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3359115": {
+      "match": "Bromley FC - Reading",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
     "3359101": {
       "match": "Grimsby Town - Blackpool",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 11.0,
       "val_o25": 1.65,
+      "double": true
+    },
+    "3359117": {
+      "match": "Swansea - Birmingham",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
       "double": true
     },
     "3359093": {
@@ -136,12 +152,12 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3365877": {
-      "match": "St Mirren - St Johnstone",
-      "league": "Ecosse • D1 Ecosse",
+    "3359100": {
+      "match": "Burton Albion - Blackburn",
+      "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.72,
+      "val_s22": 12.0,
+      "val_o25": 1.8,
       "double": true
     },
     "3359113": {
@@ -160,28 +176,12 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3359100": {
-      "match": "Burton Albion - Blackburn",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 12.0,
-      "val_o25": 1.8,
-      "double": true
-    },
-    "3359115": {
-      "match": "Bromley FC - Reading",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3359117": {
-      "match": "Swansea - Birmingham",
-      "league": "Angleterre • Efl Cup",
+    "3365877": {
+      "match": "St Mirren - St Johnstone",
+      "league": "Ecosse • D1 Ecosse",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 11.0,
-      "val_o25": 1.7,
+      "val_o25": 1.72,
       "double": true
     },
     "3365828": {
@@ -216,20 +216,20 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3359891": {
-      "match": "Start - Fredrikstad",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 10.0,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3367417": {
       "match": "Lokomo.Sofia - FC CSKA 1948",
       "league": "Bulgarie • D1 Bulgarie",
       "date_str": "Sam. 08/08 à 18h00",
       "val_s22": 11.0,
       "val_o25": 1.8,
+      "double": true
+    },
+    "3359891": {
+      "match": "Start - Fredrikstad",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 10.0,
+      "val_o25": 1.65,
       "double": true
     },
     "3359923": {
@@ -269,6 +269,14 @@
       "league": "Chili • D1 Chili",
       "date_str": "Sam. 08/08 à 21h00",
       "val_s22": 11.0,
+      "val_o25": 1.75,
+      "double": true
+    },
+    "3365264": {
+      "match": "Botafogo - Fluminense",
+      "league": "Bresil • D1 Bresil",
+      "date_str": "Dim. 09/08 à 02h00",
+      "val_s22": 10.5,
       "val_o25": 1.75,
       "double": true
     },
