@@ -488,8 +488,8 @@ def main():
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : {m1['dom']} vs {m1['ext']} &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
-                <div>🔸 <b>Match 2 (Rendement)</b> : {m2['dom']} vs {m2['ext']} &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
+                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
+                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
               </div>
             </div>
             '''
@@ -672,8 +672,8 @@ def main():
         for idx, cb in enumerate(combos_2matches, 1):
             m1, m2 = cb["m1"], cb["m2"]
             report.append(f"### Ticket #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
-            report.append(f"- **Match 1 (Base)** : {m1['dom']} vs {m1['ext']} (@`{m1['over25']:.2f}`) — *{m1['league']}*")
-            report.append(f"- **Match 2 (Boost)** : {m2['dom']} vs {m2['ext']} (@`{m2['over25']:.2f}`) — *{m2['league']}*\n")
+            report.append(f"- **Match 1 (Base)** : `{m1['date_str']}` — **{m1['dom']} vs {m1['ext']}** (@`{m1['over25']:.2f}`) — *{m1['league']}*")
+            report.append(f"- **Match 2 (Boost)** : `{m2['date_str']}` — **{m2['dom']} vs {m2['ext']}** (@`{m2['over25']:.2f}`) — *{m2['league']}*\n")
     else:
         report.append("Aucun combiné 2 matchs disponible.\n")
 
