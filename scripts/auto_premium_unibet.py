@@ -327,11 +327,25 @@ def main():
                 res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True)
                 if res:
                     m["ac_score"] = res.get("score", 0)
+                    m["ac_classe"] = res.get("classe", "")
                     m["ac_prob"] = res.get("prob", 0)
                     m["ac_xg"] = res.get("xg_total", 0.0)
                     m["ac_sot"] = res.get("sot_total", 0.0)
                     m["ac_verdict"] = res.get("verdict", "")
                     m["ac_red_flags"] = res.get("red_flags", [])
+                    m["pts_ipo"] = res.get("pts_ipo", 0)
+                    m["ipo_comb"] = res.get("ipo_comb", 0.0)
+                    m["pts_goals"] = res.get("pts_goals", 0)
+                    m["total_goals_brut"] = res.get("total_goals_brut", 0.0)
+                    m["pts_freq"] = res.get("pts_freq", 0)
+                    m["avg_freq_all"] = res.get("avg_freq_all", 0.0)
+                    m["pts_sot"] = res.get("pts_sot", 0)
+                    m["sot_comb"] = res.get("sot_comb", 0.0)
+                    m["pts_ha"] = res.get("pts_ha", 0)
+                    m["avg_freq_ha"] = res.get("avg_freq_ha", 0.0)
+                    m["pts_league"] = res.get("pts_league", 0)
+                    m["recent_h_dom"] = res.get("recent_h_dom", [])
+                    m["recent_a_ext"] = res.get("recent_a_ext", [])
             except Exception:
                 pass
         return m
@@ -525,6 +539,58 @@ def main():
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
 
+    def render_match_proof_html(m):
+        score = m.get("ac_score", 0)
+        classe = m.get("ac_classe", "Bon potentiel")
+        pts_ipo = m.get("pts_ipo", 0)
+        ipo_val = m.get("ipo_comb", 0.0)
+        pts_goals = m.get("pts_goals", 0)
+        goals_val = m.get("total_goals_brut", 0.0)
+        pts_freq = m.get("pts_freq", 0)
+        freq_val = m.get("avg_freq_all", 0.0)
+        pts_sot = m.get("pts_sot", 0)
+        sot_val = m.get("sot_comb", 0.0)
+        pts_ha = m.get("pts_ha", 0)
+        ha_val = m.get("avg_freq_ha", 0.0)
+        pts_league = m.get("pts_league", 0)
+
+        rec_h = m.get("recent_h_dom", [])
+        h_scores = []
+        for rm in rec_h[:10]:
+            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
+            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
+            tot = int(hg) + int(ag)
+            tag = "🔥3+" if tot >= 3 else "⚪<3"
+            h_scores.append(f"{hg}-{ag} [{tag}]")
+        h_str = ", ".join(h_scores) if h_scores else "Données récentes non dispo"
+
+        rec_a = m.get("recent_a_ext", [])
+        a_scores = []
+        for rm in rec_a[:10]:
+            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
+            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
+            tot = int(hg) + int(ag)
+            tag = "🔥3+" if tot >= 3 else "⚪<3"
+            a_scores.append(f"{hg}-{ag} [{tag}]")
+        a_str = ", ".join(a_scores) if a_scores else "Données récentes non dispo"
+
+        return f'''
+        <div style="background:#f8fafc; border-left:3px solid #3b82f6; padding:8px 10px; margin-top:6px; font-size:11px; color:#334155; border-radius:4px;">
+            <div style="font-weight:700; color:#1e3a8a; margin-bottom:3px;">
+                🔥 <b>SCORE OVER 2.5 : {score}/100 ({classe})</b>
+            </div>
+            <div style="color:#475569; margin-bottom:4px;">
+                📊 <b>Barème V2</b> : IPO ({ipo_val}): <b>{pts_ipo}/25</b> | Buts ({goals_val}b): <b>{pts_goals}/15</b> | Freq ({freq_val:.0f}%): <b>{pts_freq}/20</b> | Tirs ({sot_val}t): <b>{pts_sot}/10</b> | H/A ({ha_val:.0f}%): <b>{pts_ha}/20</b> | Ligue: <b>{pts_league}/10</b>
+            </div>
+            <div style="color:#0f172a; margin-bottom:2px;">
+                🏠 <b>10m Domicile ({m['dom']})</b> : <span style="font-family:monospace; font-size:10px;">{h_str}</span>
+            </div>
+            <div style="color:#0f172a;">
+                ✈️ <b>10m Extérieur ({m['ext']})</b> : <span style="font-family:monospace; font-size:10px;">{a_str}</span>
+            </div>
+        </div>
+        '''
+
     # Pré-construction HTML de TOUS les tickets combinés
     combos_html = ""
     if combos_2matches:
@@ -537,16 +603,22 @@ def main():
                 dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
                 combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
 
+            proof_m1 = render_match_proof_html(m1)
+            proof_m2 = render_match_proof_html(m2)
 
             combos_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
                 <span style="font-weight:800; color:#0f172a; font-size:13px;">🎟️ Ticket #{idx} — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
-                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
+                <div style="margin-bottom:6px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span>
+                    {proof_m1}
+                </div>
+                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span>
+                    {proof_m2}
+                </div>
               </div>
             </div>
             '''
