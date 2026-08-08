@@ -2,6 +2,8 @@ import os, sys, time, json, re, smtplib, unicodedata, requests
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import email.policy
+from email.message import EmailMessage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
