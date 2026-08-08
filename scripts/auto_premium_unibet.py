@@ -741,6 +741,9 @@ def main():
     if not sent_success and gmail_password:
         try:
             print(f"Sending email to {recipients} via Gmail SMTP...")
+            if 'From' in msg:
+                del msg['From']
+            msg['From'] = f"Gregory LANGLET <{gmail_email}>"
             with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
                 server.ehlo()
                 server.starttls()
