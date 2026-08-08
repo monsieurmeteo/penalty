@@ -4,8 +4,8 @@
       "match": "Tigres UANL - Minnesota Utd",
       "league": "Amerique • Leagues Cup",
       "date_str": "Sam. 08/08 à 03h00",
-      "val_s22": 10.0,
-      "val_o25": 1.62,
+      "val_s22": 10.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3369530": {
@@ -32,20 +32,28 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3359088": {
-      "match": "Barnsley - Wigan",
+    "3359112": {
+      "match": "Bristol Rovers - Peterborough",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.65,
+      "val_s22": 9.5,
+      "val_o25": 1.55,
       "double": true
     },
-    "3359099": {
-      "match": "Derby - Lincoln",
+    "3359091": {
+      "match": "Sheffield Wed. - Bolton",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 10.5,
       "val_o25": 1.6,
+      "double": true
+    },
+    "3359094": {
+      "match": "Crewe - Accrington St.",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.5,
+      "val_o25": 1.65,
       "double": true
     },
     "3359103": {
@@ -56,22 +64,6 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3359115": {
-      "match": "Bromley FC - Reading",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.7,
-      "double": true
-    },
-    "3359112": {
-      "match": "Bristol Rovers - Peterborough",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 9.5,
-      "val_o25": 1.55,
-      "double": true
-    },
     "3359117": {
       "match": "Swansea - Birmingham",
       "league": "Angleterre • Efl Cup",
@@ -80,11 +72,19 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3359094": {
-      "match": "Crewe - Accrington St.",
+    "3359099": {
+      "match": "Derby - Lincoln",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.5,
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359088": {
+      "match": "Barnsley - Wigan",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.5,
       "val_o25": 1.65,
       "double": true
     },
@@ -96,12 +96,12 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3359091": {
-      "match": "Sheffield Wed. - Bolton",
+    "3359115": {
+      "match": "Bromley FC - Reading",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 10.5,
-      "val_o25": 1.6,
+      "val_o25": 1.7,
       "double": true
     },
     "3359092": {
@@ -120,20 +120,12 @@
       "val_o25": 1.7,
       "double": true
     },
-    "3368789": {
-      "match": "FC Narva - Nomme Kalju",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3359891": {
-      "match": "Start - Fredrikstad",
-      "league": "Norvege • D1 Norvege",
+    "3364166": {
+      "match": "MFK Zemplin - KFC Komarno",
+      "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Sam. 08/08 à 18h00",
       "val_s22": 9.9,
-      "val_o25": 1.65,
+      "val_o25": 1.6,
       "double": true
     },
     "3359944": {
@@ -152,12 +144,28 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3364166": {
-      "match": "MFK Zemplin - KFC Komarno",
-      "league": "Slovaquie • D1 Slovaquie",
+    "3368789": {
+      "match": "FC Narva - Nomme Kalju",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 12.0,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3369498": {
+      "match": "St.Polten F - Sporting F",
+      "league": "Coupes D Europe • Ldc F",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 12.0,
+      "val_o25": 1.62,
+      "double": true
+    },
+    "3359891": {
+      "match": "Start - Fredrikstad",
+      "league": "Norvege • D1 Norvege",
       "date_str": "Sam. 08/08 à 18h00",
       "val_s22": 9.9,
-      "val_o25": 1.6,
+      "val_o25": 1.62,
       "double": true
     },
     "3369870": {
@@ -181,7 +189,7 @@
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 09/08 à 13h30",
       "val_s22": 10.5,
-      "val_o25": 1.55,
+      "val_o25": 1.6,
       "double": true
     },
     "3360072": {
@@ -200,6 +208,14 @@
       "val_o25": 1.55,
       "double": true
     },
+    "3360084": {
+      "match": "Zulte Waregem - RC Genk",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
     "3365876": {
       "match": "Motherwell - Falkirk",
       "league": "Ecosse • D1 Ecosse",
@@ -211,14 +227,6 @@
     "3364369": {
       "match": "Randers FC - Lyngby BK",
       "league": "Danemark • D1 Danemark",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3360084": {
-      "match": "Zulte Waregem - RC Genk",
-      "league": "Belgique • D1 Belgique",
       "date_str": "Dim. 09/08 à 16h00",
       "val_s22": 10.5,
       "val_o25": 1.6,
@@ -236,7 +244,7 @@
       "match": "IFK Göteborg - Kalmar FF",
       "league": "Suede • D1 Suede",
       "date_str": "Dim. 09/08 à 16h30",
-      "val_s22": 9.8,
+      "val_s22": 9.7,
       "val_o25": 1.6,
       "double": true
     },
@@ -272,20 +280,20 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3368866": {
-      "match": "OFK Belgrade - FK Zeleznicar",
-      "league": "Serbie • D1 Serbie",
-      "date_str": "Dim. 09/08 à 21h00",
-      "val_s22": 10.0,
-      "val_o25": 1.62,
-      "double": true
-    },
     "3365474": {
       "match": "Bahia Salvador - Vasco De Gama",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 09/08 à 21h00",
       "val_s22": 11.5,
       "val_o25": 1.65,
+      "double": true
+    },
+    "3368866": {
+      "match": "OFK Belgrade - FK Zeleznicar",
+      "league": "Serbie • D1 Serbie",
+      "date_str": "Dim. 09/08 à 21h00",
+      "val_s22": 10.0,
+      "val_o25": 1.62,
       "double": true
     }
   }
