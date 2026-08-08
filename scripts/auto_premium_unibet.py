@@ -400,78 +400,85 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés Optimaux 2 Matchs (Couverture 100%, Cote Min: 2.20, Mise 4€) ──
-    combos_2matches = []
-    used_combo_ids = set()
-    sort_eligible = sorted([m for m in s3_matches if m.get("over25")], key=lambda x: x["over25"])
+    # ── Génération des Combinés par SESSION QUOTIDIENNE STRICTE (Jour + Nuit D+1 06h) ──
+    def get_betting_session_key(m_dt):
+        adjusted_dt = m_dt - timedelta(hours=6)
+        return adjusted_dt.strftime("%Y-%m-%d")
 
-    # Passe 1 : Associations privilégiées pour atteindre au moins 2.20 (cible 2.20 - 2.35)
-    for i, m1 in enumerate(sort_eligible):
-        if m1["id"] in used_combo_ids:
+    # Grouper par session quotidienne
+    sessions = {}
+    for m in s3_matches:
+        if not m.get("over25"):
             continue
-        c1 = m1["over25"]
-        best_partner = None
-        best_diff = 999.0
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        s_key = get_betting_session_key(m_dt)
+        sessions.setdefault(s_key, []).append(m)
 
-        for m2 in sort_eligible[i+1:]:
-            if m2["id"] in used_combo_ids:
+    combos_2matches = []
+
+    for s_key, s_matches in sorted(sessions.items()):
+        s_matches.sort(key=lambda x: x["over25"])
+        used_ids = set()
+
+        # Passe 1 : Associations de la MÊME session avec cote >= 2.20
+        for i, m1 in enumerate(s_matches):
+            if m1["id"] in used_ids:
                 continue
-            c2 = m2["over25"]
-            comb_odds = round(c1 * c2, 2)
-            if comb_odds >= 2.20:
-                diff = abs(comb_odds - 2.20)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_partner = m2
+            c1 = m1["over25"]
+            best_partner = None
+            best_diff = 999.0
 
-        if best_partner:
-            used_combo_ids.add(m1["id"])
-            used_combo_ids.add(best_partner["id"])
-            comb_odds = round(m1["over25"] * best_partner["over25"], 2)
-            gain = round(4.0 * comb_odds, 2)
-            profit = round(gain - 4.0, 2)
+            for m2 in s_matches[i+1:]:
+                if m2["id"] in used_ids:
+                    continue
+                c2 = m2["over25"]
+                comb = round(c1 * c2, 2)
+                if comb >= 2.20:
+                    diff = abs(comb - 2.20)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_partner = m2
+
+            if best_partner:
+                used_ids.add(m1["id"])
+                used_ids.add(best_partner["id"])
+                comb_odds = round(m1["over25"] * best_partner["over25"], 2)
+                combos_2matches.append({
+                    "session": s_key,
+                    "m1": m1, "m2": best_partner,
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+
+        # Passe 2 : Coupler les matchs restants de la MÊME session
+        unmatched = [m for m in s_matches if m["id"] not in used_ids]
+        while len(unmatched) >= 2:
+            m1 = unmatched.pop(0)
+            best_idx = 0
+            best_diff = 999.0
+            for idx, m2 in enumerate(unmatched):
+                comb = round(m1["over25"] * m2["over25"], 2)
+                diff = abs(comb - 2.20)
+                if comb >= 2.20 and diff < best_diff:
+                    best_diff = diff
+                    best_idx = idx
+
+            m2 = unmatched.pop(best_idx)
+            comb_odds = round(m1["over25"] * m2["over25"], 2)
             combos_2matches.append({
-                "m1": m1, "m2": best_partner,
+                "session": s_key,
+                "m1": m1, "m2": m2,
                 "comb_odds": comb_odds,
-                "stake": 4.0, "gain": gain, "profit": profit
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
 
-    # Passe 2 : Coupler 100% des matchs restants
-    unmatched = [m for m in sort_eligible if m["id"] not in used_combo_ids]
-    while len(unmatched) >= 2:
-        m1 = unmatched.pop(0)
-        best_idx = 0
-        best_diff = 999.0
-        for idx, m2 in enumerate(unmatched):
-            comb = round(m1["over25"] * m2["over25"], 2)
-            diff = abs(comb - 2.20)
-            if comb >= 2.20 and diff < best_diff:
-                best_diff = diff
-                best_idx = idx
-
-        m2 = unmatched.pop(best_idx)
-        comb_odds = round(m1["over25"] * m2["over25"], 2)
-        gain = round(4.0 * comb_odds, 2)
-        profit = round(gain - 4.0, 2)
-        combos_2matches.append({
-            "m1": m1, "m2": m2,
-            "comb_odds": comb_odds,
-            "stake": 4.0, "gain": gain, "profit": profit
-        })
-
-    # Passe 3 : Combinés croisés alternatifs sur les meilleures bases pour offrir max d'opportunités (cible 2.20 - 2.50)
-    seen_pairs = {tuple(sorted([cb["m1"]["id"], cb["m2"]["id"]])) for cb in combos_2matches}
-    from itertools import combinations
-    for m1, m2 in combinations(sort_eligible[:25], 2):
-        pair_key = tuple(sorted([m1["id"], m2["id"]]))
-        if pair_key in seen_pairs:
-            continue
-        c1, c2 = m1["over25"], m2["over25"]
-        comb_odds = round(c1 * c2, 2)
-        if 2.20 <= comb_odds <= 2.50:
-            seen_pairs.add(pair_key)
+        if len(unmatched) == 1:
+            m1 = unmatched[0]
+            partner = min(s_matches, key=lambda x: x["over25"] if x["id"] != m1["id"] else 99)
+            comb_odds = round(m1["over25"] * partner["over25"], 2)
             combos_2matches.append({
-                "m1": m1, "m2": m2,
+                "session": s_key,
+                "m1": m1, "m2": partner,
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
@@ -479,8 +486,15 @@ def main():
     # Pré-construction HTML de TOUS les tickets combinés
     combos_html = ""
     if combos_2matches:
+        current_sess = None
         for idx, cb in enumerate(combos_2matches, 1):
             m1, m2 = cb["m1"], cb["m2"]
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess:
+                current_sess = sess_label
+                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
+                combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
+
             combos_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
