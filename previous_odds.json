@@ -1,66 +1,18 @@
 {
   "s3": {
-    "3362619": {
-      "match": "Pogon Szczecin - Motor Lublin",
-      "league": "Pologne • D1 Pologne",
-      "date_str": "Sam. 08/08 à 17h30",
+    "3370019": {
+      "match": "Slavia Prague - Brøndby IF",
+      "league": "Coupes D Europe • Ldc F",
+      "date_str": "Sam. 08/08 à 20h30",
       "val_s22": 10.5,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3369091": {
-      "match": "Kisvarda - Ujpest",
-      "league": "Hongrie • D1 Hongrie",
-      "date_str": "Sam. 08/08 à 17h30",
-      "val_s22": 10.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3364166": {
-      "match": "MFK Zemplin - KFC Komarno",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 10.0,
       "val_o25": 1.6,
-      "double": true
-    },
-    "3364169": {
-      "match": "MFK Ruzomberok - Podbrezova",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3368789": {
-      "match": "FC Narva - Nomme Kalju",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3359891": {
-      "match": "Start - Fredrikstad",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 9.8,
-      "val_o25": 1.62,
-      "double": true
-    },
-    "3359926": {
-      "match": "Westerlo - Saint-Gilloise",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Sam. 08/08 à 20h45",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
       "double": true
     },
     "3369870": {
       "match": "Juventus F - Hammarby",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Sam. 08/08 à 21h00",
-      "val_s22": 10.5,
+      "val_s22": 10.0,
       "val_o25": 1.55,
       "double": true
     },
@@ -100,8 +52,8 @@
       "match": "FK Jelgava - FK Auda",
       "league": "Lettonie • D1 Lettonie",
       "date_str": "Dim. 09/08 à 15h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
+      "val_s22": 12.0,
+      "val_o25": 1.7,
       "double": true
     },
     "3369779": {
@@ -120,12 +72,12 @@
       "val_o25": 1.62,
       "double": true
     },
-    "3366641": {
-      "match": "Waterford - Bohemians",
-      "league": "Irlande • D1 Irlande",
+    "3364369": {
+      "match": "Randers FC - Lyngby BK",
+      "league": "Danemark • D1 Danemark",
       "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.55,
+      "val_s22": 10.5,
+      "val_o25": 1.62,
       "double": true
     },
     "3360084": {
@@ -134,14 +86,6 @@
       "date_str": "Dim. 09/08 à 16h00",
       "val_s22": 10.5,
       "val_o25": 1.65,
-      "double": true
-    },
-    "3364369": {
-      "match": "Randers FC - Lyngby BK",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.62,
       "double": true
     },
     "3360091": {
@@ -168,12 +112,28 @@
       "val_o25": 1.6,
       "double": true
     },
+    "3360097": {
+      "match": "Austria Vienne - Lask Linz",
+      "league": "Autriche • D1 Autriche",
+      "date_str": "Dim. 09/08 à 19h00",
+      "val_s22": 11.5,
+      "val_o25": 1.7,
+      "double": true
+    },
     "3365474": {
       "match": "Bahia Salvador - Vasco De Gama",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 09/08 à 21h00",
       "val_s22": 11.5,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3368866": {
+      "match": "OFK Belgrade - FK Zeleznicar",
+      "league": "Serbie • D1 Serbie",
+      "date_str": "Dim. 09/08 à 21h00",
+      "val_s22": 9.9,
+      "val_o25": 1.62,
       "double": true
     },
     "3365487": {
@@ -184,12 +144,12 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3368866": {
-      "match": "OFK Belgrade - FK Zeleznicar",
-      "league": "Serbie • D1 Serbie",
-      "date_str": "Dim. 09/08 à 21h00",
-      "val_s22": 9.9,
-      "val_o25": 1.62,
+    "3360438": {
+      "match": "FK Transinvest - FK Panevezys",
+      "league": "Lituanie • D1 Lituanie",
+      "date_str": "Lun. 10/08 à 17h45",
+      "val_s22": 12.0,
+      "val_o25": 1.55,
       "double": true
     }
   }
