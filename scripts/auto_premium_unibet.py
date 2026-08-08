@@ -446,9 +446,10 @@ def main():
         adjusted_dt = m_dt - timedelta(hours=6)
         return adjusted_dt.strftime("%Y-%m-%d")
 
-    # Grouper par session quotidienne
+    # Grouper par session quotidienne (Filtrage Option B Hybride : AdamChoi Score >= 75)
+    target_combo_matches = hybrid_option_b_matches if hybrid_option_b_matches else s3_matches
     sessions = {}
-    for m in s3_matches:
+    for m in target_combo_matches:
         if not m.get("over25"):
             continue
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
