@@ -4,8 +4,8 @@
       "match": "Slavia Prague - Brøndby IF",
       "league": "Coupes D Europe • Ldc F",
       "date_str": "Sam. 08/08 à 20h30",
-      "val_s22": 10.5,
-      "val_o25": 1.6,
+      "val_s22": 11.0,
+      "val_o25": 1.62,
       "double": true
     },
     "3369870": {
@@ -14,6 +14,14 @@
       "date_str": "Sam. 08/08 à 21h00",
       "val_s22": 10.0,
       "val_o25": 1.55,
+      "double": true
+    },
+    "3349348": {
+      "match": "New England - Houston",
+      "league": "Etats Unis • Mls",
+      "date_str": "Sam. 08/08 à 22h30",
+      "val_s22": 9.7,
+      "val_o25": 1.6,
       "double": true
     },
     "3359881": {
@@ -48,14 +56,6 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3369778": {
-      "match": "FK Jelgava - FK Auda",
-      "league": "Lettonie • D1 Lettonie",
-      "date_str": "Dim. 09/08 à 15h00",
-      "val_s22": 12.0,
-      "val_o25": 1.7,
-      "double": true
-    },
     "3369779": {
       "match": "SK Super Nova - FK Liepaja",
       "league": "Lettonie • D1 Lettonie",
@@ -64,12 +64,12 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3365876": {
-      "match": "Motherwell - Falkirk",
-      "league": "Ecosse • D1 Ecosse",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 11.5,
-      "val_o25": 1.62,
+    "3369778": {
+      "match": "FK Jelgava - FK Auda",
+      "league": "Lettonie • D1 Lettonie",
+      "date_str": "Dim. 09/08 à 15h00",
+      "val_s22": 12.0,
+      "val_o25": 1.7,
       "double": true
     },
     "3364369": {
@@ -77,6 +77,14 @@
       "league": "Danemark • D1 Danemark",
       "date_str": "Dim. 09/08 à 16h00",
       "val_s22": 10.5,
+      "val_o25": 1.62,
+      "double": true
+    },
+    "3365876": {
+      "match": "Motherwell - Falkirk",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_s22": 11.5,
       "val_o25": 1.62,
       "double": true
     },
@@ -120,6 +128,14 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3365487": {
+      "match": "O'Higgins - D. Limache",
+      "league": "Chili • D1 Chili",
+      "date_str": "Dim. 09/08 à 21h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
     "3365474": {
       "match": "Bahia Salvador - Vasco De Gama",
       "league": "Bresil • D1 Bresil",
@@ -136,20 +152,20 @@
       "val_o25": 1.62,
       "double": true
     },
-    "3365487": {
-      "match": "O'Higgins - D. Limache",
-      "league": "Chili • D1 Chili",
-      "date_str": "Dim. 09/08 à 21h00",
-      "val_s22": 10.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3360438": {
       "match": "FK Transinvest - FK Panevezys",
       "league": "Lituanie • D1 Lituanie",
       "date_str": "Lun. 10/08 à 17h45",
       "val_s22": 12.0,
       "val_o25": 1.55,
+      "double": true
+    },
+    "3365836": {
+      "match": "Benfica B - Leixoes",
+      "league": "Portugal • D2 Portugal",
+      "date_str": "Lun. 10/08 à 19h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
       "double": true
     }
   }
