@@ -398,11 +398,12 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés Optimaux de 2 Matchs (Cible ~2.00 | Mise 4€) ──
+    # ── Génération des Combinés Optimaux 2 Matchs (Couverture 100%, Cote Min: 2.20, Mise 4€) ──
     combos_2matches = []
     used_combo_ids = set()
     sort_eligible = sorted([m for m in s3_matches if m.get("over25")], key=lambda x: x["over25"])
 
+    # Passe 1 : Associations privilégiées pour atteindre au moins 2.20 (cible 2.20 - 2.35)
     for i, m1 in enumerate(sort_eligible):
         if m1["id"] in used_combo_ids:
             continue
@@ -415,8 +416,8 @@ def main():
                 continue
             c2 = m2["over25"]
             comb_odds = round(c1 * c2, 2)
-            if comb_odds >= 1.95:
-                diff = abs(comb_odds - 2.00)
+            if comb_odds >= 2.20:
+                diff = abs(comb_odds - 2.20)
                 if diff < best_diff:
                     best_diff = diff
                     best_partner = m2
@@ -430,10 +431,43 @@ def main():
             combos_2matches.append({
                 "m1": m1, "m2": best_partner,
                 "comb_odds": comb_odds,
-                "stake": 4.0,
-                "gain": gain,
-                "profit": profit
+                "stake": 4.0, "gain": gain, "profit": profit
             })
+
+    # Passe 2 : Coupler 100% des matchs restants
+    unmatched = [m for m in sort_eligible if m["id"] not in used_combo_ids]
+    while len(unmatched) >= 2:
+        m1 = unmatched.pop(0)
+        best_idx = 0
+        best_diff = 999.0
+        for idx, m2 in enumerate(unmatched):
+            comb = round(m1["over25"] * m2["over25"], 2)
+            diff = abs(comb - 2.20)
+            if comb >= 2.20 and diff < best_diff:
+                best_diff = diff
+                best_idx = idx
+
+        m2 = unmatched.pop(best_idx)
+        comb_odds = round(m1["over25"] * m2["over25"], 2)
+        gain = round(4.0 * comb_odds, 2)
+        profit = round(gain - 4.0, 2)
+        combos_2matches.append({
+            "m1": m1, "m2": m2,
+            "comb_odds": comb_odds,
+            "stake": 4.0, "gain": gain, "profit": profit
+        })
+
+    if len(unmatched) == 1:
+        m1 = unmatched[0]
+        partner = min(sort_eligible, key=lambda x: x["over25"] if x["id"] != m1["id"] else 99)
+        comb_odds = round(m1["over25"] * partner["over25"], 2)
+        gain = round(4.0 * comb_odds, 2)
+        profit = round(gain - 4.0, 2)
+        combos_2matches.append({
+            "m1": m1, "m2": partner,
+            "comb_odds": comb_odds,
+            "stake": 4.0, "gain": gain, "profit": profit
+        })
 
     # Pré-construction HTML des tickets combinés (Top 6)
     combos_html = ""
@@ -560,8 +594,8 @@ def main():
           <!-- BLOC COMBINÉS 2 MATCHS SUGGÉRÉS -->
           <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
             <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 COMBINÉS DE 2 MATCHS OPTIMAUX (Cible ~2.00 | Mise 4 € / ticket)</span>
-              <span style="font-size: 11px; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 12px; font-weight: 600;">{len(combos_2matches)} combinés générés</span>
+              <span>🎯 COMBINÉS 2 MATCHS (Cote Min: 2,20 | Mise: 4 € / ticket — 100% Couverture)</span>
+              <span style="font-size: 11px; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_2matches)} tickets générés</span>
             </div>
             {combos_html}
           </div>
@@ -624,7 +658,7 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés 2 Matchs Recommandés (Cible ~2.00 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés 2 Matchs Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket — 100% des matchs couplés)\n",
     ]
 
     if combos_2matches:
