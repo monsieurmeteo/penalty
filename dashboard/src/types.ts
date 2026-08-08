@@ -11,7 +11,8 @@ export interface Match {
   is_selected: boolean;
   selection_status: 'WON' | 'LOST' | 'PENDING';
   rejection_reason: string | null;
-  s22: number | null;
+  btts_oui: number | null;
+  btts_non: number | null;
   over25: number | null;
   buteur_name: string | null;
   buteur_cote: number | null;
@@ -34,7 +35,7 @@ export interface Summary {
   initial_bankroll: number;
   current_bankroll: number;
   avg_odds_over25_global: number;
-  avg_odds_s22_global: number;
+  avg_odds_btts_global: number;
   last_update: string;
 }
 

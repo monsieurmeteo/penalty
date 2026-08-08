@@ -311,12 +311,19 @@ def main():
     print(f"Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
-    all_s22 = [m["s22"] for m in scanned_results if m.get("s22") is not None]
+    all_btts = [m["btts_oui"] for m in scanned_results if m.get("btts_oui") is not None]
+
     avg_all_o25 = round(sum(all_o25) / len(all_o25), 2) if all_o25 else 0.0
-    avg_all_s22 = round(sum(all_s22) / len(all_s22), 2) if all_s22 else 0.0
+    avg_all_btts = round(sum(all_btts) / len(all_btts), 2) if all_btts else 0.0
+
     sel_o25 = [m["over25"] for m in s3_matches if m.get("over25") is not None]
+    sel_btts = [m["btts_oui"] for m in s3_matches if m.get("btts_oui") is not None]
+
     avg_sel_o25 = round(sum(sel_o25) / len(sel_o25), 2) if sel_o25 else 0.0
+    avg_sel_btts = round(sum(sel_btts) / len(sel_btts), 2) if sel_btts else 0.0
+
     print(f"Moyenne globale Over 2.5 ({len(all_o25)} matchs) : {avg_all_o25:.2f} (Retenus : {avg_sel_o25:.2f})")
+    print(f"Moyenne globale BTTS Oui ({len(all_btts)} matchs) : {avg_all_btts:.2f} (Retenus : {avg_sel_btts:.2f})")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -334,7 +341,7 @@ def main():
                 "match": f"{m['dom']} - {m['ext']}",
                 "league": m["league"],
                 "date_str": m["date_str"],
-                "val_s22": m["s22"],
+                "val_btts": m.get("btts_oui"),
                 "val_o25": m.get("over25"),
                 "double": m["double_confirm"],
             }
@@ -348,10 +355,10 @@ def main():
     var_s3   = []
     for k, v in curr_state["s3"].items():
         if k in prev_s3:
-            old_s22 = prev_s3[k].get("val_s22")
-            if old_s22 and old_s22 != v["val_s22"]:
-                diff = round(v["val_s22"] - old_s22, 2)
-                var_s3.append({**v, "old_s22": old_s22, "diff": diff})
+            old_btts = prev_s3[k].get("val_btts")
+            if old_btts and old_btts != v["val_btts"]:
+                diff = round(v["val_btts"] - old_btts, 2)
+                var_s3.append({**v, "old_btts": old_btts, "diff": diff})
 
     try:
         with open(history_file, "w", encoding="utf-8") as f:
@@ -371,14 +378,14 @@ def main():
             evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
             for item in new_s3:
                 badge = " ⭐⭐ DOUBLE" if item.get("double") else ""
-                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — 2-2: <b>{item['val_s22']}</b>{badge}</li>"
+                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — BTTS Oui: <b>{item['val_btts']}</b>{badge}</li>"
             evo_html += '</ul>'
 
         if var_s3:
-            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote Score 2-2 :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote BTTS Oui :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
             for item in var_s3:
                 arrow = "🔺" if item["diff"] > 0 else "🔻"
-                evo_html += f"<li><b>{item['match']}</b> : Score 2-2 {item['old_s22']} &rarr; <b>{item['val_s22']}</b> ({arrow} {item['diff']:+0.2f})</li>"
+                evo_html += f"<li><b>{item['match']}</b> : BTTS Oui {item['old_btts']} &rarr; <b>{item['val_btts']}</b> ({arrow} {item['diff']:+0.2f})</li>"
             evo_html += '</ul>'
 
         if drop_s3:
@@ -391,13 +398,13 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des cartes de matchs ──────────────────────────────────────
-    yt_cards = ""
     # ── Pré-construction du tableau des matchs validés ─────────────────────
     table_rows_html = ""
     for idx, m in enumerate(s3_matches):
         bg = "#ffffff" if idx % 2 == 0 else "#f8fafc"
-        s22 = m.get("s22", "N/A")
+        b_oui = m.get("btts_oui")
+        b_non = m.get("btts_non")
+        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         o25 = m.get("over25", "N/A")
         if m.get("buteur_name"):
             buteur_cell = f'<b>{m["buteur_name"]}</b> (@{m["buteur_cote"]})'
@@ -409,7 +416,7 @@ def main():
             f'<td style="padding:10px 10px; color:#475569; white-space:nowrap; font-size:12px;">{m["date_str"]}</td>'
             f'<td style="padding:10px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
             f'<br><span style="font-size:11px; color:#64748b; font-weight:400;">{m["league"]}</span></td>'
-            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#fffbeb; color:#b45309; border:1px solid #fef08a; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{s22}</span></td>'
+            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{btts_cell}</span></td>'
             f'<td style="padding:10px 10px; text-align:center;"><span style="background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{o25}</span></td>'
             f'<td style="padding:10px 10px; text-align:left; color:#1e293b; font-size:12px;">{buteur_cell}</td>'
             f'</tr>'
@@ -428,7 +435,9 @@ def main():
     rejected_rows_html = ""
     for idx, m in enumerate(rejected_matches):
         bg = "#ffffff" if idx % 2 == 0 else "#f9fafb"
-        s22_val = f"{m['s22']:.2f}" if m.get("s22") is not None else '<span style="color:#94a3b8;">N/A</span>'
+        b_oui = m.get("btts_oui")
+        b_non = m.get("btts_non")
+        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else '<span style="color:#94a3b8;">N/A</span>')
         o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else '<span style="color:#94a3b8;">N/A</span>'
         reason = m.get("rejection_reason", "Non éligible")
 
@@ -437,7 +446,7 @@ def main():
             f'<td style="padding:7px 8px; color:#6b7280; white-space:nowrap; font-size:11px;">{m["date_str"]}</td>'
             f'<td style="padding:7px 8px; font-weight:600; color:#374151; font-size:12px;">{m["dom"]} vs {m["ext"]}'
             f'<br><span style="font-size:10px; color:#9ca3af;">{m["league"]}</span></td>'
-            f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{s22_val}</td>'
+            f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{btts_val}</td>'
             f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{o25_val}</td>'
             f'<td style="padding:7px 8px; text-align:left; color:#dc2626; font-size:11px; font-weight:600;">{reason}</td>'
             f'</tr>'
@@ -473,10 +482,10 @@ def main():
               <span style="font-size: 17px; font-weight: 800; color: #0284c7;">{avg_all_o25:.2f}</span>
               <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_o25:.2f})</span>
             </div>
-            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #fde68a;">
-              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Score 2-2 moyen (indicatif)</span>
-              <span style="font-size: 17px; font-weight: 800; color: #d97706;">{avg_all_s22:.2f}</span>
-              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(non utilisé en sélection)</span>
+            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">
+              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne BTTS Oui (Tous)</span>
+              <span style="font-size: 17px; font-weight: 800; color: #1d4ed8;">{avg_all_btts:.2f}</span>
+              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_btts:.2f})</span>
             </div>
           </div>
 
@@ -498,7 +507,7 @@ def main():
                 <tr style="background:#f8fafc; color:#475569; text-transform:uppercase; font-size:11px; font-weight:700; border-bottom:2px solid #e2e8f0;">
                   <th style="padding:9px 10px; text-align:left;">Date</th>
                   <th style="padding:9px 10px; text-align:left;">Match & Ligue</th>
-                  <th style="padding:9px 10px; text-align:center;">Score 2-2</th>
+                  <th style="padding:9px 10px; text-align:center;">BTTS (Oui/Non)</th>
                   <th style="padding:9px 10px; text-align:center;">Over 2.5</th>
                   <th style="padding:9px 10px; text-align:left;">Buteur Moyenne</th>
                 </tr>
@@ -519,7 +528,7 @@ def main():
                 <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:10px; font-weight:700; border-bottom:1px solid #cbd5e1;">
                   <th style="padding:8px 10px; text-align:left;">Date</th>
                   <th style="padding:8px 10px; text-align:left;">Match & Ligue</th>
-                  <th style="padding:8px 10px; text-align:center;">Score 2-2</th>
+                  <th style="padding:8px 10px; text-align:center;">BTTS (Oui/Non)</th>
                   <th style="padding:8px 10px; text-align:center;">Over 2.5</th>
                   <th style="padding:8px 10px; text-align:left;">Raison du Rejet</th>
                 </tr>
@@ -542,30 +551,35 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION STRICTE OVER 2.5 — UNIBET 48H",
+        "# ⚽ SÉLECTION STRICTE OVER 2.5 & BTTS — UNIBET 48H",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France 48h)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
-        f"- **Score 2-2 moyen (indicatif)** : `{avg_all_s22:.2f}` *(non utilisé en sélection)*",
+        f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
         "## ✅ Matchs Sélectionnés",
-        "| Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
+        "| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |",
         "| :---: | :--- | :--- | :---: | :---: | :--- |",
     ]
     for m in s3_matches:
         o25 = m.get("over25", "N/A")
+        b_oui = m.get("btts_oui")
+        b_non = m.get("btts_non")
+        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m['s22']}** | **{o25}** | {but} |")
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{btts_cell}** | **{o25}** | {but} |")
 
     report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
-    report.append("| Date | Ligue | Match | Score 2-2 | Over 2.5 | Raison du Rejet |")
+    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Raison du Rejet |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
     for m in rejected_matches:
-        s22_val = f"{m['s22']:.2f}" if m.get("s22") is not None else "N/A"
+        b_oui = m.get("btts_oui")
+        b_non = m.get("btts_non")
+        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else "N/A"
         reason = m.get("rejection_reason", "Non éligible")
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {s22_val} | {o25_val} | {reason} |")
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {btts_val} | {o25_val} | {reason} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -582,7 +596,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (2-2 ≤ 12.00 & O2.5 [1.55-1.70])"
+    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (BTTS Oui < Non & Over 2.5 < Under 2.5)"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = f"Rapport foot du {subject_date} - {subject_flag}"
@@ -704,7 +718,8 @@ def main():
                     "is_selected": True,
                     "selection_status": "WON" if is_won else "PENDING",
                     "rejection_reason": None,
-                    "s22": m.get("s22"),
+                    "btts_oui": m.get("btts_oui"),
+                    "btts_non": m.get("btts_non"),
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
@@ -724,7 +739,8 @@ def main():
                     "is_selected": True,
                     "selection_status": "PENDING",
                     "rejection_reason": None,
-                    "s22": m.get("s22"),
+                    "btts_oui": m.get("btts_oui"),
+                    "btts_non": m.get("btts_non"),
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
@@ -745,7 +761,8 @@ def main():
                 "is_selected": False,
                 "selection_status": "PENDING",
                 "rejection_reason": m.get("rejection_reason"),
-                "s22": m.get("s22"),
+                "btts_oui": m.get("btts_oui"),
+                "btts_non": m.get("btts_non"),
                 "over25": m.get("over25"),
                 "buteur_name": m.get("buteur_name"),
                 "buteur_cote": m.get("buteur_cote"),
@@ -768,7 +785,7 @@ def main():
             "initial_bankroll": 100.0,
             "current_bankroll": 100.0,
             "avg_odds_over25_global": avg_all_o25,
-            "avg_odds_s22_global": avg_all_s22,
+            "avg_odds_btts_global": avg_all_btts,
             "last_update": datetime.now(timezone.utc).isoformat()
         }
 

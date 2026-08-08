@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import type { DashboardData, Match } from './types';
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine
@@ -164,7 +164,7 @@ function LiveCard({ m }: { m: Match }) {
       <div className="live-card-footer">
         <div className="live-odds-row">
           <span className="odds-pill o25">Over 2.5 · {fmtCote(m.over25)}</span>
-          <span className="odds-pill s22">2-2 · {fmtCote(m.s22)}</span>
+          <span className="odds-pill s22">BTTS Oui · {fmtCote(m.btts_oui)}</span>
         </div>
         {validated ? (
           <span className="live-status-pill won">✅ Validé !</span>
@@ -305,7 +305,7 @@ export default function App() {
             </div>
             <div className="kpi-value white">{summary.win_rate_over25}<span style={{ fontSize: 22, color: '#60a5fa', marginLeft: 4 }}>%</span></div>
             <div className="kpi-sub">
-              Score 2-2 ≤ 12.00 <span style={{ color: '#60a5fa' }}>Méthode Validée ✓</span>
+              BTTS Oui &lt; Non &amp; Over 2.5 &lt; Under 2.5 <span style={{ color: '#60a5fa' }}>Méthode Validée ✓</span>
             </div>
           </div>
 
@@ -320,8 +320,8 @@ export default function App() {
                 <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#60a5fa' }}>{summary.avg_odds_over25_global}</div>
               </div>
               <div style={{ flex: 1, background: 'rgba(240,180,41,0.07)', borderRadius: 10, border: '1px solid rgba(240,180,41,0.15)', padding: '10px 12px' }}>
-                <div style={{ fontSize: 10, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px' }}>Score 2-2</div>
-                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#f0b429' }}>{summary.avg_odds_s22_global}</div>
+                <div style={{ fontSize: 10, color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.8px' }}>BTTS Oui</div>
+                <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: 26, fontWeight: 800, color: '#f0b429' }}>{summary.avg_odds_btts_global}</div>
               </div>
             </div>
           </div>
@@ -438,10 +438,10 @@ export default function App() {
               <table className="data-table">
                 <thead>
                   <tr>
-                    <th>Date & Heure</th>
+                    <th>Date &amp; Heure</th>
                     <th>Rencontre</th>
                     <th>Championnat</th>
-                    <th style={{ textAlign: 'center' }}>Score 2-2</th>
+                    <th style={{ textAlign: 'center' }}>BTTS (Oui/Non)</th>
                     <th style={{ textAlign: 'center' }}>Over 2.5</th>
                     <th>Buteur Référence</th>
                     <th style={{ textAlign: 'center' }}>Statut</th>
@@ -463,7 +463,7 @@ export default function App() {
                           </div>
                         </td>
                         <td style={{ textAlign: 'center' }}>
-                          <span className="cote-badge gold">{fmtCote(m.s22)}</span>
+                          <span className="cote-badge blue">{fmtCote(m.btts_oui)}{m.btts_non ? ` / ${fmtCote(m.btts_non)}` : ''}</span>
                         </td>
                         <td style={{ textAlign: 'center' }}>
                           <span className="cote-badge green">{fmtCote(m.over25)}</span>
@@ -497,7 +497,7 @@ export default function App() {
                     <th>Date</th>
                     <th>Rencontre</th>
                     <th>Championnat</th>
-                    <th style={{ textAlign: 'center' }}>Score 2-2</th>
+                    <th style={{ textAlign: 'center' }}>BTTS (Oui/Non)</th>
                     <th style={{ textAlign: 'center' }}>Over 2.5</th>
                     <th>Raison du Rejet</th>
                   </tr>
@@ -515,7 +515,7 @@ export default function App() {
                           <span style={{ fontSize: 11, color: '#475569' }}>{getLeagueFlag(m.league)} {m.league}</span>
                         </td>
                         <td style={{ textAlign: 'center' }}>
-                          <span className="cote-badge muted">{fmtCote(m.s22)}</span>
+                          <span className="cote-badge muted">{fmtCote(m.btts_oui)}{m.btts_non ? ` / ${fmtCote(m.btts_non)}` : ''}</span>
                         </td>
                         <td style={{ textAlign: 'center' }}>
                           <span className="cote-badge muted">{fmtCote(m.over25)}</span>
