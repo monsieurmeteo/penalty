@@ -249,9 +249,9 @@ def main():
             res = f.result()
             if res: scanned_all.append(res)
 
-    # Filtre Fenêtre : Journée en cours + Nuit suivante (24h max)
+    # Filtre Fenêtre : 48 Heures + Nuit suivante (52h max)
     now_utc = datetime.now(timezone.utc)
-    limit_24h = now_utc + timedelta(hours=24)
+    limit_52h = now_utc + timedelta(hours=52)
 
     scanned_results = []
     for m in scanned_all:
@@ -259,7 +259,7 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if now_utc <= m_dt <= limit_24h:
+                if now_utc <= m_dt <= limit_52h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
@@ -268,7 +268,7 @@ def main():
             scanned_results.append(m)
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs dans la fenêtre Journée & Nuit Suivante (24h) : {len(scanned_results)}")
+    print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
 
     # ponytail: Nouvelle methode sans score 2-2. Regle 1: BTTS_OUI < BTTS_NON. Regle 2: OVER2.5 < UNDER2.5.
     s3_matches = []
@@ -590,7 +590,7 @@ def main():
           <!-- SYNTHÈSE COMPACTE -->
           <div style="padding: 12px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 13px; font-weight: 700; color: #0f172a; display:flex; justify-content:space-between; align-items:center;">
             <span>🔥 <b>{len(s3_matches)} match(s) retenu(s)</b> sur {len(scanned_results)} scannés</span>
-            <span style="font-size:11px; color:#64748b; font-weight:normal;">Journée &amp; Nuit Suivante</span>
+            <span style="font-size:11px; color:#64748b; font-weight:normal;">Fenêtre 48h &amp; Nuit Suivante</span>
           </div>
 
           <!-- BLOC ÉVOLUTIONS DEPUIS LE DERNIER RUN -->
@@ -658,10 +658,10 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & BTTS — JOURNÉE & NUIT SUIVANTE",
+        "# ⚽ SÉLECTION OVER 2.5 & BTTS — 48H & NUIT SUIVANTE",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
-        f"### 📈 Statistiques Moyennes du Marché (Unibet France 24h)",
+        f"### 📈 Statistiques Moyennes du Marché (Unibet France 48h)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
