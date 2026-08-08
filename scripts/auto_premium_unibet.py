@@ -707,53 +707,61 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    subject_flag = f"{nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (BTTS Oui < Non & Over 2.5 < Under 2.5)"
+    raw_subject = f"⚽ Rapport foot du {subject_date} - {nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (BTTS Oui < Non & Over 2.5 < Under 2.5)"
+    
+    # Nettoyage ASCII du sujet pour compatibilité maximale MTA
+    clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
+    if not clean_subject.strip():
+        clean_subject = f"Rapport foot du {subject_date} - {nb_s3} matchs retenus"
 
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = f"Rapport foot du {subject_date} - {subject_flag}"
-    msg["From"]    = f"Gregory LANGLET <{smtp_user if smtp_user else gmail_email}>"
-    msg["To"]      = ", ".join(recipients)
-    msg.attach(MIMEText(html_body, "html", "utf-8"))
+    msg = EmailMessage(policy=email.policy.SMTPUTF8)
+    msg["Subject"] = clean_subject
+    msg["From"] = f"Gregory LANGLET <{gmail_email}>"
+    msg["To"] = ", ".join(recipients)
+    msg.set_content(html_body, subtype="html", charset="utf-8")
 
     sent_success = False
 
-    # Option A: SFR / Custom SMTP
-    if smtp_host and smtp_user and smtp_pass:
+    # Tentative Gmail SMTP prioritaire avec as_bytes() (Règle GitHub-Actions)
+    if gmail_password:
         try:
+            print(f"Sending email to {recipients} via Gmail SMTP (SMTPUTF8)...")
+            with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login(gmail_email, gmail_password)
+                server.sendmail(gmail_email, recipients, msg.as_bytes())
+            print("SUCCESS! Email sent via Gmail SMTP.")
+            sent_success = True
+        except Exception as e:
+            print(f"Failed sending email via Gmail SMTP: {e}")
+
+    # Fallback SFR SMTP si configuré
+    if not sent_success and smtp_host and smtp_user and smtp_pass:
+        try:
+            msg_sfr = EmailMessage(policy=email.policy.SMTPUTF8)
+            msg_sfr["Subject"] = clean_subject
+            msg_sfr["From"] = f"Gregory LANGLET <{smtp_user}>"
+            msg_sfr["To"] = ", ".join(recipients)
+            msg_sfr.set_content(html_body, subtype="html", charset="utf-8")
+
             print(f"Sending email to {recipients} via {smtp_host}:{smtp_port}...")
             if smtp_port == 465:
                 with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=30) as server:
                     server.login(smtp_user, smtp_pass)
-                    server.sendmail(smtp_user, recipients, msg.as_string())
+                    server.sendmail(smtp_user, recipients, msg_sfr.as_bytes())
             else:
                 with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
                     server.ehlo()
                     server.starttls()
                     server.ehlo()
                     server.login(smtp_user, smtp_pass)
-                    server.sendmail(smtp_user, recipients, msg.as_string())
+                    server.sendmail(smtp_user, recipients, msg_sfr.as_bytes())
             print(f"SUCCESS! Email sent via {smtp_host}.")
             sent_success = True
         except Exception as e:
             print(f"Failed sending email via {smtp_host}: {e}")
-
-    # Option B: Gmail SMTP (en secours ou en complément)
-    if not sent_success and gmail_password:
-        try:
-            print(f"Sending email to {recipients} via Gmail SMTP...")
-            if 'From' in msg:
-                del msg['From']
-            msg['From'] = f"Gregory LANGLET <{gmail_email}>"
-            with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
-                server.ehlo()
-                server.starttls()
-                server.ehlo()
-                server.login(gmail_email, gmail_password)
-                server.sendmail(gmail_email, recipients, msg.as_string())
-            print("SUCCESS! Email sent via Gmail SMTP.")
-            sent_success = True
-        except Exception as e:
-            print(f"Failed sending email via Gmail SMTP: {e}")
 
     if not sent_success:
         print("WARNING: Email could not be delivered through any SMTP provider.")
