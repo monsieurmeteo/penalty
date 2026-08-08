@@ -108,7 +108,7 @@ def scan_unibet_match_details(game):
         if not json_scripts:
             return None
 
-        c1 = cx = c2 = over25 = under25 = s22 = btts_oui = None
+        c1 = cx = c2 = over25 = under25 = s22 = btts_oui = btts_non = None
         start_iso = ""
 
         for js in json_scripts:
@@ -153,19 +153,20 @@ def scan_unibet_match_details(game):
                                 if "plus" in o_desc: over25 = p_val
                                 elif "moins" in o_desc: under25 = p_val
 
-                    # Score exact 2-2
+                    # Score exact 2-2 (indicatif uniquement)
                     if "score exact" in m_desc and s22 is None:
                         for o in outcomes:
                             o_desc = (o.get("description") or "").strip()
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
-                    # BTTS Oui (Les 2 équipes marquent)
-                    if m_desc in ["les 2 équipes marqueront-elles ?", "les 2 équipes marqueront-elles", "deux équipes marqueront-elles ?", "deux équipes marqueront-elles"] and btts_oui is None:
+                    # BTTS Oui/Non
+                    if any(kw in m_desc for kw in ["les 2 équipes marqueront", "deux équipes marqueront"]) and (btts_oui is None or btts_non is None):
                         for o in outcomes:
                             o_desc = (o.get("description") or "").strip().lower()
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc == "oui": btts_oui = p_val
+                            elif o_desc == "non": btts_non = p_val
                     elif btts_oui is None and m_desc in ["quelle équipe marquera ?", "quelle équipe marquera"]:
                         for o in outcomes:
                             o_desc = (o.get("description") or "").strip().lower()
@@ -226,6 +227,7 @@ def scan_unibet_match_details(game):
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
                 "btts_oui": btts_oui,
+                "btts_non": btts_non,
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
@@ -266,26 +268,30 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h : {len(scanned_results)}")
 
-    # ── Sélection Stricte : Score 2-2 ≤ 12.00 ET 1.55 ≤ Over 2.5 ≤ 1.70 ───────
+    # ponytail: Nouvelle methode sans score 2-2. Regle 1: BTTS_OUI < BTTS_NON. Regle 2: OVER2.5 < UNDER2.5.
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        s22 = r.get("s22")
         o25 = r.get("over25")
+        u25 = r.get("under25")
+        b_oui = r.get("btts_oui")
+        b_non = r.get("btts_non")
 
         reasons = []
-        if s22 is None:
-            reasons.append("Score 2-2 non disponible")
-        elif s22 > SEUIL_S3:
-            reasons.append(f"Score 2-2 = {s22:.2f} (> {SEUIL_S3:.2f})")
+        if b_oui is None:
+            reasons.append("Cote BTTS OUI non disponible")
+        elif b_non is None:
+            pass  # pas de raison si NON absent, on ne peut pas trancher
+        elif b_oui >= b_non:
+            reasons.append(f"BTTS NON est favori (Oui {b_oui:.2f} >= Non {b_non:.2f})")
 
         if o25 is None:
-            reasons.append("Over 2.5 non disponible")
-        elif o25 < MIN_COTE_O25:
-            reasons.append(f"Over 2.5 = {o25:.2f} (< {MIN_COTE_O25:.2f})")
-        elif o25 > MAX_COTE_O25:
-            reasons.append(f"Over 2.5 = {o25:.2f} (> {MAX_COTE_O25:.2f})")
+            reasons.append("Cote Over 2.5 non disponible")
+        elif u25 is None:
+            reasons.append("Cote Under 2.5 non disponible")
+        elif o25 >= u25:
+            reasons.append(f"Under 2.5 est favori (Over {o25:.2f} >= Under {u25:.2f})")
 
         if not reasons:
             r["double_confirm"] = True
@@ -301,24 +307,16 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"Matchs retenus (Score 2-2 ≤ {SEUIL_S3} & Over 2.5 [{MIN_COTE_O25}-{MAX_COTE_O25}]) : {len(s3_matches)}")
+    print(f"Matchs retenus (BTTS OUI < NON  ET  Over 2.5 < Under 2.5) : {len(s3_matches)}")
     print(f"Matchs rejetés : {len(rejected_matches)}")
 
-    # ── Calcul des statistiques moyennes globales ───────────────────────────
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
     all_s22 = [m["s22"] for m in scanned_results if m.get("s22") is not None]
-
     avg_all_o25 = round(sum(all_o25) / len(all_o25), 2) if all_o25 else 0.0
     avg_all_s22 = round(sum(all_s22) / len(all_s22), 2) if all_s22 else 0.0
-
     sel_o25 = [m["over25"] for m in s3_matches if m.get("over25") is not None]
-    sel_s22 = [m["s22"] for m in s3_matches if m.get("s22") is not None]
-
     avg_sel_o25 = round(sum(sel_o25) / len(sel_o25), 2) if sel_o25 else 0.0
-    avg_sel_s22 = round(sum(sel_s22) / len(sel_s22), 2) if sel_s22 else 0.0
-
     print(f"Moyenne globale Over 2.5 ({len(all_o25)} matchs) : {avg_all_o25:.2f} (Retenus : {avg_sel_o25:.2f})")
-    print(f"Moyenne globale Score 2-2 ({len(all_s22)} matchs) : {avg_all_s22:.2f} (Retenus : {avg_sel_s22:.2f})")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -421,7 +419,7 @@ def main():
         table_rows_html = f'''
         <tr>
           <td colspan="5" style="padding:24px; text-align:center; color:#64748b; font-style:italic;">
-            Aucun match ne valide les critères stricts (Score 2-2 &le; {SEUIL_S3} et Over 2.5 entre {MIN_COTE_O25} et {MAX_COTE_O25}) dans les prochaines 48h.
+            Aucun match ne valide les critères stricts (BTTS OUI &lt; BTTS NON  ET  Over 2.5 &lt; Under 2.5) dans les prochaines 48h.
           </td>
         </tr>
         '''
@@ -462,7 +460,7 @@ def main():
           <!-- BANNIÈRE HEADER -->
           <div style="background: #0f172a; padding: 20px; text-align: center; color: white;">
             <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ OVER 2.5 & BTTS — SÉLECTION UNIBET</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">Score 2-2 ≤ {SEUIL_S3} &nbsp;•&nbsp; Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]</p>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">BTTS OUI &lt; BTTS NON &nbsp;&bull;&nbsp; Over 2.5 &lt; Under 2.5</p>
             <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 3px 12px; border-radius: 15px; font-size: 11px; color: #cbd5e1;">
               Mise à jour : {now_str}
             </div>
@@ -476,9 +474,9 @@ def main():
               <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_o25:.2f})</span>
             </div>
             <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #fde68a;">
-              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne Score 2-2 (Tous)</span>
+              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Score 2-2 moyen (indicatif)</span>
               <span style="font-size: 17px; font-weight: 800; color: #d97706;">{avg_all_s22:.2f}</span>
-              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_s22:.2f})</span>
+              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(non utilisé en sélection)</span>
             </div>
           </div>
 
@@ -546,10 +544,10 @@ def main():
     report = [
         "# ⚽ SÉLECTION STRICTE OVER 2.5 — UNIBET 48H",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score 2-2 ≤ {SEUIL_S3}  |  Cote Over 2.5 [{MIN_COTE_O25} – {MAX_COTE_O25}]\n",
+        f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France 48h)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
-        f"- **Cote Score 2-2 moyenne globale (Tous matchs)** : `{avg_all_s22:.2f}` *(Matchs retenus : `{avg_sel_s22:.2f}`)*",
+        f"- **Score 2-2 moyen (indicatif)** : `{avg_all_s22:.2f}` *(non utilisé en sélection)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
         "## ✅ Matchs Sélectionnés",
         "| Date | Ligue | Match | Score 2-2 | Over 2.5 | Buteur Moyenne |",
