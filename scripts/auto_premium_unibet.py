@@ -554,39 +554,64 @@ def main():
         ha_val = m.get("avg_freq_ha", 0.0)
         pts_league = m.get("pts_league", 0)
 
+        if score >= 90:
+            score_style = "background: linear-gradient(135deg, #dc2626, #ea580c); color: #ffffff;"
+        elif score >= 85:
+            score_style = "background: linear-gradient(135deg, #ea580c, #f59e0b); color: #ffffff;"
+        elif score >= 80:
+            score_style = "background: #f59e0b; color: #ffffff;"
+        else:
+            score_style = "background: #10b981; color: #ffffff;"
+
         rec_h = m.get("recent_h_dom", [])
-        h_scores = []
+        h_pills = []
         for rm in rec_h[:10]:
             hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
             ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
             tot = int(hg) + int(ag)
-            tag = "🔥3+" if tot >= 3 else "⚪<3"
-            h_scores.append(f"{hg}-{ag} [{tag}]")
-        h_str = ", ".join(h_scores) if h_scores else "Données récentes non dispo"
+            if tot >= 3:
+                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
+            else:
+                h_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+        h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
 
         rec_a = m.get("recent_a_ext", [])
-        a_scores = []
+        a_pills = []
         for rm in rec_a[:10]:
             hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
             ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
             tot = int(hg) + int(ag)
-            tag = "🔥3+" if tot >= 3 else "⚪<3"
-            a_scores.append(f"{hg}-{ag} [{tag}]")
-        a_str = ", ".join(a_scores) if a_scores else "Données récentes non dispo"
+            if tot >= 3:
+                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
+            else:
+                a_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+        a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
 
         return f'''
-        <div style="background:#f8fafc; border-left:3px solid #3b82f6; padding:8px 10px; margin-top:6px; font-size:11px; color:#334155; border-radius:4px;">
-            <div style="font-weight:700; color:#1e3a8a; margin-bottom:3px;">
-                🔥 <b>SCORE OVER 2.5 : {score}/100 ({classe})</b>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE (BARÈME V2)</span>
+                <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
+                    {score}/100 &bull; {classe}
+                </span>
             </div>
-            <div style="color:#475569; margin-bottom:4px;">
-                📊 <b>Barème V2</b> : IPO ({ipo_val}): <b>{pts_ipo}/25</b> | Buts ({goals_val}b): <b>{pts_goals}/15</b> | Freq ({freq_val:.0f}%): <b>{pts_freq}/20</b> | Tirs ({sot_val}t): <b>{pts_sot}/10</b> | H/A ({ha_val:.0f}%): <b>{pts_ha}/20</b> | Ligue: <b>{pts_league}/10</b>
+
+            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
+                <b>1. IPO ({ipo_val:.2f})</b>: {pts_ipo}/25 &nbsp;|&nbsp; 
+                <b>2. Buts ({goals_val:.1f}b)</b>: {pts_goals}/15 &nbsp;|&nbsp; 
+                <b>3. Freq ({freq_val:.0f}%)</b>: {pts_freq}/20 &nbsp;|&nbsp; 
+                <b>4. Tirs ({sot_val:.1f}t)</b>: {pts_sot}/10 &nbsp;|&nbsp; 
+                <b>5. H/A ({ha_val:.0f}%)</b>: {pts_ha}/20 &nbsp;|&nbsp; 
+                <b>6. Ligue</b>: {pts_league}/10
             </div>
-            <div style="color:#0f172a; margin-bottom:2px;">
-                🏠 <b>10m Domicile ({m['dom']})</b> : <span style="font-family:monospace; font-size:10px;">{h_str}</span>
-            </div>
-            <div style="color:#0f172a;">
-                ✈️ <b>10m Extérieur ({m['ext']})</b> : <span style="font-family:monospace; font-size:10px;">{a_str}</span>
+
+            <div style="font-size:11px; color:#334155; line-height:1.6;">
+                <div style="margin-bottom:6px;">
+                    <b>🏠 10m Domicile ({m['dom']})</b> :<br>{h_pills_html}
+                </div>
+                <div>
+                    <b>✈️ 10m Extérieur ({m['ext']})</b> :<br>{a_pills_html}
+                </div>
             </div>
         </div>
         '''
