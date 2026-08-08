@@ -112,7 +112,7 @@ def scan_unibet_match_details(game):
 
         c1, cx, c2 = None, None, None
         over25, under25 = None, None
-        s22, s10, s00, s01 = None, None, None, None
+        s22 = None
         btts_oui, btts_non = None, None
         start_iso = ""
 
@@ -158,15 +158,12 @@ def scan_unibet_match_details(game):
                                 if "plus" in o_desc: over25 = p_val
                                 elif "moins" in o_desc: under25 = p_val
 
-                    # Score exact 2-2 et Scores Fermés (1-0, 0-0, 0-1 pour Méthode Over 1.5 YouTube)
+                    # Score exact 2-2
                     if "score exact" in m_desc:
                         for o in outcomes:
                             o_desc = (o.get("description") or "").strip()
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
-                            elif o_desc in ["1 - 0", "1-0"]: s10 = p_val
-                            elif o_desc in ["0 - 0", "0-0"]: s00 = p_val
-                            elif o_desc in ["0 - 1", "0-1"]: s01 = p_val
 
                     # BTTS Oui/Non
                     if any(kw in m_desc for kw in ["les 2 équipes marqueront", "deux équipes marqueront"]) and (btts_oui is None or btts_non is None):
@@ -225,10 +222,6 @@ def scan_unibet_match_details(game):
             margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
 
-            # Méthode YouTube Over 1.5 Buts : au moins 2 cotes parmi (1-0, 0-0, 0-1) >= 10.00
-            closed_scores = [c for c in [s10, s00, s01] if c is not None]
-            nb_closed_above_10 = sum(1 for c in closed_scores if c >= 10.0)
-            over15_yt_valid = (nb_closed_above_10 >= 2)
 
             return {
                 **game,
@@ -238,8 +231,7 @@ def scan_unibet_match_details(game):
                 "date_str": format_french_date(start_iso),
                 "c1": c1, "cx": cx, "c2": c2,
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
-                "s22": s22, "s10": s10, "s00": s00, "s01": s01,
-                "over15_yt_valid": over15_yt_valid,
+                "s22": s22,
                 "btts_oui": btts_oui,
                 "btts_non": btts_non,
                 "buteur_name": buteur_name,
@@ -307,13 +299,7 @@ def main():
         elif o25 >= u25:
             reasons.append(f"Under 2.5 est favori (Over {o25:.2f} >= Under {u25:.2f})")
 
-        # Règle 3 : Méthode YouTube Over 1.5 Buts (Scores Fermés 1-0, 0-0, 0-1 >= 10.00)
-        s10, s00, s01 = r.get("s10"), r.get("s00"), r.get("s01")
-        closed_scores = [c for c in [s10, s00, s01] if c is not None]
-        if len(closed_scores) >= 2:
-            nb_above_10 = sum(1 for c in closed_scores if c >= 10.0)
-            if nb_above_10 < 2:
-                reasons.append("Risque score fermé (moins de 2 cotes parmi 1-0, 0-0, 0-1 sont >= 10.00)")
+
 
         if not reasons:
             r["double_confirm"] = True
@@ -515,8 +501,6 @@ def main():
                 dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
                 combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
 
-            badge_m1 = '<span style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700;">🔥 Over 1.5 YT (Scores Fermés ≥ 10)</span>' if m1.get("over15_yt_valid") else ''
-            badge_m2 = '<span style="background:#e0f2fe; color:#0369a1; padding:2px 6px; border-radius:4px; font-size:10px; font-weight:700;">🔥 Over 1.5 YT (Scores Fermés ≥ 10)</span>' if m2.get("over15_yt_valid") else ''
 
             combos_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
@@ -525,8 +509,8 @@ def main():
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> {badge_m1} <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
-                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> {badge_m2} <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
+                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
+                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
               </div>
             </div>
             '''
