@@ -1,13 +1,5 @@
 {
   "s3": {
-    "3369436": {
-      "match": "WFC Pomurje - Hajduk Split F",
-      "league": "Coupes D Europe • Ldc F",
-      "date_str": "Sam. 08/08 à 11h00",
-      "val_s22": 11.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3363646": {
       "match": "FC Magdeburg - Braunschweig",
       "league": "Allemagne • Bundesliga 2",
@@ -24,6 +16,14 @@
       "val_o25": 1.55,
       "double": true
     },
+    "3363491": {
+      "match": "FC Heidenheim - Osnabrück",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Sam. 08/08 à 13h00",
+      "val_s22": 12.0,
+      "val_o25": 1.55,
+      "double": true
+    },
     "3364488": {
       "match": "Gimcheon - FC Seoul",
       "league": "Coree Du Sud • D1 Coree Du Sud",
@@ -36,7 +36,7 @@
       "match": "Radomiak Radom - Gornik Zabrze",
       "league": "Pologne • D1 Pologne",
       "date_str": "Sam. 08/08 à 14h45",
-      "val_s22": 10.0,
+      "val_s22": 10.5,
       "val_o25": 1.62,
       "double": true
     },
@@ -44,32 +44,16 @@
       "match": "Örgryte - AIK Solna",
       "league": "Suede • D1 Suede",
       "date_str": "Sam. 08/08 à 15h00",
-      "val_s22": 9.5,
+      "val_s22": 9.3,
       "val_o25": 1.55,
       "double": true
     },
-    "3359092": {
-      "match": "Stockport - Doncaster",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 12.0,
-      "val_o25": 1.6,
-      "double": true
-    },
-    "3359112": {
-      "match": "Bristol Rovers - Peterborough",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 9.5,
+    "3366852": {
+      "match": "Vasas Budapest - Zalaegerszeg",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Sam. 08/08 à 15h30",
+      "val_s22": 9.7,
       "val_o25": 1.55,
-      "double": true
-    },
-    "3359117": {
-      "match": "Swansea - Birmingham",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.7,
       "double": true
     },
     "3359088": {
@@ -80,14 +64,6 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3359103": {
-      "match": "Preston - Huddersfield",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 10.0,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3359115": {
       "match": "Bromley FC - Reading",
       "league": "Angleterre • Efl Cup",
@@ -96,11 +72,59 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3359103": {
+      "match": "Preston - Huddersfield",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359117": {
+      "match": "Swansea - Birmingham",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.7,
+      "double": true
+    },
+    "3359112": {
+      "match": "Bristol Rovers - Peterborough",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 9.5,
+      "val_o25": 1.55,
+      "double": true
+    },
+    "3359119": {
+      "match": "Wimbledon - Newport County",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.5,
+      "val_o25": 1.62,
+      "double": true
+    },
     "3359091": {
       "match": "Sheffield Wed. - Bolton",
       "league": "Angleterre • Efl Cup",
       "date_str": "Sam. 08/08 à 16h00",
       "val_s22": 10.5,
+      "val_o25": 1.6,
+      "double": true
+    },
+    "3359099": {
+      "match": "Derby - Lincoln",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 11.0,
+      "val_o25": 1.62,
+      "double": true
+    },
+    "3359092": {
+      "match": "Stockport - Doncaster",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Sam. 08/08 à 16h00",
+      "val_s22": 12.0,
       "val_o25": 1.6,
       "double": true
     },
@@ -112,14 +136,6 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3359099": {
-      "match": "Derby - Lincoln",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Sam. 08/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.62,
-      "double": true
-    },
     "3369091": {
       "match": "Kisvarda - Ujpest",
       "league": "Hongrie • D1 Hongrie",
@@ -128,20 +144,20 @@
       "val_o25": 1.7,
       "double": true
     },
+    "3364166": {
+      "match": "MFK Zemplin - KFC Komarno",
+      "league": "Slovaquie • D1 Slovaquie",
+      "date_str": "Sam. 08/08 à 18h00",
+      "val_s22": 10.0,
+      "val_o25": 1.6,
+      "double": true
+    },
     "3359944": {
       "match": "FF Jaro - VPS Vaasan",
       "league": "Finlande • D1 Finlande",
       "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3364169": {
-      "match": "MFK Ruzomberok - Podbrezova",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 9.9,
-      "val_o25": 1.6,
+      "val_s22": 11.5,
+      "val_o25": 1.62,
       "double": true
     },
     "3369498": {
@@ -152,12 +168,12 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3368789": {
-      "match": "FC Narva - Nomme Kalju",
-      "league": "Estonie • D1 Estonie",
+    "3364169": {
+      "match": "MFK Ruzomberok - Podbrezova",
+      "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 12.0,
-      "val_o25": 1.55,
+      "val_s22": 9.9,
+      "val_o25": 1.6,
       "double": true
     },
     "3359891": {
@@ -168,12 +184,12 @@
       "val_o25": 1.62,
       "double": true
     },
-    "3364166": {
-      "match": "MFK Zemplin - KFC Komarno",
-      "league": "Slovaquie • D1 Slovaquie",
+    "3368789": {
+      "match": "FC Narva - Nomme Kalju",
+      "league": "Estonie • D1 Estonie",
       "date_str": "Sam. 08/08 à 18h00",
-      "val_s22": 10.0,
-      "val_o25": 1.6,
+      "val_s22": 12.0,
+      "val_o25": 1.55,
       "double": true
     },
     "3369870": {
@@ -224,28 +240,12 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3364369": {
-      "match": "Randers FC - Lyngby BK",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 10.5,
-      "val_o25": 1.62,
-      "double": true
-    },
-    "3360066": {
-      "match": "FA Siauliai - Dziugas",
-      "league": "Lituanie • D1 Lituanie",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3365876": {
-      "match": "Motherwell - Falkirk",
-      "league": "Ecosse • D1 Ecosse",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_s22": 11.0,
-      "val_o25": 1.62,
+    "3369778": {
+      "match": "FK Jelgava - FK Auda",
+      "league": "Lettonie • D1 Lettonie",
+      "date_str": "Dim. 09/08 à 15h00",
+      "val_s22": 9.8,
+      "val_o25": 1.55,
       "double": true
     },
     "3366641": {
@@ -254,6 +254,30 @@
       "date_str": "Dim. 09/08 à 16h00",
       "val_s22": 11.0,
       "val_o25": 1.55,
+      "double": true
+    },
+    "3365876": {
+      "match": "Motherwell - Falkirk",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_s22": 11.5,
+      "val_o25": 1.62,
+      "double": true
+    },
+    "3360066": {
+      "match": "FA Siauliai - Dziugas",
+      "league": "Lituanie • D1 Lituanie",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3364369": {
+      "match": "Randers FC - Lyngby BK",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_s22": 10.5,
+      "val_o25": 1.62,
       "double": true
     },
     "3360084": {
@@ -296,20 +320,20 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3368866": {
-      "match": "OFK Belgrade - FK Zeleznicar",
-      "league": "Serbie • D1 Serbie",
-      "date_str": "Dim. 09/08 à 21h00",
-      "val_s22": 10.0,
-      "val_o25": 1.62,
-      "double": true
-    },
     "3365474": {
       "match": "Bahia Salvador - Vasco De Gama",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 09/08 à 21h00",
       "val_s22": 11.5,
       "val_o25": 1.7,
+      "double": true
+    },
+    "3368866": {
+      "match": "OFK Belgrade - FK Zeleznicar",
+      "league": "Serbie • D1 Serbie",
+      "date_str": "Dim. 09/08 à 21h00",
+      "val_s22": 10.0,
+      "val_o25": 1.62,
       "double": true
     }
   }
