@@ -171,31 +171,105 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if sot_total >= 11.0 and xg_total < 2.5:
         red_flags.append(f"Contradiction : Beaucoup de tirs cadrés ({sot_total:.1f}/m) mais xG faibles ({xg_total:.2f})")
 
-    pts_xg = 25 if xg_total >= 3.5 else 22 if xg_total >= 3.0 else 18 if xg_total >= 2.6 else 14 if xg_total >= 2.2 else 9
-    pts_buts = 20 if (gf_a+ga_a+gf_b+ga_b) >= 5.5 else 17 if (gf_a+ga_a+gf_b+ga_b) >= 4.5 else 14 if (gf_a+ga_a+gf_b+ga_b) >= 3.8 else 10
-    pts_o25 = 15 if o25_avg_rate >= 75 else 12 if o25_avg_rate >= 60 else 9 if o25_avg_rate >= 50 else 6
-    pts_tirs = 15 if sot_total >= 11.5 else 12 if sot_total >= 9.5 else 9 if sot_total >= 7.5 else 5
-    pts_dom_ext = min(10, int((o25_h_cnt + o25_a_cnt) * 0.4))
-    pts_comp = 4
+    # ── BARÈME V2 — SCORE OVER 2.5 BUTS /100 ──
+    # 1. IPO — Indice de Potentiel Offensif (25 pts max)
+    ipo_dom = (sot_a * 0.28) + (gf_a * 0.50)
+    ipo_ext = (sot_b * 0.28) + (gf_b * 0.50)
+    ipo_comb = ipo_dom + ipo_ext
 
-    raw_score = min(100, pts_xg + pts_buts + pts_o25 + pts_tirs + pts_dom_ext + pts_comp)
-    total_score = max(0, min(100, raw_score - (len(red_flags) * 12)))
+    if ipo_comb >= 3.80: pts_ipo = 25
+    elif ipo_comb >= 3.50: pts_ipo = 23
+    elif ipo_comb >= 3.20: pts_ipo = 21
+    elif ipo_comb >= 3.00: pts_ipo = 19
+    elif ipo_comb >= 2.80: pts_ipo = 17
+    elif ipo_comb >= 2.60: pts_ipo = 15
+    elif ipo_comb >= 2.40: pts_ipo = 12
+    elif ipo_comb >= 2.20: pts_ipo = 9
+    elif ipo_comb >= 2.00: pts_ipo = 6
+    else: pts_ipo = 3
+
+    # 2. Potentiel buts marqués + encaissés (15 pts max)
+    total_goals_brut = gf_a + ga_a + gf_b + ga_b
+    if total_goals_brut >= 6.0: pts_goals = 15
+    elif total_goals_brut >= 5.5: pts_goals = 14
+    elif total_goals_brut >= 5.0: pts_goals = 13
+    elif total_goals_brut >= 4.6: pts_goals = 11
+    elif total_goals_brut >= 4.2: pts_goals = 9
+    elif total_goals_brut >= 3.8: pts_goals = 7
+    elif total_goals_brut >= 3.4: pts_goals = 5
+    elif total_goals_brut >= 3.0: pts_goals = 3
+    else: pts_goals = 1
+
+    # 3. Fréquence historique Over 2.5 (20 pts max)
+    if o25_avg_rate >= 80.0: pts_freq = 20
+    elif o25_avg_rate >= 75.0: pts_freq = 18
+    elif o25_avg_rate >= 70.0: pts_freq = 16
+    elif o25_avg_rate >= 65.0: pts_freq = 14
+    elif o25_avg_rate >= 60.0: pts_freq = 12
+    elif o25_avg_rate >= 55.0: pts_freq = 10
+    elif o25_avg_rate >= 50.0: pts_freq = 8
+    elif o25_avg_rate >= 45.0: pts_freq = 5
+    elif o25_avg_rate >= 40.0: pts_freq = 3
+    else: pts_freq = 0
+
+    # 4. Tirs cadrés combinés (10 pts max)
+    sot_comb = sot_a + sot_b
+    if sot_comb >= 12.0: pts_sot = 10
+    elif sot_comb >= 11.0: pts_sot = 9
+    elif sot_comb >= 10.0: pts_sot = 8
+    elif sot_comb >= 9.0: pts_sot = 7
+    elif sot_comb >= 8.0: pts_sot = 6
+    elif sot_comb >= 7.0: pts_sot = 4
+    elif sot_comb >= 6.0: pts_sot = 2
+    else: pts_sot = 0
+
+    # 5. Domicile / Extérieur spécifique (20 pts max)
+    o25_h_dom_cnt = count_o25(recent_h_dom[:10])
+    o25_a_ext_cnt = count_o25(recent_a_ext[:10])
+    o25_h_dom_rate = (o25_h_dom_cnt / max(1, len(recent_h_dom[:10]))) * 100
+    o25_a_ext_rate = (o25_a_ext_cnt / max(1, len(recent_a_ext[:10]))) * 100
+    avg_freq_ha = (o25_h_dom_rate + o25_a_ext_rate) / 2.0
+
+    if avg_freq_ha >= 80.0: pts_ha = 20
+    elif avg_freq_ha >= 75.0: pts_ha = 18
+    elif avg_freq_ha >= 70.0: pts_ha = 16
+    elif avg_freq_ha >= 65.0: pts_ha = 14
+    elif avg_freq_ha >= 60.0: pts_ha = 12
+    elif avg_freq_ha >= 55.0: pts_ha = 10
+    elif avg_freq_ha >= 50.0: pts_ha = 8
+    elif avg_freq_ha >= 45.0: pts_ha = 5
+    elif avg_freq_ha >= 40.0: pts_ha = 3
+    else: pts_ha = 0
+
+    # 6. Contexte de la ligue (10 pts max)
+    league_avg_goals = 2.75
+    if league_avg_goals >= 3.30: pts_league = 10
+    elif league_avg_goals >= 3.10: pts_league = 9
+    elif league_avg_goals >= 2.90: pts_league = 8
+    elif league_avg_goals >= 2.75: pts_league = 7
+    elif league_avg_goals >= 2.60: pts_league = 6
+    elif league_avg_goals >= 2.45: pts_league = 5
+    elif league_avg_goals >= 2.30: pts_league = 3
+    elif league_avg_goals >= 2.15: pts_league = 2
+    else: pts_league = 0
+
+    raw_score = pts_ipo + pts_goals + pts_freq + pts_sot + pts_ha + pts_league
+    total_score = max(0, min(100, raw_score - (len(red_flags) * 10)))
+
+    # Classification V2
+    if total_score >= 90: classe = "🔥🔥🔥 Exceptionnel"
+    elif total_score >= 85: classe = "🔥🔥 Très fort"
+    elif total_score >= 80: classe = "🔥 Fort"
+    elif total_score >= 75: classe = "✅ Bon potentiel"
+    elif total_score >= 70: classe = "🟡 Intéressant mais à confirmer"
+    elif total_score >= 65: classe = "⚠️ Moyen"
+    elif total_score >= 60: classe = "⚠️ Fragile"
+    else: classe = "❌ À écarter"
+
     calibrated_prob = int((o25_avg_rate * 0.60) + (min(90, int(xg_total * 18)) * 0.40))
     if red_flags: calibrated_prob = max(25, calibrated_prob - (len(red_flags) * 8))
 
-    if total_score >= 85 and len(red_flags) == 0 and len(convergences) >= 3: confiance = "TRÈS ÉLEVÉE"
-    elif total_score >= 72 and len(red_flags) <= 1: confiance = "ÉLEVÉE"
-    elif total_score >= 55: confiance = "MOYENNE"
-    else: confiance = "FAIBLE"
-
-    if total_score >= 82 and len(red_flags) == 0 and ds_a and ds_b:
-        verdict = "🔥 TRÈS FORT PROFIL STATISTIQUE POUR 3+ BUTS"
-    elif total_score >= 68 and len(red_flags) <= 1:
-        verdict = "🟢 BON PROFIL STATISTIQUE POUR 3+ BUTS"
-    elif total_score >= 50:
-        verdict = "🟠 PROFIL INCERTAIN"
-    else:
-        verdict = "❌ PROFIL STATISTIQUE INSUFFISANT"
+    verdict = f"{classe} ({total_score}/100)"
 
     if is_batch:
         return {
@@ -203,7 +277,14 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "team_b": team_b,
             "league": league,
             "score": total_score,
+            "classe": classe,
             "prob": calibrated_prob,
+            "pts_ipo": pts_ipo, "ipo_comb": round(ipo_comb, 2),
+            "pts_goals": pts_goals, "total_goals_brut": round(total_goals_brut, 1),
+            "pts_freq": pts_freq, "avg_freq_all": round(o25_avg_rate, 1),
+            "pts_sot": pts_sot, "sot_comb": round(sot_comb, 1),
+            "pts_ha": pts_ha, "avg_freq_ha": round(avg_freq_ha, 1),
+            "pts_league": pts_league,
             "xg_total": round(xg_total, 2),
             "sot_total": round(sot_total, 1),
             "verdict": verdict,
@@ -211,9 +292,16 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         }
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
-    print(f"\n🔥 SCORE 3+ BUTS : {total_score}/100")
-    print(f"📊 PROBABILITÉ STATISTIQUE : {calibrated_prob} %")
-    print(f"🛡️ CONFIANCE : {confiance}\n")
+    print(f"\n🔥 SCORE OVER 2,5 : {total_score}/100")
+    print(f"📊 CLASSEMENT : {classe}")
+    print(f"🛡️ PROBABILITÉ STATISTIQUE : {calibrated_prob} %\n")
+    print(f"1. Potentiel offensif (IPO {ipo_comb:.2f}) : {pts_ipo}/25")
+    print(f"2. Buts marqués/encaissés ({total_goals_brut:.1f}b) : {pts_goals}/15")
+    print(f"3. Historique Over 2,5 ({o25_avg_rate:.0f}%) : {pts_freq}/20")
+    print(f"4. Tirs cadrés ({sot_comb:.1f}t) : {pts_sot}/10")
+    print(f"5. Home/Away ({avg_freq_ha:.0f}%) : {pts_ha}/20")
+    print(f"6. Ligue : {pts_league}/10")
+    print(f"\nTOTAL : {total_score}/100\n")
 
     print(f"### POTENTIEL ÉQUIPE A ({team_a} à Domicile)")
     print(f"• Buts marqués domicile : {gf_a:.1f}/match")
