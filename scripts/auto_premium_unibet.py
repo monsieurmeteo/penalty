@@ -683,22 +683,38 @@ def main():
         </tr>
         '''
 
-    # ── Pré-construction du tableau des matchs NON retenus & motifs ────────
+    # ── Pré-construction du tableau des matchs NON RETENUS & motifs ────────
+    non_retained_matches = [m for m in scanned_results if m not in hybrid_option_b_matches]
+    non_retained_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
+
     rejected_rows_html = ""
-    for idx, m in enumerate(rejected_matches):
+    for idx, m in enumerate(non_retained_matches):
         bg = "#ffffff" if idx % 2 == 0 else "#f9fafb"
         b_oui = m.get("btts_oui")
         b_non = m.get("btts_non")
         btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else '<span style="color:#94a3b8;">N/A</span>')
         o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else '<span style="color:#94a3b8;">N/A</span>'
-        reason = m.get("rejection_reason", "Non éligible")
+
+        score_v2 = m.get("ac_score", 0)
+        prob_v2 = m.get("ac_prob", 0)
+        score_cell = f'<b>{score_v2}/100</b> <span style="font-size:10px; color:#64748b;">({prob_v2}%)</span>' if score_v2 > 0 else '<span style="color:#94a3b8;">N/A</span>'
+
+        # Motif de rejet
+        if m.get("rejection_reason"):
+            reason = m.get("rejection_reason")
+        elif score_v2 < 75 and score_v2 > 0:
+            reason = f"Score V2 insuffisant ({score_v2}/100 &lt; 75/100)"
+        elif len(m.get("ac_red_flags", [])) > 0:
+            reason = f"⚠️ Red Flag: {', '.join(m.get('ac_red_flags'))}"
+        else:
+            reason = "Cote ou données insuffisantes"
 
         rejected_rows_html += (
             f'<tr style="background:{bg}; border-bottom:1px solid #e5e7eb;">'
             f'<td style="padding:7px 8px; color:#6b7280; white-space:nowrap; font-size:11px;">{m["date_str"]}</td>'
             f'<td style="padding:7px 8px; font-weight:600; color:#374151; font-size:12px;">{m["dom"]} vs {m["ext"]}'
             f'<br><span style="font-size:10px; color:#9ca3af;">{m["league"]}</span></td>'
-            f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{btts_val}</td>'
+            f'<td style="padding:7px 8px; text-align:center; font-size:11px;">{score_cell}</td>'
             f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{o25_val}</td>'
             f'<td style="padding:7px 8px; text-align:left; color:#dc2626; font-size:11px; font-weight:600;">{reason}</td>'
             f'</tr>'
@@ -782,14 +798,14 @@ def main():
           <!-- SECTION MATCHS NON SÉLECTIONNÉS ET MOTIFS DE REJET -->
           <div style="padding: 15px 10px; border-top: 2px solid #e2e8f0; background: #fafafa;">
             <div style="font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
-              <span>🚫 MATCHS NON SÉLECTIONNÉS ({len(rejected_matches)}) & RAISONS DU REJET</span>
+              <span>🚫 MATCHS NON SÉLECTIONNÉS ({len(non_retained_matches)}) &amp; RAISONS DU REJET</span>
             </div>
             <table style="width:100%; border-collapse:collapse; font-size:12px; background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; overflow:hidden;">
               <thead>
                 <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:10px; font-weight:700; border-bottom:1px solid #cbd5e1;">
                   <th style="padding:8px 10px; text-align:left;">Date</th>
-                  <th style="padding:8px 10px; text-align:left;">Match & Ligue</th>
-                  <th style="padding:8px 10px; text-align:center;">BTTS (Oui/Non)</th>
+                  <th style="padding:8px 10px; text-align:left;">Match &amp; Ligue</th>
+                  <th style="padding:8px 10px; text-align:center;">Score V2 / Prob (%)</th>
                   <th style="padding:8px 10px; text-align:center;">Over 2.5</th>
                   <th style="padding:8px 10px; text-align:left;">Raison du Rejet</th>
                 </tr>
