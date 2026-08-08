@@ -20,7 +20,7 @@
       "match": "Chivas - Dallas FC",
       "league": "Amerique • Leagues Cup",
       "date_str": "Dim. 09/08 à 03h00",
-      "val_btts": 1.45,
+      "val_btts": 1.5,
       "val_o25": 1.45,
       "double": true
     },
@@ -64,20 +64,12 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3363494": {
-      "match": "Cottbus - Hanovre",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 09/08 à 13h30",
-      "val_btts": 1.42,
-      "val_o25": 1.48,
-      "double": true
-    },
-    "3364337": {
-      "match": "St Pauli - Greuther Furth",
+    "3363492": {
+      "match": "Nuremberg - Dynamo Dresden",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 09/08 à 13h30",
       "val_btts": 1.5,
-      "val_o25": 1.52,
+      "val_o25": 1.6,
       "double": true
     },
     "3360083": {
@@ -88,12 +80,20 @@
       "val_o25": 1.75,
       "double": true
     },
-    "3363492": {
-      "match": "Nuremberg - Dynamo Dresden",
+    "3364337": {
+      "match": "St Pauli - Greuther Furth",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 09/08 à 13h30",
       "val_btts": 1.5,
-      "val_o25": 1.6,
+      "val_o25": 1.52,
+      "double": true
+    },
+    "3363494": {
+      "match": "Cottbus - Hanovre",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 09/08 à 13h30",
+      "val_btts": 1.42,
+      "val_o25": 1.48,
       "double": true
     },
     "3349655": {
@@ -102,6 +102,22 @@
       "date_str": "Dim. 09/08 à 13h35",
       "val_btts": 1.55,
       "val_o25": 1.65,
+      "double": true
+    },
+    "3360095": {
+      "match": "FC Lugano - FC Zurich",
+      "league": "Suisse • D1 Suisse",
+      "date_str": "Dim. 09/08 à 14h00",
+      "val_btts": 1.55,
+      "val_o25": 1.48,
+      "double": true
+    },
+    "3360090": {
+      "match": "Hammarby - Häcken",
+      "league": "Suede • D1 Suede",
+      "date_str": "Dim. 09/08 à 14h00",
+      "val_btts": 1.42,
+      "val_o25": 1.32,
       "double": true
     },
     "3360092": {
@@ -120,38 +136,6 @@
       "val_o25": 1.48,
       "double": true
     },
-    "3360090": {
-      "match": "Hammarby - Häcken",
-      "league": "Suede • D1 Suede",
-      "date_str": "Dim. 09/08 à 14h00",
-      "val_btts": 1.42,
-      "val_o25": 1.32,
-      "double": true
-    },
-    "3360095": {
-      "match": "FC Lugano - FC Zurich",
-      "league": "Suisse • D1 Suisse",
-      "date_str": "Dim. 09/08 à 14h00",
-      "val_btts": 1.55,
-      "val_o25": 1.48,
-      "double": true
-    },
-    "3365878": {
-      "match": "Kilmarnock - Celtic",
-      "league": "Ecosse • D1 Ecosse",
-      "date_str": "Dim. 09/08 à 14h30",
-      "val_btts": 1.55,
-      "val_o25": 1.38,
-      "double": true
-    },
-    "3360072": {
-      "match": "Groningen - Utrecht",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Dim. 09/08 à 14h30",
-      "val_btts": 1.5,
-      "val_o25": 1.65,
-      "double": true
-    },
     "3360076": {
       "match": "Lillestrøm - Rosenborg",
       "league": "Norvege • D1 Norvege",
@@ -168,6 +152,22 @@
       "val_o25": 1.4,
       "double": true
     },
+    "3360072": {
+      "match": "Groningen - Utrecht",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Dim. 09/08 à 14h30",
+      "val_btts": 1.5,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3365878": {
+      "match": "Kilmarnock - Celtic",
+      "league": "Ecosse • D1 Ecosse",
+      "date_str": "Dim. 09/08 à 14h30",
+      "val_btts": 1.55,
+      "val_o25": 1.38,
+      "double": true
+    },
     "3369779": {
       "match": "SK Super Nova - FK Liepaja",
       "league": "Lettonie • D1 Lettonie",
@@ -176,12 +176,12 @@
       "val_o25": 1.6,
       "double": true
     },
-    "3370046": {
-      "match": "UN Kaerjeng - US Hostert",
+    "3370048": {
+      "match": "FC Rosport - US Mondorf",
       "league": "Luxembourg • D1 Luxembourg",
       "date_str": "Dim. 09/08 à 16h00",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
+      "val_btts": 1.58,
+      "val_o25": 1.55,
       "double": true
     },
     "3366641": {
@@ -192,6 +192,14 @@
       "val_o25": 1.52,
       "double": true
     },
+    "3364369": {
+      "match": "Randers FC - Lyngby BK",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Dim. 09/08 à 16h00",
+      "val_btts": 1.5,
+      "val_o25": 1.62,
+      "double": true
+    },
     "3369997": {
       "match": "FC Differdange - US Rumelange",
       "league": "Luxembourg • D1 Luxembourg",
@@ -200,11 +208,11 @@
       "val_o25": 1.48,
       "double": true
     },
-    "3364369": {
-      "match": "Randers FC - Lyngby BK",
-      "league": "Danemark • D1 Danemark",
+    "3365876": {
+      "match": "Motherwell - Falkirk",
+      "league": "Ecosse • D1 Ecosse",
       "date_str": "Dim. 09/08 à 16h00",
-      "val_btts": 1.5,
+      "val_btts": 1.6,
       "val_o25": 1.62,
       "double": true
     },
@@ -216,20 +224,12 @@
       "val_o25": 1.62,
       "double": true
     },
-    "3365876": {
-      "match": "Motherwell - Falkirk",
-      "league": "Ecosse • D1 Ecosse",
-      "date_str": "Dim. 09/08 à 16h00",
-      "val_btts": 1.6,
-      "val_o25": 1.62,
-      "double": true
-    },
-    "3370047": {
-      "match": "Etz.Ettelbruck - Racing Union",
+    "3370046": {
+      "match": "UN Kaerjeng - US Hostert",
       "league": "Luxembourg • D1 Luxembourg",
       "date_str": "Dim. 09/08 à 16h00",
       "val_btts": 1.45,
-      "val_o25": 1.4,
+      "val_o25": 1.48,
       "double": true
     },
     "3360084": {
@@ -240,19 +240,11 @@
       "val_o25": 1.65,
       "double": true
     },
-    "3370048": {
-      "match": "FC Rosport - US Mondorf",
+    "3370047": {
+      "match": "Etz.Ettelbruck - Racing Union",
       "league": "Luxembourg • D1 Luxembourg",
       "date_str": "Dim. 09/08 à 16h00",
-      "val_btts": 1.58,
-      "val_o25": 1.55,
-      "double": true
-    },
-    "3360099": {
-      "match": "Sion - FC Vaduz",
-      "league": "Suisse • D1 Suisse",
-      "date_str": "Dim. 09/08 à 16h30",
-      "val_btts": 1.5,
+      "val_btts": 1.45,
       "val_o25": 1.4,
       "double": true
     },
@@ -264,6 +256,14 @@
       "val_o25": 1.36,
       "double": true
     },
+    "3360091": {
+      "match": "IFK Göteborg - Kalmar FF",
+      "league": "Suede • D1 Suede",
+      "date_str": "Dim. 09/08 à 16h30",
+      "val_btts": 1.5,
+      "val_o25": 1.62,
+      "double": true
+    },
     "3360096": {
       "match": "Saint Gall - Lucerne",
       "league": "Suisse • D1 Suisse",
@@ -272,12 +272,12 @@
       "val_o25": 1.36,
       "double": true
     },
-    "3360091": {
-      "match": "IFK Göteborg - Kalmar FF",
-      "league": "Suede • D1 Suede",
+    "3360099": {
+      "match": "Sion - FC Vaduz",
+      "league": "Suisse • D1 Suisse",
       "date_str": "Dim. 09/08 à 16h30",
       "val_btts": 1.5,
-      "val_o25": 1.62,
+      "val_o25": 1.4,
       "double": true
     },
     "3360093": {
@@ -312,14 +312,6 @@
       "val_o25": 1.48,
       "double": true
     },
-    "3359939": {
-      "match": "Ilves - Mariehamn",
-      "league": "Finlande • D1 Finlande",
-      "date_str": "Dim. 09/08 à 17h00",
-      "val_btts": 1.65,
-      "val_o25": 1.4,
-      "double": true
-    },
     "3360069": {
       "match": "HamKam - Aalesunds",
       "league": "Norvege • D1 Norvege",
@@ -334,6 +326,14 @@
       "date_str": "Dim. 09/08 à 17h00",
       "val_btts": 1.65,
       "val_o25": 1.72,
+      "double": true
+    },
+    "3359939": {
+      "match": "Ilves - Mariehamn",
+      "league": "Finlande • D1 Finlande",
+      "date_str": "Dim. 09/08 à 17h00",
+      "val_btts": 1.65,
+      "val_o25": 1.4,
       "double": true
     },
     "3368252": {
@@ -352,20 +352,20 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3359943": {
-      "match": "AC Oulu - HJK Helsinki",
-      "league": "Finlande • D1 Finlande",
-      "date_str": "Dim. 09/08 à 18h00",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true
-    },
     "3367375": {
       "match": "FC Levadia - FC Nomme Unite",
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 09/08 à 18h00",
       "val_btts": 1.55,
       "val_o25": 1.2,
+      "double": true
+    },
+    "3359943": {
+      "match": "AC Oulu - HJK Helsinki",
+      "league": "Finlande • D1 Finlande",
+      "date_str": "Dim. 09/08 à 18h00",
+      "val_btts": 1.5,
+      "val_o25": 1.6,
       "double": true
     },
     "3360097": {
@@ -384,14 +384,6 @@
       "val_o25": 1.42,
       "double": true
     },
-    "3369092": {
-      "match": "IA Akranes - Thor Akureyri",
-      "league": "Islande • D1 Islande",
-      "date_str": "Dim. 09/08 à 20h00",
-      "val_btts": 1.38,
-      "val_o25": 1.25,
-      "double": true
-    },
     "3369093": {
       "match": "Stjarnan - Keflavik",
       "league": "Islande • D1 Islande",
@@ -406,6 +398,14 @@
       "date_str": "Dim. 09/08 à 20h00",
       "val_btts": 1.5,
       "val_o25": 1.28,
+      "double": true
+    },
+    "3369092": {
+      "match": "IA Akranes - Thor Akureyri",
+      "league": "Islande • D1 Islande",
+      "date_str": "Dim. 09/08 à 20h00",
+      "val_btts": 1.38,
+      "val_o25": 1.25,
       "double": true
     },
     "3369095": {
@@ -448,22 +448,6 @@
       "val_o25": 1.55,
       "double": true
     },
-    "3365836": {
-      "match": "Benfica B - Leixoes",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
-      "double": true
-    },
-    "3360441": {
-      "match": "IK Sirius FK - Brommapojkarna",
-      "league": "Suede • D1 Suede",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.55,
-      "val_o25": 1.28,
-      "double": true
-    },
     "3360442": {
       "match": "Vasteras SK - Djurgårdens",
       "league": "Suede • D1 Suede",
@@ -478,6 +462,22 @@
       "date_str": "Lun. 10/08 à 19h00",
       "val_btts": 1.38,
       "val_o25": 1.4,
+      "double": true
+    },
+    "3365836": {
+      "match": "Benfica B - Leixoes",
+      "league": "Portugal • D2 Portugal",
+      "date_str": "Lun. 10/08 à 19h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
+      "double": true
+    },
+    "3360441": {
+      "match": "IK Sirius FK - Brommapojkarna",
+      "league": "Suede • D1 Suede",
+      "date_str": "Lun. 10/08 à 19h00",
+      "val_btts": 1.55,
+      "val_o25": 1.28,
       "double": true
     },
     "3359109": {
