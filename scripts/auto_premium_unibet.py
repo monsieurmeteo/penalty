@@ -312,10 +312,45 @@ def main():
     s3_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
     rejected_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
 
+    # ── Enrichissement AdamChoi Score 3+ Buts /100 ──────────────────────────────
+    try:
+        from analyze import analyze_pure_stats_20
+        r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
+        d_fx = r_fx.json() if r_fx.status_code == 200 else None
+    except Exception:
+        analyze_pure_stats_20 = None
+        d_fx = None
+
+    def enrich_adamchoi(m):
+        if analyze_pure_stats_20:
+            try:
+                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True)
+                if res:
+                    m["ac_score"] = res.get("score", 0)
+                    m["ac_prob"] = res.get("prob", 0)
+                    m["ac_xg"] = res.get("xg_total", 0.0)
+                    m["ac_sot"] = res.get("sot_total", 0.0)
+                    m["ac_verdict"] = res.get("verdict", "")
+                    m["ac_red_flags"] = res.get("red_flags", [])
+            except Exception:
+                pass
+        return m
+
+    if s3_matches and analyze_pure_stats_20:
+        print(f"📊 Enrichissement AdamChoi Score /100 pour les {len(s3_matches)} matchs retenus Unibet...")
+        with ThreadPoolExecutor(max_workers=10) as ex:
+            s3_matches = list(ex.map(enrich_adamchoi, s3_matches))
+
+    hybrid_option_b_matches = [
+        m for m in s3_matches 
+        if m.get("ac_score", 0) >= 75 and len(m.get("ac_red_flags", [])) == 0
+    ]
+
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"Matchs retenus (BTTS OUI < NON  ET  Over 2.5 < Under 2.5) : {len(s3_matches)}")
+    print(f"Matchs retenus Unibet (BTTS OUI < NON  ET  Over 2.5 < Under 2.5) : {len(s3_matches)}")
+    print(f"⭐ Matchs validés OPTION B HYBRIDE (Unibet × AdamChoi >= 75/100) : {len(hybrid_option_b_matches)}")
     print(f"Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
