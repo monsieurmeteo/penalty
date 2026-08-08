@@ -398,6 +398,63 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
+    # ── Génération des Combinés Optimaux de 2 Matchs (Cible ~2.00 | Mise 4€) ──
+    combos_2matches = []
+    used_combo_ids = set()
+    sort_eligible = sorted([m for m in s3_matches if m.get("over25")], key=lambda x: x["over25"])
+
+    for i, m1 in enumerate(sort_eligible):
+        if m1["id"] in used_combo_ids:
+            continue
+        c1 = m1["over25"]
+        best_partner = None
+        best_diff = 999.0
+
+        for m2 in sort_eligible[i+1:]:
+            if m2["id"] in used_combo_ids:
+                continue
+            c2 = m2["over25"]
+            comb_odds = round(c1 * c2, 2)
+            if comb_odds >= 1.95:
+                diff = abs(comb_odds - 2.00)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = m2
+
+        if best_partner:
+            used_combo_ids.add(m1["id"])
+            used_combo_ids.add(best_partner["id"])
+            comb_odds = round(m1["over25"] * best_partner["over25"], 2)
+            gain = round(4.0 * comb_odds, 2)
+            profit = round(gain - 4.0, 2)
+            combos_2matches.append({
+                "m1": m1, "m2": best_partner,
+                "comb_odds": comb_odds,
+                "stake": 4.0,
+                "gain": gain,
+                "profit": profit
+            })
+
+    # Pré-construction HTML des tickets combinés (Top 6)
+    combos_html = ""
+    if combos_2matches:
+        for idx, cb in enumerate(combos_2matches[:6], 1):
+            m1, m2 = cb["m1"], cb["m2"]
+            combos_html += f'''
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
+                <span style="font-weight:800; color:#0f172a; font-size:13px;">🎟️ Ticket #{idx} — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+              </div>
+              <div style="font-size:12px; color:#334155; line-height:1.5;">
+                <div style="margin-bottom:4px;">🔹 <b>Match 1 (Sécurisant)</b> : {m1['dom']} vs {m1['ext']} &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
+                <div>🔸 <b>Match 2 (Rendement)</b> : {m2['dom']} vs {m2['ext']} &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
+              </div>
+            </div>
+            '''
+    else:
+        combos_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucune association optimale de 2 matchs trouvée.</div>'
+
     # ── Pré-construction du tableau des matchs validés ─────────────────────
     table_rows_html = ""
     for idx, m in enumerate(s3_matches):
@@ -500,6 +557,15 @@ def main():
             {evo_html}
           </div>
 
+          <!-- BLOC COMBINÉS 2 MATCHS SUGGÉRÉS -->
+          <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🎯 COMBINÉS DE 2 MATCHS OPTIMAUX (Cible ~2.00 | Mise 4 € / ticket)</span>
+              <span style="font-size: 11px; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 12px; font-weight: 600;">{len(combos_2matches)} combinés générés</span>
+            </div>
+            {combos_html}
+          </div>
+
           <!-- TABLEAU UNIQUE COMPACT DES MATCHS SELECTIONNÉS -->
           <div style="padding: 10px;">
             <table style="width:100%; border-collapse:collapse; font-size:13px;">
@@ -558,10 +624,21 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        "## ✅ Matchs Sélectionnés",
-        "| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |",
-        "| :---: | :--- | :--- | :---: | :---: | :--- |",
+        f"## 🎯 Combinés 2 Matchs Recommandés (Cible ~2.00 — Mise 4,00 € / ticket)\n",
     ]
+
+    if combos_2matches:
+        for idx, cb in enumerate(combos_2matches[:8], 1):
+            m1, m2 = cb["m1"], cb["m2"]
+            report.append(f"### Ticket #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"- **Match 1 (Base)** : {m1['dom']} vs {m1['ext']} (@`{m1['over25']:.2f}`) — *{m1['league']}*")
+            report.append(f"- **Match 2 (Boost)** : {m2['dom']} vs {m2['ext']} (@`{m2['over25']:.2f}`) — *{m2['league']}*\n")
+    else:
+        report.append("Aucun combiné 2 matchs disponible.\n")
+
+    report.append("## ✅ Matchs Sélectionnés Individuellement")
+    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
     for m in s3_matches:
         o25 = m.get("over25", "N/A")
         b_oui = m.get("btts_oui")
@@ -789,10 +866,29 @@ def main():
             "last_update": datetime.now(timezone.utc).isoformat()
         }
 
+        serializable_combos = [
+            {
+                "comb_odds": c["comb_odds"],
+                "stake": c["stake"],
+                "gain": c["gain"],
+                "profit": c["profit"],
+                "match1": {
+                    "dom": c["m1"]["dom"], "ext": c["m1"]["ext"],
+                    "league": c["m1"]["league"], "over25": c["m1"]["over25"], "date_str": c["m1"]["date_str"]
+                },
+                "match2": {
+                    "dom": c["m2"]["dom"], "ext": c["m2"]["ext"],
+                    "league": c["m2"]["league"], "over25": c["m2"]["over25"], "date_str": c["m2"]["date_str"]
+                }
+            }
+            for c in combos_2matches
+        ]
+
         dash_data = {
             "summary": summary,
             "bankroll_curve": [],
             "league_stats": [],
+            "tickets_2matches": serializable_combos,
             "matches": dash_matches
         }
 
