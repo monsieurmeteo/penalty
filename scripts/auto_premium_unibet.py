@@ -459,22 +459,27 @@ def main():
             "stake": 4.0, "gain": gain, "profit": profit
         })
 
-    if len(unmatched) == 1:
-        m1 = unmatched[0]
-        partner = min(sort_eligible, key=lambda x: x["over25"] if x["id"] != m1["id"] else 99)
-        comb_odds = round(m1["over25"] * partner["over25"], 2)
-        gain = round(4.0 * comb_odds, 2)
-        profit = round(gain - 4.0, 2)
-        combos_2matches.append({
-            "m1": m1, "m2": partner,
-            "comb_odds": comb_odds,
-            "stake": 4.0, "gain": gain, "profit": profit
-        })
+    # Passe 3 : Combinés croisés alternatifs sur les meilleures bases pour offrir max d'opportunités (cible 2.20 - 2.50)
+    seen_pairs = {tuple(sorted([cb["m1"]["id"], cb["m2"]["id"]])) for cb in combos_2matches}
+    from itertools import combinations
+    for m1, m2 in combinations(sort_eligible[:25], 2):
+        pair_key = tuple(sorted([m1["id"], m2["id"]]))
+        if pair_key in seen_pairs:
+            continue
+        c1, c2 = m1["over25"], m2["over25"]
+        comb_odds = round(c1 * c2, 2)
+        if 2.20 <= comb_odds <= 2.50:
+            seen_pairs.add(pair_key)
+            combos_2matches.append({
+                "m1": m1, "m2": m2,
+                "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
 
-    # Pré-construction HTML des tickets combinés (Top 6)
+    # Pré-construction HTML de TOUS les tickets combinés
     combos_html = ""
     if combos_2matches:
-        for idx, cb in enumerate(combos_2matches[:6], 1):
+        for idx, cb in enumerate(combos_2matches, 1):
             m1, m2 = cb["m1"], cb["m2"]
             combos_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
@@ -664,7 +669,7 @@ def main():
     ]
 
     if combos_2matches:
-        for idx, cb in enumerate(combos_2matches[:8], 1):
+        for idx, cb in enumerate(combos_2matches, 1):
             m1, m2 = cb["m1"], cb["m2"]
             report.append(f"### Ticket #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             report.append(f"- **Match 1 (Base)** : {m1['dom']} vs {m1['ext']} (@`{m1['over25']:.2f}`) — *{m1['league']}*")
