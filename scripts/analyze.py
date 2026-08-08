@@ -288,7 +288,9 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "xg_total": round(xg_total, 2),
             "sot_total": round(sot_total, 1),
             "verdict": verdict,
-            "red_flags": red_flags
+            "red_flags": red_flags,
+            "recent_h_dom": recent_h_dom[:10],
+            "recent_a_ext": recent_a_ext[:10]
         }
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
