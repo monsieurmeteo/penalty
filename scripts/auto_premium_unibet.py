@@ -974,6 +974,10 @@ def main():
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
+                    "ac_score": m.get("ac_score", 0),
+                    "ac_prob": m.get("ac_prob", 0),
+                    "ac_classe": m.get("ac_classe", ""),
+                    "ac_red_flags": m.get("ac_red_flags", []),
                     "profit_units": round(m.get("over25", 1.0) - 1.0, 2) if is_won and m.get("over25") else 0.0
                 })
             else:
@@ -995,6 +999,10 @@ def main():
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
+                    "ac_score": m.get("ac_score", 0),
+                    "ac_prob": m.get("ac_prob", 0),
+                    "ac_classe": m.get("ac_classe", ""),
+                    "ac_red_flags": m.get("ac_red_flags", []),
                     "profit_units": 0.0
                 })
 
@@ -1017,6 +1025,10 @@ def main():
                 "over25": m.get("over25"),
                 "buteur_name": m.get("buteur_name"),
                 "buteur_cote": m.get("buteur_cote"),
+                "ac_score": m.get("ac_score", 0),
+                "ac_prob": m.get("ac_prob", 0),
+                "ac_classe": m.get("ac_classe", ""),
+                "ac_red_flags": m.get("ac_red_flags", []),
                 "profit_units": 0.0
             })
 
