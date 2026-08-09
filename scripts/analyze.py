@@ -84,31 +84,71 @@ def fetch(url, headers=HEADERS):
     except Exception:
         return {}
 
-def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None):
+# Mapping pays Unibet FR → pays AdamChoi EN pour le filtrage par pays
+COUNTRY_MAP_FR_EN = {
+    "angleterre": "England", "france": "France", "espagne": "Spain",
+    "allemagne": "Germany", "italie": "Italy", "portugal": "Portugal",
+    "belgique": "Belgium", "pays bas": "Netherlands", "hollande": "Netherlands",
+    "ecosse": "Scotland", "turquie": "Turkey", "grece": "Greece",
+    "russie": "Russia", "ukraine": "Ukraine", "pologne": "Poland",
+    "suede": "Sweden", "norvege": "Norway", "danemark": "Denmark",
+    "finlande": "Finland", "suisse": "Switzerland", "autriche": "Austria",
+    "republique tcheque": "Czech Republic", "slovaquie": "Slovakia",
+    "roumanie": "Romania", "bulgarie": "Bulgaria", "serbie": "Serbia",
+    "croatie": "Croatia", "slovenie": "Slovenia", "hongrie": "Hungary",
+    "irlande": "Ireland", "irlande du nord": "Northern Ireland",
+    "pays de galles": "Wales", "mexique": "Mexico", "bresil": "Brazil",
+    "argentine": "Argentina", "chili": "Chile", "colombie": "Colombia",
+    "etats unis": "USA", "japon": "Japan", "coree du sud": "South Korea",
+    "chine": "China", "australie": "Australia", "israel": "Israel",
+    "kazakhstan": "Kazakhstan", "azerbaidjan": "Azerbaijan",
+    "albanie": "Albania", "macedoine": "North Macedonia",
+    "lettonie": "Latvia", "lituanie": "Lithuania", "estonie": "Estonia",
+    "islande": "Iceland", "armenie": "Armenia", "georgie": "Georgia",
+    "chypre": "Cyprus", "malte": "Malta", "luxembourg": "Luxembourg",
+    "bosnie": "Bosnia", "montenero": "Montenegro",
+}
+
+def _extract_country_en(unibet_league: str) -> str:
+    """Extrait et traduit le pays depuis le champ league Unibet (ex: 'Angleterre • Championship' -> 'England')"""
+    if not unibet_league:
+        return ""
+    pays_fr = unibet_league.split("•")[0].strip().lower()
+    pays_fr = unicodedata.normalize('NFKD', pays_fr).encode('ASCII', 'ignore').decode('ASCII')
+    return COUNTRY_MAP_FR_EN.get(pays_fr, "")
+
+def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None, unibet_league=None):
     if not fixtures_data or not isinstance(fixtures_data, dict):
         fixtures_data = fetch(f"{BASE}/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0")
     
+    target_country = _extract_country_en(unibet_league) if unibet_league else ""
     best_match = None
     best_score = 0.0
     match_ts = match_dt.timestamp() if match_dt else None
 
-    if isinstance(fixtures_data, dict):
+    def _search(fixtures_data, country_filter):
+        nonlocal best_match, best_score
         for d in fixtures_data.get("dates", []):
             for lg in d.get("leagues", []):
+                # Filtrage par pays si disponible
+                if country_filter:
+                    ac_country = (lg.get("country") or "").strip()
+                    if ac_country and ac_country.lower() != country_filter.lower():
+                        continue
+
                 for fx in lg.get("fixtures", []):
                     h_name = fx.get("hometeam", "")
                     a_name = fx.get("awayteam", "")
-                    
-                    time_penalty = 0.0
-                    fx_ts_ms = fx.get("datetimestamp")
-                    if match_ts and fx_ts_ms:
-                        try:
-                            fx_ts = float(fx_ts_ms) / 1000.0
-                            diff_hours = abs(match_ts - fx_ts) / 3600.0
-                            if diff_hours > 36.0:
-                                continue  # Trop éloigné dans le temps (autre journée)
-                        except Exception:
-                            pass
+
+                    if match_ts:
+                        fx_ts_ms = fx.get("datetimestamp")
+                        if fx_ts_ms:
+                            try:
+                                fx_ts = float(fx_ts_ms) / 1000.0
+                                if abs(match_ts - fx_ts) / 3600.0 > 36.0:
+                                    continue
+                            except Exception:
+                                pass
 
                     score_h = similarity(home_query, h_name)
                     score_a = similarity(away_query, a_name)
@@ -118,13 +158,23 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
                         best_score = combined
                         best_match = (fx.get("externalId"), h_name, a_name, lg.get("league"))
 
+    # 1er passage : recherche dans le bon pays uniquement
+    if target_country:
+        _search(fixtures_data, target_country)
+
+    # Fallback : si pas trouvé dans le pays → recherche globale toutes ligues
+    if not best_match or best_score < 0.40:
+        best_match = None
+        best_score = 0.0
+        _search(fixtures_data, "")
+
     if best_match and best_score >= 0.40:
         return best_match
     
     return "19635927", home_query, away_query, "SA1"
 
-def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None):
-    ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt)
+def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None):
+    ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt, unibet_league=unibet_league)
 
     if not is_batch:
         print(f"🔍 ÉQUIPES DÉTECTÉES : '{team_a}' vs '{team_b}' ({league})\n")
