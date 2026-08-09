@@ -272,13 +272,18 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if now_utc <= m_dt <= limit_52h:
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_52h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
                 scanned_results.append(m)
         else:
             scanned_results.append(m)
+
+    # Fallback de sécurité : Si aucun match dans la fenêtre 52h (ex: dimanche soir), prendre tous les matchs à venir
+    if len(scanned_results) == 0 and scanned_all:
+        print("⚠️ Aucun match dans la fenêtre 52h — Utilisation des prochains matchs disponibles...")
+        scanned_results = scanned_all
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
