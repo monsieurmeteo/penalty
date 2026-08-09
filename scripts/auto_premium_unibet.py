@@ -454,12 +454,39 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés par SESSION STRICTE : JOUR (06h→23h59) ou NUIT (00h→05h59) ──
-    def get_betting_session_key(m_dt):
-        # Convertir en heure locale France (UTC+2)
+    # ── Génération des Combinés : JOUR (06h→23h59) ou NUIT (00h→05h59)
+    # Si une session n'a qu'1 match → on regroupe à la journée calendaire (fallback "mixte")
+    def get_betting_session_key(m_dt, slot_only=False):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
         slot = "nuit" if local_dt.hour < 6 else "jour"
+        if slot_only:
+            return slot
         return f"{local_dt.strftime('%Y-%m-%d')}-{slot}"
+
+    def upgrade_sessions_to_day(sessions_dict):
+        """Si une session JOUR/NUIT n'a qu'1 match, fusionne avec l'autre slot du même jour."""
+        day_groups = {}
+        for key, matches in sessions_dict.items():
+            day = key[:10]  # "YYYY-MM-DD"
+            day_groups.setdefault(day, []).extend(matches)
+        result = {}
+        for key, matches in sessions_dict.items():
+            day = key[:10]
+            if len(matches) < 2 and len(day_groups[day]) >= 2:
+                # Fusionner dans une session "mixte" pour ce jour
+                result[f"{day}-mixte"] = day_groups[day]
+            else:
+                result[key] = matches
+        # Dédoublonner (un match peut apparaître dans plusieurs keys après fusion)
+        seen = {}
+        for key, matches in result.items():
+            unique = []
+            for m in matches:
+                if m["id"] not in seen:
+                    seen[m["id"]] = True
+                    unique.append(m)
+            result[key] = unique
+        return {k: v for k, v in result.items() if v}
 
     # ── 1. GENERATION COMBINES OVER 2.5 (2 Matchs — Cote Min 2.20 — Stake 4€) ──
     sessions_o25 = {}
@@ -469,6 +496,7 @@ def main():
         s_key = get_betting_session_key(m_dt)
         sessions_o25.setdefault(s_key, []).append(m)
 
+    sessions_o25 = upgrade_sessions_to_day(sessions_o25)
     combos_2matches = []
     for s_key, s_matches in sorted(sessions_o25.items()):
         valid_matches = [m for m in s_matches if m.get("over25") and m["over25"] > 1.0]
@@ -518,6 +546,7 @@ def main():
         s_key = get_betting_session_key(m_dt)
         sessions_o15.setdefault(s_key, []).append(m)
 
+    sessions_o15 = upgrade_sessions_to_day(sessions_o15)
     combos_o15 = []
     for s_key, s_matches in sorted(sessions_o15.items()):
         used_ids = set()
@@ -572,6 +601,7 @@ def main():
         s_key = get_betting_session_key(m_dt)
         sessions_btts.setdefault(s_key, []).append(m)
 
+    sessions_btts = upgrade_sessions_to_day(sessions_btts)
     combos_btts = []
     for s_key, s_matches in sorted(sessions_btts.items()):
         used_ids = set()
@@ -697,7 +727,7 @@ def main():
             if sess_label != current_sess:
                 current_sess = sess_label
                 dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
                 combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
 
             proof_m1 = render_match_proof_html(m1)
@@ -732,7 +762,7 @@ def main():
             if sess_label != current_sess_o15:
                 current_sess_o15 = sess_label
                 dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
                 combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
             combos_o15_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
@@ -760,7 +790,7 @@ def main():
             if sess_label != current_sess_btts:
                 current_sess_btts = sess_label
                 dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
                 combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION {slot_label} DU {dt_sess}</div>'
             combos_btts_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
