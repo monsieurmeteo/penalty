@@ -180,5 +180,9 @@ Aucun combiné 2 matchs disponible.
 | Lun. 10/08 à 20h15 | Bulgarie • D1 Bulgarie | Botev Plovdiv vs Spartak Varna | 14.00 | 1.65 | BTTS NON est favori (Oui 1.70 >= Non 1.70) |
 | Lun. 10/08 à 20h30 | Roumanie • D1 Roumanie | ACS Sepsi vs FCSB | 12.00 | 1.78 | Under 2.5 est favori (Over 1.78 >= Under 1.72) |
 | Lun. 10/08 à 21h00 | Equateur • D1 Equateur | Tecnico Uni. vs Mushuc Runa | 13.00 | 1.90 | BTTS NON est favori (Oui 1.70 >= Non 1.70) • Under 2.5 est favori (Over 1.90 >= Under 1.55) |
+<<<<<<< Updated upstream
+| Lun. 10/08 à 21h15 | Portugal • Liga Portugal | Santa Clara vs CD Nacional | 14.50 | 1.95 | BTTS NON est favori (Oui 1.90 >= Non 1.65) • Under 2.5 est favori (Over 1.95 >= Under 1.55) |
+>>>>>>> Stashed changes
+=======
 | Lun. 10/08 à 21h15 | Portugal • Liga Portugal | Santa Clara vs CD Nacional | 14.50 | 1.95 | BTTS NON est favori (Oui 1.90 >= Non 1.65) • Under 2.5 est favori (Over 1.95 >= Under 1.55) |
 >>>>>>> Stashed changes
