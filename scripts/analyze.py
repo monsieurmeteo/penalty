@@ -36,53 +36,28 @@ ALIASES = {
     "uni": "universidad",
     "indep": "independiente",
     "sp": "sporting",
-    "inter": "international",
-}
+# Dictionnaire étendu des abréviations & traductions FR/EN
+ALIASES.update({
+    "wolverhampton": "wolves",
+    "manchester": "man",
+    "united": "utd",
+    "munich": "munchen",
+    "paris": "psg",
+    "saint": "st",
+    "sheffield": "sheff",
+    "birmingham": "birmingham",
+    "deportivo": "dep",
+    "universidad": "uni",
+    "atletico": "atl",
+})
 
-def clean_str(s):
-    if not s: return ""
-    s = unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII')
-    s = s.lower().replace("-", " ").replace(".", " ").replace("_", " ")
-    
-    # Remplacement des abréviations & traductions FR/EN
-    words = s.split()
-    cleaned_words = []
-    for w in words:
-        if w in ["fc", "bk", "if", "sc", "ac", "fk", "cd", "sk", "cf", "sv", "v", "vs", "contre", "pec", "ca", "csd", "acs", "msk", "kv"]:
-            continue
-        cleaned_words.append(ALIASES.get(w, w))
-    return " ".join(cleaned_words)
-
-def similarity(a, b):
-    a_c = clean_str(a)
-    b_c = clean_str(b)
-    if not a_c or not b_c:
-        return 0.0
-    if a_c == b_c:
-        return 1.0
-    if a_c in b_c or b_c in a_c:
-        return 0.95
-    # Token set matching (vérification si les mots clés principaux sont tous présents)
-    tokens_a = set(a_c.split())
-    tokens_b = set(b_c.split())
-    if tokens_a and tokens_b and (tokens_a.issubset(tokens_b) or tokens_b.issubset(tokens_a)):
-        return 0.90
-    return SequenceMatcher(None, a_c, b_c).ratio()
-
-def fetch(url, headers=HEADERS):
-    try:
-        r = requests.get(url, headers=headers, timeout=8)
-        res = r.json() if r.status_code == 200 else {}
-        return res if isinstance(res, (dict, list)) else {}
-    except Exception:
-        return {}
-
-def find_fixture_fuzzy(home_query, away_query, fixtures_data=None):
+def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None):
     if not fixtures_data or not isinstance(fixtures_data, dict):
         fixtures_data = fetch(f"{BASE}/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0")
     
     best_match = None
     best_score = 0.0
+    match_ts = match_dt.timestamp() if match_dt else None
 
     if isinstance(fixtures_data, dict):
         for d in fixtures_data.get("dates", []):
@@ -91,6 +66,17 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None):
                     h_name = fx.get("hometeam", "")
                     a_name = fx.get("awayteam", "")
                     
+                    time_penalty = 0.0
+                    fx_ts_ms = fx.get("datetimestamp")
+                    if match_ts and fx_ts_ms:
+                        try:
+                            fx_ts = float(fx_ts_ms) / 1000.0
+                            diff_hours = abs(match_ts - fx_ts) / 3600.0
+                            if diff_hours > 36.0:
+                                continue  # Trop éloigné dans le temps (autre journée)
+                        except Exception:
+                            pass
+
                     score_h = similarity(home_query, h_name)
                     score_a = similarity(away_query, a_name)
                     combined = (score_h + score_a) / 2.0
@@ -104,8 +90,8 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None):
     
     return "19635927", home_query, away_query, "SA1"
 
-def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False):
-    ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data)
+def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None):
+    ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt)
 
     if not is_batch:
         print(f"🔍 ÉQUIPES DÉTECTÉES : '{team_a}' vs '{team_b}' ({league})\n")

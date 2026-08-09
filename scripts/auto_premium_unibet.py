@@ -286,7 +286,7 @@ def main():
     def enrich_adamchoi(m):
         if analyze_pure_stats_20:
             try:
-                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True)
+                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True, match_dt=m.get("dt_obj"))
                 if res:
                     m["ac_score"] = res.get("score", 0)
                     m["ac_classe"] = res.get("classe", "")
