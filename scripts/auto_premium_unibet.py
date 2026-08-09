@@ -325,6 +325,8 @@ def main():
                     m["recent_a_ext"] = res.get("recent_a_ext", [])
                     m["freq_o15"] = res.get("freq_o15", 0.0)
                     m["freq_btts"] = res.get("freq_btts", 0.0)
+                    m["score_o15"] = res.get("score_o15", 0)
+                    m["score_btts"] = res.get("score_btts", 0)
             except Exception:
                 pass
         return m
@@ -502,12 +504,12 @@ def main():
                 })
 
     # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote Min 1.90 — Stake 5€) ──
-    # Méthode YouTube 70% : freq_o15 = % des 10 derniers matchs Dom/Ext avec >= 2 buts (AdamChoi)
-    o15_candidates = [m for m in scanned_results if m.get("freq_o15", 0) >= 70]
-    # Fallback si aucun match à 70% : prendre freq_o15 >= 60
+    # Barème V2 Over 1.5 /100 (même logique que Over 2.5 avec seuils abaissés)
+    o15_candidates = [m for m in scanned_results if m.get("score_o15", 0) >= 65 and m.get("over15")]
+    # Fallback si aucun match à 65 : prendre score_o15 >= 55
     if not o15_candidates:
-        o15_candidates = [m for m in scanned_results if m.get("freq_o15", 0) >= 60]
-    o15_candidates.sort(key=lambda x: x.get("freq_o15", 0), reverse=True)
+        o15_candidates = [m for m in scanned_results if m.get("score_o15", 0) >= 55 and m.get("over15")]
+    o15_candidates.sort(key=lambda x: x.get("score_o15", 0), reverse=True)
     sessions_o15 = {}
     for m in o15_candidates:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -556,12 +558,12 @@ def main():
             })
 
     # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
-    # Méthode YouTube 70% : freq_btts = % des 10 derniers matchs Dom/Ext où les 2 équipes marquent (AdamChoi)
-    btts_candidates = [m for m in scanned_results if m.get("freq_btts", 0) >= 70 and m.get("btts_oui")]
-    # Fallback si aucun match à 70% : prendre freq_btts >= 60 ET btts_oui < btts_non
+    # Barème V2 BTTS /100 (6 piliers : Attaque DOM/EXT, Défense DOM/EXT, Fréquence BTTS, Ligue)
+    btts_candidates = [m for m in scanned_results if m.get("score_btts", 0) >= 65 and m.get("btts_oui")]
+    # Fallback si aucun match à 65 : prendre score_btts >= 55
     if not btts_candidates:
-        btts_candidates = [m for m in scanned_results if m.get("freq_btts", 0) >= 60 and m.get("btts_oui") and m.get("btts_non") and m["btts_oui"] < m["btts_non"]]
-    btts_candidates.sort(key=lambda x: x.get("freq_btts", 0), reverse=True)
+        btts_candidates = [m for m in scanned_results if m.get("score_btts", 0) >= 55 and m.get("btts_oui")]
+    btts_candidates.sort(key=lambda x: x.get("score_btts", 0), reverse=True)
     sessions_btts = {}
     for m in btts_candidates:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -884,30 +886,44 @@ def main():
 
           <!-- SECTION 1 : COMBINÉS OVER 2.5 -->
           <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
               <span>🔥 1. COMBINÉS OVER 2.5 (2 Matchs — Cote Min: 2,20 | Mise: 4 €)</span>
               <span style="font-size: 11px; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_2matches)} ticket(s)</span>
+            </div>
+            <div style="font-size: 11px; color: #64748b; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
+              <b style="color:#c2410c;">⚙️ Méthode :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers statistiques (IPO, Buts, Fréquence Over 2.5, Tirs cadrés, Dom/Ext, Ligue).
+              Seuls les matchs avec un <b>Score ≥ 75/100</b> sont retenus. Les combinés associent 2 matchs pour une cote cible de <b>~2.20</b>.
+              Si aucune paire n'atteint 2.20, la meilleure paire disponible est quand même sélectionnée.
             </div>
             {combos_html}
           </div>
 
           <!-- SECTION 2 : COMBINÉS OVER 1.5 -->
           <div style="padding: 15px 15px 5px 15px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
               <span>🛡️ 2. COMBINÉS OVER 1.5 ACCUMULATEUR (3 Matchs — Cote Min: 1,90 | Mise: 5 €)</span>
               <span style="font-size: 11px; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_o15)} ticket(s)</span>
+            </div>
+            <div style="font-size: 11px; color: #64748b; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
+              <b style="color:#1d4ed8;">⚙️ Méthode Barème V2 Over 1.5 :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers (IPO, Buts, Fréquence Over 1.5, Tirs cadrés, Dom/Ext, Ligue) avec <b>seuils abaissés</b> pour capter les matchs à ≥ 2 buts.
+              Seuls les matchs avec un <b>Score Over 1.5 ≥ 65/100</b> sont retenus. 3 matchs combinés pour une cote cible de <b>~1.90</b>.
             </div>
             {combos_o15_html}
           </div>
 
           <!-- SECTION 3 : COMBINÉS BTTS OUI -->
           <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 10px; display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
               <span>🚀 3. COMBINÉS BTTS OUI (2 Matchs — Cote Min: 2,60 | Mise: 4 €)</span>
               <span style="font-size: 11px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_btts)} ticket(s)</span>
             </div>
+            <div style="font-size: 11px; color: #64748b; background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
+              <b style="color:#92400e;">⚙️ Méthode Barème V2 BTTS :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers dédiés BTTS (Attaque DOM, Attaque EXT, Défense DOM perméable, Défense EXT perméable, Fréquence BTTS historique, Ligue).
+              Seuls les matchs avec un <b>Score BTTS ≥ 65/100</b> sont retenus. 2 matchs combinés pour une cote cible de <b>~2.60</b>.
+            </div>
             {combos_btts_html}
           </div>
+
 
           <!-- TABLEAU UNIQUE COMPACT DES MATCHS SELECTIONNÉS -->
           <div style="padding: 10px;">

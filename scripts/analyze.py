@@ -429,6 +429,134 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
 
     verdict = f"{classe} ({total_score}/100)"
 
+    # ══════════════════════════════════════════════════════════════
+    # BARÈME V2 OVER 1.5 /100 — Seuils abaissés pour ≥ 2 buts
+    # ══════════════════════════════════════════════════════════════
+
+    # 1. IPO (25 pts) — seuils abaissés vs Over 2.5
+    if ipo_comb >= 3.00: p_o15_ipo = 25
+    elif ipo_comb >= 2.70: p_o15_ipo = 23
+    elif ipo_comb >= 2.40: p_o15_ipo = 21
+    elif ipo_comb >= 2.20: p_o15_ipo = 19
+    elif ipo_comb >= 2.00: p_o15_ipo = 17
+    elif ipo_comb >= 1.80: p_o15_ipo = 14
+    elif ipo_comb >= 1.60: p_o15_ipo = 11
+    elif ipo_comb >= 1.40: p_o15_ipo = 8
+    elif ipo_comb >= 1.20: p_o15_ipo = 5
+    else: p_o15_ipo = 2
+
+    # 2. Buts totaux (15 pts) — seuils abaissés
+    if total_goals_brut >= 5.0: p_o15_goals = 15
+    elif total_goals_brut >= 4.5: p_o15_goals = 14
+    elif total_goals_brut >= 4.0: p_o15_goals = 13
+    elif total_goals_brut >= 3.6: p_o15_goals = 11
+    elif total_goals_brut >= 3.2: p_o15_goals = 9
+    elif total_goals_brut >= 2.8: p_o15_goals = 7
+    elif total_goals_brut >= 2.4: p_o15_goals = 5
+    elif total_goals_brut >= 2.0: p_o15_goals = 3
+    else: p_o15_goals = 1
+
+    # 3. Fréquence Over 1.5 sur 20 matchs généraux (20 pts)
+    o15_h_all = count_o15(recent_h_all[:20])
+    o15_a_all = count_o15(recent_a_all[:20])
+    o15_avg_rate = (((o15_h_all / max(1, len(recent_h_all[:20]))) + (o15_a_all / max(1, len(recent_a_all[:20])))) / 2.0) * 100
+    if o15_avg_rate >= 90: p_o15_freq = 20
+    elif o15_avg_rate >= 85: p_o15_freq = 18
+    elif o15_avg_rate >= 80: p_o15_freq = 16
+    elif o15_avg_rate >= 75: p_o15_freq = 14
+    elif o15_avg_rate >= 70: p_o15_freq = 12
+    elif o15_avg_rate >= 65: p_o15_freq = 10
+    elif o15_avg_rate >= 60: p_o15_freq = 8
+    elif o15_avg_rate >= 55: p_o15_freq = 5
+    elif o15_avg_rate >= 50: p_o15_freq = 3
+    else: p_o15_freq = 0
+
+    # 4. Tirs cadrés (10 pts) — identique Over 2.5
+    p_o15_sot = pts_sot
+
+    # 5. Dom/Ext spécifique Over 1.5 (20 pts)
+    if freq_o15 >= 90: p_o15_ha = 20
+    elif freq_o15 >= 85: p_o15_ha = 18
+    elif freq_o15 >= 80: p_o15_ha = 16
+    elif freq_o15 >= 75: p_o15_ha = 14
+    elif freq_o15 >= 70: p_o15_ha = 12
+    elif freq_o15 >= 65: p_o15_ha = 10
+    elif freq_o15 >= 60: p_o15_ha = 8
+    elif freq_o15 >= 55: p_o15_ha = 5
+    elif freq_o15 >= 50: p_o15_ha = 3
+    else: p_o15_ha = 0
+
+    # 6. Ligue (10 pts) — identique Over 2.5
+    p_o15_league = pts_league
+
+    rf_o15 = [f for f in red_flags if "Attaque" in f]  # only offensive red flags matter for O15
+    score_o15 = max(0, min(100, p_o15_ipo + p_o15_goals + p_o15_freq + p_o15_sot + p_o15_ha + p_o15_league - len(rf_o15) * 5))
+
+    # ══════════════════════════════════════════════════════════════
+    # BARÈME V2 BTTS /100 — Les 2 équipes doivent marquer
+    # ══════════════════════════════════════════════════════════════
+
+    # 1. Attaque DOM (25 pts) — l'équipe locale marque-t-elle ?
+    if gf_a >= 2.5: p_btts_att_dom = 25
+    elif gf_a >= 2.0: p_btts_att_dom = 22
+    elif gf_a >= 1.8: p_btts_att_dom = 19
+    elif gf_a >= 1.6: p_btts_att_dom = 16
+    elif gf_a >= 1.4: p_btts_att_dom = 13
+    elif gf_a >= 1.2: p_btts_att_dom = 10
+    elif gf_a >= 1.0: p_btts_att_dom = 7
+    elif gf_a >= 0.8: p_btts_att_dom = 4
+    else: p_btts_att_dom = 1
+
+    # 2. Attaque EXT (25 pts) — l'équipe visiteuse marque-t-elle ?
+    if gf_b >= 2.0: p_btts_att_ext = 25
+    elif gf_b >= 1.8: p_btts_att_ext = 22
+    elif gf_b >= 1.6: p_btts_att_ext = 19
+    elif gf_b >= 1.4: p_btts_att_ext = 16
+    elif gf_b >= 1.2: p_btts_att_ext = 13
+    elif gf_b >= 1.0: p_btts_att_ext = 10
+    elif gf_b >= 0.8: p_btts_att_ext = 7
+    elif gf_b >= 0.6: p_btts_att_ext = 4
+    else: p_btts_att_ext = 1
+
+    # 3. Défense DOM perméable (15 pts) — l'équipe locale encaisse-t-elle ?
+    if ga_a >= 2.0: p_btts_def_dom = 15
+    elif ga_a >= 1.8: p_btts_def_dom = 13
+    elif ga_a >= 1.6: p_btts_def_dom = 11
+    elif ga_a >= 1.4: p_btts_def_dom = 9
+    elif ga_a >= 1.2: p_btts_def_dom = 7
+    elif ga_a >= 1.0: p_btts_def_dom = 5
+    elif ga_a >= 0.8: p_btts_def_dom = 3
+    else: p_btts_def_dom = 0
+
+    # 4. Défense EXT perméable (15 pts) — l'équipe visiteuse encaisse-t-elle ?
+    if ga_b >= 2.0: p_btts_def_ext = 15
+    elif ga_b >= 1.8: p_btts_def_ext = 13
+    elif ga_b >= 1.6: p_btts_def_ext = 11
+    elif ga_b >= 1.4: p_btts_def_ext = 9
+    elif ga_b >= 1.2: p_btts_def_ext = 7
+    elif ga_b >= 1.0: p_btts_def_ext = 5
+    elif ga_b >= 0.8: p_btts_def_ext = 3
+    else: p_btts_def_ext = 0
+
+    # 5. Fréquence BTTS historique Dom/Ext (15 pts)
+    if freq_btts >= 80: p_btts_freq = 15
+    elif freq_btts >= 75: p_btts_freq = 13
+    elif freq_btts >= 70: p_btts_freq = 11
+    elif freq_btts >= 65: p_btts_freq = 9
+    elif freq_btts >= 60: p_btts_freq = 7
+    elif freq_btts >= 55: p_btts_freq = 5
+    elif freq_btts >= 50: p_btts_freq = 3
+    else: p_btts_freq = 0
+
+    # 6. Contexte ligue (10 pts) — identique
+    p_btts_league = pts_league
+
+    # Red flags BTTS : si une équipe ne marque pas du tout
+    rf_btts = []
+    if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} but/m) — risque 0 but DOM")
+    if gf_b < 0.6: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} but/m) — risque 0 but EXT")
+    score_btts = max(0, min(100, p_btts_att_dom + p_btts_att_ext + p_btts_def_dom + p_btts_def_ext + p_btts_freq + p_btts_league - len(rf_btts) * 10))
+
     if is_batch:
         return {
             "team_a": team_a,
@@ -451,7 +579,10 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "recent_a_ext": recent_a_ext[:10],
             "freq_o15": freq_o15,
             "freq_btts": freq_btts,
+            "score_o15": score_o15,
+            "score_btts": score_btts,
         }
+
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
     print(f"\n🔥 SCORE OVER 2,5 : {total_score}/100")
