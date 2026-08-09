@@ -1,14 +1,5 @@
 {
   "s3": {
-    "3364337": {
-      "match": "St Pauli - Greuther Furth",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 09/08 à 13h30",
-      "val_btts": 1.5,
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 76
-    },
     "3363492": {
       "match": "Nuremberg - Dynamo Dresden",
       "league": "Allemagne • Bundesliga 2",
@@ -17,6 +8,15 @@
       "val_o25": 1.6,
       "double": true,
       "ac_score": 80
+    },
+    "3364337": {
+      "match": "St Pauli - Greuther Furth",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 09/08 à 13h30",
+      "val_btts": 1.5,
+      "val_o25": 1.52,
+      "double": true,
+      "ac_score": 76
     },
     "3360090": {
       "match": "Hammarby - Häcken",
@@ -27,15 +27,6 @@
       "double": true,
       "ac_score": 79
     },
-    "3349675": {
-      "match": "Shandong - Tianjin Tigers",
-      "league": "Chine • D1 Chine",
-      "date_str": "Dim. 09/08 à 14h00",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 76
-    },
     "3360095": {
       "match": "FC Lugano - FC Zurich",
       "league": "Suisse • D1 Suisse",
@@ -45,14 +36,23 @@
       "double": true,
       "ac_score": 90
     },
-    "3360072": {
-      "match": "Groningen - Utrecht",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Dim. 09/08 à 14h30",
-      "val_btts": 1.5,
-      "val_o25": 1.65,
+    "3349675": {
+      "match": "Shandong - Tianjin Tigers",
+      "league": "Chine • D1 Chine",
+      "date_str": "Dim. 09/08 à 14h00",
+      "val_btts": 1.45,
+      "val_o25": 1.48,
       "double": true,
-      "ac_score": 78
+      "ac_score": 76
+    },
+    "3365279": {
+      "match": "Epitsentr - Shakht.Donetsk",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Dim. 09/08 à 14h30",
+      "val_btts": 1.72,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 76
     },
     "3365878": {
       "match": "Kilmarnock - Celtic",
@@ -63,14 +63,14 @@
       "double": true,
       "ac_score": 88
     },
-    "3365279": {
-      "match": "Epitsentr - Shakht.Donetsk",
-      "league": "Ukraine • D1 Ukraine",
+    "3360072": {
+      "match": "Groningen - Utrecht",
+      "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Dim. 09/08 à 14h30",
-      "val_btts": 1.72,
-      "val_o25": 1.55,
+      "val_btts": 1.5,
+      "val_o25": 1.65,
       "double": true,
-      "ac_score": 76
+      "ac_score": 78
     },
     "3363253": {
       "match": "Slavia Prague - FK Pardubice",
@@ -90,14 +90,14 @@
       "double": true,
       "ac_score": 79
     },
-    "3360099": {
-      "match": "Sion - FC Vaduz",
+    "3360096": {
+      "match": "Saint Gall - Lucerne",
       "league": "Suisse • D1 Suisse",
       "date_str": "Dim. 09/08 à 16h30",
-      "val_btts": 1.5,
-      "val_o25": 1.4,
+      "val_btts": 1.33,
+      "val_o25": 1.36,
       "double": true,
-      "ac_score": 89
+      "ac_score": 90
     },
     "3359947": {
       "match": "FC Bâle - FC Thun",
@@ -108,14 +108,14 @@
       "double": true,
       "ac_score": 87
     },
-    "3360096": {
-      "match": "Saint Gall - Lucerne",
+    "3360099": {
+      "match": "Sion - FC Vaduz",
       "league": "Suisse • D1 Suisse",
       "date_str": "Dim. 09/08 à 16h30",
-      "val_btts": 1.33,
-      "val_o25": 1.36,
+      "val_btts": 1.55,
+      "val_o25": 1.4,
       "double": true,
-      "ac_score": 90
+      "ac_score": 89
     },
     "3360073": {
       "match": "Heerenveen - Twente",
@@ -189,15 +189,6 @@
       "double": true,
       "ac_score": 75
     },
-    "3369093": {
-      "match": "Stjarnan - Keflavik",
-      "league": "Islande • D1 Islande",
-      "date_str": "Dim. 09/08 à 20h00",
-      "val_btts": 1.22,
-      "val_o25": 1.22,
-      "double": true,
-      "ac_score": 94
-    },
     "3368860": {
       "match": "FK Macva Sabac - IMT N.Belgrade",
       "league": "Serbie • D1 Serbie",
@@ -206,6 +197,15 @@
       "val_o25": 1.95,
       "double": true,
       "ac_score": 75
+    },
+    "3369093": {
+      "match": "Stjarnan - Keflavik",
+      "league": "Islande • D1 Islande",
+      "date_str": "Dim. 09/08 à 20h00",
+      "val_btts": 1.22,
+      "val_o25": 1.22,
+      "double": true,
+      "ac_score": 94
     },
     "3369095": {
       "match": "KA Akureyri - Hafnarfjordur",
@@ -220,7 +220,7 @@
       "match": "Gil Vicente - Rio Ave",
       "league": "Portugal • Liga Portugal",
       "date_str": "Dim. 09/08 à 21h30",
-      "val_btts": 1.72,
+      "val_btts": 1.7,
       "val_o25": 1.82,
       "double": true,
       "ac_score": 82
