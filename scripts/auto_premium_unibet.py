@@ -274,45 +274,10 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
 
-    # ponytail: Nouvelle methode sans score 2-2. Regle 1: BTTS_OUI < BTTS_NON. Regle 2: OVER2.5 < UNDER2.5.
-    s3_matches = []
-    rejected_matches = []
+    scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
+    print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
 
-    for r in scanned_results:
-        o25 = r.get("over25")
-        u25 = r.get("under25")
-        b_oui = r.get("btts_oui")
-        b_non = r.get("btts_non")
-
-        reasons = []
-        if b_oui is None:
-            reasons.append("Cote BTTS OUI non disponible")
-        elif b_non is None:
-            pass  # pas de raison si NON absent, on ne peut pas trancher
-        elif b_oui >= b_non:
-            reasons.append(f"BTTS NON est favori (Oui {b_oui:.2f} >= Non {b_non:.2f})")
-
-        if o25 is None:
-            reasons.append("Cote Over 2.5 non disponible")
-        elif u25 is None:
-            reasons.append("Cote Under 2.5 non disponible")
-        elif o25 >= u25:
-            reasons.append(f"Under 2.5 est favori (Over {o25:.2f} >= Under {u25:.2f})")
-
-
-
-        if not reasons:
-            r["double_confirm"] = True
-            r["triple_confirm"] = True
-            s3_matches.append(r)
-        else:
-            r["rejection_reason"] = " • ".join(reasons)
-            rejected_matches.append(r)
-
-    s3_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
-    rejected_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
-
-    # ── Enrichissement AdamChoi Score 3+ Buts /100 ──────────────────────────────
+    # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     try:
         from analyze import analyze_pure_stats_20
         r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
@@ -328,7 +293,7 @@ def main():
                 if res:
                     m["ac_score"] = res.get("score", 0)
                     m["ac_classe"] = res.get("classe", "")
-                    m["ac_prob"] = res.get("prob", 0)
+                    m["ac_prob"] = res.get("calibrated_prob", res.get("prob", 0))
                     m["ac_xg"] = res.get("xg_total", 0.0)
                     m["ac_sot"] = res.get("sot_total", 0.0)
                     m["ac_verdict"] = res.get("verdict", "")
@@ -338,7 +303,7 @@ def main():
                     m["pts_goals"] = res.get("pts_goals", 0)
                     m["total_goals_brut"] = res.get("total_goals_brut", 0.0)
                     m["pts_freq"] = res.get("pts_freq", 0)
-                    m["avg_freq_all"] = res.get("avg_freq_all", 0.0)
+                    m["avg_freq_all"] = res.get("o25_avg_rate", res.get("avg_freq_all", 0.0))
                     m["pts_sot"] = res.get("pts_sot", 0)
                     m["sot_comb"] = res.get("sot_comb", 0.0)
                     m["pts_ha"] = res.get("pts_ha", 0)
@@ -350,22 +315,35 @@ def main():
                 pass
         return m
 
-    if s3_matches and analyze_pure_stats_20:
-        print(f"📊 Enrichissement AdamChoi Score /100 pour les {len(s3_matches)} matchs retenus Unibet...")
+    if scanned_results and analyze_pure_stats_20:
+        print(f"📊 Enrichissement AdamChoi Score /100 pour les {len(scanned_results)} matchs scannés Unibet...")
         with ThreadPoolExecutor(max_workers=10) as ex:
-            s3_matches = list(ex.map(enrich_adamchoi, s3_matches))
+            scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    hybrid_option_b_matches = [
-        m for m in s3_matches 
+    # ── Sélection 100% basée sur le Score AdamChoi V2 (>= 75/100 & 0 Red Flag) ──
+    # Note: On ne prend PAS en compte les cotes BTTS ni Over pour éliminer des matchs
+    s3_matches = [
+        m for m in scanned_results 
         if m.get("ac_score", 0) >= 75 and len(m.get("ac_red_flags", [])) == 0
     ]
+    rejected_matches = [
+        m for m in scanned_results 
+        if m not in s3_matches
+    ]
 
-    nb_triple = len(s3_matches)
-    nb_double = 0
-    nb_simple = 0
-    print(f"Matchs retenus Unibet (BTTS OUI < NON  ET  Over 2.5 < Under 2.5) : {len(s3_matches)}")
-    print(f"⭐ Matchs validés OPTION B HYBRIDE (Unibet × AdamChoi >= 75/100) : {len(hybrid_option_b_matches)}")
-    print(f"Matchs rejetés : {len(rejected_matches)}")
+    for m in rejected_matches:
+        score_v2 = m.get("ac_score", 0)
+        flags = m.get("ac_red_flags", [])
+        if score_v2 > 0 and score_v2 < 75:
+            m["rejection_reason"] = f"Score AdamChoi V2 insuffisant ({score_v2}/100 &lt; 75)"
+        elif len(flags) > 0:
+            m["rejection_reason"] = f"⚠️ Red Flag : {', '.join(flags)}"
+        else:
+            m["rejection_reason"] = "Équipe non trouvée ou données AdamChoi insuffisantes"
+
+    hybrid_option_b_matches = s3_matches
+    print(f"⭐ Matchs validés ADAMCHOI SCORE (>= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
     all_btts = [m["btts_oui"] for m in scanned_results if m.get("btts_oui") is not None]
@@ -742,8 +720,8 @@ def main():
 
           <!-- BANNIÈRE HEADER -->
           <div style="background: #0f172a; padding: 20px; text-align: center; color: white;">
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ OVER 2.5 & BTTS — SÉLECTION UNIBET</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">BTTS OUI &lt; BTTS NON &nbsp;&bull;&nbsp; Over 2.5 &lt; Under 2.5</p>
+            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ OVER 2.5 — SÉLECTION ADAMCHOI &amp; COMBINÉS UNIBET</h1>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">Sélection 100% AdamChoi Score V2 &ge; 75/100 &nbsp;&bull;&nbsp; Combinés 2 Matchs Target ~2.20</p>
             <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 3px 12px; border-radius: 15px; font-size: 11px; color: #cbd5e1;">
               Mise à jour : {now_str}
             </div>
