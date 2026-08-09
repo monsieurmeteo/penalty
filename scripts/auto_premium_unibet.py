@@ -378,7 +378,8 @@ def main():
                 "date_str": m["date_str"],
                 "val_btts": m.get("btts_oui"),
                 "val_o25": m.get("over25"),
-                "double": m["double_confirm"],
+                "double": m.get("double_confirm", True),
+                "ac_score": m.get("ac_score", 0),
             }
             for m in s3_matches
         }
