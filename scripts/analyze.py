@@ -20,19 +20,53 @@ WIDGET_HEADERS = {
     "User-Agent": "Mozilla/5.0"
 }
 
+# Dictionnaire des équivalences / traductions Unibet FR -> AdamChoi EN
+ALIASES = {
+    "saint": "st",
+    "vienne": "vienna",
+    "prague": "praha",
+    "varsovie": "warsaw",
+    "lisbonne": "lisbon",
+    "bucarest": "bucharest",
+    "athenes": "athens",
+    "etoile rouge": "red star",
+    "depor": "deportivo",
+    "dep": "deportivo",
+    "atl": "atletico",
+    "uni": "universidad",
+    "indep": "independiente",
+    "sp": "sporting",
+    "inter": "international",
+}
+
 def clean_str(s):
     if not s: return ""
     s = unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII')
     s = s.lower().replace("-", " ").replace(".", " ").replace("_", " ")
-    for strip_word in ["fc", "bk", "if", "sc", "ac", "fk", "cd", "sk", "cf", "sv", "v", "vs", "contre", "pec"]:
-        s = f" {s} ".replace(f" {strip_word} ", " ").strip()
-    return s
+    
+    # Remplacement des abréviations & traductions FR/EN
+    words = s.split()
+    cleaned_words = []
+    for w in words:
+        if w in ["fc", "bk", "if", "sc", "ac", "fk", "cd", "sk", "cf", "sv", "v", "vs", "contre", "pec", "ca", "csd", "acs", "msk", "kv"]:
+            continue
+        cleaned_words.append(ALIASES.get(w, w))
+    return " ".join(cleaned_words)
 
 def similarity(a, b):
     a_c = clean_str(a)
     b_c = clean_str(b)
+    if not a_c or not b_c:
+        return 0.0
+    if a_c == b_c:
+        return 1.0
     if a_c in b_c or b_c in a_c:
         return 0.95
+    # Token set matching (vérification si les mots clés principaux sont tous présents)
+    tokens_a = set(a_c.split())
+    tokens_b = set(b_c.split())
+    if tokens_a and tokens_b and (tokens_a.issubset(tokens_b) or tokens_b.issubset(tokens_a)):
+        return 0.90
     return SequenceMatcher(None, a_c, b_c).ratio()
 
 def fetch(url, headers=HEADERS):
@@ -123,6 +157,23 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         ga_b = sum(int(m.get("homeGoals", 0)) for m in recent_a_ext) / len(recent_a_ext)
         sot_b = (gf_b * 2.3) + 1.8
         sota_b = (ga_b * 2.1) + 1.5
+
+    # ponytail: si aucune donnée réelle disponible (équipe inconnue d'AdamChoi), on ne fabrique rien
+    has_real_data = not (gf_a == 0.0 and gf_b == 0.0)
+    if not has_real_data:
+        if is_batch:
+            return {
+                "score": 0, "classe": "❓ Non analysé", "calibrated_prob": 0,
+                "pts_ipo": 0, "ipo_comb": 0, "pts_buts": 0, "avg_buts": 0,
+                "pts_freq": 0, "o25_avg_rate": 0, "pts_sot": 0, "sot_comb": 0,
+                "pts_ha": 0, "avg_freq_ha": 0, "pts_league": 0,
+                "xg_total": 0, "sot_total": 0,
+                "verdict": "Équipe non trouvée sur AdamChoi — données insuffisantes.",
+                "red_flags": ["Aucune donnée AdamChoi"],
+                "recent_h_dom": [], "recent_a_ext": []
+            }
+        print(f"❓ {home_query} vs {away_query} — Équipe non trouvée sur AdamChoi, score non calculé.")
+        return
 
     if gf_a == 0.0: gf_a = 1.4; ga_a = 1.2; sot_a = 4.5; sota_a = 3.2
     if gf_b == 0.0: gf_b = 1.2; ga_b = 1.4; sot_b = 4.1; sota_b = 4.0
