@@ -36,6 +36,15 @@
       "double": true,
       "ac_score": 80
     },
+    "3366944": {
+      "match": "Indep.Medellin - Millonarios FC",
+      "league": "Colombie • D1 Colombie",
+      "date_str": "Mar. 11/08 à 01h00",
+      "val_btts": 1.65,
+      "val_o25": 1.9,
+      "double": true,
+      "ac_score": 76
+    },
     "3364532": {
       "match": "Silkeborg - Odense",
       "league": "Danemark • D1 Danemark",
@@ -44,24 +53,6 @@
       "val_o25": 1.45,
       "double": true,
       "ac_score": 75
-    },
-    "3360442": {
-      "match": "Vasteras SK - Djurgårdens",
-      "league": "Suede • D1 Suede",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.45,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 71
-    },
-    "3368067": {
-      "match": "Libertad - CS Trinidense",
-      "league": "Paraguay • D1 Paraguay",
-      "date_str": "Lun. 10/08 à 23h30",
-      "val_btts": 1.75,
-      "val_o25": 2.1,
-      "double": true,
-      "ac_score": 73
     }
   }
 }
