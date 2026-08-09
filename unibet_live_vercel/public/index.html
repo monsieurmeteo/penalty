@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚡ Flashscore Live Stream (Application PWA Mobile & Notifications Push)</title>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0d1117">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Flashscore">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0d1117;
+            --panel: #161b22;
+            --header-bg: #1f242d;
+            --border: #30363d;
+            --accent: #10b981;
+            --text: #f0f6fc;
+            --muted: #8b949e;
+            --yellow-star: #f59e0b;
+            --blue-pre: #3b82f6;
+            --crimson-soft: #b91c1c;
+            --crimson-border: #ef4444;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text); padding: 8px 8px 90px 8px; min-height: 100vh; }
+        .container { max-width: 980px; margin: 0 auto; }
+        
+        /* HEADER COMPACT */
+        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+        .logo { font-size: 16px; font-weight: 900; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .header-actions { display: flex; align-items: center; gap: 6px; }
+        .sound-btn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; padding: 3px 8px; border-radius: 14px; font-size: 10px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 3px; }
+        .sound-btn.active { background: #d97706; border-color: #f59e0b; color: #fff; }
+
+        .live-badge { display: flex; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 7px; border-radius: 14px; font-size: 10px; font-weight: 700; color: #10b981; }
+        .live-badge.offline { background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5; }
+        .pulse { width: 5px; height: 5px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        /* BARRE DE RECHERCHE ET TABS HAUT */
+        .toolbar { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
+        .search-bar { width: 100%; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: #fff; font-size: 12px; outline: none; }
+        
+        .tabs-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
+        .tab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 5px 2px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 2px; white-space: nowrap; }
+        .tab-btn.active { background: #238636; border-color: #2ea043; color: #fff; }
+        .tab-btn.active-live { background: var(--crimson-soft); border-color: #ef4444; color: #fff; }
+        .tab-btn.active-pre { background: #2563eb; border-color: #3b82f6; color: #fff; }
+        .tab-btn.active-fav { background: #d97706; border-color: #f59e0b; color: #fff; }
+
+        /* CHAMPIONNATS ET BANDEAU FAVORIS HYPER COMPACT */
+        .league-group { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--panel); }
+        .league-header { background: var(--header-bg); padding: 4px 8px; font-size: 10px; font-weight: 800; color: #c9d1d9; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.3px; }
+        .league-header span.count { background: rgba(255, 255, 255, 0.1); padding: 1px 4px; border-radius: 6px; font-size: 9px; color: var(--muted); }
+        
+        .see-more-favs-link { text-align: center; padding: 6px; background: rgba(245, 158, 11, 0.08); color: var(--yellow-star); font-size: 10px; font-weight: 800; cursor: pointer; border-top: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; letter-spacing: 0.5px; }
+        .see-more-favs-link:hover { background: rgba(245, 158, 11, 0.15); }
+
+        /* 1. LIGNE COMPACTE STANDARD (MINUTES AGRANDIES À 13PX BOLD) */
+        .match-row-compact { display: flex; align-items: center; padding: 6px 8px; font-size: 11px; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.03); cursor: pointer; gap: 6px; }
+        .match-row-compact:last-child { border-bottom: none; }
+        
+        .star-btn { font-size: 14px; cursor: pointer; color: var(--muted); user-select: none; display: inline-block; flex: 0 0 auto; padding: 2px; }
+        .star-btn.starred { color: var(--yellow-star); }
+
+        /* 🕒 STATUT / MINUTE EN CARACTÈRES AGRANDIS (13PX BOLD) */
+        .status-col { font-size: 13px; font-weight: 900; color: var(--accent); flex: 0 0 62px; }
+        .status-col.pre-match { color: var(--blue-pre); font-size: 12px; }
+        .status-col.finished { color: var(--muted); font-size: 11px; }
+
+        .home-col { text-align: right; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .away-col { text-align: left; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .score-pill-compact { text-align: center; font-size: 11px; font-weight: 900; background: rgba(255, 255, 255, 0.08); padding: 2px 5px; border-radius: 4px; color: #fff; flex: 0 0 auto; min-width: 42px; }
+
+        /* 2. CARTE FAVORIS / SÉLECTIONNÉ : MINUTE AGRANDIE À 13PX BOLD EN HAUT À DROITE */
+        .match-card-expanded { background: rgba(22, 27, 34, 0.98); border-bottom: 1px solid var(--border); padding: 6px 8px; cursor: pointer; position: relative; transition: background 0.3s; }
+        .match-card-expanded:last-child { border-bottom: none; }
+        
+        .expanded-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+        
+        /* MINUTE DANS LA CARTE AGRANDIE À 13PX ULTRA-BOOSTÉE ET LISIBLE */
+        .expanded-header-line .live-status-tag { 
+            font-size: 13px; 
+            font-weight: 900; 
+            letter-spacing: 0.3px;
+        }
+
+        /* Ligne Principale : ANDERLECHT   2 — 1   RAAL LA LOUVIÈRE (SCORE 24PX AU CENTRE) */
+        .teams-score-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 1px 0; }
+        
+        .team-name-exp { 
+            font-size: 12px; 
+            font-weight: 800; 
+            color: #ffffff; 
+            text-transform: uppercase; 
+            flex: 1 1 0; 
+            min-width: 0; 
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
+            line-height: 1.15;
+        }
+        .team-name-exp.home { text-align: right; }
+        .team-name-exp.away { text-align: left; }
+        
+        /* SCORE 24PX INAMOVIBLE AVEC CONTRASTE ÉLEVÉ */
+        .giant-score-val { 
+            font-size: 24px; 
+            font-weight: 900; 
+            color: #ffffff; 
+            background: rgba(255, 255, 255, 0.12); 
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 1px 8px; 
+            border-radius: 6px; 
+            text-align: center;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            min-width: 68px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* 🚨 ALERTE BUT (8s) : SCORE TEMPORAIREMENT ROUGE + LEGER CONTOUR LUMINEUX */
+        .match-card-expanded.goal-flash {
+            border-left: 3px solid #ef4444 !important;
+        }
+        .match-card-expanded.goal-flash .giant-score-val {
+            background: var(--crimson-soft) !important;
+            border-color: #ef4444 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+            animation: pulseScoreHighlight 0.6s infinite alternate;
+        }
+        @keyframes pulseScoreHighlight {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+
+        /* 3. ÉVÉNEMENTS COMPACTS (PASTILLES DISCRÈTES) */
+        .events-compact-list { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; padding-top: 3px; border-top: 1px dashed rgba(255, 255, 255, 0.05); }
+        .event-pill-mini { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #cbd5e1; }
+        .event-pill-mini.goal { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+        .event-pill-mini.redcard { background: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5; }
+
+        /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) */
+        .bottom-nav { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            height: 50px; 
+            background: rgba(15, 20, 28, 0.98); 
+            backdrop-filter: blur(10px); 
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border); 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            z-index: 9999; 
+        }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--muted); text-decoration: none; font-size: 9px; font-weight: 700; cursor: pointer; }
+        .nav-item .icon { font-size: 15px; }
+        .nav-item.active { color: #10b981; }
+        .nav-item.active-live { color: #ef4444; }
+        .nav-item.active-pre { color: #3b82f6; }
+        .nav-item.active-fav { color: #f59e0b; }
+
+        .empty-state { text-align: center; padding: 30px 15px; color: var(--muted); font-size: 12px; }
+
+        /* 💻 COMPATIBILITÉ DESKTOP SANS RÉGRESSION */
+        @media (min-width: 641px) {
+            body { padding-bottom: 20px; }
+            .bottom-nav { display: none; }
+            .giant-score-val { font-size: 24px; min-width: 76px; }
+            .team-name-exp { font-size: 13px; }
+            .expanded-header-line .live-status-tag { font-size: 14px; }
+            .status-col { font-size: 13px; flex: 0 0 66px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">⚡ FLASHSCORE LIVE</div>
+            
+            <div class="header-actions">
+                <button id="soundToggleBtn" class="sound-btn" onclick="toggleSoundAlerts()">
+                    <span id="soundIcon">📢</span> <span id="soundText">Son Stade ⭐</span>
+                </button>
+                
+                <div id="connectionStatus" class="live-badge">
+                    <div class="pulse"></div>
+                    <span id="connectionText">FLUX CONTINU < 1S</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="toolbar">
+            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher un match, équipe (ex: Lille, Benfica)...">
+            
+            <div class="tabs-row">
+                <button id="tabAll" class="tab-btn active" onclick="setFilter('all')">Tous (<span id="countAll">0</span>)</button>
+                <button id="tabLive" class="tab-btn" onclick="setFilter('live')">🔴 Live (<span id="countLive">0</span>)</button>
+                <button id="tabPre" class="tab-btn" onclick="setFilter('pre')">🕒 Pré (<span id="countPre">0</span>)</button>
+                <button id="tabFav" class="tab-btn" onclick="setFilter('fav')">⭐ Fav (<span id="countFav">0</span>)</button>
+            </div>
+        </div>
+
+        <div id="liveContent">
+            <div class="empty-state">Connexion aux matchs en direct et pré-match...</div>
+        </div>
+    </div>
+
+    <!-- 📱 BARRE DE NAVIGATION FIXE EN BAS DE L'ÉCRAN (STICKY BOTTOM NAV) -->
+    <nav class="bottom-nav">
+        <div id="navAll" class="nav-item active" onclick="setFilter('all')">
+            <span class="icon">⚽</span>
+            <span>Tous</span>
+        </div>
+        <div id="navLive" class="nav-item" onclick="setFilter('live')">
+            <span class="icon">🔴</span>
+            <span>Live</span>
+        </div>
+        <div id="navPre" class="nav-item" onclick="setFilter('pre')">
+            <span class="icon">🕒</span>
+            <span>Pré-match</span>
+        </div>
+        <div id="navFav" class="nav-item" onclick="setFilter('fav')">
+            <span class="icon">⭐</span>
+            <span>Favoris</span>
+        </div>
+    </nav>
+
+    <script>
+        const container = document.getElementById('liveContent');
+        const searchInput = document.getElementById('searchInput');
+        
+        const countAllEl = document.getElementById('countAll');
+        const countLiveEl = document.getElementById('countLive');
+        const countPreEl = document.getElementById('countPre');
+        const countFavEl = document.getElementById('countFav');
+        
+        const tabAllBtn = document.getElementById('tabAll');
+        const tabLiveBtn = document.getElementById('tabLive');
+        const tabPreBtn = document.getElementById('tabPre');
+        const tabFavBtn = document.getElementById('tabFav');
+
+        const navAll = document.getElementById('navAll');
+        const navLive = document.getElementById('navLive');
+        const navPre = document.getElementById('navPre');
+        const navFav = document.getElementById('navFav');
+
+        const connectionStatus = document.getElementById('connectionStatus');
+        const connectionText = document.getElementById('connectionText');
+        const soundToggleBtn = document.getElementById('soundToggleBtn');
+        const soundIcon = document.getElementById('soundIcon');
+        const soundText = document.getElementById('soundText');
+
+        let prevScores = {};
+        let goalTimestamps = {};
+        let activeTab = 'all';
+        let isSoundEnabled = localStorage.getItem('flashscore_sound') === 'true';
+        let failedPollCount = 0;
+        window.latestGames = [];
+
+        let favoritesSet = new Set(JSON.parse(localStorage.getItem('flashscore_favs') || '[]'));
+        let expandedSet = new Set(JSON.parse(localStorage.getItem('flashscore_expanded') || '[]'));
+
+        function toggleFav(e, id) {
+            if (e) e.stopPropagation();
+            if (favoritesSet.has(id)) {
+                favoritesSet.delete(id);
+            } else {
+                favoritesSet.add(id);
+                expandedSet.add(id);
+            }
+            localStorage.setItem('flashscore_favs', JSON.stringify(Array.from(favoritesSet)));
+            localStorage.setItem('flashscore_expanded', JSON.stringify(Array.from(expandedSet)));
+            if (window.latestGames) renderFlashscore(window.latestGames);
+        }
+
+        function toggleExpand(id) {
+            if (expandedSet.has(id)) {
+                expandedSet.delete(id);
+            } else {
+                expandedSet.add(id);
+            }
+            localStorage.setItem('flashscore_expanded', JSON.stringify(Array.from(expandedSet)));
+            if (window.latestGames) renderFlashscore(window.latestGames);
+        }
+
+        function updateSoundBtnUI() {
+            if (isSoundEnabled) {
+                soundToggleBtn.classList.add('active');
+                soundIcon.textContent = '🔊';
+                soundText.textContent = 'Son ⭐ Activé';
+            } else {
+                soundToggleBtn.classList.remove('active');
+                soundIcon.textContent = '📢';
+                soundText.textContent = 'Son Stade ⭐';
+            }
+        }
+        updateSoundBtnUI();
+
+        function toggleSoundAlerts() {
+            isSoundEnabled = !isSoundEnabled;
+            localStorage.setItem('flashscore_sound', isSoundEnabled ? 'true' : 'false');
+            updateSoundBtnUI();
+
+            if (isSoundEnabled) {
+                playStadiumGoalSound();
+                if ("Notification" in window && Notification.permission !== "granted") {
+                    Notification.requestPermission().then(perm => {
+                        console.log('[Notif] Permission:', perm);
+                    });
+                }
+            }
+        }
+
+        // 🏟️ SON DE STADE (SIFFLET + CORNE GOAL)
+        function playStadiumGoalSound() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const t = ctx.currentTime;
+
+                const oscW1 = ctx.createOscillator();
+                const oscW2 = ctx.createOscillator();
+                const gainW = ctx.createGain();
+                oscW1.type = 'sine'; oscW2.type = 'sine';
+                oscW1.frequency.setValueAtTime(2800, t);
+                oscW2.frequency.setValueAtTime(2950, t);
+                gainW.gain.setValueAtTime(0, t);
+                gainW.gain.linearRampToValueAtTime(0.35, t + 0.02);
+                gainW.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
+                oscW1.connect(gainW); oscW2.connect(gainW);
+                gainW.connect(ctx.destination);
+                oscW1.start(t); oscW2.start(t);
+                oscW1.stop(t + 0.35); oscW2.stop(t + 0.35);
+
+                const freqs = [220, 277.18, 329.63, 440];
+                freqs.forEach((freq) => {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freq, t + 0.2);
+                    gain.gain.setValueAtTime(0, t + 0.2);
+                    gain.gain.linearRampToValueAtTime(0.22, t + 0.32);
+                    gain.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+                    osc.connect(gain); gain.connect(ctx.destination);
+                    osc.start(t + 0.2); osc.stop(t + 1.8);
+                });
+            } catch(e) {}
+        }
+
+        function sendSystemNotification(game) {
+            if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+            // Méthode 1 : Via Service Worker (fonctionne en arrière-plan Android Chrome)
+            if (swRegistration && swRegistration.active) {
+                swRegistration.active.postMessage({
+                    type: 'GOAL_NOTIFICATION',
+                    game: {
+                        id: game.id,
+                        dom: game.dom,
+                        ext: game.ext,
+                        score_dom: game.score_dom,
+                        score_ext: game.score_ext,
+                        league: game.league
+                    }
+                });
+            } else {
+                // Méthode 2 : Fallback direct (desktop, onglet actif)
+                new Notification(`⚽ BUT ! ${game.dom} ${game.score_dom} - ${game.score_ext} ${game.ext}`, {
+                    body: `⭐ Match Favori • ${game.league}`,
+                    icon: 'https://unibetlivevercel.vercel.app/favicon.ico',
+                    tag: game.id,
+                    requireInteraction: false,
+                    vibrate: [200, 100, 200, 100, 400]
+                });
+            }
+        }
+
+        function setFilter(tab) {
+            activeTab = tab;
+            [tabAllBtn, tabLiveBtn, tabPreBtn, tabFavBtn].forEach(btn => btn.className = 'tab-btn');
+            [navAll, navLive, navPre, navFav].forEach(nav => nav.className = 'nav-item');
+
+            if (tab === 'all') {
+                tabAllBtn.classList.add('active'); navAll.classList.add('active');
+            } else if (tab === 'live') {
+                tabLiveBtn.classList.add('active-live'); navLive.classList.add('active-live');
+            } else if (tab === 'pre') {
+                tabPreBtn.classList.add('active-pre'); navPre.classList.add('active-pre');
+            } else if (tab === 'fav') {
+                tabFavBtn.classList.add('active-fav'); navFav.classList.add('active-fav');
+            }
+
+            if (window.latestGames) renderFlashscore(window.latestGames);
+        }
+
+        function getStatusPriority(g) {
+            if (g.status_type === 'LIVE') {
+                if (g.minute === 'PAUSE' || g.minute === 'HT') return 2;
+                return 1;
+            }
+            if (g.status_type === 'PRE_MATCH') return 3;
+            return 4;
+        }
+
+        function renderFlashscore(games) {
+            const now = Date.now();
+            window.latestGames = games;
+            const query = searchInput.value.toLowerCase();
+
+            countAllEl.textContent = games.length;
+            countLiveEl.textContent = games.filter(g => g.status_type === 'LIVE').length;
+            countPreEl.textContent = games.filter(g => g.status_type === 'PRE_MATCH').length;
+            countFavEl.textContent = games.filter(g => favoritesSet.has(g.id)).length;
+
+            games.forEach(g => {
+                const key = g.id;
+                const scoreStr = `${g.score_dom}-${g.score_ext}`;
+                if (prevScores[key] !== undefined && prevScores[key] !== scoreStr) {
+                    goalTimestamps[key] = now;
+                    expandedSet.add(key);
+                    
+                    if (favoritesSet.has(key)) {
+                        sendSystemNotification(g);
+                        if (isSoundEnabled) playStadiumGoalSound();
+                    }
+                }
+                prevScores[key] = scoreStr;
+            });
+
+            let filtered = games.filter(g => 
+                g.dom.toLowerCase().includes(query) || 
+                g.ext.toLowerCase().includes(query) || 
+                g.league.toLowerCase().includes(query)
+            );
+
+            if (activeTab === 'live') filtered = filtered.filter(g => g.status_type === 'LIVE');
+            else if (activeTab === 'pre') filtered = filtered.filter(g => g.status_type === 'PRE_MATCH');
+            else if (activeTab === 'fav') filtered = filtered.filter(g => favoritesSet.has(g.id));
+
+            if (filtered.length === 0) {
+                if (activeTab === 'fav') container.innerHTML = '<div class="empty-state">Aucun match favori. Cliquez sur ★ pour suivre un match.</div>';
+                else container.innerHTML = '<div class="empty-state">Aucun match trouvé.</div>';
+                return;
+            }
+
+            let html = '';
+
+            // SECTION 0: BUT EN DIRECT (8 SECONDES) PROPULSÉ AU SOMMET
+            const goalAlertMatches = filtered.filter(g => (now - (goalTimestamps[g.id] || 0)) < 8000);
+            goalAlertMatches.sort((a, b) => (goalTimestamps[b.id] || 0) - (goalTimestamps[a.id] || 0));
+
+            if (goalAlertMatches.length > 0) {
+                html += `
+                <div class="league-group" style="border-color:#b91c1c; margin-bottom: 8px;">
+                    <div class="league-header" style="background:#b91c1c; color:#fff; font-size: 10px;">
+                        <span>⚽ ALERTE BUT EN DIRECT</span>
+                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">8s</span>
+                    </div>
+                    ${goalAlertMatches.map(g => renderMatchBlock(g, now)).join('')}
+                </div>`;
+            }
+
+            // SECTION 1: ⭐ MES MATCHS FAVORIS (TRIÉS LIVE EN PREMIER, MAX 4 DANS L'ÉCRAN GÉNÉRAL)
+            const favMatches = filtered.filter(g => favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= 8000);
+            favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
+
+            if (favMatches.length > 0) {
+                const maxFavsInOverview = (activeTab === 'fav') ? favMatches.length : 4;
+                const visibleFavs = favMatches.slice(0, maxFavsInOverview);
+                const hiddenFavsCount = favMatches.length - visibleFavs.length;
+
+                html += `
+                <div class="league-group" style="border-color:#f59e0b;">
+                    <div class="league-header" style="background:#d97706; color:#fff;">
+                        <span>⭐ MES MATCHS FAVORIS (${favMatches.length})</span>
+                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">DIRECT</span>
+                    </div>
+                    ${visibleFavs.map(g => renderMatchBlock(g, now)).join('')}
+                    ${hiddenFavsCount > 0 ? `
+                        <div class="see-more-favs-link" onclick="setFilter('fav')">
+                            ⭐ VOIR LES ${hiddenFavsCount} AUTRE(S) FAVORI(S) ➔
+                        </div>
+                    ` : ''}
+                </div>`;
+            }
+
+            // SECTION 2: TOUS LES CHAMPIONNATS
+            if (activeTab !== 'fav') {
+                const normalLeaguesMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= 8000);
+                const leaguesMap = {};
+                normalLeaguesMatches.forEach(g => {
+                    leaguesMap[g.league] = leaguesMap[g.league] || [];
+                    leaguesMap[g.league].push(g);
+                });
+
+                for (const [leagueName, mList] of Object.entries(leaguesMap)) {
+                    html += `
+                    <div class="league-group">
+                        <div class="league-header">
+                            <span>🏆 ${leagueName}</span>
+                            <span class="count">${mList.length}</span>
+                        </div>
+                        ${mList.map(g => renderMatchBlock(g, now)).join('')}
+                    </div>`;
+                }
+            }
+
+            container.innerHTML = html;
+        }
+
+        function renderMatchBlock(g, now) {
+            const key = g.id;
+            const goalTime = goalTimestamps[key] || 0;
+            const isRecentGoal = (now - goalTime) < 8000;
+            const isStarred = favoritesSet.has(key);
+            const isExpanded = isStarred || isRecentGoal || expandedSet.has(key);
+            const incs = g.incidents || [];
+
+            if (isExpanded) {
+                const eventPills = incs.map(inc => {
+                    const playerName = inc.player ? inc.player.toUpperCase() : 'BUT';
+                    if (inc.type === 'penalty') return `<span class="event-pill-mini goal">⚽ ${inc.min}' PENALTY</span>`;
+                    else if (inc.type === 'goal') return `<span class="event-pill-mini goal">⚽ ${inc.min}' ${playerName}</span>`;
+                    else if (inc.type === 'csc') return `<span class="event-pill-mini goal">⚽ ${inc.min}' CSC ${playerName}</span>`;
+                    else if (inc.type === 'card' && inc.card_type === 'red') return `<span class="event-pill-mini redcard">🟥 ${inc.min}' ${playerName}</span>`;
+                    return '';
+                }).filter(Boolean).join('');
+
+                let statusBadgeText = `🔴 LIVE ${g.minute}`;
+                if (g.status_type === 'PRE_MATCH') statusBadgeText = `🕒 PRÉ-MATCH`;
+                else if (g.status_type === 'FINISHED') statusBadgeText = `TERMINÉ`;
+
+                if (isRecentGoal) statusBadgeText = `⚽ BUT ! ${g.minute}`;
+
+                return `
+                <div class="match-card-expanded ${isRecentGoal ? 'goal-flash' : ''}" onclick="toggleExpand('${key}')">
+                    <div class="expanded-header-line">
+                        <span class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</span>
+                        <span class="live-status-tag" style="color: ${isRecentGoal ? '#ef4444' : (g.status_type === 'LIVE' ? '#10b981' : (g.status_type === 'PRE_MATCH' ? '#3b82f6' : '#8b949e'))}">
+                            ${statusBadgeText}
+                        </span>
+                    </div>
+
+                    <div class="teams-score-row">
+                        <div class="team-name-exp home">${g.dom}</div>
+                        <div class="giant-score-val">${g.status_type === 'PRE_MATCH' ? (g.kickoff || 'VS') : `${g.score_dom} — ${g.score_ext}`}</div>
+                        <div class="team-name-exp away">${g.ext}</div>
+                    </div>
+
+                    ${eventPills ? `<div class="events-compact-list">${eventPills}</div>` : ''}
+                </div>`;
+            }
+
+            let statusClass = 'status-col';
+            let statusText = g.minute;
+            if (g.status_type === 'PRE_MATCH') statusClass += ' pre-match';
+            else if (g.status_type === 'FINISHED') statusClass += ' finished';
+
+            return `
+            <div class="match-row-compact" onclick="toggleExpand('${key}')">
+                <div class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
+                <div class="${statusClass}">${statusText}</div>
+                <div class="home-col">${g.dom}</div>
+                <div class="score-pill-compact">${g.status_type === 'PRE_MATCH' ? (g.kickoff || 'VS') : `${g.score_dom} - ${g.score_ext}`}</div>
+                <div class="away-col">${g.ext}</div>
+            </div>`;
+        }
+
+        async function pollLiveLoop() {
+            try {
+                const res = await fetch('/api/live?t=' + Date.now());
+                if (res.ok) {
+                    const data = await res.json();
+                    failedPollCount = 0;
+                    connectionStatus.className = 'live-badge';
+                    connectionText.textContent = 'FLUX CONTINU < 1S';
+                    renderFlashscore(data);
+                } else {
+                    failedPollCount++;
+                    if (failedPollCount >= 3) {
+                        connectionStatus.className = 'live-badge offline';
+                        connectionText.textContent = 'RECONNEXION...';
+                    }
+                }
+            } catch (e) {
+                failedPollCount++;
+                if (failedPollCount >= 3) {
+                    connectionStatus.className = 'live-badge offline';
+                    connectionText.textContent = 'RECONNEXION...';
+                }
+            } finally {
+                setTimeout(pollLiveLoop, 750);
+            }
+        }
+
+        pollLiveLoop();
+
+        searchInput.addEventListener('input', () => {
+            if (window.latestGames) renderFlashscore(window.latestGames);
+        });
+
+        // 📱 SERVICE WORKER — Notifications push réelles sur Android Chrome même onglet en arrière-plan
+        let swRegistration = null;
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => {
+                    swRegistration = reg;
+                    console.log('[SW] Service Worker enregistré ✅', reg.scope);
+                })
+                .catch(err => console.warn('[SW] Échec enregistrement:', err));
+        }
+    </script>
+</body>
+</html>
