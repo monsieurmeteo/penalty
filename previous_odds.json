@@ -1,14 +1,5 @@
 {
   "s3": {
-    "3363492": {
-      "match": "Nuremberg - Dynamo Dresden",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 09/08 à 13h30",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 80
-    },
     "3364337": {
       "match": "St Pauli - Greuther Furth",
       "league": "Allemagne • Bundesliga 2",
@@ -18,12 +9,21 @@
       "double": true,
       "ac_score": 76
     },
+    "3363492": {
+      "match": "Nuremberg - Dynamo Dresden",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 09/08 à 13h30",
+      "val_btts": 1.5,
+      "val_o25": 1.62,
+      "double": true,
+      "ac_score": 80
+    },
     "3360090": {
       "match": "Hammarby - Häcken",
       "league": "Suede • D1 Suede",
       "date_str": "Dim. 09/08 à 14h00",
-      "val_btts": 1.42,
-      "val_o25": 1.32,
+      "val_btts": 1.4,
+      "val_o25": 1.3,
       "double": true,
       "ac_score": 79
     },
@@ -40,17 +40,8 @@
       "match": "Shandong - Tianjin Tigers",
       "league": "Chine • D1 Chine",
       "date_str": "Dim. 09/08 à 14h00",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 76
-    },
-    "3365279": {
-      "match": "Epitsentr - Shakht.Donetsk",
-      "league": "Ukraine • D1 Ukraine",
-      "date_str": "Dim. 09/08 à 14h30",
-      "val_btts": 1.72,
-      "val_o25": 1.55,
+      "val_btts": 1.4,
+      "val_o25": 1.45,
       "double": true,
       "ac_score": 76
     },
@@ -72,11 +63,20 @@
       "double": true,
       "ac_score": 78
     },
+    "3365279": {
+      "match": "Epitsentr - Shakht.Donetsk",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Dim. 09/08 à 14h30",
+      "val_btts": 1.72,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 76
+    },
     "3363253": {
       "match": "Slavia Prague - FK Pardubice",
       "league": "Rep Tcheque • D1 Rep Tcheque",
       "date_str": "Dim. 09/08 à 15h00",
-      "val_btts": 1.9,
+      "val_btts": 1.8,
       "val_o25": 1.42,
       "double": true,
       "ac_score": 85
@@ -89,6 +89,15 @@
       "val_o25": 1.55,
       "double": true,
       "ac_score": 79
+    },
+    "3360099": {
+      "match": "Sion - FC Vaduz",
+      "league": "Suisse • D1 Suisse",
+      "date_str": "Dim. 09/08 à 16h30",
+      "val_btts": 1.55,
+      "val_o25": 1.4,
+      "double": true,
+      "ac_score": 89
     },
     "3360096": {
       "match": "Saint Gall - Lucerne",
@@ -108,15 +117,6 @@
       "double": true,
       "ac_score": 87
     },
-    "3360099": {
-      "match": "Sion - FC Vaduz",
-      "league": "Suisse • D1 Suisse",
-      "date_str": "Dim. 09/08 à 16h30",
-      "val_btts": 1.55,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 89
-    },
     "3360073": {
       "match": "Heerenveen - Twente",
       "league": "Pays Bas • D1 Pays Bas",
@@ -125,15 +125,6 @@
       "val_o25": 1.42,
       "double": true,
       "ac_score": 80
-    },
-    "3360069": {
-      "match": "HamKam - Aalesunds",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Dim. 09/08 à 17h00",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 87
     },
     "3365880": {
       "match": "Rangers - Hibernian",
@@ -144,12 +135,21 @@
       "double": true,
       "ac_score": 85
     },
+    "3360069": {
+      "match": "HamKam - Aalesunds",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Dim. 09/08 à 17h00",
+      "val_btts": 1.4,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 87
+    },
     "3362623": {
       "match": "Lech Poznan - Piast Gliwice",
       "league": "Pologne • D1 Pologne",
       "date_str": "Dim. 09/08 à 17h30",
       "val_btts": 1.6,
-      "val_o25": 1.55,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 85
     },
@@ -166,8 +166,8 @@
       "match": "Anderlecht - La Louviere",
       "league": "Belgique • D1 Belgique",
       "date_str": "Dim. 09/08 à 18h30",
-      "val_btts": 1.8,
-      "val_o25": 1.82,
+      "val_btts": 1.78,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 86
     },
@@ -176,7 +176,7 @@
       "league": "Autriche • D1 Autriche",
       "date_str": "Dim. 09/08 à 19h00",
       "val_btts": 1.55,
-      "val_o25": 1.7,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 85
     },
@@ -238,28 +238,28 @@
       "match": "Uni.La Calera - Colo Colo",
       "league": "Chili • D1 Chili",
       "date_str": "Dim. 09/08 à 23h30",
-      "val_btts": 1.7,
-      "val_o25": 1.8,
+      "val_btts": 1.65,
+      "val_o25": 1.78,
       "double": true,
       "ac_score": 80
-    },
-    "3364532": {
-      "match": "Silkeborg - Odense",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.38,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 75
     },
     "3360441": {
       "match": "IK Sirius FK - Brommapojkarna",
       "league": "Suede • D1 Suede",
       "date_str": "Lun. 10/08 à 19h00",
       "val_btts": 1.55,
-      "val_o25": 1.28,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 89
+    },
+    "3364532": {
+      "match": "Silkeborg - Odense",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Lun. 10/08 à 19h00",
+      "val_btts": 1.38,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 75
     },
     "3365135": {
       "match": "Fram Reykjavik - KR Reykjavik",
