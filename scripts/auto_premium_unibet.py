@@ -317,40 +317,45 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% basée sur le Score AdamChoi V2 (Cible >= 75/100) ──
-    # Note: On sélectionne uniquement selon le Score AdamChoi V2. 
-    # Les Red Flags sont indicatifs (avertissements) mais ne rejettent pas le match.
-    s3_matches = [
-        m for m in scanned_results 
-        if m.get("ac_score", 0) >= 75
-    ]
+    # ── Sélection des matchs (Unibet Cotes Dual Lock OR AdamChoi Score >= 70) ──
+    # Note: Sur GitHub Actions, AdamChoi peut être bloqué par Cloudflare (score = 0).
+    # Le critère Unibet (BTTS Oui < Non ET Over 2.5 < Under 2.5) garantit la sélection 
+    # des matchs même en cas d'absence de données AdamChoi.
+    s3_matches = []
+    rejected_matches = []
 
-    # Fallback si peu de matchs à >= 75 sur une journée calme : inclure >= 70/100
-    if len(s3_matches) < 4:
-        s3_matches = [
-            m for m in scanned_results 
-            if m.get("ac_score", 0) >= 70
-        ]
+    for r in scanned_results:
+        o25 = r.get("over25")
+        u25 = r.get("under25")
+        b_oui = r.get("btts_oui")
+        b_non = r.get("btts_non")
+        ac_score = r.get("ac_score", 0)
+
+        unibet_pass = bool(b_oui and b_non and o25 and u25 and b_oui < b_non and o25 < u25)
+        adamchoi_pass = bool(ac_score >= 70)
+
+        if unibet_pass or adamchoi_pass:
+            r["double_confirm"] = True
+            r["triple_confirm"] = True
+            s3_matches.append(r)
+        else:
+            reasons = []
+            if b_oui and b_non and b_oui >= b_non:
+                reasons.append(f"BTTS NON favori ({b_oui:.2f} >= {b_non:.2f})")
+            if o25 and u25 and o25 >= u25:
+                reasons.append(f"Under 2.5 favori ({o25:.2f} >= {u25:.2f})")
+            if ac_score > 0 and ac_score < 70:
+                reasons.append(f"Score AdamChoi V2 insuffisant ({ac_score}/100)")
+            r["rejection_reason"] = " • ".join(reasons) if reasons else "Cotes non favorables"
+            rejected_matches.append(r)
 
     s3_matches.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
 
-    rejected_matches = [
-        m for m in scanned_results 
-        if m not in s3_matches
-    ]
-
-    for m in rejected_matches:
-        score_v2 = m.get("ac_score", 0)
-        if score_v2 > 0:
-            m["rejection_reason"] = f"Score AdamChoi V2 insuffisant ({score_v2}/100 &lt; 75)"
-        else:
-            m["rejection_reason"] = "Équipe non trouvée ou données AdamChoi insuffisantes"
-
-    hybrid_option_b_matches = s3_matches
+    hybrid_option_b_matches = [m for m in s3_matches if m.get("ac_score", 0) >= 70]
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés ADAMCHOI SCORE (>= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Unibet Cotes / AdamChoi) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
