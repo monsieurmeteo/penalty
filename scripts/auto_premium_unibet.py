@@ -500,6 +500,9 @@ def main():
 
     def render_match_proof_html(m):
         score = m.get("ac_score", 0)
+        # Pas de données AdamChoi pour ce match → ne pas afficher de bloc vide
+        if not score:
+            return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
         classe = m.get("ac_classe", "Bon potentiel")
         pts_ipo = m.get("pts_ipo", 0)
         ipo_val = m.get("ipo_comb", 0.0)
