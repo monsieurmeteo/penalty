@@ -452,18 +452,18 @@ def main():
     combos_2matches = []
 
     for s_key, s_matches in sorted(sessions.items()):
-        s_matches.sort(key=lambda x: x["over25"])
+        valid_matches = [m for m in s_matches if m.get("over25") and m["over25"] > 1.0]
         used_ids = set()
 
-        # Passe 1 : Associations de la MÊME session avec cote >= 2.20
-        for i, m1 in enumerate(s_matches):
+        # Association stricte : seuls les combinés avec cote totale >= 2.20 sont générés
+        for i, m1 in enumerate(valid_matches):
             if m1["id"] in used_ids:
                 continue
             c1 = m1["over25"]
             best_partner = None
             best_diff = 999.0
 
-            for m2 in s_matches[i+1:]:
+            for m2 in valid_matches[i+1:]:
                 if m2["id"] in used_ids:
                     continue
                 c2 = m2["over25"]
@@ -484,39 +484,6 @@ def main():
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
-
-        # Passe 2 : Coupler les matchs restants de la MÊME session
-        unmatched = [m for m in s_matches if m["id"] not in used_ids]
-        while len(unmatched) >= 2:
-            m1 = unmatched.pop(0)
-            best_idx = 0
-            best_diff = 999.0
-            for idx, m2 in enumerate(unmatched):
-                comb = round(m1["over25"] * m2["over25"], 2)
-                diff = abs(comb - 2.20)
-                if comb >= 2.20 and diff < best_diff:
-                    best_diff = diff
-                    best_idx = idx
-
-            m2 = unmatched.pop(best_idx)
-            comb_odds = round(m1["over25"] * m2["over25"], 2)
-            combos_2matches.append({
-                "session": s_key,
-                "m1": m1, "m2": m2,
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
-
-        if len(unmatched) == 1:
-            m1 = unmatched[0]
-            partner = min(s_matches, key=lambda x: x["over25"] if x["id"] != m1["id"] else 99)
-            comb_odds = round(m1["over25"] * partner["over25"], 2)
-            combos_2matches.append({
-                "session": s_key,
-                "m1": m1, "m2": partner,
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
 
     def render_match_proof_html(m):
         score = m.get("ac_score", 0)
