@@ -1,9 +1,7 @@
 name: Premium Football (Penalty & Over 2.5) Automation
 
 on:
-  schedule:
-    - cron: '0 */2 * * *' # Exécution automatique toutes les 2h (cloud 24/7)
-  workflow_dispatch: # Permet aussi le déclenchement manuel
+  workflow_dispatch: # Permet le déclenchement via API (cronjob-mcp) ou UI manuelle
 
 concurrency:
   group: penalty-scan
