@@ -454,10 +454,12 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés par SESSION QUOTIDIENNE STRICTE (Jour + Nuit D+1 06h) ──
+    # ── Génération des Combinés par SESSION STRICTE : JOUR (06h→23h59) ou NUIT (00h→05h59) ──
     def get_betting_session_key(m_dt):
-        adjusted_dt = m_dt - timedelta(hours=6)
-        return adjusted_dt.strftime("%Y-%m-%d")
+        # Convertir en heure locale France (UTC+2)
+        local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
+        slot = "nuit" if local_dt.hour < 6 else "jour"
+        return f"{local_dt.strftime('%Y-%m-%d')}-{slot}"
 
     # ── 1. GENERATION COMBINES OVER 2.5 (2 Matchs — Cote Min 2.20 — Stake 4€) ──
     sessions_o25 = {}
@@ -694,8 +696,9 @@ def main():
             sess_label = cb.get("session", "")
             if sess_label != current_sess:
                 current_sess = sess_label
-                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
-                combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
+                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
 
             proof_m1 = render_match_proof_html(m1)
             proof_m2 = render_match_proof_html(m2)
@@ -728,8 +731,9 @@ def main():
             sess_label = cb.get("session", "")
             if sess_label != current_sess_o15:
                 current_sess_o15 = sess_label
-                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
-                combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
+                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
             combos_o15_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
@@ -755,8 +759,9 @@ def main():
             sess_label = cb.get("session", "")
             if sess_label != current_sess_btts:
                 current_sess_btts = sess_label
-                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
-                combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
+                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else "☀️ JOUR"
+                combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION {slot_label} DU {dt_sess}</div>'
             combos_btts_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
