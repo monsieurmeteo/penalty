@@ -722,18 +722,24 @@ def main():
     # Pré-construction HTML des tickets OVER 1.5 (Triplés)
     combos_o15_html = ""
     if combos_o15:
+        current_sess_o15 = None
         for idx, cb in enumerate(combos_o15, 1):
             m1, m2, m3 = cb["m1"], cb["m2"], cb["m3"]
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess_o15:
+                current_sess_o15 = sess_label
+                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
+                combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
             combos_o15_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
                 <span style="font-weight:800; color:#0f172a; font-size:13px;">🛡️ Triplé Over 1.5 #{idx} — Cote Totale: <span style="background:#dbeafe; color:#1e40af; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 5,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
-              <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:4px;">🔹 <b>Match 1</b> : {m1['dom']} vs {m1['ext']} &bull; Over 1.5: <b>@{m1.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
-                <div style="margin-bottom:4px;">🔹 <b>Match 2</b> : {m2['dom']} vs {m2['ext']} &bull; Over 1.5: <b>@{m2.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
-                <div>🔹 <b>Match 3</b> : {m3['dom']} vs {m3['ext']} &bull; Over 1.5: <b>@{m3.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m3['league']})</span></div>
+              <div style="font-size:12px; color:#334155; line-height:1.7;">
+                <div style="margin-bottom:4px;">🔹 <b>Match 1</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &bull; Over 1.5: <b>@{m1.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']}) — Score O1.5: {m1.get('score_o15',0)}/100</span></div>
+                <div style="margin-bottom:4px;">🔹 <b>Match 2</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &bull; Over 1.5: <b>@{m2.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']}) — Score O1.5: {m2.get('score_o15',0)}/100</span></div>
+                <div>🔹 <b>Match 3</b> : <span style="color:#0284c7; font-weight:700;">{m3['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m3['dom']} vs {m3['ext']}</b> &bull; Over 1.5: <b>@{m3.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m3['league']}) — Score O1.5: {m3.get('score_o15',0)}/100</span></div>
               </div>
             </div>
             '''
@@ -743,17 +749,23 @@ def main():
     # Pré-construction HTML des tickets BTTS OUI (Doublés)
     combos_btts_html = ""
     if combos_btts:
+        current_sess_btts = None
         for idx, cb in enumerate(combos_btts, 1):
             m1, m2 = cb["m1"], cb["m2"]
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess_btts:
+                current_sess_btts = sess_label
+                dt_sess = datetime.strptime(sess_label, "%Y-%m-%d").strftime("%d/%m/%Y")
+                combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION DU {dt_sess} &amp; NUIT SUIVANTE</div>'
             combos_btts_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
                 <span style="font-weight:800; color:#0f172a; font-size:13px;">🚀 Doublé BTTS Oui #{idx} — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
-              <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:4px;">⚽ <b>Match 1</b> : {m1['dom']} vs {m1['ext']} &bull; BTTS Oui: <b>@{m1.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span></div>
-                <div>⚽ <b>Match 2</b> : {m2['dom']} vs {m2['ext']} &bull; BTTS Oui: <b>@{m2.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span></div>
+              <div style="font-size:12px; color:#334155; line-height:1.7;">
+                <div style="margin-bottom:4px;">⚽ <b>Match 1</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &bull; BTTS Oui: <b>@{m1.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']}) — Score BTTS: {m1.get('score_btts',0)}/100</span></div>
+                <div>⚽ <b>Match 2</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &bull; BTTS Oui: <b>@{m2.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']}) — Score BTTS: {m2.get('score_btts',0)}/100</span></div>
               </div>
             </div>
             '''
