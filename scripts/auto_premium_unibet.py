@@ -690,33 +690,62 @@ def main():
     rejected_rows_html = ""
     for idx, m in enumerate(non_retained_matches):
         bg = "#ffffff" if idx % 2 == 0 else "#f9fafb"
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else '<span style="color:#94a3b8;">N/A</span>')
         o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else '<span style="color:#94a3b8;">N/A</span>'
 
         score_v2 = m.get("ac_score", 0)
         prob_v2 = m.get("ac_prob", 0)
-        score_cell = f'<b>{score_v2}/100</b> <span style="font-size:10px; color:#64748b;">({prob_v2}%)</span>' if score_v2 > 0 else '<span style="color:#94a3b8;">N/A</span>'
+        if score_v2 >= 80:
+            score_badge = f'<span style="background:#f59e0b;color:#fff;font-weight:800;font-size:10px;padding:2px 7px;border-radius:10px;">{score_v2}/100</span>'
+        elif score_v2 >= 75:
+            score_badge = f'<span style="background:#10b981;color:#fff;font-weight:800;font-size:10px;padding:2px 7px;border-radius:10px;">{score_v2}/100</span>'
+        elif score_v2 > 0:
+            score_badge = f'<span style="background:#e2e8f0;color:#475569;font-weight:700;font-size:10px;padding:2px 7px;border-radius:10px;">{score_v2}/100</span>'
+        else:
+            score_badge = '<span style="color:#94a3b8;font-size:10px;">N/A</span>'
+        score_cell = f'{score_badge}<br><span style="font-size:10px;color:#64748b;">{prob_v2}% prob.</span>' if score_v2 > 0 else score_badge
 
         # Motif de rejet
         if m.get("rejection_reason"):
             reason = m.get("rejection_reason")
         elif score_v2 < 75 and score_v2 > 0:
-            reason = f"Score V2 insuffisant ({score_v2}/100 &lt; 75/100)"
+            reason = f"Score V2 trop bas ({score_v2}/100)"
         elif len(m.get("ac_red_flags", [])) > 0:
-            reason = f"⚠️ Red Flag: {', '.join(m.get('ac_red_flags'))}"
+            reason = f"⚠️ {', '.join(m.get('ac_red_flags'))}"
         else:
-            reason = "Cote ou données insuffisantes"
+            reason = "Cotes défavorables"
+
+        # 10 derniers matchs Dom + Ext en pills compactes
+        def make_pills(matches):
+            pills = []
+            for rm in matches[:10]:
+                hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
+                ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
+                tot = int(hg) + int(ag)
+                if tot >= 3:
+                    pills.append(f'<span style="background:#dcfce7;color:#166534;font-weight:700;font-size:10px;padding:1px 4px;border-radius:3px;display:inline-block;margin:1px;">{hg}-{ag}🔥</span>')
+                else:
+                    pills.append(f'<span style="background:#f1f5f9;color:#94a3b8;font-size:10px;padding:1px 4px;border-radius:3px;display:inline-block;margin:1px;">{hg}-{ag}</span>')
+            return "".join(pills) if pills else ""
+
+        h_pills = make_pills(m.get("recent_h_dom", []))
+        a_pills = make_pills(m.get("recent_a_ext", []))
+        if h_pills or a_pills:
+            scores_cell = (
+                f'<div style="margin-bottom:3px;"><b style="font-size:10px;color:#334155;">🏠</b> {h_pills}</div>'
+                f'<div><b style="font-size:10px;color:#334155;">✈️</b> {a_pills}</div>'
+            )
+        else:
+            scores_cell = '<span style="color:#94a3b8;font-size:10px;">—</span>'
 
         rejected_rows_html += (
-            f'<tr style="background:{bg}; border-bottom:1px solid #e5e7eb;">'
+            f'<tr style="background:{bg}; border-bottom:1px solid #e5e7eb; vertical-align:top;">'
             f'<td style="padding:7px 8px; color:#6b7280; white-space:nowrap; font-size:11px;">{m["date_str"]}</td>'
             f'<td style="padding:7px 8px; font-weight:600; color:#374151; font-size:12px;">{m["dom"]} vs {m["ext"]}'
             f'<br><span style="font-size:10px; color:#9ca3af;">{m["league"]}</span></td>'
-            f'<td style="padding:7px 8px; text-align:center; font-size:11px;">{score_cell}</td>'
+            f'<td style="padding:7px 8px; text-align:center;">{score_cell}</td>'
             f'<td style="padding:7px 8px; text-align:center; font-size:11px; font-weight:600;">{o25_val}</td>'
-            f'<td style="padding:7px 8px; text-align:left; color:#dc2626; font-size:11px; font-weight:600;">{reason}</td>'
+            f'<td style="padding:7px 8px;">{scores_cell}</td>'
+            f'<td style="padding:7px 8px; color:#dc2626; font-size:11px; font-weight:600;">{reason}</td>'
             f'</tr>'
         )
 
@@ -805,8 +834,9 @@ def main():
                 <tr style="background:#f1f5f9; color:#475569; text-transform:uppercase; font-size:10px; font-weight:700; border-bottom:1px solid #cbd5e1;">
                   <th style="padding:8px 10px; text-align:left;">Date</th>
                   <th style="padding:8px 10px; text-align:left;">Match &amp; Ligue</th>
-                  <th style="padding:8px 10px; text-align:center;">Score V2 / Prob (%)</th>
+                  <th style="padding:8px 10px; text-align:center;">Score V2</th>
                   <th style="padding:8px 10px; text-align:center;">Over 2.5</th>
+                  <th style="padding:8px 10px; text-align:left;">10 Derniers Scores</th>
                   <th style="padding:8px 10px; text-align:left;">Raison du Rejet</th>
                 </tr>
               </thead>
