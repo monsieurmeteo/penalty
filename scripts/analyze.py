@@ -36,20 +36,53 @@ ALIASES = {
     "uni": "universidad",
     "indep": "independiente",
     "sp": "sporting",
-# Dictionnaire étendu des abréviations & traductions FR/EN
-ALIASES.update({
+    # Abréviations FR/EN étendues
     "wolverhampton": "wolves",
     "manchester": "man",
     "united": "utd",
     "munich": "munchen",
     "paris": "psg",
-    "saint": "st",
     "sheffield": "sheff",
     "birmingham": "birmingham",
     "deportivo": "dep",
     "universidad": "uni",
     "atletico": "atl",
-})
+}
+
+def clean_str(s):
+    if not s: return ""
+    s = unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII')
+    s = s.lower().replace("-", " ").replace(".", " ").replace("_", " ")
+    words = s.split()
+    cleaned = []
+    for w in words:
+        if w in ["fc", "bk", "if", "sc", "ac", "fk", "cd", "sk", "cf", "sv", "v", "vs", "contre", "pec", "ca", "csd", "acs", "msk", "kv"]:
+            continue
+        cleaned.append(ALIASES.get(w, w))
+    return " ".join(cleaned)
+
+def similarity(a, b):
+    a_c = clean_str(a)
+    b_c = clean_str(b)
+    if not a_c or not b_c:
+        return 0.0
+    if a_c == b_c:
+        return 1.0
+    if a_c in b_c or b_c in a_c:
+        return 0.95
+    tokens_a = set(a_c.split())
+    tokens_b = set(b_c.split())
+    if tokens_a and tokens_b and (tokens_a.issubset(tokens_b) or tokens_b.issubset(tokens_a)):
+        return 0.90
+    return SequenceMatcher(None, a_c, b_c).ratio()
+
+def fetch(url, headers=HEADERS):
+    try:
+        r = requests.get(url, headers=headers, timeout=8)
+        res = r.json() if r.status_code == 200 else {}
+        return res if isinstance(res, (dict, list)) else {}
+    except Exception:
+        return {}
 
 def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None):
     if not fixtures_data or not isinstance(fixtures_data, dict):
