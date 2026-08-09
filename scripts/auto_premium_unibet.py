@@ -317,33 +317,33 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% basée sur la Probabilité Calibrée AdamChoi >= 70% ──
-    # Seul critère : ac_prob (probabilité 3+ buts calibrée) >= 70%
-    # Les matchs sans données AdamChoi (ac_prob = 0) sont rejetés.
+    # ── Sélection 100% Score AdamChoi >= 75/100 (méthode d'hier) ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
+    # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        ac_prob = r.get("ac_prob", 0)
+        ac_score = r.get("ac_score", 0)
 
-        if ac_prob >= 70:
+        if ac_score >= 75:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if ac_prob > 0:
-                r["rejection_reason"] = f"Probabilité AdamChoi insuffisante ({ac_prob:.0f}% < 70%)"
+            if ac_score > 0:
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: x.get("ac_prob", 0), reverse=True)
+    s3_matches.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
 
     hybrid_option_b_matches = s3_matches
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Probabilité AdamChoi >= 70%) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
