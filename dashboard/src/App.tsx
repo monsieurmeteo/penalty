@@ -180,12 +180,387 @@ function LiveCard({ m }: { m: Match }) {
   );
 }
 
+// ── LIVE MONDE TAB ───────────────────────────────────────────────────────────
+interface LSIncident {
+  IT: number;
+  Nm: number; // 1 = Dom, 2 = Ext
+  Pid?: string;
+  Pidt?: string;
+  Stat?: number;
+  NoP?: boolean;
+}
+interface LSEvent {
+  Eid: string; T1: {Nm:string}[]; T2: {Nm:string}[];
+  Tr1?: string; Tr2?: string; Eps?: string; Trh1?: string; Trh2?: string;
+  'Inc-f'?: Record<string, LSIncident[]>;
+}
+interface LSStage { Snm: string; Cnm: string; Events: LSEvent[]; }
+
+function LiveMondeTab() {
+  const [stages, setStages] = useState<LSStage[]>([]);
+  const [lastFetch, setLastFetch] = useState('');
+  const [search, setSearch] = useState('');
+  const [filterState, setFilterState] = useState<'all'|'live'|'upcoming'>('all');
+  const [selectedMatch, setSelectedMatch] = useState<{ ev: LSEvent; stage: LSStage } | null>(null);
+
+  const load = async () => {
+    try {
+      const r = await fetch('/api/live?t=' + Date.now());
+      const data = await r.json();
+      const st = data.Stages ?? [];
+      setStages(st);
+      setLastFetch(new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'}));
+      
+      // Update selectedMatch if open
+      if (selectedMatch) {
+        for (const s of st) {
+          const found = s.Events.find(e => e.Eid === selectedMatch.ev.Eid);
+          if (found) {
+            setSelectedMatch({ ev: found, stage: s });
+            break;
+          }
+        }
+      }
+    } catch {}
+  };
+
+  useEffect(() => {
+    load();
+    const id = setInterval(load, 15_000);
+    return () => clearInterval(id);
+  }, []);
+
+  const FINISHED = ['FT','AET','AP','PEN','Postp.','Canc.','CANC','ABD'];
+  const isLive = (eps?: string) => !!eps && !['NS','FT','AET','AP','PEN','Postp.','Canc.','CANC','ABD','HT'].includes(eps) && eps !== 'HT';
+  const isHT = (eps?: string) => eps === 'HT';
+  const isNS = (eps?: string) => eps === 'NS';
+  const isFin = (eps?: string) => !!eps && FINISHED.includes(eps);
+
+  const filtered = stages
+    .map(st => ({
+      ...st,
+      Events: st.Events.filter(ev => {
+        const eps = ev.Eps ?? 'NS';
+        const matchesFilter =
+          filterState === 'all' ? true :
+          filterState === 'live' ? (isLive(eps) || isHT(eps)) :
+          isNS(eps);
+        const q = search.toLowerCase();
+        const matchesSearch = !q || ev.T1[0]?.Nm.toLowerCase().includes(q) || ev.T2[0]?.Nm.toLowerCase().includes(q) || st.Snm.toLowerCase().includes(q) || st.Cnm.toLowerCase().includes(q);
+        return matchesFilter && matchesSearch && !isFin(eps);
+      })
+    }))
+    .filter(st => st.Events.length > 0);
+
+  const totalLive = stages.flatMap(s => s.Events).filter(e => isLive(e.Eps) || isHT(e.Eps)).length;
+  const totalNS = stages.flatMap(s => s.Events).filter(e => isNS(e.Eps)).length;
+
+  // Helper pour extraire les incidents (buts, cartons, changements)
+  const getAllEventsChronological = (ev: LSEvent) => {
+    const incs = ev['Inc-f'];
+    if (!incs) return [];
+    const list: { type: string; label: string; icon: string; minute: number; team: 1 | 2; player?: string; player2?: string }[] = [];
+
+    // Type 2 = Buts / Penalties
+    (incs['2'] || []).forEach(i => {
+      const isPen = i.Stat === 15;
+      const isOg = i.Stat === 6;
+      list.push({
+        type: isPen ? 'penalty' : isOg ? 'og' : 'goal',
+        label: isPen ? 'Penalty marqué' : isOg ? 'But contre son camp' : 'But',
+        icon: isPen ? '🎯' : isOg ? '🔄' : '⚽',
+        minute: i.IT,
+        team: i.Nm as 1 | 2,
+        player: i.Pid,
+        player2: i.Pidt
+      });
+    });
+
+    // Type 4 = Cartons jaunes
+    (incs['4'] || []).forEach(i => {
+      list.push({
+        type: 'yellow',
+        label: 'Carton jaune',
+        icon: '🟨',
+        minute: i.IT,
+        team: i.Nm as 1 | 2,
+        player: i.Pid
+      });
+    });
+
+    // Type 5 / 8 = Cartons rouges
+    (incs['5'] || []).forEach(i => {
+      list.push({
+        type: 'red',
+        label: 'Carton rouge',
+        icon: '🟥',
+        minute: i.IT,
+        team: i.Nm as 1 | 2,
+        player: i.Pid
+      });
+    });
+    (incs['8'] || []).forEach(i => {
+      list.push({
+        type: 'red',
+        label: '2ème carton jaune → Rouge',
+        icon: '🟨🟥',
+        minute: i.IT,
+        team: i.Nm as 1 | 2,
+        player: i.Pid
+      });
+    });
+
+    // Type 7 = Changements
+    (incs['7'] || []).forEach(i => {
+      list.push({
+        type: 'sub',
+        label: 'Remplacement',
+        icon: '🔁',
+        minute: i.IT,
+        team: i.Nm as 1 | 2,
+        player: i.Pid,   // Entrant
+        player2: i.Pidt  // Sortant
+      });
+    });
+
+    return list.sort((a, b) => a.minute - b.minute);
+  };
+
+  const getIncidents = (ev: LSEvent, teamNum: 1 | 2) => {
+    return getAllEventsChronological(ev).filter(i => i.team === teamNum);
+  };
+
+  return (
+    <div style={{padding: '0 0 24px'}}>
+      {/* Toolbar */}
+      <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:20, flexWrap:'wrap'}}>
+        <div style={{display:'flex', gap:6}}>
+          {(['all','live','upcoming'] as const).map(f => (
+            <button key={f} onClick={() => setFilterState(f)}
+              style={{padding:'6px 14px', borderRadius:8, border:'none', cursor:'pointer', fontSize:12, fontWeight:700,
+                background: filterState === f ? '#f0b429' : 'rgba(255,255,255,0.07)',
+                color: filterState === f ? '#060914' : '#94a3b8'}}>
+              {f === 'all' ? `Tous (${totalLive + totalNS})` : f === 'live' ? `🔴 Live (${totalLive})` : `🕒 À venir (${totalNS})`}
+            </button>
+          ))}
+        </div>
+        <div style={{position:'relative', flex:1, minWidth:180}}>
+          <input value={search} onChange={e => setSearch(e.target.value)}
+            placeholder="🔍 Équipe, pays, ligue…"
+            style={{width:'100%', background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)',
+              borderRadius:8, padding:'7px 12px', color:'#e2e8f0', fontSize:13, outline:'none', boxSizing:'border-box'}} />
+        </div>
+        <span style={{fontSize:11, color:'#475569', whiteSpace:'nowrap'}}>↻ {lastFetch || '…'}</span>
+      </div>
+
+      {/* Leagues */}
+      {filtered.length === 0 ? (
+        <div style={{textAlign:'center', padding:'60px 0', color:'#475569'}}>
+          <div style={{fontSize:40, marginBottom:12}}>⚽</div>
+          <div style={{fontSize:14}}>Aucun match correspondant</div>
+        </div>
+      ) : filtered.map((st, si) => (
+        <div key={si} style={{marginBottom:16, background:'rgba(255,255,255,0.03)', borderRadius:12, border:'1px solid rgba(255,255,255,0.07)', overflow:'hidden'}}>
+          {/* League header */}
+          <div style={{padding:'8px 14px', background:'rgba(255,255,255,0.04)', display:'flex', alignItems:'center', gap:8, borderBottom:'1px solid rgba(255,255,255,0.06)'}}>
+            <span style={{fontSize:15}}>{getLeagueFlag(st.Cnm)}</span>
+            <span style={{fontSize:11, fontWeight:700, color:'#64748b', textTransform:'uppercase', letterSpacing:1}}>{st.Cnm}</span>
+            <span style={{fontSize:11, color:'#475569', marginLeft:2}}>· {st.Snm}</span>
+            <span style={{marginLeft:'auto', fontSize:11, color:'#475569'}}>{st.Events.length} match{st.Events.length > 1 ? 's' : ''}</span>
+          </div>
+          {/* Events */}
+          {st.Events.map((ev, ei) => {
+            const eps = ev.Eps ?? 'NS';
+            const live = isLive(eps);
+            const ht = isHT(eps);
+            const pct = live ? Math.min((parseInt(eps) / 90) * 100, 100) : ht ? 50 : 0;
+
+            const homeIncs = getIncidents(ev, 1);
+            const awayIncs = getIncidents(ev, 2);
+
+            return (
+              <div 
+                key={ei} 
+                onClick={() => setSelectedMatch({ ev, stage: st })}
+                style={{
+                  padding:'12px 14px', 
+                  borderBottom: ei < st.Events.length - 1 ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                  cursor: 'pointer',
+                  transition: 'background 0.2s',
+                }}
+                className="match-row-hover"
+              >
+                <div style={{display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center', gap:8}}>
+                  {/* Home */}
+                  <div style={{textAlign:'right', fontSize:13, fontWeight:600, color:'#e2e8f0', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                    {ev.T1[0]?.Nm ?? '?'}
+                  </div>
+                  {/* Score/Time block */}
+                  <div style={{textAlign:'center', minWidth:90}}>
+                    {eps === 'NS' ? (
+                      <div style={{fontSize:12, color:'#64748b', fontWeight:600}}>À venir</div>
+                    ) : (
+                      <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:2}}>
+                        <div style={{display:'flex', alignItems:'center', gap:6}}>
+                          {(live || ht) && <div style={{width:6, height:6, borderRadius:'50%', background:'#ef4444', animation:'pulse 1.5s infinite'}} />}
+                          <span style={{fontSize:18, fontWeight:800, color: live || ht ? '#f1f5f9' : '#94a3b8', letterSpacing:1}}>
+                            {ev.Tr1 ?? '0'} – {ev.Tr2 ?? '0'}
+                          </span>
+                        </div>
+                        <div style={{fontSize:10, fontWeight:700, color: live ? '#f0b429' : ht ? '#60a5fa' : '#64748b'}}>
+                          {ht ? 'MI-TEMPS' : live ? eps : eps}
+                        </div>
+                        {(live || ht) && (
+                          <div style={{width:70, height:3, background:'rgba(255,255,255,0.08)', borderRadius:2, marginTop:2}}>
+                            <div style={{width:`${pct}%`, height:'100%', background:'#f0b429', borderRadius:2, transition:'width 1s'}} />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  {/* Away */}
+                  <div style={{textAlign:'left', fontSize:13, fontWeight:600, color:'#e2e8f0', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                    {ev.T2[0]?.Nm ?? '?'}
+                  </div>
+                </div>
+
+                {/* Events list preview */}
+                {(homeIncs.length > 0 || awayIncs.length > 0) && (
+                  <div style={{display:'grid', gridTemplateColumns:'1fr 90px 1fr', gap:8, marginTop:6, fontSize:11, color:'#94a3b8'}}>
+                    <div style={{textAlign:'right', display:'flex', flexDirection:'column', gap:2}}>
+                      {homeIncs.map((inc, ii) => (
+                        <div key={ii}>
+                          {inc.player ? `${inc.player} ` : ''}
+                          <span style={{fontWeight:700, color:'#cbd5e1'}}>{inc.minute}'</span>
+                          {inc.icon}
+                        </div>
+                      ))}
+                    </div>
+                    <div></div>
+                    <div style={{textAlign:'left', display:'flex', flexDirection:'column', gap:2}}>
+                      {awayIncs.map((inc, ii) => (
+                        <div key={ii}>
+                          {inc.icon} <span style={{fontWeight:700, color:'#cbd5e1'}}>{inc.minute}'</span>
+                          {inc.player ? ` ${inc.player}` : ''}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+
+      {/* ── MODAL MATCH DETAIL (LIVESCORE DATA ONLY) ── */}
+      {selectedMatch && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 9999,
+          background: 'rgba(6, 9, 20, 0.85)', backdropFilter: 'blur(8px)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16
+        }} onClick={() => setSelectedMatch(null)}>
+          <div style={{
+            background: '#0d1322', border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 16, width: '100%', maxWidth: 580, maxHeight: '90vh',
+            overflowY: 'auto', padding: 24, boxShadow: '0 20px 50px rgba(0,0,0,0.8)',
+            position: 'relative'
+          }} onClick={e => e.stopPropagation()}>
+            
+            {/* Close btn */}
+            <button onClick={() => setSelectedMatch(null)} style={{
+              position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.08)',
+              border: 'none', color: '#94a3b8', width: 32, height: 32, borderRadius: '50%',
+              cursor: 'pointer', fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>✕</button>
+
+            {/* Header */}
+            <div style={{display:'flex', alignItems:'center', gap:8, color:'#64748b', fontSize:12, fontWeight:700, marginBottom:16}}>
+              <span style={{fontSize:18}}>{getLeagueFlag(selectedMatch.stage.Cnm)}</span>
+              <span>{selectedMatch.stage.Cnm.toUpperCase()}</span>
+              <span>·</span>
+              <span>{selectedMatch.stage.Snm}</span>
+            </div>
+
+            {/* Scoreboard */}
+            <div style={{
+              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 12, padding: 20, textAlign: 'center', marginBottom: 20
+            }}>
+              <div style={{display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 12}}>
+                <div style={{fontSize: 16, fontWeight: 700, color: '#f8fafc'}}>{selectedMatch.ev.T1[0]?.Nm}</div>
+                <div>
+                  <div style={{fontSize: 32, fontWeight: 800, color: '#f0b429', letterSpacing: 2}}>
+                    {selectedMatch.ev.Tr1 ?? '0'} – {selectedMatch.ev.Tr2 ?? '0'}
+                  </div>
+                  <div style={{fontSize: 12, fontWeight: 700, color: isLive(selectedMatch.ev.Eps) ? '#ef4444' : '#64748b', marginTop: 4}}>
+                    {isLive(selectedMatch.ev.Eps) ? `🔴 EN DIRECT (${selectedMatch.ev.Eps})` : isHT(selectedMatch.ev.Eps) ? '⏸️ MI-TEMPS' : isNS(selectedMatch.ev.Eps) ? '🕒 À venir' : selectedMatch.ev.Eps}
+                  </div>
+                </div>
+                <div style={{fontSize: 16, fontWeight: 700, color: '#f8fafc'}}>{selectedMatch.ev.T2[0]?.Nm}</div>
+              </div>
+
+              {(selectedMatch.ev.Trh1 !== undefined || selectedMatch.ev.Trh2 !== undefined) && (
+                <div style={{marginTop: 12, fontSize: 11, color: '#64748b'}}>
+                  Score à la mi-temps : <strong style={{color: '#94a3b8'}}>{selectedMatch.ev.Trh1 ?? '0'} - {selectedMatch.ev.Trh2 ?? '0'}</strong>
+                </div>
+              )}
+            </div>
+
+            {/* Timeline Events / Incidents */}
+            <div style={{fontSize: 13, fontWeight: 700, color: '#e2e8f0', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8}}>
+              <span>⚡ Événements & Chronologie du match (LiveScore)</span>
+            </div>
+
+            {getAllEventsChronological(selectedMatch.ev).length === 0 ? (
+              <div style={{textAlign: 'center', padding: '30px 0', color: '#475569', fontSize: 13, background: 'rgba(255,255,255,0.02)', borderRadius: 10}}>
+                Aucun incident enregistré (buts, cartons, penaltys) pour l'instant.
+              </div>
+            ) : (
+              <div style={{display: 'flex', flexDirection: 'column', gap: 8}}>
+                {getAllEventsChronological(selectedMatch.ev).map((inc, idx) => (
+                  <div key={idx} style={{
+                    display: 'flex', alignItems: 'center', gap: 12,
+                    padding: '10px 14px', background: 'rgba(255,255,255,0.03)',
+                    borderRadius: 8, border: '1px solid rgba(255,255,255,0.05)'
+                  }}>
+                    <span style={{fontSize: 18}}>{inc.icon}</span>
+                    <div style={{flex: 1}}>
+                      <div style={{fontSize: 12, fontWeight: 700, color: '#f1f5f9'}}>
+                        {inc.player || inc.label}
+                        {inc.player2 && <span style={{color: '#94a3b8', fontWeight: 400}}> ({inc.type === 'sub' ? `sortant: ${inc.player2}` : `passe: ${inc.player2}`})</span>}
+                      </div>
+                      <div style={{fontSize: 10, color: '#64748b'}}>
+                        {inc.team === 1 ? selectedMatch.ev.T1[0]?.Nm : selectedMatch.ev.T2[0]?.Nm} · {inc.label}
+                      </div>
+                    </div>
+                    <span style={{
+                      fontSize: 12, fontWeight: 800, color: '#f0b429',
+                      background: 'rgba(240,180,41,0.1)', padding: '2px 8px', borderRadius: 6
+                    }}>
+                      {inc.minute}'
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div style={{marginTop: 20, textAlign: 'center'}}>
+              <span style={{fontSize: 10, color: '#475569'}}>Données en direct 100% officielles LiveScore (ID: {selectedMatch.ev.Eid})</span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── MAIN APP ──────────────────────────────────────────────────────────────────
 export default function App() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<'selected' | 'rejected' | 'history' | 'leagues'>('selected');
+  const [tab, setTab] = useState<'selected' | 'rejected' | 'history' | 'leagues' | 'live'>('selected');
   const [search, setSearch] = useState('');
   const [leagueFilter, setLeagueFilter] = useState('ALL');
 
@@ -377,20 +752,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* ── LIVE SECTION ─────────────────────────── */}
-        {liveMatches.length > 0 && (
-          <div className="live-section">
-            <div className="section-label">
-              <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#ef4444', display: 'inline-block', animation: 'live-pulse 1.5s infinite' }} />
-                MATCHS EN DIRECT ({liveMatches.length})
-              </span>
-            </div>
-            <div className="live-cards">
-              {liveMatches.map(m => <LiveCard key={m.id} m={m} />)}
-            </div>
-          </div>
-        )}
+
 
         {/* ── TABS PANEL ───────────────────────────── */}
         <div className="panel-card">
@@ -416,10 +778,15 @@ export default function App() {
               Championnats
               <span className="tab-count">{league_stats.length}</span>
             </button>
+            <button className={`tab-btn ${tab === 'live' ? 'active' : ''}`} onClick={() => setTab('live')}
+              style={tab === 'live' ? {} : {borderColor:'rgba(239,68,68,0.3)'}}>
+              <div style={{width:7,height:7,borderRadius:'50%',background:'#ef4444',animation:'pulse 1.5s infinite',flexShrink:0}} />
+              Live Monde
+            </button>
           </div>
 
           {/* Search toolbar */}
-          {tab !== 'leagues' && (
+          {tab !== 'leagues' && tab !== 'live' && (
             <div className="table-toolbar">
               <div className="search-wrap">
                 {Icon.Search}
@@ -605,6 +972,9 @@ export default function App() {
               ))}
             </div>
           )}
+
+          {/* ── TAB: LIVE MONDE ── */}
+          {tab === 'live' && <LiveMondeTab />}
 
           {/* Update bar */}
           <div className="update-bar">
