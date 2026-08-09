@@ -111,7 +111,7 @@ def scan_unibet_match_details(game):
             return None
 
         c1, cx, c2 = None, None, None
-        over25, under25 = None, None
+        over15, over25, under25 = None, None, None
         s22 = None
         btts_oui, btts_non = None, None
         start_iso = ""
@@ -247,7 +247,8 @@ def scan_unibet_match_details(game):
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
             }
-    except Exception:
+    except Exception as e:
+        print(f"❌ ERROR scanning {game.get('url')}: {e}")
         return None
     return None
 
