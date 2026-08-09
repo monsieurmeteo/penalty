@@ -472,6 +472,8 @@ def main():
             c1 = m1["over25"]
             best_partner = None
             best_diff = 999.0
+            fallback_partner = None
+            fallback_diff = 999.0
             for m2 in valid_matches[i+1:]:
                 if m2["id"] in used_ids: continue
                 c2 = m2["over25"]
@@ -481,12 +483,19 @@ def main():
                     if diff < best_diff:
                         best_diff = diff
                         best_partner = m2
-            if best_partner:
+                else:
+                    # Fallback : garder la meilleure paire meme sous 2.20
+                    diff = abs(comb - 2.20)
+                    if diff < fallback_diff:
+                        fallback_diff = diff
+                        fallback_partner = m2
+            chosen = best_partner or fallback_partner
+            if chosen:
                 used_ids.add(m1["id"])
-                used_ids.add(best_partner["id"])
-                comb_odds = round(m1["over25"] * best_partner["over25"], 2)
+                used_ids.add(chosen["id"])
+                comb_odds = round(m1["over25"] * chosen["over25"], 2)
                 combos_2matches.append({
-                    "session": s_key, "m1": m1, "m2": best_partner,
+                    "session": s_key, "m1": m1, "m2": chosen,
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
@@ -503,6 +512,8 @@ def main():
     for s_key, s_matches in sorted(sessions_o15.items()):
         used_ids = set()
         valid = [m for m in s_matches if m.get("over15", 1.25) > 1.0]
+        best_triple = None
+        best_triple_odds = 0.0
         for i in range(len(valid)):
             m1 = valid[i]
             if m1["id"] in used_ids: continue
@@ -525,7 +536,18 @@ def main():
                             "comb_odds": comb, "stake": 5.0, "gain": round(5.0 * comb, 2), "profit": round(5.0 * comb - 5.0, 2)
                         })
                         break
+                    elif comb > best_triple_odds:
+                        # Garder le meilleur triple meme sous 1.90 (fallback)
+                        best_triple_odds = comb
+                        best_triple = (m1, m2, m3, comb)
                 if m1["id"] in used_ids: break
+        # Fallback : si aucun triple n'atteint 1.90, prendre le meilleur disponible
+        if not combos_o15 and best_triple and len(valid) >= 3:
+            m1, m2, m3, comb = best_triple
+            combos_o15.append({
+                "session": s_key, "m1": m1, "m2": m2, "m3": m3,
+                "comb_odds": comb, "stake": 5.0, "gain": round(5.0 * comb, 2), "profit": round(5.0 * comb - 5.0, 2)
+            })
 
     # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
     btts_candidates = [m for m in scanned_results if m.get("btts_oui") and m.get("btts_non") and m["btts_oui"] < m["btts_non"] and m.get("ac_score", 0) >= 50]
@@ -545,6 +567,8 @@ def main():
             b1 = m1["btts_oui"]
             best_partner = None
             best_diff = 999.0
+            fallback_partner = None
+            fallback_diff = 999.0
             for m2 in valid[i+1:]:
                 if m2["id"] in used_ids: continue
                 b2 = m2["btts_oui"]
@@ -554,12 +578,18 @@ def main():
                     if diff < best_diff:
                         best_diff = diff
                         best_partner = m2
-            if best_partner:
+                else:
+                    diff = abs(comb - 2.60)
+                    if diff < fallback_diff:
+                        fallback_diff = diff
+                        fallback_partner = m2
+            chosen = best_partner or fallback_partner
+            if chosen:
                 used_ids.add(m1["id"])
-                used_ids.add(best_partner["id"])
-                comb_odds = round(m1["btts_oui"] * best_partner["btts_oui"], 2)
+                used_ids.add(chosen["id"])
+                comb_odds = round(m1["btts_oui"] * chosen["btts_oui"], 2)
                 combos_btts.append({
-                    "session": s_key, "m1": m1, "m2": best_partner,
+                    "session": s_key, "m1": m1, "m2": chosen,
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
