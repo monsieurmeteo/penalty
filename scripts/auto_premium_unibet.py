@@ -323,6 +323,8 @@ def main():
                     m["pts_league"] = res.get("pts_league", 0)
                     m["recent_h_dom"] = res.get("recent_h_dom", [])
                     m["recent_a_ext"] = res.get("recent_a_ext", [])
+                    m["freq_o15"] = res.get("freq_o15", 0.0)
+                    m["freq_btts"] = res.get("freq_btts", 0.0)
             except Exception:
                 pass
         return m
@@ -500,8 +502,12 @@ def main():
                 })
 
     # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote Min 1.90 — Stake 5€) ──
-    o15_candidates = [m for m in scanned_results if 50 <= m.get("ac_score", 0) < 75]
-    o15_candidates.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    # Méthode YouTube 70% : freq_o15 = % des 10 derniers matchs Dom/Ext avec >= 2 buts (AdamChoi)
+    o15_candidates = [m for m in scanned_results if m.get("freq_o15", 0) >= 70]
+    # Fallback si aucun match à 70% : prendre freq_o15 >= 60
+    if not o15_candidates:
+        o15_candidates = [m for m in scanned_results if m.get("freq_o15", 0) >= 60]
+    o15_candidates.sort(key=lambda x: x.get("freq_o15", 0), reverse=True)
     sessions_o15 = {}
     for m in o15_candidates:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -550,8 +556,12 @@ def main():
             })
 
     # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
-    btts_candidates = [m for m in scanned_results if m.get("btts_oui") and m.get("btts_non") and m["btts_oui"] < m["btts_non"] and m.get("ac_score", 0) >= 50]
-    btts_candidates.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    # Méthode YouTube 70% : freq_btts = % des 10 derniers matchs Dom/Ext où les 2 équipes marquent (AdamChoi)
+    btts_candidates = [m for m in scanned_results if m.get("freq_btts", 0) >= 70 and m.get("btts_oui")]
+    # Fallback si aucun match à 70% : prendre freq_btts >= 60 ET btts_oui < btts_non
+    if not btts_candidates:
+        btts_candidates = [m for m in scanned_results if m.get("freq_btts", 0) >= 60 and m.get("btts_oui") and m.get("btts_non") and m["btts_oui"] < m["btts_non"]]
+    btts_candidates.sort(key=lambda x: x.get("freq_btts", 0), reverse=True)
     sessions_btts = {}
     for m in btts_candidates:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)

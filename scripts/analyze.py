@@ -264,9 +264,47 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                     except Exception: pass
         return cnt
 
+    def count_o15(matches_list):
+        cnt = 0
+        if isinstance(matches_list, list):
+            for m in matches_list:
+                if isinstance(m, dict):
+                    gh = m.get("homeGoals", m.get("homeGoalsFt", 0))
+                    ga = m.get("awayGoals", m.get("awayGoalsFt", 0))
+                    try:
+                        if (int(gh) + int(ga)) >= 2: cnt += 1
+                    except Exception: pass
+        return cnt
+
+    def count_btts(matches_list):
+        cnt = 0
+        if isinstance(matches_list, list):
+            for m in matches_list:
+                if isinstance(m, dict):
+                    gh = m.get("homeGoals", m.get("homeGoalsFt", 0))
+                    ga = m.get("awayGoals", m.get("awayGoalsFt", 0))
+                    try:
+                        if int(gh) >= 1 and int(ga) >= 1: cnt += 1
+                    except Exception: pass
+        return cnt
+
     o25_h_cnt = count_o25(recent_h_all[:20])
     o25_a_cnt = count_o25(recent_a_all[:20])
     o25_avg_rate = (((o25_h_cnt / max(1, len(recent_h_all[:20]))) + (o25_a_cnt / max(1, len(recent_a_all[:20])))) / 2.0) * 100
+
+    # ── Calcul fréquence Over 1.5 sur 10 matchs Dom/Ext (méthode YouTube 70%) ──
+    o15_h_cnt = count_o15(recent_h_dom[:10])
+    o15_a_cnt = count_o15(recent_a_ext[:10])
+    freq_o15_dom = (o15_h_cnt / max(1, len(recent_h_dom[:10]))) * 100
+    freq_o15_ext = (o15_a_cnt / max(1, len(recent_a_ext[:10]))) * 100
+    freq_o15 = round((freq_o15_dom + freq_o15_ext) / 2.0, 1)
+
+    # ── Calcul fréquence BTTS sur 10 matchs Dom/Ext (méthode YouTube 70%) ──
+    btts_h_cnt = count_btts(recent_h_dom[:10])
+    btts_a_cnt = count_btts(recent_a_ext[:10])
+    freq_btts_dom = (btts_h_cnt / max(1, len(recent_h_dom[:10]))) * 100
+    freq_btts_ext = (btts_a_cnt / max(1, len(recent_a_ext[:10]))) * 100
+    freq_btts = round((freq_btts_dom + freq_btts_ext) / 2.0, 1)
 
     xg_total = xg_a + ga_b*0.5 + xg_b + ga_a*0.5
     sot_total = sot_a + sot_b
@@ -410,7 +448,9 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "verdict": verdict,
             "red_flags": red_flags,
             "recent_h_dom": recent_h_dom[:10],
-            "recent_a_ext": recent_a_ext[:10]
+            "recent_a_ext": recent_a_ext[:10],
+            "freq_o15": freq_o15,
+            "freq_btts": freq_btts,
         }
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
