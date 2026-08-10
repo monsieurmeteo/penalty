@@ -294,14 +294,25 @@ def main():
         from analyze import analyze_pure_stats_20
         r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
         d_fx = r_fx.json() if r_fx.status_code == 200 else None
+        # Fetch global des arbitres désignés — une seule requête pour tous les matchs
+        r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
+        refs_raw = r_refs.json() if r_refs.status_code == 200 else {}
+        d_refs = {}
+        for date_block in refs_raw.get("dates", []):
+            for lg in date_block.get("leagues", []):
+                for fx in lg.get("fixtures", []):
+                    eid = str(fx.get("externalid", ""))
+                    if eid and fx.get("refereeId"):
+                        d_refs[eid] = {"refereeId": fx["refereeId"], "refereeName": fx.get("refereeName", "Inconnu")}
     except Exception:
         analyze_pure_stats_20 = None
         d_fx = None
+        d_refs = {}
 
     def enrich_adamchoi(m):
         if analyze_pure_stats_20:
             try:
-                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True, match_dt=m.get("dt_obj"), unibet_league=m.get("league", ""))
+                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True, match_dt=m.get("dt_obj"), unibet_league=m.get("league", ""), d_refs=d_refs)
                 if res:
                     m["ac_score"] = res.get("score", 0)
                     m["ac_classe"] = res.get("classe", "")
@@ -327,6 +338,10 @@ def main():
                     m["freq_btts"] = res.get("freq_btts", 0.0)
                     m["score_o15"] = res.get("score_o15", 0)
                     m["score_btts"] = res.get("score_btts", 0)
+                    m["score_penalty"] = res.get("score_penalty", 0)
+                    m["ref_name"] = res.get("ref_name", "Inconnu")
+                    m["pen_per_match"] = res.get("pen_per_match", 0.0)
+                    m["avg_booking"] = res.get("avg_booking", 0.0)
             except Exception:
                 pass
         return m
@@ -637,6 +652,46 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
+    # ── 4. GENERATION COMBINES PENALTY (2 Matchs — Cote Min 2.40 — Stake 4€) ──
+    # Barème V2 Penalty /100 : Arbitre (40pts) + Cartons H2H (30pts) + SOT (20pts) + Buts (10pts)
+    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("over25")]
+    if not pen_candidates:
+        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("over25")]
+    pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+    sessions_pen = {}
+    for m in pen_candidates:
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        s_key = get_betting_session_key(m_dt)
+        sessions_pen.setdefault(s_key, []).append(m)
+    sessions_pen = upgrade_sessions_to_day(sessions_pen)
+    combos_pen = []
+    for s_key, s_matches in sorted(sessions_pen.items()):
+        used_ids = set()
+        for i, m1 in enumerate(s_matches):
+            if m1["id"] in used_ids: continue
+            o1 = m1.get("over25") or 1.5
+            best_partner = None; best_diff = 999.0
+            fallback_partner = None; fallback_diff = 999.0
+            for m2 in s_matches[i+1:]:
+                if m2["id"] in used_ids: continue
+                o2 = m2.get("over25") or 1.5
+                comb = round(o1 * o2, 2)
+                if comb >= 2.40:
+                    diff = abs(comb - 2.60)
+                    if diff < best_diff: best_diff = diff; best_partner = m2
+                else:
+                    diff = abs(comb - 2.40)
+                    if diff < fallback_diff: fallback_diff = diff; fallback_partner = m2
+            chosen = best_partner or fallback_partner
+            if chosen:
+                used_ids.add(m1["id"]); used_ids.add(chosen["id"])
+                comb_odds = round(o1 * (chosen.get("over25") or 1.5), 2)
+                combos_pen.append({
+                    "session": s_key, "m1": m1, "m2": chosen,
+                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+
+
     def render_match_proof_html(m):
         score = m.get("ac_score", 0)
         # Pas de données AdamChoi pour ce match → ne pas afficher de bloc vide
@@ -807,6 +862,39 @@ def main():
     else:
         combos_btts_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé BTTS disponible.</div>'
 
+    # Pré-construction HTML des tickets PENALTY (Doublés)
+    combos_pen_html = ""
+    if combos_pen:
+        current_sess_pen = None
+        for idx, cb in enumerate(combos_pen, 1):
+            m1, m2 = cb["m1"], cb["m2"]
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess_pen:
+                current_sess_pen = sess_label
+                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
+                combos_pen_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #7c3aed;">📅 SESSION {slot_label} DU {dt_sess}</div>'
+            def _pen_row(m):
+                ref = m.get("ref_name", "Inconnu")
+                ppm = m.get("pen_per_match", 0.0)
+                sp = m.get("score_penalty", 0)
+                ref_str = f"🧑‍⚖️ {ref} ({ppm:.2f} pen/m)" if ppm > 0 else f"🧑‍⚖️ {ref} (arbitre non désigné)"
+                return f'<div style="margin-bottom:4px;">⚡ <b>{m["date_str"]}</b> &nbsp;•&nbsp; <b>{m["dom"]} vs {m["ext"]}</b> &bull; Over 2.5: <b>@{m.get("over25",1.5):.2f}</b> <span style="color:#64748b; font-size:11px;">({m["league"]}) — Score Penalty: {sp}/100</span><br><span style="color:#7c3aed; font-size:11px; margin-left:16px;">{ref_str}</span></div>'
+            combos_pen_html += f'''
+            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
+                <span style="font-weight:800; color:#0f172a; font-size:13px;">⚡ Doublé Penalty #{idx} — Cote Totale: <span style="background:#ede9fe; color:#5b21b6; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+              </div>
+              <div style="font-size:12px; color:#334155; line-height:1.7;">
+                {_pen_row(m1)}
+                {_pen_row(m2)}
+              </div>
+            </div>
+            '''
+    else:
+        combos_pen_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé Penalty disponible (aucun arbitre désigné ou score insuffisant).</div>'
+
     # ── Pré-construction du tableau des matchs validés ─────────────────────
     table_rows_html = ""
     for idx, m in enumerate(s3_matches):
@@ -969,6 +1057,19 @@ def main():
               Seuls les matchs avec un <b>Score BTTS ≥ 65/100</b> sont retenus. 2 matchs combinés pour une cote cible de <b>~2.60</b>.
             </div>
             {combos_btts_html}
+          </div>
+
+          <!-- SECTION 4 : COMBINÉS PENALTY -->
+          <div style="padding: 15px 15px 5px 15px; background: #faf5ff; border-bottom: 1px solid #e2e8f0;">
+            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
+              <span>⚡ 4. COMBINÉS PENALTY (2 Matchs — Cote Min: 2,40 | Mise: 4 €)</span>
+              <span style="font-size: 11px; background: #ede9fe; color: #5b21b6; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_pen)} ticket(s)</span>
+            </div>
+            <div style="font-size: 11px; color: #64748b; background: #ede9fe; border: 1px solid #c4b5fd; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
+              <b style="color:#5b21b6;">⚙️ Méthode Barème V2 Penalty :</b> Sélection 100% AdamChoi — Barème V2 sur 4 piliers (Taux penalty arbitre cette saison, Cartons/Fautes H2H, Tirs cadrés, Niveau offensif).
+              Seuls les matchs avec un <b>Score Penalty ≥ 55/100</b> sont retenus. 2 matchs combinés pour une cote cible de <b>~2.40</b>.
+            </div>
+            {combos_pen_html}
           </div>
 
 

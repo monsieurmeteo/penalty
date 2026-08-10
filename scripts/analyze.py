@@ -173,20 +173,26 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
     
     return "19635927", home_query, away_query, "SA1"
 
-def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None):
+def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None, d_refs=None):
     ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt, unibet_league=unibet_league)
 
     if not is_batch:
         print(f"🔍 ÉQUIPES DÉTECTÉES : '{team_a}' vs '{team_b}' ({league})\n")
 
-    with ThreadPoolExecutor(max_workers=4) as ex:
+    # Cherche l'arbitre désigné pour ce match dans le dict pré-chargé d_refs
+    ref_info = (d_refs or {}).get(str(ext_id), {})
+    ref_id = ref_info.get("refereeId")
+
+    with ThreadPoolExecutor(max_workers=5) as ex:
         f_comp = ex.submit(fetch, f"{BASE}/scripts/data/json/scripts/pages/comparison/getComparisonStatsAsJson.php?clflc=abc&hometeam={team_a}&awayteam={team_b}&hometeamleague={league}&awayteamleague={league}&numrecentmatches=20")
         f_avg  = ex.submit(fetch, f"{BASE_WIDGET}/match/{ext_id}/team-averages?clflc=abc&token=45834886-68b3-11eb-99f4-9e36325824ad", WIDGET_HEADERS)
         f_res  = ex.submit(fetch, f"{BASE_WIDGET}/match/{ext_id}/recent-results?clflc=abc&token=45834886-68b3-11eb-99f4-9e36325824ad", WIDGET_HEADERS)
+        f_ref  = ex.submit(fetch, f"{BASE}/scripts/data/json/scripts/pages/referees/getRefereeById.php?clflc=abc&refereeId={ref_id}") if ref_id else None
 
-        comp = f_comp.result()
+        comp  = f_comp.result()
         w_avg = f_avg.result()
         w_res = f_res.result()
+        ref_career = f_ref.result() if f_ref else {}
 
     if not isinstance(comp, dict): comp = {}
     if not isinstance(w_avg, dict): w_avg = {}
@@ -557,6 +563,70 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if gf_b < 0.6: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} but/m) — risque 0 but EXT")
     score_btts = max(0, min(100, p_btts_att_dom + p_btts_att_ext + p_btts_def_dom + p_btts_def_ext + p_btts_freq + p_btts_league - len(rf_btts) * 10))
 
+    # ══════════════════════════════════════════════════════════════
+    # BARÈME V2 PENALTY /100 — 4 piliers: Arbitre + Cartons H2H + SOT + Buts
+    # ══════════════════════════════════════════════════════════════
+
+    # 1. Taux penalty de l'arbitre cette saison (40 pts)
+    ref_name = ref_info.get("refereeName", "Inconnu")
+    pen_per_match = 0.0
+    if isinstance(ref_career, dict) and ref_career.get("seasons"):
+        current_season = "2025/2026"
+        total_pens, total_games = 0, 0
+        for s in ref_career["seasons"]:
+            if s.get("season") == current_season:
+                total_pens += s.get("totalPenalties", 0) or 0
+                total_games += s.get("fixtureCount", 0) or 0
+        if total_games > 0:
+            pen_per_match = total_pens / total_games
+
+    if pen_per_match >= 0.50: p_pen_ref = 40
+    elif pen_per_match >= 0.40: p_pen_ref = 35
+    elif pen_per_match >= 0.30: p_pen_ref = 28
+    elif pen_per_match >= 0.25: p_pen_ref = 22
+    elif pen_per_match >= 0.20: p_pen_ref = 16
+    elif pen_per_match >= 0.15: p_pen_ref = 10
+    elif pen_per_match >= 0.10: p_pen_ref = 5
+    elif pen_per_match > 0:     p_pen_ref = 2
+    else: p_pen_ref = 12  # Pas d’arbitre désigné — score neutre
+
+    # 2. Cartons/Fautes H2H (booking points moyens par match) (30 pts)
+    h2h_booking = []
+    for m in h2h20:
+        hbp = m.get("homeBookingPts", 0) or m.get("homeBookingPoints", 0)
+        abp = m.get("awayBookingPts", 0) or m.get("awayBookingPoints", 0)
+        try:
+            h2h_booking.append(int(hbp) + int(abp))
+        except (ValueError, TypeError):
+            pass
+    avg_booking = sum(h2h_booking) / max(1, len(h2h_booking)) if h2h_booking else 40.0
+
+    if avg_booking >= 80: p_pen_cards = 30
+    elif avg_booking >= 65: p_pen_cards = 25
+    elif avg_booking >= 50: p_pen_cards = 20
+    elif avg_booking >= 40: p_pen_cards = 15
+    elif avg_booking >= 30: p_pen_cards = 10
+    elif avg_booking >= 20: p_pen_cards = 6
+    else: p_pen_cards = 2
+
+    # 3. Intensité offensive / tirs cadrés (20 pts)
+    if sot_comb >= 14: p_pen_sot = 20
+    elif sot_comb >= 12: p_pen_sot = 17
+    elif sot_comb >= 10: p_pen_sot = 14
+    elif sot_comb >= 8:  p_pen_sot = 11
+    elif sot_comb >= 6:  p_pen_sot = 8
+    elif sot_comb >= 4:  p_pen_sot = 5
+    else: p_pen_sot = 2
+
+    # 4. Niveau offensif global (10 pts)
+    if total_goals_brut >= 4.0: p_pen_goals = 10
+    elif total_goals_brut >= 3.0: p_pen_goals = 8
+    elif total_goals_brut >= 2.5: p_pen_goals = 6
+    elif total_goals_brut >= 2.0: p_pen_goals = 4
+    else: p_pen_goals = 2
+
+    score_penalty = max(0, min(100, p_pen_ref + p_pen_cards + p_pen_sot + p_pen_goals))
+
     if is_batch:
         return {
             "team_a": team_a,
@@ -581,6 +651,10 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "freq_btts": freq_btts,
             "score_o15": score_o15,
             "score_btts": score_btts,
+            "score_penalty": score_penalty,
+            "ref_name": ref_name,
+            "pen_per_match": round(pen_per_match, 3),
+            "avg_booking": round(avg_booking, 1),
         }
 
 
