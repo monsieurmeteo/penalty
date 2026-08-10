@@ -16,7 +16,11 @@
       "val_btts": 1.55,
       "val_o25": 1.32,
       "double": true,
+<<<<<<< Updated upstream
       "ac_score": 89
+=======
+      "ac_score": 91
+>>>>>>> Stashed changes
     },
     "3368025": {
       "match": "Etoile Rouge - Hap.Beer Sheva",
@@ -35,6 +39,7 @@
       "val_o25": 1.9,
       "double": true,
       "ac_score": 76
+<<<<<<< Updated upstream
     },
     "3364532": {
       "match": "Silkeborg - Odense",
@@ -44,6 +49,8 @@
       "val_o25": 1.45,
       "double": true,
       "ac_score": 75
+=======
+>>>>>>> Stashed changes
     }
   }
 }
