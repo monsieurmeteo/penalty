@@ -83,7 +83,10 @@ ALIASES = {
     "benfica": "benfica",
     "porto": "porto",
     "sporting": "sporting",
-    # Clubs Français (noms les plus utilisés sur Unibet)
+    # Normalisation clubs FR spéciaux (Unibet vs AdamChoi)
+    "lyonnais": "ol",      # "Olympique Lyonnais" → "olympique ol" ≈ "Lyon" via similarity
+    "lyonnaise": "ol",
+    "marseillais": "om",
     "marseille": "om",
     "lille": "losc",
     "rennes": "rennes",
@@ -106,7 +109,7 @@ ALIASES = {
 def clean_str(s):
     if not s: return ""
     s = unicodedata.normalize('NFKD', s).encode('ASCII', 'ignore').decode('ASCII')
-    s = s.lower().replace("-", " ").replace(".", " ").replace("_", " ")
+    s = s.lower().replace("-", " ").replace(".", " ").replace("_", " ").replace("/", " ")
     words = s.split()
     cleaned = []
     for w in words:
@@ -161,6 +164,16 @@ COUNTRY_MAP_FR_EN = {
     "islande": "Iceland", "armenie": "Armenia", "georgie": "Georgia",
     "chypre": "Cyprus", "malte": "Malta", "luxembourg": "Luxembourg",
     "bosnie": "Bosnia", "montenero": "Montenegro",
+    # Amérique du Sud
+    "equateur": "Ecuador", "uruguay": "Uruguay", "perou": "Peru",
+    "venezuela": "Venezuela", "bolivie": "Bolivia", "paraguay": "Paraguay",
+    # Afrique
+    "afrique du sud": "South Africa", "maroc": "Morocco", "egypte": "Egypt",
+    "tunisie": "Tunisia", "algerie": "Algeria", "nigeria": "Nigeria",
+    "senegal": "Senegal", "ghana": "Ghana",
+    # Asie / reste
+    "arabie saoudite": "Saudi Arabia", "emirats": "UAE", "inde": "India",
+    "iran": "Iran", "irak": "Iraq",
 }
 
 def _extract_country_en(unibet_league: str) -> str:
