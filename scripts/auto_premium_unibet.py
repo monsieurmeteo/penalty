@@ -654,9 +654,9 @@ def main():
 
     # ── 4. GENERATION COMBINES PENALTY (2 Matchs — Cote Min 2.40 — Stake 4€) ──
     # Barème V2 Penalty /100 : Arbitre (40pts) + Cartons H2H (30pts) + SOT (20pts) + Buts (10pts)
-    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("over25")]
+    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("pen_per_match", 0) > 0 and m.get("over25")]
     if not pen_candidates:
-        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("over25")]
+        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("pen_per_match", 0) > 0 and m.get("over25")]
     pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
     sessions_pen = {}
     for m in pen_candidates:
