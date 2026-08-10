@@ -573,6 +573,23 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
+    # Fallback cross-sessions : si 0 combiné mais ≥2 matchs validés toutes sessions confondues
+    if not combos_2matches:
+        all_o25 = sorted(s3_matches, key=lambda x: x.get("over25", 0), reverse=True)
+        used_global = set()
+        for i, m1 in enumerate(all_o25):
+            if m1["id"] in used_global: continue
+            for m2 in all_o25[i+1:]:
+                if m2["id"] in used_global: continue
+                comb_odds = round(m1["over25"] * m2["over25"], 2)
+                s_key = m1.get("session_key", "GLOBAL")
+                used_global.add(m1["id"]); used_global.add(m2["id"])
+                combos_2matches.append({
+                    "session": s_key, "m1": m1, "m2": m2,
+                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+                break
+
 
     # ── Over 1.5 supprimé (jouer un Over 2.5 en Over 1.5 si besoin de sécuriser) ──
 
@@ -627,11 +644,14 @@ def main():
                 })
 
     # ── 3. SELECTION PENALTY OUI — PARIS SIMPLES (top 5 par score_penalty) ──
-    # Critère : arbitre désigné + score_penalty >= 55 (ou 45 en fallback)
-    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu"]
+    # Note : API arbitres AdamChoi bloquée depuis GitHub Actions (retourne HTML).
+    # On retire le filtre ref_name et on compense avec seuil ≥ 55.
+    # Les matchs avec arbitre connu (quand désigné via autre source) seront triés en priorité.
+    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55]
     if not pen_candidates:
-        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("ref_name", "Inconnu") != "Inconnu"]
-    pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45]
+    # Priorité : arbitre connu > score_penalty élevé
+    pen_candidates.sort(key=lambda x: (x.get("ref_name", "Inconnu") != "Inconnu", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates[:5]  # top 5 — paris secs uniquement
 
 
