@@ -311,7 +311,7 @@ def main():
             print(f"⚠️ Fixtures AdamChoi non préchargées ({type(e_fx).__name__}: {e_fx}) — fallback auto-fetch par match")
         try:
             for _attempt in range(2):  # 1 retry si body vide
-                r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+                r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
                 if r_refs.status_code == 200 and r_refs.text.strip():
                     break
                 time.sleep(3)
