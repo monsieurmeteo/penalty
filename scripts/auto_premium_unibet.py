@@ -310,8 +310,12 @@ def main():
             d_fx = None  # analyse.py fera un fetch individuel par match
             print(f"⚠️ Fixtures AdamChoi non préchargées ({type(e_fx).__name__}: {e_fx}) — fallback auto-fetch par match")
         try:
-            r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
-            refs_raw = r_refs.json() if r_refs.status_code == 200 else {}
+            for _attempt in range(2):  # 1 retry si body vide
+                r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+                if r_refs.status_code == 200 and r_refs.text.strip():
+                    break
+                time.sleep(3)
+            refs_raw = r_refs.json() if (r_refs.status_code == 200 and r_refs.text.strip()) else {}
             for date_block in refs_raw.get("dates", []):
                 for lg in date_block.get("leagues", []):
                     for fx in lg.get("fixtures", []):
@@ -322,6 +326,7 @@ def main():
         except Exception as e_refs:
             d_refs = {}
             print(f"⚠️ Arbitres non chargés ({type(e_refs).__name__}: {e_refs})")
+
 
     def enrich_adamchoi(m):
         if analyze_pure_stats_20:
