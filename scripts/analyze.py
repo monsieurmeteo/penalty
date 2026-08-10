@@ -568,9 +568,12 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     # ══════════════════════════════════════════════════════════════
 
     # 1. Taux penalty de l'arbitre cette saison (40 pts)
-    ref_name = ref_info.get("refereeName", "Inconnu")
+    ref_name = ref_info.get("refereeName") or ""
     pen_per_match = 0.0
     if isinstance(ref_career, dict) and ref_career.get("seasons"):
+        # Récupère le nom depuis la carrière si absent dans ref_info
+        if not ref_name:
+            ref_name = ref_career.get("name", "")
         current_season = "2025/2026"
         total_pens, total_games = 0, 0
         for s in ref_career["seasons"]:
@@ -579,6 +582,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                 total_games += s.get("fixtureCount", 0) or 0
         if total_games > 0:
             pen_per_match = total_pens / total_games
+    ref_name = ref_name or "Inconnu"
 
     if pen_per_match >= 0.50: p_pen_ref = 40
     elif pen_per_match >= 0.40: p_pen_ref = 35
@@ -587,8 +591,8 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif pen_per_match >= 0.20: p_pen_ref = 16
     elif pen_per_match >= 0.15: p_pen_ref = 10
     elif pen_per_match >= 0.10: p_pen_ref = 5
-    elif pen_per_match > 0:     p_pen_ref = 2
-    else: p_pen_ref = 12  # Pas d’arbitre désigné — score neutre
+    elif pen_per_match >  0:    p_pen_ref = 2
+    else: p_pen_ref = 12  # Pas d arbitre designe - score neutre
 
     # 2. Cartons/Fautes H2H (booking points moyens par match) (30 pts)
     h2h_booking = []

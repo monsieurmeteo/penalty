@@ -654,9 +654,9 @@ def main():
 
     # ── 4. GENERATION COMBINES PENALTY (2 Matchs — Cote Min 2.40 — Stake 4€) ──
     # Barème V2 Penalty /100 : Arbitre (40pts) + Cartons H2H (30pts) + SOT (20pts) + Buts (10pts)
-    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("pen_per_match", 0) > 0 and m.get("over25")]
+    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu" and m.get("over25")]
     if not pen_candidates:
-        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("pen_per_match", 0) > 0 and m.get("over25")]
+        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("ref_name", "Inconnu") != "Inconnu" and m.get("over25")]
     pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
     sessions_pen = {}
     for m in pen_candidates:
@@ -878,7 +878,13 @@ def main():
                 ref = m.get("ref_name", "Inconnu")
                 ppm = m.get("pen_per_match", 0.0)
                 sp = m.get("score_penalty", 0)
-                ref_str = f"🧑‍⚖️ {ref} ({ppm:.2f} pen/m)" if ppm > 0 else f"🧑‍⚖️ {ref} (arbitre non désigné)"
+                if ref == "Inconnu":
+                    ref_str = "🧑‍⚖️ Arbitre non désigné"
+                elif ppm > 0:
+                    ref_str = f"🧑‍⚖️ {ref} — {ppm:.2f} pen/m cette saison"
+                else:
+                    ref_str = f"🧑‍⚖️ {ref} — stats début de saison"
+
                 return f'<div style="margin-bottom:4px;">⚡ <b>{m["date_str"]}</b> &nbsp;•&nbsp; <b>{m["dom"]} vs {m["ext"]}</b> &bull; Over 2.5: <b>@{m.get("over25",1.5):.2f}</b> <span style="color:#64748b; font-size:11px;">({m["league"]}) — Score Penalty: {sp}/100</span><br><span style="color:#7c3aed; font-size:11px; margin-left:16px;">{ref_str}</span></div>'
             combos_pen_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
