@@ -4,29 +4,16 @@
       "match": "Fram Reykjavik - KR Reykjavik",
       "league": "Islande • D1 Islande",
       "date_str": "Lun. 10/08 à 21h15",
-      "val_btts": 1.15,
+      "val_btts": 1.12,
       "val_o25": 1.12,
       "double": true,
       "ac_score": 95
-    },
-    "3360441": {
-      "match": "IK Sirius FK - Brommapojkarna",
-      "league": "Suede • D1 Suede",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.55,
-      "val_o25": 1.32,
-      "double": true,
-<<<<<<< Updated upstream
-      "ac_score": 89
-=======
-      "ac_score": 91
->>>>>>> Stashed changes
     },
     "3368025": {
       "match": "Etoile Rouge - Hap.Beer Sheva",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 11/08 à 20h00",
-      "val_btts": 1.7,
+      "val_btts": 1.8,
       "val_o25": 1.38,
       "double": true,
       "ac_score": 77
@@ -34,23 +21,20 @@
     "3366944": {
       "match": "Indep.Medellin - Millonarios FC",
       "league": "Colombie • D1 Colombie",
-      "date_str": "Mar. 11/08 à 01h00",
+      "date_str": "Mer. 12/08 à 01h00",
       "val_btts": 1.65,
-      "val_o25": 1.9,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 76
-<<<<<<< Updated upstream
     },
-    "3364532": {
-      "match": "Silkeborg - Odense",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Lun. 10/08 à 19h00",
-      "val_btts": 1.38,
-      "val_o25": 1.45,
+    "3368203": {
+      "match": "GKS Katowice - Hap.Tel Aviv",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Mer. 12/08 à 18h00",
+      "val_btts": 1.75,
+      "val_o25": 1.9,
       "double": true,
       "ac_score": 75
-=======
->>>>>>> Stashed changes
     }
   }
 }
