@@ -289,19 +289,19 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     sota_b = a_ext_w.get("shotsOnTargetAg", 0.0)
 
     if gf_a == 0.0 and recent_h_dom:
-        gf_a = sum(int(m.get("homeGoals", 0)) for m in recent_h_dom) / len(recent_h_dom)
-        ga_a = sum(int(m.get("awayGoals", 0)) for m in recent_h_dom) / len(recent_h_dom)
+        gf_a = sum(int(m.get("homeGoals", m.get("homeGoalsFt", 0))) for m in recent_h_dom) / len(recent_h_dom)
+        ga_a = sum(int(m.get("awayGoals", m.get("awayGoalsFt", 0))) for m in recent_h_dom) / len(recent_h_dom)
         sot_a = (gf_a * 2.3) + 1.8
         sota_a = (ga_a * 2.1) + 1.5
 
     if gf_b == 0.0 and recent_a_ext:
-        gf_b = sum(int(m.get("awayGoals", 0)) for m in recent_a_ext) / len(recent_a_ext)
-        ga_b = sum(int(m.get("homeGoals", 0)) for m in recent_a_ext) / len(recent_a_ext)
+        gf_b = sum(int(m.get("awayGoals", m.get("awayGoalsFt", 0))) for m in recent_a_ext) / len(recent_a_ext)
+        ga_b = sum(int(m.get("homeGoals", m.get("homeGoalsFt", 0))) for m in recent_a_ext) / len(recent_a_ext)
         sot_b = (gf_b * 2.3) + 1.8
         sota_b = (ga_b * 2.1) + 1.5
 
     # ponytail: si aucune donnée réelle disponible (équipe inconnue d'AdamChoi), on ne fabrique rien
-    has_real_data = not (gf_a == 0.0 and gf_b == 0.0)
+    has_real_data = bool(recent_h_dom or recent_a_ext or h_dom_w or a_ext_w)
     if not has_real_data:
         if is_batch:
             return {
