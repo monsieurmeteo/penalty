@@ -582,7 +582,7 @@ def main():
             for m2 in all_o25[i+1:]:
                 if m2["id"] in used_global: continue
                 comb_odds = round(m1["over25"] * m2["over25"], 2)
-                s_key = m1.get("session_key", "GLOBAL")
+                s_key = get_betting_session_key(m1.get("dt_obj"))
                 used_global.add(m1["id"]); used_global.add(m2["id"])
                 combos_2matches.append({
                     "session": s_key, "m1": m1, "m2": m2,
@@ -745,7 +745,10 @@ def main():
             sess_label = cb.get("session", "")
             if sess_label != current_sess:
                 current_sess = sess_label
-                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                try:
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                except Exception:
+                    dt_sess = sess_label
                 slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
                 combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
 
@@ -783,7 +786,10 @@ def main():
             sess_label = cb.get("session", "")
             if sess_label != current_sess_btts:
                 current_sess_btts = sess_label
-                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                try:
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                except Exception:
+                    dt_sess = sess_label
                 slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
                 combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION {slot_label} DU {dt_sess}</div>'
             combos_btts_html += f'''
