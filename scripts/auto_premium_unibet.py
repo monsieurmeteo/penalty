@@ -548,60 +548,9 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote Min 1.90 — Stake 5€) ──
-    # Barème V2 Over 1.5 /100 (même logique que Over 2.5 avec seuils abaissés)
-    o15_candidates = [m for m in scanned_results if m.get("score_o15", 0) >= 65 and m.get("over15")]
-    # Fallback si aucun match à 65 : prendre score_o15 >= 55
-    if not o15_candidates:
-        o15_candidates = [m for m in scanned_results if m.get("score_o15", 0) >= 55 and m.get("over15")]
-    o15_candidates.sort(key=lambda x: x.get("score_o15", 0), reverse=True)
-    sessions_o15 = {}
-    for m in o15_candidates:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
-        sessions_o15.setdefault(s_key, []).append(m)
 
-    sessions_o15 = upgrade_sessions_to_day(sessions_o15)
-    combos_o15 = []
-    for s_key, s_matches in sorted(sessions_o15.items()):
-        used_ids = set()
-        valid = [m for m in s_matches if m.get("over15", 1.25) > 1.0]
-        best_triple = None
-        best_triple_odds = 0.0
-        for i in range(len(valid)):
-            m1 = valid[i]
-            if m1["id"] in used_ids: continue
-            for j in range(i+1, len(valid)):
-                m2 = valid[j]
-                if m2["id"] in used_ids: continue
-                for k in range(j+1, len(valid)):
-                    m3 = valid[k]
-                    if m3["id"] in used_ids: continue
-                    c1 = m1.get("over15", 1.25)
-                    c2 = m2.get("over15", 1.25)
-                    c3 = m3.get("over15", 1.25)
-                    comb = round(c1 * c2 * c3, 2)
-                    if comb >= 1.90:
-                        used_ids.add(m1["id"])
-                        used_ids.add(m2["id"])
-                        used_ids.add(m3["id"])
-                        combos_o15.append({
-                            "session": s_key, "m1": m1, "m2": m2, "m3": m3,
-                            "comb_odds": comb, "stake": 5.0, "gain": round(5.0 * comb, 2), "profit": round(5.0 * comb - 5.0, 2)
-                        })
-                        break
-                    elif comb > best_triple_odds:
-                        # Garder le meilleur triple meme sous 1.90 (fallback)
-                        best_triple_odds = comb
-                        best_triple = (m1, m2, m3, comb)
-                if m1["id"] in used_ids: break
-        # Fallback : si aucun triple n'atteint 1.90, prendre le meilleur disponible
-        if not combos_o15 and best_triple and len(valid) >= 3:
-            m1, m2, m3, comb = best_triple
-            combos_o15.append({
-                "session": s_key, "m1": m1, "m2": m2, "m3": m3,
-                "comb_odds": comb, "stake": 5.0, "gain": round(5.0 * comb, 2), "profit": round(5.0 * comb - 5.0, 2)
-            })
+    # ── Over 1.5 supprimé (jouer un Over 2.5 en Over 1.5 si besoin de sécuriser) ──
+
 
     # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
     # Barème V2 BTTS /100 (6 piliers : Attaque DOM/EXT, Défense DOM/EXT, Fréquence BTTS, Ligue)
@@ -652,44 +601,14 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # ── 4. GENERATION COMBINES PENALTY (2 Matchs — Cote Min 2.40 — Stake 4€) ──
-    # Barème V2 Penalty /100 : Arbitre (40pts) + Cartons H2H (30pts) + SOT (20pts) + Buts (10pts)
-    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu" and m.get("over25")]
+    # ── 3. SELECTION PENALTY OUI — PARIS SIMPLES (top 5 par score_penalty) ──
+    # Critère : arbitre désigné + score_penalty >= 55 (ou 45 en fallback)
+    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu"]
     if not pen_candidates:
-        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("ref_name", "Inconnu") != "Inconnu" and m.get("over25")]
+        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45 and m.get("ref_name", "Inconnu") != "Inconnu"]
     pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
-    sessions_pen = {}
-    for m in pen_candidates:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
-        sessions_pen.setdefault(s_key, []).append(m)
-    sessions_pen = upgrade_sessions_to_day(sessions_pen)
-    combos_pen = []
-    for s_key, s_matches in sorted(sessions_pen.items()):
-        used_ids = set()
-        for i, m1 in enumerate(s_matches):
-            if m1["id"] in used_ids: continue
-            o1 = m1.get("over25") or 1.5
-            best_partner = None; best_diff = 999.0
-            fallback_partner = None; fallback_diff = 999.0
-            for m2 in s_matches[i+1:]:
-                if m2["id"] in used_ids: continue
-                o2 = m2.get("over25") or 1.5
-                comb = round(o1 * o2, 2)
-                if comb >= 2.40:
-                    diff = abs(comb - 2.60)
-                    if diff < best_diff: best_diff = diff; best_partner = m2
-                else:
-                    diff = abs(comb - 2.40)
-                    if diff < fallback_diff: fallback_diff = diff; fallback_partner = m2
-            chosen = best_partner or fallback_partner
-            if chosen:
-                used_ids.add(m1["id"]); used_ids.add(chosen["id"])
-                comb_odds = round(o1 * (chosen.get("over25") or 1.5), 2)
-                combos_pen.append({
-                    "session": s_key, "m1": m1, "m2": chosen,
-                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
+    pen_simples = pen_candidates[:5]  # top 5 — paris secs uniquement
+
 
 
     def render_match_proof_html(m):
@@ -807,33 +726,8 @@ def main():
     else:
         combos_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucune association optimale de 2 matchs Over 2.5 trouvée.</div>'
 
-    # Pré-construction HTML des tickets OVER 1.5 (Triplés)
-    combos_o15_html = ""
-    if combos_o15:
-        current_sess_o15 = None
-        for idx, cb in enumerate(combos_o15, 1):
-            m1, m2, m3 = cb["m1"], cb["m2"], cb["m3"]
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess_o15:
-                current_sess_o15 = sess_label
-                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
-            combos_o15_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">🛡️ Triplé Over 1.5 #{idx} — Cote Totale: <span style="background:#dbeafe; color:#1e40af; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 5,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
-              </div>
-              <div style="font-size:12px; color:#334155; line-height:1.7;">
-                <div style="margin-bottom:4px;">🔹 <b>Match 1</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &bull; Over 1.5: <b>@{m1.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']}) — Score O1.5: {m1.get('score_o15',0)}/100</span></div>
-                <div style="margin-bottom:4px;">🔹 <b>Match 2</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &bull; Over 1.5: <b>@{m2.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']}) — Score O1.5: {m2.get('score_o15',0)}/100</span></div>
-                <div>🔹 <b>Match 3</b> : <span style="color:#0284c7; font-weight:700;">{m3['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m3['dom']} vs {m3['ext']}</b> &bull; Over 1.5: <b>@{m3.get('over15', 1.25):.2f}</b> <span style="color:#64748b; font-size:11px;">({m3['league']}) — Score O1.5: {m3.get('score_o15',0)}/100</span></div>
-              </div>
-            </div>
-            '''
-    else:
-        combos_o15_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun triplé Over 1.5 disponible.</div>'
+    # combos_o15_html supprimé (Over 1.5 retiré)
+
 
     # Pré-construction HTML des tickets BTTS OUI (Doublés)
     combos_btts_html = ""
@@ -862,258 +756,265 @@ def main():
     else:
         combos_btts_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé BTTS disponible.</div>'
 
-    # Pré-construction HTML des tickets PENALTY (Doublés)
-    combos_pen_html = ""
-    if combos_pen:
-        current_sess_pen = None
-        for idx, cb in enumerate(combos_pen, 1):
-            m1, m2 = cb["m1"], cb["m2"]
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess_pen:
-                current_sess_pen = sess_label
-                dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                combos_pen_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #7c3aed;">📅 SESSION {slot_label} DU {dt_sess}</div>'
-            def _pen_row(m):
-                ref = m.get("ref_name", "Inconnu")
-                ppm = m.get("pen_per_match", 0.0)
-                sp = m.get("score_penalty", 0)
-                if ref == "Inconnu":
-                    ref_str = "🧑‍⚖️ Arbitre non désigné"
-                elif ppm > 0:
-                    ref_str = f"🧑‍⚖️ {ref} — {ppm:.2f} pen/m cette saison"
-                else:
-                    ref_str = f"🧑‍⚖️ {ref} — stats début de saison"
+    # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
+    pen_simples_html = ""
+    for idx_ps, m in enumerate(pen_simples, 1):
+        ref = m.get("ref_name", "Inconnu")
+        ppm = m.get("pen_per_match", 0.0)
+        sp  = m.get("score_penalty", 0)
+        avg_b = m.get("avg_booking", 0.0)
+        sot_c = m.get("sot_comb", 0.0)
+        ref_str = f"🧑\u200d⚖️ {ref} — {ppm:.2f} pen/m cette saison" if ppm > 0 else f"🧑\u200d⚖️ {ref} — stats début de saison"
+        sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
+        pen_simples_html += f'''
+        <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
+            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
+          </div>
+          <div style="font-size:12px; color:#334155; line-height:1.9;">
+            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
+            {ref_str}<br>
+            <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
+          </div>
+          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
+            🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
+          </div>
+        </div>'''
+    if not pen_simples_html:
+        pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
 
-                return f'<div style="margin-bottom:4px;">⚡ <b>{m["date_str"]}</b> &nbsp;•&nbsp; <b>{m["dom"]} vs {m["ext"]}</b> &bull; Over 2.5: <b>@{m.get("over25",1.5):.2f}</b> <span style="color:#64748b; font-size:11px;">({m["league"]}) — Score Penalty: {sp}/100</span><br><span style="color:#7c3aed; font-size:11px; margin-left:16px;">{ref_str}</span></div>'
-            combos_pen_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">⚡ Doublé Penalty #{idx} — Cote Totale: <span style="background:#ede9fe; color:#5b21b6; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
-              </div>
-              <div style="font-size:12px; color:#334155; line-height:1.7;">
-                {_pen_row(m1)}
-                {_pen_row(m2)}
-              </div>
-            </div>
-            '''
-    else:
-        combos_pen_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé Penalty disponible (aucun arbitre désigné ou score insuffisant).</div>'
+    # ── Carte d'appartenance aux combinés ────────────────────────────────────
+    o25_combo_map = {}  # match_id → combo_num
+    for idx_cb, cb in enumerate(combos_2matches, 1):
+        o25_combo_map[cb["m1"]["id"]] = idx_cb
+        o25_combo_map[cb["m2"]["id"]] = idx_cb
+    btts_combo_map = {}
+    for idx_cb, cb in enumerate(combos_btts, 1):
+        btts_combo_map[cb["m1"]["id"]] = idx_cb
+        btts_combo_map[cb["m2"]["id"]] = idx_cb
 
-    # ── Pré-construction du tableau des matchs validés ─────────────────────
-    table_rows_html = ""
-    for idx, m in enumerate(s3_matches):
-        bg = "#ffffff" if idx % 2 == 0 else "#f8fafc"
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
-        o25 = m.get("over25", "N/A")
-        if m.get("buteur_name"):
-            buteur_cell = f'<b>{m["buteur_name"]}</b> (@{m["buteur_cote"]})'
-        else:
-            buteur_cell = '<span style="color:#94a3b8; font-style:italic;">N/A</span>'
+    # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
+    plan_rows = []
+    seen_plan = set()
 
-        table_rows_html += (
-            f'<tr style="background:{bg}; border-bottom:1px solid #e2e8f0;">'
-            f'<td style="padding:10px 10px; color:#475569; white-space:nowrap; font-size:12px;">{m["date_str"]}</td>'
-            f'<td style="padding:10px 10px; font-weight:700; color:#0f172a;">{m["dom"]} vs {m["ext"]}'
-            f'<br><span style="font-size:11px; color:#64748b; font-weight:400;">{m["league"]}</span></td>'
-            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{btts_cell}</span></td>'
-            f'<td style="padding:10px 10px; text-align:center;"><span style="background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; padding:3px 8px; border-radius:6px; font-weight:800; font-size:12px;">{o25}</span></td>'
-            f'<td style="padding:10px 10px; text-align:left; color:#1e293b; font-size:12px;">{buteur_cell}</td>'
+    # Over 2.5 validés
+    for m in s3_matches:
+        cn = o25_combo_map.get(m["id"])
+        plan_rows.append({
+            "dt": m.get("dt_obj", now_utc),
+            "date_str": m.get("date_str", ""),
+            "match": f"{m['dom']} vs {m['ext']}",
+            "league": m.get("league", ""),
+            "market": "⚽ Over 2.5",
+            "cote": f"@{m['over25']:.2f}" if m.get("over25") else "—",
+            "score_label": f"{m.get('ac_score', 0)}/100",
+            "score_val": m.get("ac_score", 0),
+            "type_label": f"COMBINÉ #{cn}" if cn else "SIMPLE",
+            "bg_market": "#dbeafe", "cl_market": "#1e40af",
+        })
+        seen_plan.add(m["id"])
+
+    # BTTS (matchs dans les combos)
+    for idx_cb, cb in enumerate(combos_btts, 1):
+        for m in [cb["m1"], cb["m2"]]:
+            if m["id"] not in seen_plan:
+                plan_rows.append({
+                    "dt": m.get("dt_obj", now_utc),
+                    "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}",
+                    "league": m.get("league", ""),
+                    "market": "🚀 BTTS Oui",
+                    "cote": f"@{m['btts_oui']:.2f}" if m.get("btts_oui") else "—",
+                    "score_label": f"{m.get('score_btts', 0)}/100",
+                    "score_val": m.get("score_btts", 0),
+                    "type_label": f"COMBINÉ BTTS #{idx_cb}",
+                    "bg_market": "#fef3c7", "cl_market": "#92400e",
+                })
+                seen_plan.add(m["id"])
+
+    # Penalty simples
+    for m in pen_simples:
+        if m["id"] not in seen_plan:
+            plan_rows.append({
+                "dt": m.get("dt_obj", now_utc),
+                "date_str": m.get("date_str", ""),
+                "match": f"{m['dom']} vs {m['ext']}",
+                "league": m.get("league", ""),
+                "market": "⚡ Penalty OUI",
+                "cote": "SIMPLE",
+                "score_label": f"{m.get('score_penalty', 0)}/100",
+                "score_val": m.get("score_penalty", 0),
+                "type_label": "PARI SIMPLE",
+                "bg_market": "#ede9fe", "cl_market": "#5b21b6",
+            })
+            seen_plan.add(m["id"])
+
+    plan_rows.sort(key=lambda x: x["dt"])
+
+    # Génération HTML des lignes du planning
+    plan_rows_html = ""
+    for pr in plan_rows:
+        sv = pr["score_val"]
+        sc_bg = "#dc2626" if sv >= 90 else ("#ea580c" if sv >= 85 else ("#f59e0b" if sv >= 80 else ("#10b981" if sv >= 70 else "#6366f1")))
+        plan_rows_html += (
+            f'<tr>'
+            f'<td style="padding:9px 8px; white-space:nowrap; font-weight:700; font-size:12px; color:#0f172a; border-bottom:1px solid #f1f5f9;">'
+            f'{pr["date_str"]}</td>'
+            f'<td style="padding:9px 8px; border-bottom:1px solid #f1f5f9;">'
+            f'<b style="font-size:12px; color:#0f172a;">{pr["match"]}</b><br>'
+            f'<span style="font-size:10px; color:#94a3b8;">{pr["league"]}</span></td>'
+            f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
+            f'<span style="background:{pr["bg_market"]}; color:{pr["cl_market"]}; font-weight:700; font-size:11px; padding:3px 7px; border-radius:5px; white-space:nowrap;">'
+            f'{pr["market"]}</span></td>'
+            f'<td style="padding:9px 6px; text-align:center; font-weight:900; font-size:13px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{pr["cote"]}</td>'
+            f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
+            f'<span style="background:{sc_bg}; color:#fff; font-weight:800; font-size:11px; padding:3px 7px; border-radius:5px;">'
+            f'{pr["score_label"]}</span></td>'
+            f'<td style="padding:9px 6px; text-align:center; font-size:11px; font-weight:700; color:#475569; border-bottom:1px solid #f1f5f9;">{pr["type_label"]}</td>'
+            f'</tr>'
+        )
+    if not plan_rows_html:
+        plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu dans les prochaines 48h.</td></tr>'
+
+    # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
+    scan_rows_html = ""
+    for m in sorted(scanned_results, key=lambda x: x.get("ac_score", 0), reverse=True):
+        retained = m in s3_matches
+        bg_row = "#f0fdf4" if retained else "#fff"
+        badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
+        o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
+        score_v = m.get("ac_score", 0)
+        score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
+        score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
+        scan_rows_html += (
+            f'<tr style="background:{bg_row};">'
+            f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
+            f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
+            f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
+            f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span></td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
 
-    if not table_rows_html:
-        table_rows_html = f'''
-        <tr>
-          <td colspan="5" style="padding:24px; text-align:center; color:#64748b; font-style:italic;">
-            Aucun match ne valide les crit&egrave;res stricts dans les prochaines 48h.
-          </td>
-        </tr>
-        '''
+    # ── Email HTML Nouveau Design ─────────────────────────────────────────────
+    now_local = datetime.now(timezone(timedelta(hours=2)))
+    days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
+    nb_o25  = len(s3_matches)
+    nb_co25 = len(combos_2matches)
+    nb_btts_c = len(combos_btts)
+    nb_pen  = len(pen_simples)
 
-    # ── Matchs NON RETENUS — Cartes avec preuve complète (même format que les tickets) ──
-    non_retained_matches = [m for m in scanned_results if m not in hybrid_option_b_matches]
-    non_retained_matches.sort(key=lambda x: x.get("dt_obj", now_utc))
-
-    rejected_rows_html = ""
-    for idx, m in enumerate(non_retained_matches):
-        o25_val = m.get("over25")
-        o25_str = f"@{o25_val:.2f}" if o25_val else "N/A"
-        b_oui = m.get("btts_oui")
-        b_oui_str = f"BTTS Oui: @{b_oui:.2f}" if b_oui else ""
-
-        # Motif de rejet
-        score_v2 = m.get("ac_score", 0)
-        if m.get("rejection_reason"):
-            reason = m.get("rejection_reason")
-        elif score_v2 < 75 and score_v2 > 0:
-            reason = f"Score V2 trop bas ({score_v2}/100 &lt; 75)"
-        elif len(m.get("ac_red_flags", [])) > 0:
-            reason = f"⚠️ {', '.join(m.get('ac_red_flags'))}"
-        else:
-            reason = "Cotes défavorables (BTTS NON ou Under 2.5 favoris)"
-
-        proof_html = render_match_proof_html(m)
-
-        rejected_rows_html += f'''
-        <div style="background:#ffffff; border:1px solid #e2e8f0; border-left:3px solid #dc2626; border-radius:8px; padding:10px 14px; margin-bottom:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-weight:700; font-size:12px; color:#0f172a;">
-              🚫 {m['dom']} vs {m['ext']}
-              <span style="font-weight:400; color:#64748b; font-size:11px;"> — {m['date_str']} &bull; {m['league']}</span>
-            </span>
-            <span style="font-size:11px; font-weight:700; color:#64748b;">
-              Over 2.5: <b>{o25_str}</b>
-              {"&nbsp;&bull;&nbsp;" + b_oui_str if b_oui_str else ""}
-            </span>
-          </div>
-          <div style="background:#fff1f2; border:1px solid #fecdd3; border-radius:5px; padding:4px 8px; font-size:11px; color:#dc2626; font-weight:600; margin-bottom:6px;">
-            ❌ Motif : {reason}
-          </div>
-          {proof_html}
-        </div>
-        '''
-
-    if not rejected_rows_html:
-        rejected_rows_html = '<div style="color:#94a3b8; font-style:italic; text-align:center; padding:10px;">Aucun match scann&eacute; n\'a &eacute;t&eacute; rejet&eacute;.</div>'
-
-    # ── Corps du mail HTML Épuré, Compact & Moderne ──────────────────────────
     html_body = f"""
     <!DOCTYPE html>
     <html>
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      </head>
-      <body style="font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif; background-color: #f8fafc; margin:0; padding: 15px; color:#1e293b;">
-        <div style="max-width: 680px; margin: 0 auto; background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+      <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+      <body style="font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif; background:#f1f5f9; margin:0; padding:12px; color:#1e293b;">
+        <div style="max-width:700px; margin:0 auto; background:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
 
-          <!-- BANNIÈRE HEADER -->
-          <div style="background: #0f172a; padding: 20px; text-align: center; color: white;">
-            <h1 style="margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;">⚽ OVER 2.5 — SÉLECTION ADAMCHOI &amp; COMBINÉS UNIBET</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #94a3b8;">Sélection 100% AdamChoi Score V2 &ge; 75/100 &nbsp;&bull;&nbsp; Combinés 2 Matchs Target ~2.20</p>
-            <div style="margin-top: 10px; display: inline-block; background: rgba(255,255,255,0.12); padding: 3px 12px; border-radius: 15px; font-size: 11px; color: #cbd5e1;">
-              Mise à jour : {now_str}
+          <!-- HEADER -->
+          <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
+            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
+            <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse AdamChoi · Mise à jour : {now_str} · Fenêtre 48h + nuit</p>
+          </div>
+
+          <!-- COMPTEURS -->
+          <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
+            <table style="width:100%; border-collapse:collapse; text-align:center;">
+              <tr>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_o25}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">OVER 2.5</div><div style="font-size:10px; color:#3b82f6;">{nb_co25} combiné(s)</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#92400e;">{nb_btts_c}</div><div style="font-size:10px; font-weight:700; color:#92400e;">BTTS OUI</div><div style="font-size:10px; color:#d97706;">{nb_btts_c} combiné(s)</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">en 48h</div></div></td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- SECTION 1 : PLANNING HEURE PAR HEURE -->
+          <div style="padding:16px 16px 8px 16px;">
+            <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+              <span>📅 CE QUE VOUS DEVEZ JOUER — HEURE PAR HEURE</span>
+              <span style="font-size:11px; background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:6px;">{len(plan_rows)} pari(s)</span>
+            </div>
+            <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
+              <table style="width:100%; border-collapse:collapse; font-size:12px;">
+                <thead><tr style="background:#0f172a; color:#ffffff; font-size:10px; text-transform:uppercase; font-weight:700;">
+                  <th style="padding:9px 8px; text-align:left;">Heure</th>
+                  <th style="padding:9px 8px; text-align:left;">Match</th>
+                  <th style="padding:9px 6px; text-align:center;">Marché</th>
+                  <th style="padding:9px 6px; text-align:center;">Cote</th>
+                  <th style="padding:9px 6px; text-align:center;">Score</th>
+                  <th style="padding:9px 6px; text-align:center;">Type</th>
+                </tr></thead>
+                <tbody>{plan_rows_html}</tbody>
+              </table>
             </div>
           </div>
 
-          <!-- BANNIÈRE STATISTIQUES MOYENNES DU MARCHÉ -->
-          <div style="padding: 12px 15px; background: #f0f9ff; border-bottom: 1px solid #e0f2fe; display: flex; justify-content: space-around; text-align: center;">
-            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #bae6fd;">
-              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne Over 2.5 (Tous)</span>
-              <span style="font-size: 17px; font-weight: 800; color: #0284c7;">{avg_all_o25:.2f}</span>
-              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_o25:.2f})</span>
-            </div>
-            <div style="background: #ffffff; padding: 8px 16px; border-radius: 8px; border: 1px solid #bfdbfe;">
-              <span style="font-size: 10px; text-transform: uppercase; color: #64748b; font-weight: 700; display: block;">Moyenne BTTS Oui (Tous)</span>
-              <span style="font-size: 17px; font-weight: 800; color: #1d4ed8;">{avg_all_btts:.2f}</span>
-              <span style="font-size: 10px; color: #64748b; font-weight: 600; display: block;">(Retenus: {avg_sel_btts:.2f})</span>
-            </div>
-          </div>
+          <!-- EVOLUTIONS -->
+          <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SYNTHÈSE COMPACTE -->
-          <div style="padding: 12px 20px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0; font-size: 13px; font-weight: 700; color: #0f172a; display:flex; justify-content:space-between; align-items:center;">
-            <span>🔥 <b>{len(s3_matches)} match(s) retenu(s)</b> sur {len(scanned_results)} scannés</span>
-            <span style="font-size:11px; color:#64748b; font-weight:normal;">Fenêtre 48h &amp; Nuit Suivante</span>
-          </div>
-
-          <!-- BLOC ÉVOLUTIONS DEPUIS LE DERNIER RUN -->
-          <div style="padding: 15px 15px 0 15px;">
-            {evo_html}
-          </div>
-
-          <!-- SECTION 1 : COMBINÉS OVER 2.5 -->
-          <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🔥 1. COMBINÉS OVER 2.5 (2 Matchs — Cote Min: 2,20 | Mise: 4 €)</span>
-              <span style="font-size: 11px; background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_2matches)} ticket(s)</span>
-            </div>
-            <div style="font-size: 11px; color: #64748b; background: #fff7ed; border: 1px solid #fed7aa; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
-              <b style="color:#c2410c;">⚙️ Méthode :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers statistiques (IPO, Buts, Fréquence Over 2.5, Tirs cadrés, Dom/Ext, Ligue).
-              Seuls les matchs avec un <b>Score ≥ 75/100</b> sont retenus. Les combinés associent 2 matchs pour une cote cible de <b>~2.20</b>.
-              Si aucune paire n'atteint 2.20, la meilleure paire disponible est quand même sélectionnée.
+          <!-- SECTION 2 : COMBINÉS OVER 2.5 -->
+          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔥 1. COMBINÉS OVER 2.5 &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(2 matchs — Mise 4 € — Cote min 2.20)</span></span>
+              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_2matches)} ticket(s)</span>
             </div>
             {combos_html}
           </div>
 
-          <!-- SECTION 2 : COMBINÉS OVER 1.5 -->
-          <div style="padding: 15px 15px 5px 15px; background: #ffffff; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ 2. COMBINÉS OVER 1.5 ACCUMULATEUR (3 Matchs — Cote Min: 1,90 | Mise: 5 €)</span>
-              <span style="font-size: 11px; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_o15)} ticket(s)</span>
-            </div>
-            <div style="font-size: 11px; color: #64748b; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
-              <b style="color:#1d4ed8;">⚙️ Méthode Barème V2 Over 1.5 :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers (IPO, Buts, Fréquence Over 1.5, Tirs cadrés, Dom/Ext, Ligue) avec <b>seuils abaissés</b> pour capter les matchs à ≥ 2 buts.
-              Seuls les matchs avec un <b>Score Over 1.5 ≥ 65/100</b> sont retenus. 3 matchs combinés pour une cote cible de <b>~1.90</b>.
-            </div>
-            {combos_o15_html}
-          </div>
-
           <!-- SECTION 3 : COMBINÉS BTTS OUI -->
-          <div style="padding: 15px 15px 5px 15px; background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 3. COMBINÉS BTTS OUI (2 Matchs — Cote Min: 2,60 | Mise: 4 €)</span>
-              <span style="font-size: 11px; background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_btts)} ticket(s)</span>
-            </div>
-            <div style="font-size: 11px; color: #64748b; background: #fefce8; border: 1px solid #fde68a; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
-              <b style="color:#92400e;">⚙️ Méthode Barème V2 BTTS :</b> Sélection 100% AdamChoi — Barème V2 sur 6 piliers dédiés BTTS (Attaque DOM, Attaque EXT, Défense DOM perméable, Défense EXT perméable, Fréquence BTTS historique, Ligue).
-              Seuls les matchs avec un <b>Score BTTS ≥ 65/100</b> sont retenus. 2 matchs combinés pour une cote cible de <b>~2.60</b>.
+          <div style="padding:12px 16px 10px 16px; background:#ffffff; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🚀 2. COMBINÉS BTTS OUI &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(2 matchs — Mise 4 € — Cote min 2.60)</span></span>
+              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_btts)} ticket(s)</span>
             </div>
             {combos_btts_html}
           </div>
 
-          <!-- SECTION 4 : COMBINÉS PENALTY -->
-          <div style="padding: 15px 15px 5px 15px; background: #faf5ff; border-bottom: 1px solid #e2e8f0;">
-            <div style="font-size: 14px; font-weight: 800; color: #0f172a; margin-bottom: 6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 4. COMBINÉS PENALTY (2 Matchs — Cote Min: 2,40 | Mise: 4 €)</span>
-              <span style="font-size: 11px; background: #ede9fe; color: #5b21b6; padding: 2px 8px; border-radius: 12px; font-weight: 700;">{len(combos_pen)} ticket(s)</span>
+          <!-- SECTION 4 : PENALTY OUI PARIS SIMPLES -->
+          <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>⚡ 3. PENALTY OUI — PARIS SIMPLES</span>
+              <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
-            <div style="font-size: 11px; color: #64748b; background: #ede9fe; border: 1px solid #c4b5fd; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; line-height: 1.5;">
-              <b style="color:#5b21b6;">⚙️ Méthode Barème V2 Penalty :</b> Sélection 100% AdamChoi — Barème V2 sur 4 piliers (Taux penalty arbitre cette saison, Cartons/Fautes H2H, Tirs cadrés, Niveau offensif).
-              Seuls les matchs avec un <b>Score Penalty ≥ 55/100</b> sont retenus. 2 matchs combinés pour une cote cible de <b>~2.40</b>.
+            <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
+              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire
             </div>
-            {combos_pen_html}
+            {pen_simples_html}
           </div>
 
-
-          <!-- TABLEAU UNIQUE COMPACT DES MATCHS SELECTIONNÉS -->
-          <div style="padding: 10px;">
-            <table style="width:100%; border-collapse:collapse; font-size:13px;">
-              <thead>
-                <tr style="background:#f8fafc; color:#475569; text-transform:uppercase; font-size:11px; font-weight:700; border-bottom:2px solid #e2e8f0;">
-                  <th style="padding:9px 10px; text-align:left;">Date</th>
-                  <th style="padding:9px 10px; text-align:left;">Match & Ligue</th>
-                  <th style="padding:9px 10px; text-align:center;">BTTS (Oui/Non)</th>
-                  <th style="padding:9px 10px; text-align:center;">Over 2.5</th>
-                  <th style="padding:9px 10px; text-align:left;">Buteur Moyenne</th>
-                </tr>
-              </thead>
-              <tbody>
-                {table_rows_html}
-              </tbody>
-            </table>
-          </div>
-
-          <!-- SECTION MATCHS NON SÉLECTIONNÉS ET MOTIFS DE REJET -->
-          <div style="padding: 15px 10px; border-top: 2px solid #e2e8f0; background: #fafafa;">
-            <div style="font-size: 13px; font-weight: 800; color: #475569; margin-bottom: 10px;">
-              🚫 MATCHS NON SÉLECTIONNÉS ({len(non_retained_matches)}) &amp; RAISONS DU REJET
+          <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
+          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
+            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px;">📊 TOUS LES MATCHS ANALYSÉS ({len(scanned_results)} scannés)</div>
+            <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
+              <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
+                  <th style="padding:7px 8px; text-align:left;">Heure</th>
+                  <th style="padding:7px 8px; text-align:left;">Match</th>
+                  <th style="padding:7px 6px; text-align:center;">Score V2</th>
+                  <th style="padding:7px 6px; text-align:center;">Over 2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Sélection</th>
+                </tr></thead>
+                <tbody>{scan_rows_html}</tbody>
+              </table>
             </div>
-            {rejected_rows_html}
           </div>
 
           <!-- FOOTER -->
-          <div style="padding: 12px 20px; background: #f8fafc; border-top: 1px solid #e2e8f0; font-size: 11px; color: #94a3b8; text-align: center;">
-            ⚠️ Paris sportifs à l'unité · Analyse basée sur cotes Unibet France · Jouez avec modération.
+          <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
+            ⚠️ Paris sportifs · Jouez avec modération · Analyse 100% AdamChoi · Unibet France · {now_str}
           </div>
 
         </div>
       </body>
     </html>
     """
+
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
@@ -1173,7 +1074,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Rapport foot du {subject_date} - {nb_s3} match{'s' if nb_s3>1 else ''} retenu{'s' if nb_s3>1 else ''} (BTTS Oui < Non & Over 2.5 < Under 2.5)"
+    raw_subject = f"⚽ Football {subject_date} — {len(s3_matches)} Over 2.5 · {len(combos_2matches)} combos · {len(pen_simples)} Penalty OUI · {len(combos_btts)} BTTS"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')

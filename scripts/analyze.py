@@ -47,6 +47,60 @@ ALIASES = {
     "deportivo": "dep",
     "universidad": "uni",
     "atletico": "atl",
+    # PSG / clubs parisiens
+    "germain": "",       # "Saint-Germain" → supprimé → "psg" seul suffit
+    # Clubs Espagnols
+    "real": "real",
+    "bilbao": "bilbao",
+    "sociedad": "sociedad",
+    "valladolid": "valladolid",
+    "betis": "betis",
+    # Clubs Allemands
+    "borussia": "bvb",
+    "dortmund": "bvb",
+    "leverkusen": "leverkusen",
+    "werder": "werder",
+    "frankfurt": "eintracht",
+    "hoffenheim": "hoffenheim",
+    "monchengladbach": "gladbach",
+    "gladbach": "gladbach",
+    # Clubs Anglais
+    "tottenham": "spurs",
+    "hotspur": "spurs",
+    "newcastle": "newcastle",
+    "brighton": "brighton",
+    "brentford": "brentford",
+    "westham": "west ham",
+    "aston": "aston",
+    "crystal": "crystal",
+    # Clubs Italiens
+    "juventus": "juve",
+    "napoli": "napoli",
+    "internazionale": "inter",
+    "lazio": "lazio",
+    "fiorentina": "fiorentina",
+    # Clubs Portugais
+    "benfica": "benfica",
+    "porto": "porto",
+    "sporting": "sporting",
+    # Clubs Français (noms les plus utilisés sur Unibet)
+    "marseille": "om",
+    "lille": "losc",
+    "rennes": "rennes",
+    "lens": "lens",
+    "nantes": "nantes",
+    "nice": "nice",
+    "toulouse": "toulouse",
+    # Clubs Néerlandais / Belges
+    "ajax": "ajax",
+    "feyenoord": "feyenoord",
+    "psv": "psv",
+    "anderlecht": "anderlecht",
+    # Clubs Turcs
+    "galatasaray": "galatasaray",
+    "fenerbahce": "fenerbahce",
+    "besiktas": "besiktas",
+    "trabzonspor": "trabzonspor",
 }
 
 def clean_str(s):
