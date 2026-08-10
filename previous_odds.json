@@ -4,7 +4,7 @@
       "match": "Fram Reykjavik - KR Reykjavik",
       "league": "Islande • D1 Islande",
       "date_str": "Lun. 10/08 à 21h15",
-      "val_btts": 1.12,
+      "val_btts": 1.15,
       "val_o25": 1.12,
       "double": true,
       "ac_score": 95
@@ -41,7 +41,7 @@
       "league": "Danemark • D1 Danemark",
       "date_str": "Lun. 10/08 à 19h00",
       "val_btts": 1.38,
-      "val_o25": 1.45,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 75
     },
@@ -49,8 +49,8 @@
       "match": "GKS Katowice - Hap.Tel Aviv",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.8,
-      "val_o25": 2.0,
+      "val_btts": 1.75,
+      "val_o25": 1.9,
       "double": true,
       "ac_score": 75
     }
