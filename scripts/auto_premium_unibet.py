@@ -290,24 +290,38 @@ def main():
     print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
+    # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
     try:
         from analyze import analyze_pure_stats_20
-        r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
-        d_fx = r_fx.json() if r_fx.status_code == 200 else None
-        # Fetch global des arbitres désignés — une seule requête pour tous les matchs
-        r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=6)
-        refs_raw = r_refs.json() if r_refs.status_code == 200 else {}
-        d_refs = {}
-        for date_block in refs_raw.get("dates", []):
-            for lg in date_block.get("leagues", []):
-                for fx in lg.get("fixtures", []):
-                    eid = str(fx.get("externalid", ""))
-                    if eid and fx.get("refereeId"):
-                        d_refs[eid] = {"refereeId": fx["refereeId"], "refereeName": fx.get("refereeName", "Inconnu")}
-    except Exception:
+        print("✅ analyze_pure_stats_20 importé avec succès")
+    except Exception as e_import:
         analyze_pure_stats_20 = None
-        d_fx = None
-        d_refs = {}
+        print(f"❌ ERREUR import analyze.py : {type(e_import).__name__}: {e_import}")
+
+    # Étape 2 : Préchargement fixtures AdamChoi (optionnel — fallback auto si échoue)
+    d_fx = None
+    d_refs = {}
+    if analyze_pure_stats_20:
+        try:
+            r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+            d_fx = r_fx.json() if r_fx.status_code == 200 else None
+            print(f"✅ Fixtures AdamChoi chargées : {len(d_fx.get('dates', [])) if d_fx else 0} dates")
+        except Exception as e_fx:
+            d_fx = None  # analyse.py fera un fetch individuel par match
+            print(f"⚠️ Fixtures AdamChoi non préchargées ({type(e_fx).__name__}: {e_fx}) — fallback auto-fetch par match")
+        try:
+            r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+            refs_raw = r_refs.json() if r_refs.status_code == 200 else {}
+            for date_block in refs_raw.get("dates", []):
+                for lg in date_block.get("leagues", []):
+                    for fx in lg.get("fixtures", []):
+                        eid = str(fx.get("externalid", ""))
+                        if eid and fx.get("refereeId"):
+                            d_refs[eid] = {"refereeId": fx["refereeId"], "refereeName": fx.get("refereeName", "Inconnu")}
+            print(f"✅ Arbitres désignés chargés : {len(d_refs)} matchs")
+        except Exception as e_refs:
+            d_refs = {}
+            print(f"⚠️ Arbitres non chargés ({type(e_refs).__name__}: {e_refs})")
 
     def enrich_adamchoi(m):
         if analyze_pure_stats_20:
