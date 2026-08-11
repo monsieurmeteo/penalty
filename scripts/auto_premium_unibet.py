@@ -310,17 +310,29 @@ def main():
             d_fx = None  # analyse.py fera un fetch individuel par match
             print(f"⚠️ Fixtures AdamChoi non préchargées ({type(e_fx).__name__}: {e_fx}) — fallback auto-fetch par match")
         try:
-            for _attempt in range(2):  # 1 retry si body vide
-                r_refs = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
-                if r_refs.status_code == 200 and r_refs.text.strip():
-                    break
-                time.sleep(3)
-            # Décodage explicite — évite JSONDecodeError sur body BOM UTF-8
-            raw = r_refs.content
-            if raw[:3] == b'\xef\xbb\xbf':
-                raw = raw[3:]
-            body_str = raw.decode('utf-8', errors='replace').strip()
-            print(f"   Arbitres body[0:30]: {repr(body_str[:30])}")
+            REFS_URL = "https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php"
+            REF_DELAYS = [0, 3, 5, 8]  # 4 tentatives : immédiate + 3 retries progressifs
+            r_refs = None
+            body_str = ""
+            for _attempt, delay in enumerate(REF_DELAYS):
+                if delay:
+                    time.sleep(delay)
+                try:
+                    r_refs = requests.get(REFS_URL, headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+                    raw = r_refs.content
+                    if raw[:3] == b'\xef\xbb\xbf':
+                        raw = raw[3:]
+                    body_str = raw.decode('utf-8', errors='replace').strip()
+                    # Vérification explicite : JSON valide (pas du HTML Cloudflare)
+                    if r_refs.status_code == 200 and body_str and body_str[0] in '{[':
+                        print(f"   Arbitres body[0:30]: {repr(body_str[:30])} (tentative {_attempt+1})")
+                        break
+                    else:
+                        print(f"   ⚠️ Tentative {_attempt+1}/4 arbitres : réponse HTML/vide, retry...")
+                        body_str = ""
+                except Exception as e_attempt:
+                    print(f"   ⚠️ Tentative {_attempt+1}/4 arbitres : {e_attempt}, retry...")
+                    body_str = ""
             refs_raw = json.loads(body_str) if body_str and body_str[0] in '{[' else {}
             for date_block in refs_raw.get("dates", []):
                 for lg in date_block.get("leagues", []):
