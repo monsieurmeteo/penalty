@@ -1,5 +1,23 @@
 {
   "s3": {
+    "3368204": {
+      "match": "KF Shkendija - Hibernian",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 88
+    },
+    "3368309": {
+      "match": "Saint Gall - SherifTiraspol",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h00",
+      "val_btts": 1.75,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 86
+    },
     "3367387": {
       "match": "Bodø/Glimt - Saint-Gilloise",
       "league": "Coupes D Europe • Championsleague",

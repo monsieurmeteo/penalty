@@ -1205,5 +1205,651 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3368773",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "FK RFS vs FK Jablonec",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 18h30",
+    "scores": {
+      "o25": 55,
+      "o15": 75,
+      "btts": 58,
+      "penalty": 67
+    },
+    "referee": {
+      "name": "Igal Frid",
+      "status": "👨‍⚖️ Arbitre Igal Frid (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369424",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Midtjylland vs Bohemians",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 17,
+      "o15": 61,
+      "btts": 21,
+      "penalty": 49
+    },
+    "referee": {
+      "name": "Matteo Marcenaro",
+      "status": "👨‍⚖️ Arbitre Matteo Marcenaro (21 m, 0.19 pen/m)",
+      "pen_per_match": 0.19
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368306",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Pafos FC vs Salzbourg",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 42,
+      "o15": 61,
+      "btts": 33,
+      "penalty": 50
+    },
+    "referee": {
+      "name": "João Pedro Silva Pinheiro",
+      "status": "👨‍⚖️ Arbitre João Pedro Silva Pinheiro (3 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368042",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Uni.Craiova vs Kups",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 30,
+      "o15": 60,
+      "btts": 28,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Nenad Minaković",
+      "status": "👨‍⚖️ Arbitre Nenad Minaković (19 m, 0.37 pen/m)",
+      "pen_per_match": 0.368
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 2.15
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368205",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "FK DAC 1904 vs Twente",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 26,
+      "o15": 51,
+      "btts": 15,
+      "penalty": 49
+    },
+    "referee": {
+      "name": "Florian Badstübner",
+      "status": "👨‍⚖️ Arbitre Florian Badstübner (20 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369877",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Tromsø vs Cfr Cluj",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 32,
+      "o15": 45,
+      "btts": 15,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Gustavo Fernandes Correia",
+      "status": "👨‍⚖️ Arbitre Gustavo Fernandes Correia (21 m, 0.52 pen/m)",
+      "pen_per_match": 0.524
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368210",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Besiktas vs Hradec Kralové",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 38,
+      "o15": 46,
+      "btts": 17,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Urs Schnyder",
+      "status": "👨‍⚖️ Arbitre Urs Schnyder (22 m, 0.41 pen/m)",
+      "pen_per_match": 0.409
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.85
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368231",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Dynamo Minsk vs Braga",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 23,
+      "o15": 43,
+      "btts": 21,
+      "penalty": 57
+    },
+    "referee": {
+      "name": "Szabolcs Kovacs",
+      "status": "👨‍⚖️ Arbitre Szabolcs Kovacs (24 m, 0.29 pen/m)",
+      "pen_per_match": 0.292
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369878",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Max.Rogachev vs BoracBanjaLuka",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 62,
+      "o15": 65,
+      "btts": 63,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Andy Madley",
+      "status": "👨‍⚖️ Arbitre Andy Madley (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368207",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Omonia Nicosie vs Lincoln FC",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 56,
+      "o15": 73,
+      "btts": 32,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Sebastian Gishamer",
+      "status": "👨‍⚖️ Arbitre Sebastian Gishamer (20 m, 0.30 pen/m)",
+      "pen_per_match": 0.3
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 2.5
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368775",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Gornik Zabrze vs Ferencvaros",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 33,
+      "o15": 44,
+      "btts": 27,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Andrea Colombo",
+      "status": "👨‍⚖️ Arbitre Andrea Colombo (19 m, 0.26 pen/m)",
+      "pen_per_match": 0.263
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.2,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368382",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Hammarby vs RKS Rakow",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 40,
+      "o15": 48,
+      "btts": 15,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Luca Pairetto",
+      "status": "👨‍⚖️ Arbitre Luca Pairetto (16 m, 0.62 pen/m)",
+      "pen_per_match": 0.625
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369248",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Nordsjaelland vs ValurReykjavik",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h00",
+    "scores": {
+      "o25": 62,
+      "o15": 69,
+      "btts": 49,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Edgars Maļcevs",
+      "status": "👨‍⚖️ Arbitre Edgars Maļcevs (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.2,
+      "o15": 1.05,
+      "btts": 2.05
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369880",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Runavik vs FC Lugano",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h30",
+    "scores": {
+      "o25": 53,
+      "o15": 70,
+      "btts": 19,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Robert Hennessy",
+      "status": "👨‍⚖️ Arbitre Robert Hennessy (38 m, 0.34 pen/m)",
+      "pen_per_match": 0.342
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369661",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "KI Klaksvik vs Lech Poznan",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h30",
+    "scores": {
+      "o25": 73,
+      "o15": 73,
+      "btts": 71,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Igor Pajač",
+      "status": "👨‍⚖️ Arbitre Igor Pajač (13 m, 0.23 pen/m)",
+      "pen_per_match": 0.231
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.62
+    },
+    "selected_markets": [
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369662",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Vikingur Reyk. vs FC Thun",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 19h30",
+    "scores": {
+      "o25": 47,
+      "o15": 58,
+      "btts": 17,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Luis Miguel Branco Godinho",
+      "status": "👨‍⚖️ Arbitre Luis Miguel Branco Godinho (28 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.38
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368779",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "FC Vaduz vs Inter Turku",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 19h30",
+    "scores": {
+      "o25": 62,
+      "o15": 73,
+      "btts": 53,
+      "penalty": 63
+    },
+    "referee": {
+      "name": "Filip Glova",
+      "status": "👨‍⚖️ Arbitre Filip Glova (14 m, 0.07 pen/m)",
+      "pen_per_match": 0.071
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368776",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "CSKA Sofia vs Mac.Tel Aviv",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 69,
+      "o15": 67,
+      "btts": 41,
+      "penalty": 77
+    },
+    "referee": {
+      "name": "Daniel Schlager",
+      "status": "👨‍⚖️ Arbitre Daniel Schlager (21 m, 0.24 pen/m)",
+      "pen_per_match": 0.238
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368204",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "KF Shkendija vs Hibernian",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 88,
+      "o15": 92,
+      "btts": 69,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "O15"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368309",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "Saint Gall vs SherifTiraspol",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 86,
+      "o15": 90,
+      "btts": 88,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25",
+      "O15",
+      "BTTS"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367754",
+    "timestamp_utc": "2026-08-11T14:03:48.349394+00:00",
+    "match": "KF Drita vs Tre Fiori FC",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 67,
+      "o15": 75,
+      "btts": 50,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.33,
+      "o15": 1.08,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
