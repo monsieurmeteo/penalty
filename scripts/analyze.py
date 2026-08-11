@@ -656,17 +656,18 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if isinstance(ref_career, dict) and ref_career.get("seasons"):
         if not ref_name:
             ref_name = ref_career.get("name", "")
-        current_season = "2025/2026"
+        # Saisons récentes (Europe 2025/2026, Amériques/MLS/Asie 2026 et 2025)
+        accepted_seasons = ["2025/2026", "2026", "2025"]
         total_pens = 0
         for s in ref_career["seasons"]:
-            if s.get("season") == current_season:
+            if str(s.get("season", "")) in accepted_seasons:
                 total_pens += s.get("totalPenalties", 0) or 0
                 total_games += s.get("fixtureCount", 0) or 0
         if total_games > 0:
             pen_per_match = total_pens / total_games
     ref_name = ref_name or "Inconnu"
 
-    ref_is_known = bool(ref_name != "Inconnu" and total_games > 0)
+    ref_is_known = bool(ref_name != "Inconnu")
     if ref_is_known:
         if pen_per_match >= 0.50: p_pen_ref_raw = 35
         elif pen_per_match >= 0.40: p_pen_ref_raw = 30
@@ -675,12 +676,15 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         elif pen_per_match >= 0.20: p_pen_ref_raw = 12
         elif pen_per_match >= 0.15: p_pen_ref_raw = 6
         elif pen_per_match > 0: p_pen_ref_raw = 2
-        else: p_pen_ref_raw = 0
+        else: p_pen_ref_raw = 10 if total_games == 0 else 0
 
         # Facteur de Fiabilité R_ref basé sur le nombre de matchs arbitrés cette saison (cible 8+ matchs)
-        r_ref = min(1.0, total_games / 8.0)
+        r_ref = min(1.0, total_games / 8.0) if total_games > 0 else 0.50
         p_pen_ref = round(p_pen_ref_raw * r_ref + 10 * (1.0 - r_ref))
-        ref_status = f"👨‍⚖️ Arbitre {ref_name} ({total_games} m, {pen_per_match:.2f} pen/m)"
+        if total_games > 0:
+            ref_status = f"👨‍⚖️ Arbitre {ref_name} ({total_games} m, {pen_per_match:.2f} pen/m)"
+        else:
+            ref_status = f"👨‍⚖️ Arbitre {ref_name} (désigné — début de saison)"
     else:
         p_pen_ref = 0
         ref_status = "Arbitre non désigné — confiance réduite"

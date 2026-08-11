@@ -960,24 +960,27 @@ def main():
     # Over 2.5 validés
     for m in s3_matches:
         cn = o25_combo_map.get(m["id"])
-        plan_rows.append({
-            "dt": m.get("dt_obj", now_utc),
-            "date_str": m.get("date_str", ""),
-            "match": f"{m['dom']} vs {m['ext']}",
-            "league": m.get("league", ""),
-            "market": "⚽ Over 2.5",
-            "cote": f"@{m['over25']:.2f}" if m.get("over25") else "—",
-            "score_label": f"{m.get('ac_score', 0)}/100",
-            "score_val": m.get("ac_score", 0),
-            "type_label": f"COMBINÉ #{cn}" if cn else "SIMPLE",
-            "bg_market": "#dbeafe", "cl_market": "#1e40af",
-        })
-        seen_plan.add(m["id"])
+        key = (m["id"], "O25")
+        if key not in seen_plan:
+            plan_rows.append({
+                "dt": m.get("dt_obj", now_utc),
+                "date_str": m.get("date_str", ""),
+                "match": f"{m['dom']} vs {m['ext']}",
+                "league": m.get("league", ""),
+                "market": "⚽ Over 2.5",
+                "cote": f"@{m['over25']:.2f}" if m.get("over25") else "—",
+                "score_label": f"{m.get('ac_score', 0)}/100",
+                "score_val": m.get("ac_score", 0),
+                "type_label": f"COMBINÉ #{cn}" if cn else "SIMPLE",
+                "bg_market": "#dbeafe", "cl_market": "#1e40af",
+            })
+            seen_plan.add(key)
 
     # Over 1.5 (triplets)
     for idx_cb, cb in enumerate(combos_o15, 1):
         for m in [cb["m1"], cb["m2"], cb["m3"]]:
-            if m["id"] not in seen_plan:
+            key = (m["id"], "O15")
+            if key not in seen_plan:
                 plan_rows.append({
                     "dt": m.get("dt_obj", now_utc),
                     "date_str": m.get("date_str", ""),
@@ -990,12 +993,13 @@ def main():
                     "type_label": f"TRIPLÉ O1.5 #{idx_cb}",
                     "bg_market": "#d1fae5", "cl_market": "#065f46",
                 })
-                seen_plan.add(m["id"])
+                seen_plan.add(key)
 
     # BTTS (matchs dans les combos)
     for idx_cb, cb in enumerate(combos_btts, 1):
         for m in [cb["m1"], cb["m2"]]:
-            if m["id"] not in seen_plan:
+            key = (m["id"], "BTTS")
+            if key not in seen_plan:
                 plan_rows.append({
                     "dt": m.get("dt_obj", now_utc),
                     "date_str": m.get("date_str", ""),
@@ -1008,11 +1012,12 @@ def main():
                     "type_label": f"COMBINÉ BTTS #{idx_cb}",
                     "bg_market": "#fef3c7", "cl_market": "#92400e",
                 })
-                seen_plan.add(m["id"])
+                seen_plan.add(key)
 
     # Penalty simples
     for m in pen_simples:
-        if m["id"] not in seen_plan:
+        key = (m["id"], "PENALTY")
+        if key not in seen_plan:
             plan_rows.append({
                 "dt": m.get("dt_obj", now_utc),
                 "date_str": m.get("date_str", ""),
@@ -1025,7 +1030,7 @@ def main():
                 "type_label": "PARI SIMPLE",
                 "bg_market": "#ede9fe", "cl_market": "#5b21b6",
             })
-            seen_plan.add(m["id"])
+            seen_plan.add(key)
 
     plan_rows.sort(key=lambda x: x["dt"])
 
