@@ -1517,11 +1517,14 @@ def main():
             "matches": dash_matches
         }
 
-        dash_path = r"C:\Users\grego\Documents\DEV_DIVERS\penalty\dashboard\public\data\matches.json"
-        os.makedirs(os.path.dirname(dash_path), exist_ok=True)
-        with open(dash_path, "w", encoding="utf-8") as f:
-            json.dump(dash_data, f, ensure_ascii=False, indent=2)
-        print(f"✅ DASHBOARD JSON EXPORTÉ AVEC SUCCÈS (Alignement 100% Email) : {dash_path}")
+        if os.name == "nt":  # Windows uniquement — chemin hardcodé non disponible sur GHA Linux
+            dash_path = r"C:\Users\grego\Documents\DEV_DIVERS\penalty\dashboard\public\data\matches.json"
+            os.makedirs(os.path.dirname(dash_path), exist_ok=True)
+            with open(dash_path, "w", encoding="utf-8") as f:
+                json.dump(dash_data, f, ensure_ascii=False, indent=2)
+            print(f"✅ DASHBOARD JSON EXPORTÉ AVEC SUCCÈS (Alignement 100% Email) : {dash_path}")
+        else:
+            print("ℹ️ Export Dashboard JSON ignoré (environnement non-Windows — GHA runner)")
     except Exception as e:
         print(f"⚠️ Erreur d'export Dashboard JSON : {e}")
 
