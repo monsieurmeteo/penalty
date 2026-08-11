@@ -597,9 +597,6 @@ def main():
     # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
     # Barème V2 BTTS /100 (6 piliers : Attaque DOM/EXT, Défense DOM/EXT, Fréquence BTTS, Ligue)
     btts_candidates = [m for m in scanned_results if m.get("score_btts", 0) >= 65 and m.get("btts_oui")]
-    # Fallback si aucun match à 65 : prendre score_btts >= 55
-    if not btts_candidates:
-        btts_candidates = [m for m in scanned_results if m.get("score_btts", 0) >= 55 and m.get("btts_oui")]
     btts_candidates.sort(key=lambda x: x.get("score_btts", 0), reverse=True)
     sessions_btts = {}
     for m in btts_candidates:
@@ -648,8 +645,6 @@ def main():
     # On retire le filtre ref_name et on compense avec seuil ≥ 55.
     # Les matchs avec arbitre connu (quand désigné via autre source) seront triés en priorité.
     pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55]
-    if not pen_candidates:
-        pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 45]
     # Priorité : arbitre connu > score_penalty élevé
     pen_candidates.sort(key=lambda x: (x.get("ref_name", "Inconnu") != "Inconnu", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates[:5]  # top 5 — paris secs uniquement
