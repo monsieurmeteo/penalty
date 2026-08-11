@@ -624,10 +624,12 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     # 6. Contexte ligue (10 pts) — identique
     p_btts_league = pts_league
 
-    # Red flags BTTS : si une équipe ne marque pas du tout
+    # Red flags BTTS : si une équipe ne marque pas du tout ou si l'échantillon est insuffisant (< 3 matchs)
     rf_btts = []
     if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} but/m) — risque 0 but DOM")
     if gf_b < 0.6: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} but/m) — risque 0 but EXT")
+    if len(recent_h_dom) < 3: rf_btts.append(f"Échantillon DOM trop faible ({len(recent_h_dom)} match)")
+    if len(recent_a_ext) < 3: rf_btts.append(f"Échantillon EXT trop faible ({len(recent_a_ext)} match)")
     score_btts = max(0, min(100, p_btts_att_dom + p_btts_att_ext + p_btts_def_dom + p_btts_def_ext + p_btts_freq + p_btts_league - len(rf_btts) * 10))
 
     # ══════════════════════════════════════════════════════════════
