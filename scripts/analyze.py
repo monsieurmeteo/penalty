@@ -635,14 +635,18 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     # 5. Contexte ligue (10 pts max)
     p_btts_league = pts_league
 
-    # Red flags BTTS : si une équipe marque <0.8 goal/m ou si échantillon <3
+    # Red flags BTTS : si une équipe marque <0.8 goal/m, si échantillon <3 ou si déséquilibre majeur (Risque Clean Sheet)
     rf_btts = []
     if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} goal/m) — risque 0 goal DOM")
     if gf_b < 0.8: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} goal/m) — risque 0 goal EXT")
     if n_h < 3: rf_btts.append(f"Échantillon DOM trop faible ({n_h} match)")
     if n_a < 3: rf_btts.append(f"Échantillon EXT trop faible ({n_a} match)")
 
-    rf_pen_btts = min(20, len(rf_btts) * 10)
+    # Garde-fou Anti Clean Sheet : Déséquilibre offensif majeur (ex: 2.2+ buts/m DOM vs <1.0 goal/m EXT)
+    if (gf_a >= 2.2 and gf_b < 1.0) or (gf_b >= 2.0 and gf_a < 1.0):
+        rf_btts.append(f"Risque Clean Sheet / Déséquilibre offensif majeur ({gf_a:.1f} vs {gf_b:.1f})")
+
+    rf_pen_btts = min(25, len(rf_btts) * 12)
     score_btts = max(0, min(100, p_btts_pot_dom + p_btts_pot_ext + p_btts_freq + p_btts_ha + p_btts_league - rf_pen_btts))
 
     # ══════════════════════════════════════════════════════════════
