@@ -943,20 +943,24 @@ def main():
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
         o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
         score_v = m.get("ac_score", 0)
-        verdict = m.get("ac_verdict", "")
-        not_found = score_v == 0 and ("non trouvée" in verdict.lower() or "données insuffisantes" in verdict.lower())
-        if not_found:
-            score_badge = '<span style="background:#f1f5f9; color:#94a3b8; font-weight:700; font-size:11px; padding:2px 7px; border-radius:5px;">❓ N/A</span>'
-        else:
-            score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
-            score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
-            score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
+        btts_v = m.get("score_btts", 0)
+        
+        # Badges scores
+        score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
+        score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
+        score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
+
+        btts_bg = "#dcfce7" if btts_v >= 65 else ("#fef3c7" if btts_v >= 50 else "#f1f5f9")
+        btts_cl = "#15803d" if btts_v >= 65 else ("#92400e" if btts_v >= 50 else "#94a3b8")
+        btts_badge = f'<span style="background:{btts_bg}; color:{btts_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{btts_v}/100</span>' if btts_v > 0 else '<span style="color:#94a3b8;">—</span>'
+
         scan_rows_html += (
             f'<tr style="background:{bg_row};">'
             f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
             f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{score_badge}</td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{btts_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
@@ -1006,12 +1010,12 @@ def main():
             <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
               <table style="width:100%; border-collapse:collapse; font-size:12px;">
                 <thead><tr style="background:#0f172a; color:#ffffff; font-size:10px; text-transform:uppercase; font-weight:700;">
-                  <th style="padding:9px 8px; text-align:left;">Heure</th>
+                  <th style="padding:9px 8px; text-align:left; white-space:nowrap;">Heure</th>
                   <th style="padding:9px 8px; text-align:left;">Match</th>
-                  <th style="padding:9px 6px; text-align:center;">Marché</th>
-                  <th style="padding:9px 6px; text-align:center;">Cote</th>
-                  <th style="padding:9px 6px; text-align:center;">Score</th>
-                  <th style="padding:9px 6px; text-align:center;">Type</th>
+                  <th style="padding:9px 6px; text-align:center; min-width:100px;">Marché</th>
+                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Cote</th>
+                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Score</th>
+                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Type</th>
                 </tr></thead>
                 <tbody>{plan_rows_html}</tbody>
               </table>
