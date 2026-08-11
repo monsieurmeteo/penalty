@@ -393,6 +393,7 @@ def main():
                     m["score_btts"] = res.get("score_btts", 0)
                     m["score_penalty"] = res.get("score_penalty", 0)
                     m["ref_name"] = res.get("ref_name", "Inconnu")
+                    m["ref_status"] = res.get("ref_status", "Arbitre non désigné — confiance réduite")
                     m["pen_per_match"] = res.get("pen_per_match", 0.0)
                     m["avg_booking"] = res.get("avg_booking", 0.0)
             except Exception:
@@ -914,11 +915,10 @@ def main():
     pen_simples_html = ""
     for idx_ps, m in enumerate(pen_simples, 1):
         ref = m.get("ref_name", "Inconnu")
-        ppm = m.get("pen_per_match", 0.0)
+        ref_status_str = m.get("ref_status") or f"🧑\u200d⚖️ Arbitre {ref}"
         sp  = m.get("score_penalty", 0)
         avg_b = m.get("avg_booking", 0.0)
         sot_c = m.get("sot_comb", 0.0)
-        ref_str = f"🧑\u200d⚖️ {ref} — {ppm:.2f} pen/m cette saison" if ppm > 0 else f"🧑\u200d⚖️ {ref} — stats début de saison"
         sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
@@ -928,7 +928,7 @@ def main():
           </div>
           <div style="font-size:12px; color:#334155; line-height:1.9;">
             🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
-            {ref_str}<br>
+            {ref_status_str}<br>
             <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
           </div>
           <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
@@ -1527,6 +1527,76 @@ def main():
             print("ℹ️ Export Dashboard JSON ignoré (environnement non-Windows — GHA runner)")
     except Exception as e:
         print(f"⚠️ Erreur d'export Dashboard JSON : {e}")
+
+    # ── 🗄️ Enregistrement Infrastructure Backtest (backtest_ledger.json) ──
+    try:
+        ledger_path = "backtest_ledger.json"
+        existing = []
+        if os.path.exists(ledger_path):
+            try:
+                with open(ledger_path, "r", encoding="utf-8") as f:
+                    existing = json.load(f)
+            except Exception:
+                existing = []
+
+        seen_ids = {entry.get("match_id") for entry in existing if isinstance(entry, dict)}
+        now_iso = datetime.now(timezone.utc).isoformat()
+
+        o25_selected_ids = {m["id"] for cb in combos_2matches for m in [cb["m1"], cb["m2"]]}
+        o15_selected_ids = {m["id"] for cb in combos_o15 for m in [cb["m1"], cb["m2"], cb["m3"]]}
+        btts_selected_ids = {m["id"] for cb in combos_btts for m in [cb["m1"], cb["m2"]]}
+        pen_selected_ids = {m["id"] for m in pen_simples}
+
+        new_entries = 0
+        for m in scanned_results:
+            m_id = m.get("id")
+            if not m_id or m_id in seen_ids:
+                continue
+
+            sels = []
+            if m_id in o25_selected_ids: sels.append("O25")
+            if m_id in o15_selected_ids: sels.append("O15")
+            if m_id in btts_selected_ids: sels.append("BTTS")
+            if m_id in pen_selected_ids: sels.append("PENALTY")
+
+            entry = {
+                "match_id": m_id,
+                "timestamp_utc": now_iso,
+                "match": f"{m.get('dom')} vs {m.get('ext')}",
+                "league": m.get("league"),
+                "date_str": m.get("date_str"),
+                "scores": {
+                    "o25": m.get("ac_score", 0),
+                    "o15": m.get("score_o15", 0),
+                    "btts": m.get("score_btts", 0),
+                    "penalty": m.get("score_penalty", 0)
+                },
+                "referee": {
+                    "name": m.get("ref_name", "Inconnu"),
+                    "status": m.get("ref_status", "Arbitre non désigné — confiance réduite"),
+                    "pen_per_match": m.get("pen_per_match", 0.0)
+                },
+                "odds": {
+                    "o25": m.get("over25"),
+                    "o15": m.get("over15"),
+                    "btts": m.get("btts_oui")
+                },
+                "selected_markets": sels,
+                "result": None,
+                "won_o25": None,
+                "won_o15": None,
+                "won_btts": None,
+                "won_penalty": None
+            }
+            existing.append(entry)
+            seen_ids.add(m_id)
+            new_entries += 1
+
+        with open(ledger_path, "w", encoding="utf-8") as f:
+            json.dump(existing, f, ensure_ascii=False, indent=2)
+        print(f"📊 BACKTEST LEDGER MAJ : {len(existing)} matchs enregistrés dans {ledger_path} (+{new_entries} nouveaux)")
+    except Exception as e_ledger:
+        print(f"⚠️ Erreur MAJ Backtest Ledger : {e_ledger}")
 
 if __name__ == "__main__":
     main()

@@ -302,6 +302,30 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         sot_b = (gf_b * 2.3) + 1.8
         sota_b = (ga_b * 2.1) + 1.5
 
+    # Regress stats to league average if sample N < 5 to prevent extreme anomalies
+    n_h = len(recent_h_dom) if isinstance(recent_h_dom, list) else 0
+    n_a = len(recent_a_ext) if isinstance(recent_a_ext, list) else 0
+
+    if gf_a == 0.0 and recent_h_dom:
+        gf_a = sum(int(m.get("homeGoals", m.get("homeGoalsFt", 0))) for m in recent_h_dom) / max(1, len(recent_h_dom))
+        ga_a = sum(int(m.get("awayGoals", m.get("awayGoalsFt", 0))) for m in recent_h_dom) / max(1, len(recent_h_dom))
+        sot_a = (gf_a * 2.3) + 1.8
+        sota_a = (ga_a * 2.1) + 1.5
+
+    if gf_b == 0.0 and recent_a_ext:
+        gf_b = sum(int(m.get("awayGoals", m.get("awayGoalsFt", 0))) for m in recent_a_ext) / max(1, len(recent_a_ext))
+        ga_b = sum(int(m.get("homeGoals", m.get("homeGoalsFt", 0))) for m in recent_a_ext) / max(1, len(recent_a_ext))
+        sot_b = (gf_b * 2.3) + 1.8
+        sota_b = (ga_b * 2.1) + 1.5
+
+    # ponytail: régression douce des stats si échantillon < 5 matchs
+    if 0 < n_h < 5:
+        gf_a = round((gf_a * n_h + 1.35 * (5 - n_h)) / 5.0, 2)
+        ga_a = round((ga_a * n_h + 1.25 * (5 - n_h)) / 5.0, 2)
+    if 0 < n_a < 5:
+        gf_b = round((gf_b * n_a + 1.15 * (5 - n_a)) / 5.0, 2)
+        ga_b = round((ga_b * n_a + 1.35 * (5 - n_a)) / 5.0, 2)
+
     # ponytail: si aucune donnée réelle disponible (équipe inconnue d'AdamChoi), on ne fabrique rien
     has_real_data = bool(recent_h_dom or recent_a_ext or h_dom_w or a_ext_w)
     if not has_real_data:
@@ -367,14 +391,14 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     o25_a_cnt = count_o25(recent_a_all[:20])
     o25_avg_rate = (((o25_h_cnt / max(1, len(recent_h_all[:20]))) + (o25_a_cnt / max(1, len(recent_a_all[:20])))) / 2.0) * 100
 
-    # ── Calcul fréquence Over 1.5 sur 10 matchs Dom/Ext (méthode YouTube 70%) ──
+    # ── Calcul fréquence Over 1.5 sur 10 matchs Dom/Ext ──
     o15_h_cnt = count_o15(recent_h_dom[:10])
     o15_a_cnt = count_o15(recent_a_ext[:10])
     freq_o15_dom = (o15_h_cnt / max(1, len(recent_h_dom[:10]))) * 100
     freq_o15_ext = (o15_a_cnt / max(1, len(recent_a_ext[:10]))) * 100
     freq_o15 = round((freq_o15_dom + freq_o15_ext) / 2.0, 1)
 
-    # ── Calcul fréquence BTTS sur 10 matchs Dom/Ext (méthode YouTube 70%) ──
+    # ── Calcul fréquence BTTS sur 10 matchs Dom/Ext ──
     btts_h_cnt = count_btts(recent_h_dom[:10])
     btts_a_cnt = count_btts(recent_a_ext[:10])
     freq_btts_dom = (btts_h_cnt / max(1, len(recent_h_dom[:10]))) * 100
@@ -401,10 +425,11 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if gf_a < 1.0: red_flags.append(f"Attaque A faible ({gf_a:.1f} goal/m)")
     if gf_b < 1.0: red_flags.append(f"Attaque B faible ({gf_b:.1f} goal/m)")
     if sot_total < 6.5: red_flags.append(f"Tirs cadrés faibles ({sot_total:.1f}/m)")
-    if sot_total >= 11.0 and xg_total < 2.5:
-        red_flags.append(f"Contradiction : Beaucoup de tirs cadrés ({sot_total:.1f}/m) mais xG faibles ({xg_total:.2f})")
+    if n_h < 3: red_flags.append(f"Échantillon DOM faible ({n_h} m)")
+    if n_a < 3: red_flags.append(f"Échantillon EXT faible ({n_a} m)")
 
-    # ── BARÈME V2 — SCORE OVER 2.5 BUTS /100 ──
+    # ── BARÈME V2.1 — SCORE OVER 2.5 BUTS /100 ──
+    # Total exact 100 points
     # 1. IPO — Indice de Potentiel Offensif (25 pts max)
     ipo_dom = (sot_a * 0.28) + (gf_a * 0.50)
     ipo_ext = (sot_b * 0.28) + (gf_b * 0.50)
@@ -474,20 +499,19 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif avg_freq_ha >= 40.0: pts_ha = 3
     else: pts_ha = 0
 
-    # 6. Contexte de la ligue (10 pts max)
+    # 6. Contexte Ligue Continue (10 pts max)
     league_avg_goals = 2.75
     if league_avg_goals >= 3.30: pts_league = 10
-    elif league_avg_goals >= 3.10: pts_league = 9
-    elif league_avg_goals >= 2.90: pts_league = 8
+    elif league_avg_goals >= 3.00: pts_league = 9
     elif league_avg_goals >= 2.75: pts_league = 7
-    elif league_avg_goals >= 2.60: pts_league = 6
-    elif league_avg_goals >= 2.45: pts_league = 5
-    elif league_avg_goals >= 2.30: pts_league = 3
-    elif league_avg_goals >= 2.15: pts_league = 2
-    else: pts_league = 0
+    elif league_avg_goals >= 2.55: pts_league = 5
+    elif league_avg_goals >= 2.35: pts_league = 3
+    else: pts_league = 1
 
     raw_score = pts_ipo + pts_goals + pts_freq + pts_sot + pts_ha + pts_league
-    total_score = max(0, min(100, raw_score - (len(red_flags) * 10)))
+    # Plafond Red Flags à -20 pts max
+    rf_pen_o25 = min(20, len(red_flags) * 10)
+    total_score = max(0, min(100, raw_score - rf_pen_o25))
 
     # Classification V2
     if total_score >= 90: classe = "🔥🔥🔥 Exceptionnel"
@@ -505,10 +529,10 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     verdict = f"{classe} ({total_score}/100)"
 
     # ══════════════════════════════════════════════════════════════
-    # BARÈME V2 OVER 1.5 /100 — Seuils abaissés pour ≥ 2 buts
+    # BARÈME V2.1 OVER 1.5 /100 — Total exact 100 points
     # ══════════════════════════════════════════════════════════════
 
-    # 1. IPO (25 pts) — seuils abaissés vs Over 2.5
+    # 1. IPO (25 pts)
     if ipo_comb >= 3.00: p_o15_ipo = 25
     elif ipo_comb >= 2.70: p_o15_ipo = 23
     elif ipo_comb >= 2.40: p_o15_ipo = 21
@@ -520,7 +544,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif ipo_comb >= 1.20: p_o15_ipo = 5
     else: p_o15_ipo = 2
 
-    # 2. Buts totaux (15 pts) — seuils abaissés
+    # 2. Buts totaux (15 pts)
     if total_goals_brut >= 5.0: p_o15_goals = 15
     elif total_goals_brut >= 4.5: p_o15_goals = 14
     elif total_goals_brut >= 4.0: p_o15_goals = 13
@@ -531,7 +555,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif total_goals_brut >= 2.0: p_o15_goals = 3
     else: p_o15_goals = 1
 
-    # 3. Fréquence Over 1.5 sur 20 matchs généraux (20 pts)
+    # 3. Fréquence Over 1.5 (20 pts)
     o15_h_all = count_o15(recent_h_all[:20])
     o15_a_all = count_o15(recent_a_all[:20])
     o15_avg_rate = (((o15_h_all / max(1, len(recent_h_all[:20]))) + (o15_a_all / max(1, len(recent_a_all[:20])))) / 2.0) * 100
@@ -546,7 +570,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif o15_avg_rate >= 50: p_o15_freq = 3
     else: p_o15_freq = 0
 
-    # 4. Tirs cadrés (10 pts) — identique Over 2.5
+    # 4. Tirs cadrés (10 pts)
     p_o15_sot = pts_sot
 
     # 5. Dom/Ext spécifique Over 1.5 (20 pts)
@@ -561,92 +585,79 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif freq_o15 >= 50: p_o15_ha = 3
     else: p_o15_ha = 0
 
-    # 6. Ligue (10 pts) — identique Over 2.5
+    # 6. Ligue (10 pts)
     p_o15_league = pts_league
 
-    rf_o15 = [f for f in red_flags if "Attaque" in f]  # only offensive red flags matter for O15
-    score_o15 = max(0, min(100, p_o15_ipo + p_o15_goals + p_o15_freq + p_o15_sot + p_o15_ha + p_o15_league - len(rf_o15) * 5))
+    rf_o15 = [f for f in red_flags if "Attaque" in f or "Échantillon" in f]
+    rf_pen_o15 = min(15, len(rf_o15) * 5)
+    score_o15 = max(0, min(100, p_o15_ipo + p_o15_goals + p_o15_freq + p_o15_sot + p_o15_ha + p_o15_league - rf_pen_o15))
 
     # ══════════════════════════════════════════════════════════════
-    # BARÈME V2 BTTS /100 — Les 2 équipes doivent marquer
+    # BARÈME V2.1 BTTS OUI /100 — Logique de Confrontation (Total exact 100 pts)
     # ══════════════════════════════════════════════════════════════
 
-    # 1. Attaque DOM (25 pts) — l'équipe locale marque-t-elle ?
-    if gf_a >= 2.5: p_btts_att_dom = 25
-    elif gf_a >= 2.0: p_btts_att_dom = 22
-    elif gf_a >= 1.8: p_btts_att_dom = 19
-    elif gf_a >= 1.6: p_btts_att_dom = 16
-    elif gf_a >= 1.4: p_btts_att_dom = 13
-    elif gf_a >= 1.2: p_btts_att_dom = 10
-    elif gf_a >= 1.0: p_btts_att_dom = 7
-    elif gf_a >= 0.8: p_btts_att_dom = 4
-    else: p_btts_att_dom = 1
+    # 1. Potentiel But DOM (Attaque DOM × Défense EXT) (30 pts max)
+    comp_dom = (gf_a * 0.60) + (ga_b * 0.40)
+    if comp_dom >= 2.20: p_btts_pot_dom = 30
+    elif comp_dom >= 1.90: p_btts_pot_dom = 26
+    elif comp_dom >= 1.60: p_btts_pot_dom = 22
+    elif comp_dom >= 1.30: p_btts_pot_dom = 16
+    elif comp_dom >= 1.00: p_btts_pot_dom = 10
+    elif comp_dom >= 0.70: p_btts_pot_dom = 4
+    else: p_btts_pot_dom = 0
 
-    # 2. Attaque EXT (25 pts) — l'équipe visiteuse marque-t-elle ?
-    if gf_b >= 2.0: p_btts_att_ext = 25
-    elif gf_b >= 1.8: p_btts_att_ext = 22
-    elif gf_b >= 1.6: p_btts_att_ext = 19
-    elif gf_b >= 1.4: p_btts_att_ext = 16
-    elif gf_b >= 1.2: p_btts_att_ext = 13
-    elif gf_b >= 1.0: p_btts_att_ext = 10
-    elif gf_b >= 0.8: p_btts_att_ext = 7
-    elif gf_b >= 0.6: p_btts_att_ext = 4
-    else: p_btts_att_ext = 1
+    # 2. Potentiel But EXT (Attaque EXT × Défense DOM) (30 pts max)
+    comp_ext = (gf_b * 0.60) + (ga_a * 0.40)
+    if comp_ext >= 2.00: p_btts_pot_ext = 30
+    elif comp_ext >= 1.70: p_btts_pot_ext = 26
+    elif comp_ext >= 1.40: p_btts_pot_ext = 22
+    elif comp_ext >= 1.10: p_btts_pot_ext = 16
+    elif comp_ext >= 0.80: p_btts_pot_ext = 10
+    elif comp_ext >= 0.50: p_btts_pot_ext = 4
+    else: p_btts_pot_ext = 0
 
-    # 3. Défense DOM perméable (15 pts) — l'équipe locale encaisse-t-elle ?
-    if ga_a >= 2.0: p_btts_def_dom = 15
-    elif ga_a >= 1.8: p_btts_def_dom = 13
-    elif ga_a >= 1.6: p_btts_def_dom = 11
-    elif ga_a >= 1.4: p_btts_def_dom = 9
-    elif ga_a >= 1.2: p_btts_def_dom = 7
-    elif ga_a >= 1.0: p_btts_def_dom = 5
-    elif ga_a >= 0.8: p_btts_def_dom = 3
-    else: p_btts_def_dom = 0
-
-    # 4. Défense EXT perméable (15 pts) — l'équipe visiteuse encaisse-t-elle ?
-    if ga_b >= 2.0: p_btts_def_ext = 15
-    elif ga_b >= 1.8: p_btts_def_ext = 13
-    elif ga_b >= 1.6: p_btts_def_ext = 11
-    elif ga_b >= 1.4: p_btts_def_ext = 9
-    elif ga_b >= 1.2: p_btts_def_ext = 7
-    elif ga_b >= 1.0: p_btts_def_ext = 5
-    elif ga_b >= 0.8: p_btts_def_ext = 3
-    else: p_btts_def_ext = 0
-
-    # 5. Fréquence BTTS historique Dom/Ext (15 pts)
-    if freq_btts >= 80: p_btts_freq = 15
-    elif freq_btts >= 75: p_btts_freq = 13
-    elif freq_btts >= 70: p_btts_freq = 11
-    elif freq_btts >= 65: p_btts_freq = 9
-    elif freq_btts >= 60: p_btts_freq = 7
-    elif freq_btts >= 55: p_btts_freq = 5
-    elif freq_btts >= 50: p_btts_freq = 3
+    # 3. Fréquence historique BTTS sur 20 matchs (20 pts max)
+    if freq_btts >= 80: p_btts_freq = 20
+    elif freq_btts >= 75: p_btts_freq = 17
+    elif freq_btts >= 70: p_btts_freq = 14
+    elif freq_btts >= 65: p_btts_freq = 11
+    elif freq_btts >= 60: p_btts_freq = 8
+    elif freq_btts >= 50: p_btts_freq = 4
     else: p_btts_freq = 0
 
-    # 6. Contexte ligue (10 pts) — identique
+    # 4. Fréquence BTTS Dom/Ext spécifique (10 pts max)
+    if freq_btts_dom >= 75 and freq_btts_ext >= 75: p_btts_ha = 10
+    elif freq_btts_dom >= 65 or freq_btts_ext >= 65: p_btts_ha = 8
+    elif freq_btts_dom >= 55 or freq_btts_ext >= 55: p_btts_ha = 5
+    elif freq_btts_dom >= 45 or freq_btts_ext >= 45: p_btts_ha = 2
+    else: p_btts_ha = 0
+
+    # 5. Contexte ligue (10 pts max)
     p_btts_league = pts_league
 
-    # Red flags BTTS : si une équipe ne marque pas du tout ou si l'échantillon est insuffisant (< 3 matchs)
+    # Red flags BTTS : si une équipe marque <0.8 goal/m ou si échantillon <3
     rf_btts = []
-    if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} but/m) — risque 0 but DOM")
-    if gf_b < 0.6: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} but/m) — risque 0 but EXT")
-    if len(recent_h_dom) < 3: rf_btts.append(f"Échantillon DOM trop faible ({len(recent_h_dom)} match)")
-    if len(recent_a_ext) < 3: rf_btts.append(f"Échantillon EXT trop faible ({len(recent_a_ext)} match)")
-    score_btts = max(0, min(100, p_btts_att_dom + p_btts_att_ext + p_btts_def_dom + p_btts_def_ext + p_btts_freq + p_btts_league - len(rf_btts) * 10))
+    if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} goal/m) — risque 0 goal DOM")
+    if gf_b < 0.8: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} goal/m) — risque 0 goal EXT")
+    if n_h < 3: rf_btts.append(f"Échantillon DOM trop faible ({n_h} match)")
+    if n_a < 3: rf_btts.append(f"Échantillon EXT trop faible ({n_a} match)")
+
+    rf_pen_btts = min(20, len(rf_btts) * 10)
+    score_btts = max(0, min(100, p_btts_pot_dom + p_btts_pot_ext + p_btts_freq + p_btts_ha + p_btts_league - rf_pen_btts))
 
     # ══════════════════════════════════════════════════════════════
-    # BARÈME V2 PENALTY /100 — 4 piliers: Arbitre + Cartons H2H + SOT + Buts
+    # BARÈME V2.1 PENALTY /100 — Refonte prioritaire (Total exact 100 pts)
     # ══════════════════════════════════════════════════════════════
 
-    # 1. Taux penalty de l'arbitre cette saison (40 pts)
+    # 1. Arbitre Désigné avec Facteur de Fiabilité (35 pts max si connu)
     ref_name = ref_info.get("refereeName") or ""
     pen_per_match = 0.0
+    total_games = 0
     if isinstance(ref_career, dict) and ref_career.get("seasons"):
-        # Récupère le nom depuis la carrière si absent dans ref_info
         if not ref_name:
             ref_name = ref_career.get("name", "")
         current_season = "2025/2026"
-        total_pens, total_games = 0, 0
+        total_pens = 0
         for s in ref_career["seasons"]:
             if s.get("season") == current_season:
                 total_pens += s.get("totalPenalties", 0) or 0
@@ -655,17 +666,34 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             pen_per_match = total_pens / total_games
     ref_name = ref_name or "Inconnu"
 
-    if pen_per_match >= 0.50: p_pen_ref = 40
-    elif pen_per_match >= 0.40: p_pen_ref = 35
-    elif pen_per_match >= 0.30: p_pen_ref = 28
-    elif pen_per_match >= 0.25: p_pen_ref = 22
-    elif pen_per_match >= 0.20: p_pen_ref = 16
-    elif pen_per_match >= 0.15: p_pen_ref = 10
-    elif pen_per_match >= 0.10: p_pen_ref = 5
-    elif pen_per_match >  0:    p_pen_ref = 2
-    else: p_pen_ref = 12  # Pas d arbitre designe - score neutre
+    ref_is_known = bool(ref_name != "Inconnu" and total_games > 0)
+    if ref_is_known:
+        if pen_per_match >= 0.50: p_pen_ref_raw = 35
+        elif pen_per_match >= 0.40: p_pen_ref_raw = 30
+        elif pen_per_match >= 0.30: p_pen_ref_raw = 24
+        elif pen_per_match >= 0.25: p_pen_ref_raw = 18
+        elif pen_per_match >= 0.20: p_pen_ref_raw = 12
+        elif pen_per_match >= 0.15: p_pen_ref_raw = 6
+        elif pen_per_match > 0: p_pen_ref_raw = 2
+        else: p_pen_ref_raw = 0
 
-    # 2. Cartons/Fautes H2H (booking points moyens par match) (30 pts)
+        # Facteur de Fiabilité R_ref basé sur le nombre de matchs arbitrés cette saison (cible 8+ matchs)
+        r_ref = min(1.0, total_games / 8.0)
+        p_pen_ref = round(p_pen_ref_raw * r_ref + 10 * (1.0 - r_ref))
+        ref_status = f"👨‍⚖️ Arbitre {ref_name} ({total_games} m, {pen_per_match:.2f} pen/m)"
+    else:
+        p_pen_ref = 0
+        ref_status = "Arbitre non désigné — confiance réduite"
+
+    # 2. Tirs Cadrés & Intensité Offensive (25 pts max)
+    if sot_comb >= 13.0: p_pen_sot = 25
+    elif sot_comb >= 11.0: p_pen_sot = 21
+    elif sot_comb >= 9.0: p_pen_sot = 17
+    elif sot_comb >= 7.0: p_pen_sot = 12
+    elif sot_comb >= 5.0: p_pen_sot = 7
+    else: p_pen_sot = 2
+
+    # 3. Fautes, Cartons & Booking Points H2H (20 pts max — poids réduit)
     h2h_booking = []
     for m in h2h20:
         hbp = m.get("homeBookingPts", 0) or m.get("homeBookingPoints", 0)
@@ -676,31 +704,27 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             pass
     avg_booking = sum(h2h_booking) / max(1, len(h2h_booking)) if h2h_booking else 40.0
 
-    if avg_booking >= 80: p_pen_cards = 30
-    elif avg_booking >= 65: p_pen_cards = 25
-    elif avg_booking >= 50: p_pen_cards = 20
-    elif avg_booking >= 40: p_pen_cards = 15
-    elif avg_booking >= 30: p_pen_cards = 10
-    elif avg_booking >= 20: p_pen_cards = 6
-    else: p_pen_cards = 2
+    if avg_booking >= 70: p_pen_cards = 20
+    elif avg_booking >= 55: p_pen_cards = 16
+    elif avg_booking >= 40: p_pen_cards = 12
+    elif avg_booking >= 30: p_pen_cards = 8
+    else: p_pen_cards = 3
 
-    # 3. Intensité offensive / tirs cadrés (20 pts)
-    if sot_comb >= 14: p_pen_sot = 20
-    elif sot_comb >= 12: p_pen_sot = 17
-    elif sot_comb >= 10: p_pen_sot = 14
-    elif sot_comb >= 8:  p_pen_sot = 11
-    elif sot_comb >= 6:  p_pen_sot = 8
-    elif sot_comb >= 4:  p_pen_sot = 5
-    else: p_pen_sot = 2
-
-    # 4. Niveau offensif global (10 pts)
-    if total_goals_brut >= 4.0: p_pen_goals = 10
+    # 4. Activité Offensive Globale (20 pts max)
+    if total_goals_brut >= 5.5 or ipo_comb >= 3.5: p_pen_goals = 20
+    elif total_goals_brut >= 4.5 or ipo_comb >= 3.0: p_pen_goals = 16
+    elif total_goals_brut >= 3.8 or ipo_comb >= 2.5: p_pen_goals = 12
     elif total_goals_brut >= 3.0: p_pen_goals = 8
-    elif total_goals_brut >= 2.5: p_pen_goals = 6
-    elif total_goals_brut >= 2.0: p_pen_goals = 4
-    else: p_pen_goals = 2
+    else: p_pen_goals = 3
 
-    score_penalty = max(0, min(100, p_pen_ref + p_pen_cards + p_pen_sot + p_pen_goals))
+    if ref_is_known:
+        score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals))
+    else:
+        # Score brut sur les 3 piliers disponibles (25 + 20 + 20 = 65 pts max)
+        raw_avail = p_pen_sot + p_pen_cards + p_pen_goals
+        # Normalisation sur 100 puis décote de -10% pour confiance réduite
+        norm_score = (raw_avail / 65.0) * 100.0
+        score_penalty = max(0, min(100, round(norm_score * 0.90)))
 
     if is_batch:
         return {
@@ -728,6 +752,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "score_btts": score_btts,
             "score_penalty": score_penalty,
             "ref_name": ref_name,
+            "ref_status": ref_status,
             "pen_per_match": round(pen_per_match, 3),
             "avg_booking": round(avg_booking, 1),
         }
