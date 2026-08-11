@@ -1,0 +1,1118 @@
+[
+  {
+    "match_id": "3369160",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Kairat Almaty vs Levski Sofia",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 17h00",
+    "scores": {
+      "o25": 60,
+      "o15": 65,
+      "btts": 35,
+      "penalty": 83
+    },
+    "referee": {
+      "name": "Daniel Siebert",
+      "status": "👨‍⚖️ Arbitre Daniel Siebert (19 m, 0.42 pen/m)",
+      "pen_per_match": 0.421
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42,
+      "btts": 1.95
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368771",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Iberia 1999 vs FC Larne",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Mar. 11/08 à 18h00",
+    "scores": {
+      "o25": 30,
+      "o15": 38,
+      "btts": 15,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Rohit Saggi",
+      "status": "👨‍⚖️ Arbitre Rohit Saggi (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.9
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367387",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Bodø/Glimt vs Saint-Gilloise",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 18h00",
+    "scores": {
+      "o25": 75,
+      "o15": 73,
+      "btts": 67,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Istvan Kovacs",
+      "status": "👨‍⚖️ Arbitre Istvan Kovacs (21 m, 0.62 pen/m)",
+      "pen_per_match": 0.619
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367947",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Sabah FK vs Aarhus GF",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 18h00",
+    "scores": {
+      "o25": 65,
+      "o15": 73,
+      "btts": 45,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Willy Delajod",
+      "status": "👨‍⚖️ Arbitre Willy Delajod (12 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368307",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Apoll.Limassol vs SK Brann",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Mar. 11/08 à 19h00",
+    "scores": {
+      "o25": 65,
+      "o15": 65,
+      "btts": 64,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Robert Harvey",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368023",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Kauno Zalgiris vs Dinamo Zagreb",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 19h00",
+    "scores": {
+      "o25": 52,
+      "o15": 62,
+      "btts": 29,
+      "penalty": 67
+    },
+    "referee": {
+      "name": "Davide Massa",
+      "status": "👨‍⚖️ Arbitre Davide Massa (19 m, 0.26 pen/m)",
+      "pen_per_match": 0.263
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.85
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367993",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "TS Galaxy FC vs Mamelodi",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 48,
+      "o15": 69,
+      "btts": 27,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.9
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365822",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "NEC Nimègue vs Olympiakos",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 17,
+      "o15": 41,
+      "btts": 17,
+      "penalty": 59
+    },
+    "referee": {
+      "name": "Maurizio Mariani",
+      "status": "👨‍⚖️ Arbitre Maurizio Mariani (20 m, 0.30 pen/m)",
+      "pen_per_match": 0.3
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370476",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Marumo Gallants vs Kruger United",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 55,
+      "o15": 74,
+      "btts": 29,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.6,
+      "o15": 1.52,
+      "btts": 2.05
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370477",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Polokwane vs Stellenbosch",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 9,
+      "o15": 36,
+      "btts": 0,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.7,
+      "o15": 1.55,
+      "btts": 2.05
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368772",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "FC CSKA 1948 vs Panathinaïkos",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 36,
+      "o15": 52,
+      "btts": 32,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Jasper Vergoote",
+      "status": "👨‍⚖️ Arbitre Jasper Vergoote (26 m, 0.31 pen/m)",
+      "pen_per_match": 0.308
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369517",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Chippa Utd vs Richards Bay",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mar. 11/08 à 19h30",
+    "scores": {
+      "o25": 11,
+      "o15": 49,
+      "btts": 17,
+      "penalty": 37
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.5,
+      "o15": 1.5,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368025",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Etoile Rouge vs Hap.Beer Sheva",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 20h00",
+    "scores": {
+      "o25": 60,
+      "o15": 67,
+      "btts": 43,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.36,
+      "o15": 1.1,
+      "btts": 1.85
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367747",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "NK Celje vs Ararat Armenia",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 20h15",
+    "scores": {
+      "o25": 45,
+      "o15": 67,
+      "btts": 61,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Marco Guida",
+      "status": "👨‍⚖️ Arbitre Marco Guida (18 m, 0.44 pen/m)",
+      "pen_per_match": 0.444
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368024",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Slo.Bratislava vs Mjällby",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 20h15",
+    "scores": {
+      "o25": 45,
+      "o15": 58,
+      "btts": 32,
+      "penalty": 42
+    },
+    "referee": {
+      "name": "Michael Oliver",
+      "status": "👨‍⚖️ Arbitre Michael Oliver (29 m, 0.07 pen/m)",
+      "pen_per_match": 0.069
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368026",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Sturm Graz vs Fenerbahce",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 20h30",
+    "scores": {
+      "o25": 58,
+      "o15": 63,
+      "btts": 43,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Alejandro José Hernández Hernández",
+      "status": "👨‍⚖️ Arbitre Alejandro José Hernández Hernández (18 m, 0.56 pen/m)",
+      "pen_per_match": 0.556
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368957",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Lyon vs Sparta Prague",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 11/08 à 21h00",
+    "scores": {
+      "o25": 65,
+      "o15": 72,
+      "btts": 47,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Szymon Marciniak",
+      "status": "👨‍⚖️ Arbitre Szymon Marciniak (20 m, 0.40 pen/m)",
+      "pen_per_match": 0.4
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352454",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Fluminense vs Ind. Rivadavia",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 12/08 à 00h00",
+    "scores": {
+      "o25": 64,
+      "o15": 74,
+      "btts": 75,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Cristián Garay",
+      "status": "👨‍⚖️ Arbitre Cristián Garay (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368218",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Boca Juniors vs CD Recoleta",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Mer. 12/08 à 00h00",
+    "scores": {
+      "o25": 51,
+      "o15": 64,
+      "btts": 46,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Piero Maza Gomez",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 2.2
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363375",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Columbus Crew vs UNAM Pumas",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 01h30",
+    "scores": {
+      "o25": 70,
+      "o15": 72,
+      "btts": 67,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360967",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Charlotte FC vs CF Pachuca",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 01h30",
+    "scores": {
+      "o25": 61,
+      "o15": 67,
+      "btts": 39,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.12,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363376",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "FC Cincinnati vs Atlas FC",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 02h00",
+    "scores": {
+      "o25": 67,
+      "o15": 69,
+      "btts": 75,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O15",
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367781",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "CA Talleres vs CA Lanus",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Mer. 12/08 à 02h00",
+    "scores": {
+      "o25": 44,
+      "o15": 68,
+      "btts": 29,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Luis Lobo Medina",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.45,
+      "o15": 1.48,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368219",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Bolivar La Paz vs Sao Paulo",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Mer. 12/08 à 02h30",
+    "scores": {
+      "o25": 55,
+      "o15": 68,
+      "btts": 69,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Wilmar Alexander Roldán Pérez",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352439",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Estudiantes LP vs Uni.Catolica",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 12/08 à 02h30",
+    "scores": {
+      "o25": 51,
+      "o15": 66,
+      "btts": 39,
+      "penalty": 65
+    },
+    "referee": {
+      "name": "Raphael Claus",
+      "status": "👨‍⚖️ Arbitre Raphael Claus (2 m, 1.00 pen/m)",
+      "pen_per_match": 1.0
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38,
+      "btts": 2.1
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363377",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Minnesota Utd vs Atlante FC",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 02h30",
+    "scores": {
+      "o25": 48,
+      "o15": 62,
+      "btts": 46,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363378",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Salt Lake vs FC Juarez",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 03h30",
+    "scores": {
+      "o25": 68,
+      "o15": 74,
+      "btts": 70,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O15",
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363379",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Tigres UANL vs Vancouver",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Mer. 12/08 à 04h00",
+    "scores": {
+      "o25": 57,
+      "o15": 67,
+      "btts": 61,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368875",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "FC Copenhague vs Debrecen",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Mer. 12/08 à 18h00",
+    "scores": {
+      "o25": 41,
+      "o15": 56,
+      "btts": 38,
+      "penalty": 65
+    },
+    "referee": {
+      "name": "Jérémie Pignard",
+      "status": "👨‍⚖️ Arbitre Jérémie Pignard (17 m, 0.47 pen/m)",
+      "pen_per_match": 0.471
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368222",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Rapid Vienne vs Paide",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Mer. 12/08 à 18h00",
+    "scores": {
+      "o25": 67,
+      "o15": 75,
+      "btts": 72,
+      "penalty": 77
+    },
+    "referee": {
+      "name": "Denys Shurman",
+      "status": "👨‍⚖️ Arbitre Denys Shurman (8 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 2.2
+    },
+    "selected_markets": [
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368203",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "GKS Katowice vs Hap.Tel Aviv",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Mer. 12/08 à 18h00",
+    "scores": {
+      "o25": 60,
+      "o15": 75,
+      "btts": 67,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Alexandros Tsakalidis",
+      "status": "👨‍⚖️ Arbitre Alexandros Tsakalidis (19 m, 0.42 pen/m)",
+      "pen_per_match": 0.421
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "BTTS",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370495",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Durban City vs Golden Arrows",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mer. 12/08 à 19h30",
+    "scores": {
+      "o25": 31,
+      "o15": 56,
+      "btts": 32,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.5,
+      "o15": 1.48,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369518",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Kaizer Chiefs vs Sekhukhune",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mer. 12/08 à 19h30",
+    "scores": {
+      "o25": 33,
+      "o15": 61,
+      "btts": 45,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42,
+      "btts": 2.05
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367994",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "AmaZulu vs Orlando Pir.",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mer. 12/08 à 19h30",
+    "scores": {
+      "o25": 57,
+      "o15": 83,
+      "btts": 35,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352637",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Paris SG vs Aston Villa",
+    "league": "Coupes D Europe • Supercoupe D Europe",
+    "date_str": "Mer. 12/08 à 21h00",
+    "scores": {
+      "o25": 71,
+      "o15": 73,
+      "btts": 60,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Omar Abdulkadir Artan",
+      "status": "👨‍⚖️ Arbitre Omar Abdulkadir Artan (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369871",
+    "timestamp_utc": "2026-08-11T11:10:18.827740+00:00",
+    "match": "Tobol Kosta. vs Parti.Belgrade",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 13/08 à 17h00",
+    "scores": {
+      "o25": 34,
+      "o15": 53,
+      "btts": 22,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Daniele Chiffi",
+      "status": "👨‍⚖️ Arbitre Daniele Chiffi (20 m, 0.20 pen/m)",
+      "pen_per_match": 0.2
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  }
+]
