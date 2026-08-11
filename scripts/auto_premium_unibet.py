@@ -1079,9 +1079,10 @@ def main():
                 <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
                   <th style="padding:7px 8px; text-align:left;">Heure</th>
                   <th style="padding:7px 8px; text-align:left;">Match</th>
-                  <th style="padding:7px 6px; text-align:center;">Score V2</th>
-                  <th style="padding:7px 6px; text-align:center;">Over 2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Sélection</th>
+                  <th style="padding:7px 6px; text-align:center;">Score Over 2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Score BTTS</th>
+                  <th style="padding:7px 6px; text-align:center;">Cote O2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
                 <tbody>{scan_rows_html}</tbody>
               </table>
