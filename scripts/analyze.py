@@ -270,8 +270,10 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     recent_h_dom = comp.get("recentmatches", {}).get("homehome", []) if isinstance(comp.get("recentmatches"), dict) else []
     recent_a_ext = comp.get("recentmatches", {}).get("awayaway", []) if isinstance(comp.get("recentmatches"), dict) else []
 
-    if not recent_h_dom: recent_h_dom = w_res.get("recentHomeResults", []) or w_res.get("recentHomeHomeResults", [])
-    if not recent_a_ext: recent_a_ext = w_res.get("recentAwayResults", []) or w_res.get("recentAwayAwayResults", [])
+    if len(recent_h_dom) < 5 and isinstance(w_res, dict):
+        recent_h_dom = (w_res.get("recentHomeAllResults") or []) or (w_res.get("recentHomeResults") or []) or recent_h_dom
+    if len(recent_a_ext) < 5 and isinstance(w_res, dict):
+        recent_a_ext = (w_res.get("recentAwayAllResults") or []) or (w_res.get("recentAwayResults") or []) or recent_a_ext
 
     h2h20 = comp.get("headtohead", []) if isinstance(comp.get("headtohead"), list) else []
 
