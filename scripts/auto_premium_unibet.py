@@ -673,9 +673,9 @@ def main():
     # On retire le filtre ref_name et on compense avec seuil ≥ 55.
     # Les matchs avec arbitre connu (quand désigné via autre source) seront triés en priorité.
     pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55]
-    # Priorité : arbitre connu > score_penalty élevé
+    # Priorité : arbitre connu > score_penalty élevé — TOUS les matchs >= 55 inclus sans limite
     pen_candidates.sort(key=lambda x: (x.get("ref_name", "Inconnu") != "Inconnu", x.get("score_penalty", 0)), reverse=True)
-    pen_simples = pen_candidates[:5]  # top 5 — paris secs uniquement
+    pen_simples = pen_candidates
 
 
 
@@ -970,6 +970,9 @@ def main():
         btts_cl = "#15803d" if btts_v >= 65 else ("#92400e" if btts_v >= 50 else "#94a3b8")
         btts_badge = f'<span style="background:{btts_bg}; color:{btts_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{btts_v}/100</span>' if btts_v > 0 else '<span style="color:#94a3b8;">—</span>'
 
+        ref_n = m.get("ref_name", "Inconnu")
+        ref_badge = f'<span style="font-size:10px; color:#475569; font-weight:600;">👨‍⚖️ {ref_n}</span>' if ref_n != "Inconnu" else '<span style="color:#94a3b8; font-size:10px;">—</span>'
+
         scan_rows_html += (
             f'<tr style="background:{bg_row};">'
             f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
@@ -978,6 +981,7 @@ def main():
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{score_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{btts_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{ref_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
@@ -1082,6 +1086,7 @@ def main():
                   <th style="padding:7px 6px; text-align:center;">Score Over 2.5</th>
                   <th style="padding:7px 6px; text-align:center;">Score BTTS</th>
                   <th style="padding:7px 6px; text-align:center;">Cote O2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Arbitre</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
                 <tbody>{scan_rows_html}</tbody>
