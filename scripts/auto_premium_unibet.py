@@ -719,13 +719,13 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # ── 3. SELECTION PENALTY OUI — PARIS SIMPLES (top 5 par score_penalty) ──
-    # Note : API arbitres AdamChoi bloquée depuis GitHub Actions (retourne HTML).
-    # On retire le filtre ref_name et on compense avec seuil ≥ 55.
-    # Les matchs avec arbitre connu (quand désigné via autre source) seront triés en priorité.
-    pen_candidates = [m for m in scanned_results if m.get("score_penalty", 0) >= 55]
-    # Priorité : arbitre connu > score_penalty élevé — TOUS les matchs >= 55 inclus sans limite
-    pen_candidates.sort(key=lambda x: (x.get("ref_name", "Inconnu") != "Inconnu", x.get("score_penalty", 0)), reverse=True)
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Score ≥ 55) ──
+    # Option 1 : Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu") et score_penalty >= 55 sont retenus.
+    pen_candidates = [
+        m for m in scanned_results 
+        if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu"
+    ]
+    pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
     pen_simples = pen_candidates
 
 
