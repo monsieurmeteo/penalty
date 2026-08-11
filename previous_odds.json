@@ -4,10 +4,19 @@
       "match": "Etoile Rouge - Hap.Beer Sheva",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 11/08 à 20h00",
-      "val_btts": 1.78,
-      "val_o25": 1.38,
+      "val_btts": 1.85,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 77
+    },
+    "3367387": {
+      "match": "Bodø/Glimt - Saint-Gilloise",
+      "league": "Coupes D Europe • Championsleague",
+      "date_str": "Mar. 11/08 à 18h00",
+      "val_btts": 1.5,
+      "val_o25": 1.42,
+      "double": true,
+      "ac_score": 75
     },
     "3368203": {
       "match": "GKS Katowice - Hap.Tel Aviv",
