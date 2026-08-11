@@ -240,7 +240,7 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
     
     return "19635927", home_query, away_query, "SA1"
 
-def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None, d_refs=None):
+def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None, d_refs=None, m_unibet=None):
     ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt, unibet_league=unibet_league)
 
     if not is_batch:
@@ -642,9 +642,14 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if n_h < 3: rf_btts.append(f"Échantillon DOM trop faible ({n_h} match)")
     if n_a < 3: rf_btts.append(f"Échantillon EXT trop faible ({n_a} match)")
 
-    # Garde-fou Anti Clean Sheet : Déséquilibre offensif majeur (ex: 2.2+ buts/m DOM vs <1.0 goal/m EXT)
+    # Garde-fou Anti Clean Sheet : Déséquilibre offensif majeur ou contradiction marché bookmaker (ex: Over 2.5 @1.30 vs BTTS @2.20)
+    unibet_o25 = m_unibet.get("over25") if isinstance(m_unibet, dict) else None
+    unibet_btts = m_unibet.get("btts_oui") if isinstance(m_unibet, dict) else None
+
     if (gf_a >= 2.2 and gf_b < 1.0) or (gf_b >= 2.0 and gf_a < 1.0):
         rf_btts.append(f"Risque Clean Sheet / Déséquilibre offensif majeur ({gf_a:.1f} vs {gf_b:.1f})")
+    elif unibet_o25 and unibet_btts and unibet_o25 <= 1.42 and unibet_btts >= 2.00:
+        rf_btts.append(f"Risque Clean Sheet Bookmaker (Over 2.5 @{unibet_o25:.2f} vs BTTS @{unibet_btts:.2f})")
 
     rf_pen_btts = min(25, len(rf_btts) * 12)
     score_btts = max(0, min(100, p_btts_pot_dom + p_btts_pot_ext + p_btts_freq + p_btts_ha + p_btts_league - rf_pen_btts))
