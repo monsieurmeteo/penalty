@@ -2521,5 +2521,125 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3362466",
+    "timestamp_utc": "2026-08-11T22:03:16.700841+00:00",
+    "match": "Inter Miami vs FC Leon",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Jeu. 13/08 à 01h30",
+    "scores": {
+      "o25": 71,
+      "o15": 71,
+      "btts": 70,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.1,
+      "btts": 1.35
+    },
+    "selected_markets": [
+      "O15"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363380",
+    "timestamp_utc": "2026-08-11T22:03:16.700841+00:00",
+    "match": "Monterrey vs Nashville SC",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Jeu. 13/08 à 02h10",
+    "scores": {
+      "o25": 71,
+      "o15": 70,
+      "btts": 61,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O15"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363381",
+    "timestamp_utc": "2026-08-11T22:03:16.700841+00:00",
+    "match": "Dep. Toluca vs Dallas FC",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Jeu. 13/08 à 04h00",
+    "scores": {
+      "o25": 65,
+      "o15": 71,
+      "btts": 45,
+      "penalty": 90
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.33,
+      "o15": 1.08,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363383",
+    "timestamp_utc": "2026-08-11T22:03:16.700841+00:00",
+    "match": "Seattle vs Chivas",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Jeu. 13/08 à 04h30",
+    "scores": {
+      "o25": 61,
+      "o15": 71,
+      "btts": 51,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
