@@ -693,7 +693,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif sot_comb >= 5.0: p_pen_sot = 7
     else: p_pen_sot = 2
 
-    # 3. Fautes, Cartons & Booking Points H2H (20 pts max — poids réduit)
+    # 3. Fautes, Cartons & Booking Points (20 pts max — poids réduit)
     h2h_booking = []
     for m in h2h20:
         hbp = m.get("homeBookingPts", 0) or m.get("homeBookingPoints", 0)
@@ -702,7 +702,17 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             h2h_booking.append(int(hbp) + int(abp))
         except (ValueError, TypeError):
             pass
-    avg_booking = sum(h2h_booking) / max(1, len(h2h_booking)) if h2h_booking else 40.0
+
+    bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
+    bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
+    team_avg_booking = bp_dom + bp_ext
+
+    if h2h_booking:
+        avg_booking = sum(h2h_booking) / len(h2h_booking)
+    elif team_avg_booking > 0:
+        avg_booking = team_avg_booking
+    else:
+        avg_booking = 40.0
 
     if avg_booking >= 70: p_pen_cards = 20
     elif avg_booking >= 55: p_pen_cards = 16
