@@ -45,21 +45,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 94
-    },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 94
     },
@@ -225,21 +225,21 @@
       "double": true,
       "ac_score": 77
     },
-    "3369878": {
-      "match": "Max.Rogachev - BoracBanjaLuka",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 77
-    },
     "3369248": {
       "match": "Nordsjaelland - ValurReykjavik",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h00",
       "val_btts": 2.05,
       "val_o25": 1.2,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369878": {
+      "match": "Max.Rogachev - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 77
     },

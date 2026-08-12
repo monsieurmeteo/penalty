@@ -3055,5 +3055,37 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371089",
+    "timestamp_utc": "2026-08-12T16:13:41.806187+00:00",
+    "match": "Orlando City vs Atletico San L",
+    "league": "Cotes Boostees • Cotes Boostees Leagues Cup",
+    "date_str": "Jeu. 13/08 à 01h30",
+    "scores": {
+      "o25": 88,
+      "o15": 97,
+      "btts": 90,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
