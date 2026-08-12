@@ -45,21 +45,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 94
-    },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 94
     },
@@ -76,7 +76,7 @@
       "match": "Saint Gall - SherifTiraspol",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.75,
+      "val_btts": 1.7,
       "val_o25": 1.45,
       "double": true,
       "ac_score": 90
@@ -103,7 +103,7 @@
       "match": "Orlando City - Atl. San Luis",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.4,
+      "val_btts": 1.45,
       "val_o25": 1.36,
       "double": true,
       "ac_score": 88
@@ -126,21 +126,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
     "3368774": {
       "match": "Anderlecht - PAOK Salonique",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.62,
       "val_o25": 1.78,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -184,8 +184,8 @@
       "match": "C.A. Tigre - Torque",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Jeu. 13/08 à 00h00",
-      "val_btts": 2.2,
-      "val_o25": 2.5,
+      "val_btts": 2.3,
+      "val_o25": 2.6,
       "double": true,
       "ac_score": 78
     },
@@ -211,8 +211,8 @@
       "match": "Nordsjaelland - ValurReykjavik",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 2.05,
-      "val_o25": 1.2,
+      "val_btts": 2.0,
+      "val_o25": 1.18,
       "double": true,
       "ac_score": 77
     },
