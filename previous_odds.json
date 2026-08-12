@@ -1,14 +1,5 @@
 {
   "s3": {
-    "3366977": {
-      "match": "Al Taawon - Al Khaleej",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Sam. 15/08 à 18h15",
-      "val_btts": 1.45,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 98
-    },
     "3369661": {
       "match": "KI Klaksvik - Lech Poznan",
       "league": "Coupes D Europe • Europa League",
@@ -24,42 +15,6 @@
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.7,
       "val_o25": 1.62,
-      "double": true,
-      "ac_score": 96
-    },
-    "3368371": {
-      "match": "FC Nomme Unite - Tammeka Tartu",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Ven. 14/08 à 18h00",
-      "val_btts": 1.28,
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 96
-    },
-    "3367579": {
-      "match": "Aberdeen - Dundee FC",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.6,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 96
-    },
-    "3369228": {
-      "match": "Ujpest - MTK Budapest",
-      "league": "Hongrie • D1 Hongrie",
-      "date_str": "Sam. 15/08 à 16h30",
-      "val_btts": 1.4,
-      "val_o25": 1.42,
-      "double": true,
-      "ac_score": 96
-    },
-    "3363061": {
-      "match": "FortunaSittard - SC Cambuur",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Sam. 15/08 à 21h00",
-      "val_btts": 1.42,
-      "val_o25": 1.42,
       "double": true,
       "ac_score": 96
     },
@@ -90,15 +45,6 @@
       "double": true,
       "ac_score": 94
     },
-    "3368209": {
-      "match": "Dinamo Tirana - FK Auda",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 94
-    },
     "3368778": {
       "match": "Hajduk Split - FK Zalgiris",
       "league": "Coupes D Europe • Europa Conference",
@@ -108,39 +54,12 @@
       "double": true,
       "ac_score": 94
     },
-    "3362919": {
-      "match": "Cercle Bruges - St Trond",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.52,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 94
-    },
-    "3365305": {
-      "match": "MFK Skalica - FK Kosice",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 94
-    },
-    "3363064": {
-      "match": "Exce.Rotterdam - PSV Eindhoven",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Sam. 15/08 à 20h00",
-      "val_btts": 1.38,
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 94
-    },
-    "3364677": {
-      "match": "Kaiserslautern - Karlsruhe",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Sam. 15/08 à 20h30",
-      "val_btts": 1.42,
-      "val_o25": 1.45,
+    "3368209": {
+      "match": "Dinamo Tirana - FK Auda",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 94
     },
@@ -162,33 +81,6 @@
       "double": true,
       "ac_score": 92
     },
-    "3351183": {
-      "match": "Shandong - Qingdao Hainiu",
-      "league": "Chine • D1 Chine",
-      "date_str": "Ven. 14/08 à 13h35",
-      "val_btts": 1.42,
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 92
-    },
-    "3359045": {
-      "match": "Bolton - Preston",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 13h30",
-      "val_btts": 1.65,
-      "val_o25": 1.8,
-      "double": true,
-      "ac_score": 92
-    },
-    "3364814": {
-      "match": "Wisla Plock - Lech Poznan",
-      "league": "Pologne • D1 Pologne",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 92
-    },
     "3368309": {
       "match": "Saint Gall - SherifTiraspol",
       "league": "Coupes D Europe • Europa Conference",
@@ -198,93 +90,12 @@
       "double": true,
       "ac_score": 90
     },
-    "3362909": {
-      "match": "SC Telstar - Spar.Rotterdam",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 90
-    },
-    "3369449": {
-      "match": "Annecy FC - Rodez",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 90
-    },
-    "3364518": {
-      "match": "Jeju - FC Anyang",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 15/08 à 12h30",
-      "val_btts": 1.7,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 90
-    },
-    "3363079": {
-      "match": "Saint-Gilloise - Zulte Waregem",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.8,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 90
-    },
     "3368776": {
       "match": "CSKA Sofia - Mac.Tel Aviv",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h00",
       "val_btts": 1.72,
       "val_o25": 1.9,
-      "double": true,
-      "ac_score": 89
-    },
-    "3364138": {
-      "match": "Holstein Kiel - St Pauli",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Ven. 14/08 à 18h30",
-      "val_btts": 1.55,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 89
-    },
-    "3362925": {
-      "match": "Lask Linz - SV Ried",
-      "league": "Autriche • D1 Autriche",
-      "date_str": "Ven. 14/08 à 19h30",
-      "val_btts": 1.65,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 89
-    },
-    "3359051": {
-      "match": "Stoke City - Swansea",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.72,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 89
-    },
-    "3364958": {
-      "match": "Piast Gliwice - Wieczysta",
-      "league": "Pologne • D1 Pologne",
-      "date_str": "Sam. 15/08 à 17h30",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 89
-    },
-    "3363768": {
-      "match": "Genclerbirligi - Fenerbahce",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Sam. 15/08 à 20h30",
-      "val_btts": 1.72,
-      "val_o25": 1.6,
       "double": true,
       "ac_score": 89
     },
@@ -306,48 +117,12 @@
       "double": true,
       "ac_score": 88
     },
-    "3366981": {
-      "match": "Al Ittihad FC - Al Kholood",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Sam. 15/08 à 20h00",
-      "val_btts": 1.65,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 88
-    },
     "3368777": {
       "match": "Györ ETO FC - Riga FC",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.5,
       "val_o25": 1.6,
-      "double": true,
-      "ac_score": 87
-    },
-    "3370010": {
-      "match": "Mito Hollyhock - Gamba Osaka",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 11h00",
-      "val_btts": 1.65,
-      "val_o25": 1.8,
-      "double": true,
-      "ac_score": 87
-    },
-    "3351330": {
-      "match": "Yunnan Yukun - Dalian Yingbo",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 14h00",
-      "val_btts": 1.3,
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 87
-    },
-    "3359048": {
-      "match": "Middlesbrough - Lincoln",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.8,
-      "val_o25": 1.55,
       "double": true,
       "ac_score": 87
     },
@@ -387,75 +162,12 @@
       "double": true,
       "ac_score": 86
     },
-    "3369455": {
-      "match": "St Etienne - Clermont",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.65,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 86
-    },
-    "3365300": {
-      "match": "Dukla Bystrica - MSK Zilina",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
-    "3363082": {
-      "match": "KV Kortrijk - Royal Antwerp",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Sam. 15/08 à 18h15",
-      "val_btts": 1.65,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 86
-    },
     "3368204": {
       "match": "KF Shkendija - Hibernian",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
       "val_btts": 1.45,
       "val_o25": 1.55,
-      "double": true,
-      "ac_score": 85
-    },
-    "3351331": {
-      "match": "Shanghai Shen. - Henan SL",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 14h00",
-      "val_btts": 1.35,
-      "val_o25": 1.33,
-      "double": true,
-      "ac_score": 85
-    },
-    "3367578": {
-      "match": "Dunfermline - Ross County",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 85
-    },
-    "3363062": {
-      "match": "Willem II - NEC Nimègue",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Sam. 15/08 à 16h30",
-      "val_btts": 1.45,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 85
-    },
-    "3363083": {
-      "match": "Louvain - Club Bruges",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Sam. 15/08 à 20h45",
-      "val_btts": 1.55,
-      "val_o25": 1.38,
       "double": true,
       "ac_score": 85
     },
@@ -468,104 +180,14 @@
       "double": true,
       "ac_score": 84
     },
-    "3370006": {
-      "match": "Vissel Kobe - FC Tokyo",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.72,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 84
-    },
-    "3369447": {
-      "match": "Istra 1961 - Slaven Belupo",
-      "league": "Croatie • D1 Croatie",
-      "date_str": "Sam. 15/08 à 18h30",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 84
-    },
-    "3365301": {
-      "match": "Podbrezova - As Trencin",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 15/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.42,
-      "double": true,
-      "ac_score": 84
-    },
     "3363385": {
       "match": "San Diego FC - Club Puebla",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h15",
-      "val_btts": 1.4,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 82
-    },
-    "3369230": {
-      "match": "BudapestHonved - Vasas Budapest",
-      "league": "Hongrie • D1 Hongrie",
-      "date_str": "Ven. 14/08 à 17h30",
-      "val_btts": 1.5,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 82
-    },
-    "3362910": {
-      "match": "Rosenborg - Viking FK",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.36,
+      "val_btts": 1.45,
       "val_o25": 1.38,
       "double": true,
       "ac_score": 82
-    },
-    "3364809": {
-      "match": "Legia Varsovie - Radomiak Radom",
-      "league": "Pologne • D1 Pologne",
-      "date_str": "Ven. 14/08 à 20h30",
-      "val_btts": 1.6,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 82
-    },
-    "3366110": {
-      "match": "Torreense - Penafiel",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.75,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 82
-    },
-    "3363498": {
-      "match": "Osnabrück - FC Magdeburg",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Sam. 15/08 à 13h00",
-      "val_btts": 1.4,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 82
-    },
-    "3363087": {
-      "match": "Mjällby - IK Sirius FK",
-      "league": "Suede • D1 Suede",
-      "date_str": "Sam. 15/08 à 15h00",
-      "val_btts": 1.45,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 82
-    },
-    "3363056": {
-      "match": "Vancouver FC - Pacific FC",
-      "league": "Canada • D1 Canada",
-      "date_str": "Sam. 15/08 à 03h00",
-      "val_btts": 1.6,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 81
     },
     "3369663": {
       "match": "Hearts - Benfica",
@@ -573,60 +195,6 @@
       "date_str": "Jeu. 13/08 à 20h45",
       "val_btts": 1.55,
       "val_o25": 1.38,
-      "double": true,
-      "ac_score": 80
-    },
-    "3366975": {
-      "match": "Al Ettifaq - Al Riyadh",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 80
-    },
-    "3370008": {
-      "match": "JEF Utd Chiba - FC Machida",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.8,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 80
-    },
-    "3363497": {
-      "match": "Greuther Furth - Nuremberg",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Sam. 15/08 à 13h00",
-      "val_btts": 1.45,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 80
-    },
-    "3370312": {
-      "match": "Alverca FC - CF Estrela",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Sam. 15/08 à 16h30",
-      "val_btts": 1.72,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 80
-    },
-    "3363769": {
-      "match": "Konyaspor - Rizespor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 80
-    },
-    "3367577": {
-      "match": "Dundee Utd - Celtic",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Sam. 15/08 à 18h45",
-      "val_btts": 1.65,
-      "val_o25": 1.6,
       "double": true,
       "ac_score": 80
     },
@@ -648,96 +216,6 @@
       "double": true,
       "ac_score": 78
     },
-    "3366986": {
-      "match": "Neom SC - Al Feiha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 14/08 à 18h50",
-      "val_btts": 1.7,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 78
-    },
-    "3365837": {
-      "match": "Academica - Feirense",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.75,
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 78
-    },
-    "3362922": {
-      "match": "Elfsborg - Vasteras SK",
-      "league": "Suede • D1 Suede",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 78
-    },
-    "3370013": {
-      "match": "Kashima - Nagoya Grampus",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 11h00",
-      "val_btts": 1.72,
-      "val_o25": 1.8,
-      "double": true,
-      "ac_score": 78
-    },
-    "3370007": {
-      "match": "Avispa Fukuoka - Cerezo Osaka",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.65,
-      "val_o25": 1.8,
-      "double": true,
-      "ac_score": 78
-    },
-    "3363593": {
-      "match": "Hertha Berlin - FC Heidenheim",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Sam. 15/08 à 13h00",
-      "val_btts": 1.45,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 78
-    },
-    "3359050": {
-      "match": "Portsmouth - Queens Park R.",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.6,
-      "val_o25": 1.72,
-      "double": true,
-      "ac_score": 78
-    },
-    "3365299": {
-      "match": "Slo.Bratislava - MFK Ruzomberok",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.7,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 78
-    },
-    "3370322": {
-      "match": "Thor Akureyri - Keflavik",
-      "league": "Islande • D1 Islande",
-      "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.28,
-      "val_o25": 1.25,
-      "double": true,
-      "ac_score": 78
-    },
-    "3360599": {
-      "match": "Real Oviedo - Granada CF",
-      "league": "Espagne • Laliga 2",
-      "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.72,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 78
-    },
     "3367994": {
       "match": "AmaZulu - Orlando Pir.",
       "league": "Afrique Du Sud • D1 Afrique Du Sud",
@@ -756,15 +234,6 @@
       "double": true,
       "ac_score": 77
     },
-    "3369878": {
-      "match": "Max.Rogachev - BoracBanjaLuka",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 77
-    },
     "3369248": {
       "match": "Nordsjaelland - ValurReykjavik",
       "league": "Coupes D Europe • Europa Conference",
@@ -774,38 +243,20 @@
       "double": true,
       "ac_score": 77
     },
+    "3369878": {
+      "match": "Max.Rogachev - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 77
+    },
     "3368779": {
       "match": "FC Vaduz - Inter Turku",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h30",
       "val_btts": 1.55,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 77
-    },
-    "3351327": {
-      "match": "Tianjin Tigers - Beijing Guoan",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 13h35",
-      "val_btts": 1.55,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 77
-    },
-    "3363766": {
-      "match": "Kasimpasa - Trabzonspor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.6,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 77
-    },
-    "3369919": {
-      "match": "Ludogorets - Botev Plovdiv",
-      "league": "Bulgarie • D1 Bulgarie",
-      "date_str": "Sam. 15/08 à 20h15",
-      "val_btts": 1.6,
       "val_o25": 1.55,
       "double": true,
       "ac_score": 77
@@ -819,84 +270,12 @@
       "double": true,
       "ac_score": 76
     },
-    "3351328": {
-      "match": "Zhejiang FC - Chengdu Rong.",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 13h35",
-      "val_btts": 1.3,
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 76
-    },
     "3368203": {
       "match": "GKS Katowice - Hap.Tel Aviv",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Mer. 12/08 à 18h00",
       "val_btts": 1.6,
       "val_o25": 1.7,
-      "double": true,
-      "ac_score": 75
-    },
-    "3363807": {
-      "match": "Galatasaray - Belediyespor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Ven. 14/08 à 20h30",
-      "val_btts": 2.0,
-      "val_o25": 1.38,
-      "double": true,
-      "ac_score": 75
-    },
-    "3367580": {
-      "match": "Kilmarnock - AYR United",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.72,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 75
-    },
-    "3369456": {
-      "match": "Reims - Dunkerque",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.7,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 75
-    },
-    "3370009": {
-      "match": "Shimizu - Yokohama F.Mar",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 11h30",
-      "val_btts": 1.65,
-      "val_o25": 1.8,
-      "double": true,
-      "ac_score": 75
-    },
-    "3364499": {
-      "match": "FC Seoul - Daejeon",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 15/08 à 12h30",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 75
-    },
-    "3360596": {
-      "match": "FC Andorra - Ceuta",
-      "league": "Espagne • Laliga 2",
-      "date_str": "Sam. 15/08 à 17h00",
-      "val_btts": 1.6,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 75
-    },
-    "3366399": {
-      "match": "Rio Ave - FC Porto",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Sam. 15/08 à 21h30",
-      "val_btts": 1.8,
-      "val_o25": 1.6,
       "double": true,
       "ac_score": 75
     }
