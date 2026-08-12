@@ -23,7 +23,7 @@
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 02h00",
       "val_btts": 1.45,
-      "val_o25": 1.55,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 94
     },
@@ -45,21 +45,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 94
-    },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 94
     },
@@ -126,15 +126,6 @@
       "double": true,
       "ac_score": 87
     },
-    "3368222": {
-      "match": "Rapid Vienne - Paide",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.75,
-      "val_o25": 1.22,
-      "double": true,
-      "ac_score": 86
-    },
     "3363381": {
       "match": "Dep. Toluca - Dallas FC",
       "league": "Amerique • Leagues Cup",
@@ -144,21 +135,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
     "3368774": {
       "match": "Anderlecht - PAOK Salonique",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.62,
       "val_o25": 1.78,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -269,15 +260,6 @@
       "val_o25": 1.65,
       "double": true,
       "ac_score": 76
-    },
-    "3368203": {
-      "match": "GKS Katowice - Hap.Tel Aviv",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 75
     }
   }
 }
