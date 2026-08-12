@@ -2910,5 +2910,150 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3366978",
+    "timestamp_utc": "2026-08-12T12:21:59.814642+00:00",
+    "match": "Diriyah Club vs Al Ahli SC",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 60,
+      "o15": 69,
+      "btts": 36,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.1,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351183",
+    "timestamp_utc": "2026-08-12T12:21:59.814642+00:00",
+    "match": "Shandong vs Qingdao Hainiu",
+    "league": "Chine • D1 Chine",
+    "date_str": "Ven. 14/08 à 13h35",
+    "scores": {
+      "o25": 0,
+      "o15": 0,
+      "btts": 0,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.25,
+      "o15": 1.06,
+      "btts": 1.42
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351182",
+    "timestamp_utc": "2026-08-12T12:21:59.814642+00:00",
+    "match": "Wuhan Th.Towns vs Shanghai Port",
+    "league": "Chine • D1 Chine",
+    "date_str": "Ven. 14/08 à 13h35",
+    "scores": {
+      "o25": 70,
+      "o15": 86,
+      "btts": 78,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.42
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351185",
+    "timestamp_utc": "2026-08-12T12:21:59.814642+00:00",
+    "match": "Qingdao WC vs Chongqing FC",
+    "league": "Chine • D1 Chine",
+    "date_str": "Ven. 14/08 à 14h00",
+    "scores": {
+      "o25": 42,
+      "o15": 68,
+      "btts": 71,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365892",
+    "timestamp_utc": "2026-08-12T12:21:59.814642+00:00",
+    "match": "Al Nasr (EAU) vs Ittihad Kalba",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Ven. 14/08 à 16h10",
+    "scores": {
+      "o25": 64,
+      "o15": 82,
+      "btts": 51,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
