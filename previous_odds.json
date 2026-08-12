@@ -1,3 +1,139 @@
 {
-  "s3": {}
+  "s3": {
+    "3363380": {
+      "match": "Monterrey - Nashville SC",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 02h00",
+      "val_btts": 1.45,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 94
+    },
+    "3369520": {
+      "match": "Motherwell - HJK Helsinki",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.6,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368209": {
+      "match": "Dinamo Tirana - FK Auda",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 92
+    },
+    "3368309": {
+      "match": "Saint Gall - SherifTiraspol",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h00",
+      "val_btts": 1.75,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 90
+    },
+    "3363353": {
+      "match": "Orlando City - Atl. San Luis",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 01h30",
+      "val_btts": 1.4,
+      "val_o25": 1.36,
+      "double": true,
+      "ac_score": 88
+    },
+    "3368222": {
+      "match": "Rapid Vienne - Paide",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Mer. 12/08 à 18h00",
+      "val_btts": 2.0,
+      "val_o25": 1.25,
+      "double": true,
+      "ac_score": 86
+    },
+    "3363381": {
+      "match": "Dep. Toluca - Dallas FC",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 04h00",
+      "val_btts": 1.5,
+      "val_o25": 1.32,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368204": {
+      "match": "KF Shkendija - Hibernian",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h00",
+      "val_btts": 1.45,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 85
+    },
+    "3363385": {
+      "match": "San Diego FC - Club Puebla",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 04h15",
+      "val_btts": 1.4,
+      "val_o25": 1.4,
+      "double": true,
+      "ac_score": 82
+    },
+    "3366985": {
+      "match": "Abha - Al Hazem",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Jeu. 13/08 à 18h15",
+      "val_btts": 1.65,
+      "val_o25": 1.85,
+      "double": true,
+      "ac_score": 82
+    },
+    "3369663": {
+      "match": "Hearts - Benfica",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 13/08 à 20h45",
+      "val_btts": 1.55,
+      "val_o25": 1.4,
+      "double": true,
+      "ac_score": 80
+    },
+    "3363383": {
+      "match": "Seattle - Chivas",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 04h30",
+      "val_btts": 1.4,
+      "val_o25": 1.48,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369248": {
+      "match": "Nordsjaelland - ValurReykjavik",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 2.0,
+      "val_o25": 1.2,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369878": {
+      "match": "Max.Rogachev - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 77
+    },
+    "3368027": {
+      "match": "KS Egnatia - Shamrock",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 76
+    }
+  }
 }
