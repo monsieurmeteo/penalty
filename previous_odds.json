@@ -36,6 +36,15 @@
       "double": true,
       "ac_score": 96
     },
+    "3363061": {
+      "match": "FortunaSittard - SC Cambuur",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Sam. 15/08 à 21h00",
+      "val_btts": 1.42,
+      "val_o25": 1.42,
+      "double": true,
+      "ac_score": 96
+    },
     "3363380": {
       "match": "Monterrey - Nashville SC",
       "league": "Amerique • Leagues Cup",
@@ -63,21 +72,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 94
-    },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 94
     },
@@ -130,7 +139,7 @@
       "match": "Shandong - Qingdao Hainiu",
       "league": "Chine • D1 Chine",
       "date_str": "Ven. 14/08 à 13h35",
-      "val_btts": 1.4,
+      "val_btts": 1.42,
       "val_o25": 1.3,
       "double": true,
       "ac_score": 92
@@ -180,21 +189,21 @@
       "double": true,
       "ac_score": 90
     },
-    "3369456": {
-      "match": "Reims - Dunkerque",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.7,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 90
-    },
     "3362919": {
       "match": "Cercle Bruges - St Trond",
       "league": "Belgique • D1 Belgique",
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.52,
       "val_o25": 1.6,
+      "double": true,
+      "ac_score": 90
+    },
+    "3369456": {
+      "match": "Reims - Dunkerque",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.7,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 90
     },
@@ -328,7 +337,7 @@
       "match": "Rapid Vienne - Paide",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.9,
+      "val_btts": 1.8,
       "val_o25": 1.25,
       "double": true,
       "ac_score": 86
@@ -393,6 +402,15 @@
       "date_str": "Sam. 15/08 à 18h00",
       "val_btts": 1.7,
       "val_o25": 1.45,
+      "double": true,
+      "ac_score": 85
+    },
+    "3363083": {
+      "match": "Louvain - Club Bruges",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Sam. 15/08 à 20h45",
+      "val_btts": 1.55,
+      "val_o25": 1.38,
       "double": true,
       "ac_score": 85
     },
@@ -477,21 +495,21 @@
       "double": true,
       "ac_score": 82
     },
-    "3370261": {
-      "match": "KawasakiFront. - Kyoto Sanga FC",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 82
-    },
     "3370008": {
       "match": "JEF Utd Chiba - FC Machida",
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.8,
       "val_o25": 1.95,
+      "double": true,
+      "ac_score": 82
+    },
+    "3370261": {
+      "match": "KawasakiFront. - Kyoto Sanga FC",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.5,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 82
     },
@@ -630,21 +648,21 @@
       "double": true,
       "ac_score": 78
     },
-    "3366110": {
-      "match": "Torreense - Penafiel",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.75,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 78
-    },
     "3370012": {
       "match": "Urawa Reds - Hiroshima",
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.65,
       "val_o25": 1.72,
+      "double": true,
+      "ac_score": 78
+    },
+    "3366110": {
+      "match": "Torreense - Penafiel",
+      "league": "Portugal • D2 Portugal",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.75,
+      "val_o25": 1.9,
       "double": true,
       "ac_score": 78
     },
@@ -661,7 +679,7 @@
       "match": "AmaZulu - Orlando Pir.",
       "league": "Afrique Du Sud • D1 Afrique Du Sud",
       "date_str": "Mer. 12/08 à 19h30",
-      "val_btts": 2.2,
+      "val_btts": 2.3,
       "val_o25": 2.3,
       "double": true,
       "ac_score": 77
@@ -675,21 +693,21 @@
       "double": true,
       "ac_score": 77
     },
-    "3369878": {
-      "match": "Max.Rogachev - BoracBanjaLuka",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 77
-    },
     "3369248": {
       "match": "Nordsjaelland - ValurReykjavik",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h00",
       "val_btts": 2.05,
       "val_o25": 1.2,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369878": {
+      "match": "Max.Rogachev - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 77
     },
