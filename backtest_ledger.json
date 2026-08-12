@@ -2765,5 +2765,63 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3362921",
+    "timestamp_utc": "2026-08-12T11:03:34.704548+00:00",
+    "match": "VPS Vaasan vs Turku PS",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Ven. 14/08 à 17h00",
+    "scores": {
+      "o25": 48,
+      "o15": 66,
+      "btts": 30,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367168",
+    "timestamp_utc": "2026-08-12T11:03:34.704548+00:00",
+    "match": "Epitsentr vs Veres Rivne",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Ven. 14/08 à 17h00",
+    "scores": {
+      "o25": 36,
+      "o15": 65,
+      "btts": 21,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
