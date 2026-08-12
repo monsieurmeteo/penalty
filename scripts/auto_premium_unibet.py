@@ -292,9 +292,9 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : 3 Journées + Nuits suivantes (76 Heures max : ex 12+nuit, 13+nuit, 14+nuit)
+    # Filtre Fenêtre : Journée + Nuit suivante (36 Heures max)
     now_utc = datetime.now(timezone.utc)
-    limit_76h = now_utc + timedelta(hours=76)
+    limit_36h = now_utc + timedelta(hours=36)
 
     scanned_results = []
     for m in scanned_all:
@@ -302,7 +302,7 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_76h:
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
@@ -310,13 +310,13 @@ def main():
         else:
             scanned_results.append(m)
 
-    # Fallback de sécurité : Si aucun match dans la fenêtre 76h, prendre tous les matchs à venir
+    # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
     if len(scanned_results) == 0 and scanned_all:
-        print("⚠️ Aucun match dans la fenêtre 76h — Utilisation des prochains matchs disponibles...")
+        print("⚠️ Aucun match dans la fenêtre 36h — Utilisation des prochains matchs disponibles...")
         scanned_results = scanned_all
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs dans la fenêtre 3 Journées + Nuits Suivantes (76h) : {len(scanned_results)}")
+    print(f"Matchs dans la fenêtre Journée + Nuit Suivante (36h) : {len(scanned_results)}")
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
