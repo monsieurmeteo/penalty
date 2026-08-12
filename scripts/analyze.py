@@ -716,27 +716,51 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         except (ValueError, TypeError):
             pass
 
-    # ── COMPÉTENCE PENO : Analyse des 10 derniers matchs (P_dom, P_ext, P_tot) ──
-    def count_penalties_10m(matches_list, widget_stats):
-        cnt = 0
-        if isinstance(matches_list, list) and len(matches_list) > 0:
-            for m in matches_list[:10]:
-                if isinstance(m, dict):
-                    pen_cnt = m.get("penalties", 0) or (m.get("homePenalties", 0) + m.get("awayPenalties", 0))
-                    if pen_cnt:
-                        cnt += int(pen_cnt)
-                    else:
-                        incidents = m.get("incidents") or []
-                        for inc in incidents:
-                            inc_type = str(inc.get("incidentType") or inc.get("type") or "").lower()
-                            if "penalty" in inc_type:
-                                cnt += 1
-        if cnt == 0 and isinstance(widget_stats, dict):
-            cnt = int(widget_stats.get("penaltiesTotal", 0) or widget_stats.get("penalties", 0) or 0)
-        return cnt
+    # ── COMPÉTENCE PENO : Sofascore Token 0 (curl_cffi) + Fallback Physique Hybride ──
+    def fetch_sofascore_penalties(t_name):
+        if not t_name: return None
+        try:
+            from curl_cffi import requests as cf_requests
+            headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+            r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={t_name}", impersonate="chrome120", headers=headers, timeout=2)
+            if r.status_code == 200:
+                teams = [x for x in r.json().get("results", []) if x.get("type") == "team"]
+                if teams:
+                    t_id = teams[0]["entity"]["id"]
+                    r_ev = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{t_id}/events/last/0", impersonate="chrome120", headers=headers, timeout=2)
+                    if r_ev.status_code == 200:
+                        events = r_ev.json().get("events", [])
+                        def _chk_inc(ev_id):
+                            try:
+                                r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=2)
+                                if r_inc.status_code == 200:
+                                    return sum(1 for inc in r_inc.json().get("incidents", []) if inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"])
+                            except Exception:
+                                pass
+                            return 0
+                        with ThreadPoolExecutor(max_workers=5) as p_ex:
+                            res_list = p_ex.map(_chk_inc, [ev.get("id") for ev in events[:8] if ev.get("id")])
+                            return sum(res_list)
+        except Exception:
+            pass
+        return None
 
-    p_dom_10m = count_penalties_10m(recent_h_all, h_dom_w)
-    p_ext_10m = count_penalties_10m(recent_a_all, a_ext_w)
+    p_dom_sf = fetch_sofascore_penalties(team_a)
+    p_ext_sf = fetch_sofascore_penalties(team_b)
+
+    bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
+    bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
+
+    if p_dom_sf is not None:
+        p_dom_10m = p_dom_sf
+    else:
+        p_dom_10m = max(2, int((sot_a * 0.40) + ((bp_ext or 40) / 35.0)))
+
+    if p_ext_sf is not None:
+        p_ext_10m = p_ext_sf
+    else:
+        p_ext_10m = max(2, int((sot_b * 0.40) + ((bp_dom or 40) / 35.0)))
+
     p_tot_10m = p_dom_10m + p_ext_10m
 
     rf_peno_penalty = 0
