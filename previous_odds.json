@@ -58,7 +58,7 @@
       "match": "Rapid Vienne - Paide",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.9,
+      "val_btts": 2.0,
       "val_o25": 1.25,
       "double": true,
       "ac_score": 86
@@ -108,6 +108,24 @@
       "double": true,
       "ac_score": 80
     },
+    "3366986": {
+      "match": "Neom SC - Al Feiha",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Ven. 14/08 à 18h50",
+      "val_btts": 1.7,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 78
+    },
+    "3365837": {
+      "match": "Academica - Feirense",
+      "league": "Portugal • D2 Portugal",
+      "date_str": "Ven. 14/08 à 19h00",
+      "val_btts": 1.75,
+      "val_o25": 2.0,
+      "double": true,
+      "ac_score": 78
+    },
     "3363383": {
       "match": "Seattle - Chivas",
       "league": "Amerique • Leagues Cup",
@@ -117,21 +135,21 @@
       "double": true,
       "ac_score": 77
     },
-    "3369248": {
-      "match": "Nordsjaelland - ValurReykjavik",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 2.05,
-      "val_o25": 1.2,
-      "double": true,
-      "ac_score": 77
-    },
     "3369878": {
       "match": "Max.Rogachev - BoracBanjaLuka",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h00",
       "val_btts": 1.6,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369248": {
+      "match": "Nordsjaelland - ValurReykjavik",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 2.05,
+      "val_o25": 1.2,
       "double": true,
       "ac_score": 77
     },
