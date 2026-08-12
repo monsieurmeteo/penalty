@@ -27,6 +27,15 @@
       "double": true,
       "ac_score": 94
     },
+    "3366976": {
+      "match": "Al Shabab - Al Qadisiya",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Jeu. 13/08 à 20h00",
+      "val_btts": 1.52,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 94
+    },
     "3369520": {
       "match": "Motherwell - HJK Helsinki",
       "league": "Coupes D Europe • Europa Conference",
@@ -36,32 +45,14 @@
       "double": true,
       "ac_score": 94
     },
-    "3352637": {
-      "match": "Paris SG - Aston Villa",
-      "league": "Coupes D Europe • Supercoupe D Europe",
-      "date_str": "Mer. 12/08 à 21h00",
-      "val_btts": 1.6,
-      "val_o25": 1.57,
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.35,
       "double": true,
-      "ac_score": 92
-    },
-    "3362466": {
-      "match": "Inter Miami - FC Leon",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.4,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 92
-    },
-    "3366976": {
-      "match": "Al Shabab - Al Qadisiya",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.52,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 92
+      "ac_score": 94
     },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
@@ -69,6 +60,15 @@
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 94
+    },
+    "3362466": {
+      "match": "Inter Miami - FC Leon",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 01h30",
+      "val_btts": 1.4,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 92
     },
@@ -103,8 +103,8 @@
       "match": "Orlando City - Atl. San Luis",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.45,
-      "val_o25": 1.38,
+      "val_btts": 1.4,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 88
     },
@@ -122,7 +122,16 @@
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h00",
       "val_btts": 1.5,
-      "val_o25": 1.32,
+      "val_o25": 1.3,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -144,15 +153,6 @@
       "double": true,
       "ac_score": 85
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 85
-    },
     "3367754": {
       "match": "KF Drita - Tre Fiori FC",
       "league": "Coupes D Europe • Europa Conference",
@@ -171,15 +171,6 @@
       "double": true,
       "ac_score": 82
     },
-    "3366985": {
-      "match": "Abha - Al Hazem",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Jeu. 13/08 à 18h15",
-      "val_btts": 1.65,
-      "val_o25": 1.85,
-      "double": true,
-      "ac_score": 82
-    },
     "3369663": {
       "match": "Hearts - Benfica",
       "league": "Coupes D Europe • Europa League",
@@ -194,7 +185,16 @@
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Jeu. 13/08 à 00h00",
       "val_btts": 2.2,
-      "val_o25": 2.45,
+      "val_o25": 2.5,
+      "double": true,
+      "ac_score": 78
+    },
+    "3368308": {
+      "match": "Shelbourne FC - Ajax",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h45",
+      "val_btts": 1.8,
+      "val_o25": 1.3,
       "double": true,
       "ac_score": 78
     },
@@ -211,7 +211,7 @@
       "match": "Nordsjaelland - ValurReykjavik",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 2.0,
+      "val_btts": 2.05,
       "val_o25": 1.2,
       "double": true,
       "ac_score": 77
