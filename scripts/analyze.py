@@ -240,6 +240,64 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
     
     return "19635927", home_query, away_query, "SA1"
 
+ALIAS_MAP_SOFASCORE = {
+    'Paris SG': 'Paris Saint-Germain',
+    'AmaZulu': 'AmaZulu FC',
+    'Durban City': 'Durban City FC',
+    'Torque': 'Montevideo City Torque',
+    'Coquimbo U.': 'Coquimbo Unido',
+    'Orlando Pir.': 'Orlando Pirates',
+    'Hap.Tel Aviv': 'Hapoel Tel Aviv',
+    'C.A. Tigre': 'Tigres UANL',
+    'Paide': 'Paide Linnameeskond',
+    'FC Copenhague': 'FC København',
+    'Debrecen': 'Debreceni VSC',
+    'Sekhukhune': 'Sekhukhune United',
+    'Siwelele': 'Siwelele FC',
+    'Bragantino SP': 'Red Bull Bragantino',
+    'Atletico MG': 'Atlético Mineiro',
+    'Cerro Porteno': 'Cerro Porteño',
+    'Atl. San Luis': 'Atlético San Luis',
+    'FC Leon': 'Club León',
+    'Dallas FC': 'FC Dallas',
+    'Dep. Toluca': 'Deportivo Toluca',
+    'Seattle': 'Seattle Sounders FC',
+    'Chivas': 'CD Guadalajara',
+    'Queretaro FC': 'Querétaro FC'
+}
+
+def fetch_sofascore_sample(query, is_home=True):
+    try:
+        from curl_cffi import requests as cf_requests
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
+        q = ALIAS_MAP_SOFASCORE.get(query, query)
+        r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={q}", impersonate="chrome120", headers=headers, timeout=4)
+        if r.status_code == 200:
+            teams = [x for x in r.json().get("results", []) if x.get("type") == "team"]
+            if teams:
+                tid = teams[0]["entity"]["id"]
+                r2 = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{tid}/events/last/0", impersonate="chrome120", headers=headers, timeout=4)
+                if r2.status_code == 200:
+                    events = sorted(r2.json().get("events", []), key=lambda x: x.get("startTimestamp", 0), reverse=True)
+                    if is_home:
+                        m_list = [e for e in events if e.get("homeTeam", {}).get("id") == tid][:10]
+                    else:
+                        m_list = [e for e in events if e.get("awayTeam", {}).get("id") == tid][:10]
+                    
+                    res_matches = []
+                    for ev in m_list:
+                        hs = ev.get("homeScore", {}).get("current", 0)
+                        aws = ev.get("awayScore", {}).get("current", 0)
+                        res_matches.append({
+                            "homeGoals": hs, "homeGoalsFt": hs,
+                            "awayGoals": aws, "awayGoalsFt": aws
+                        })
+                    return res_matches
+    except Exception:
+        pass
+    return []
+
+
 def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None, d_refs=None, m_unibet=None):
     ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt, unibet_league=unibet_league)
 
@@ -326,8 +384,13 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         gf_b = round((gf_b * n_a + 1.15 * (5 - n_a)) / 5.0, 2)
         ga_b = round((ga_b * n_a + 1.35 * (5 - n_a)) / 5.0, 2)
 
-    # ponytail: si aucune donnée réelle disponible (équipe inconnue d'AdamChoi), on ne fabrique rien
+    # Fallback Sofascore Token 0 si AdamChoi n'a pas de données pour ces noms d'équipes
     has_real_data = bool(recent_h_dom or recent_a_ext or h_dom_w or a_ext_w)
+    if not has_real_data:
+        recent_h_dom = fetch_sofascore_sample(home_query, True)
+        recent_a_ext = fetch_sofascore_sample(away_query, False)
+        has_real_data = bool(recent_h_dom or recent_a_ext)
+
     if not has_real_data:
         if is_batch:
             return {
@@ -336,11 +399,11 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                 "pts_freq": 0, "o25_avg_rate": 0, "pts_sot": 0, "sot_comb": 0,
                 "pts_ha": 0, "avg_freq_ha": 0, "pts_league": 0,
                 "xg_total": 0, "sot_total": 0,
-                "verdict": "Équipe non trouvée sur AdamChoi — données insuffisantes.",
-                "red_flags": ["Aucune donnée AdamChoi"],
+                "verdict": "Équipe non trouvée — données insuffisantes.",
+                "red_flags": ["Aucune donnée disponible"],
                 "recent_h_dom": [], "recent_a_ext": []
             }
-        print(f"❓ {home_query} vs {away_query} — Équipe non trouvée sur AdamChoi, score non calculé.")
+        print(f"❓ {home_query} vs {away_query} — Équipe non trouvée, score non calculé.")
         return
 
     if gf_a == 0.0: gf_a = 1.4; ga_a = 1.2; sot_a = 4.5; sota_a = 3.2
@@ -806,6 +869,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     else: p_pen_cards = 3
 
     # 4. Activité Offensive Globale (20 pts max)
+    total_goals_brut = tot_goals_avg
     if total_goals_brut >= 5.5 or ipo_comb >= 3.5: p_pen_goals = 20
     elif total_goals_brut >= 4.5 or ipo_comb >= 3.0: p_pen_goals = 16
     elif total_goals_brut >= 3.8 or ipo_comb >= 2.5: p_pen_goals = 12
@@ -815,11 +879,16 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if ref_is_known:
         score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals - rf_peno_penalty))
     else:
-        # Score brut sur les 3 piliers disponibles (25 + 20 + 20 = 65 pts max)
         raw_avail = p_pen_sot + p_pen_cards + p_pen_goals
-        # Normalisation sur 100 puis décote de -10% pour confiance réduite
         norm_score = (raw_avail / 65.0) * 100.0
         score_penalty = max(0, min(100, round(norm_score * 0.90) - rf_peno_penalty))
+    pts_ipo = o25_b1
+    pts_goals = o25_b2
+    pts_freq = o25_b3
+    pts_sot = o25_b4
+    pts_ha = o25_b5
+    pts_league = o25_b6
+    avg_freq_ha = comb_o25_pct
 
     if is_batch:
         return {
@@ -828,7 +897,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "league": league,
             "score": total_score,
             "classe": classe,
-            "prob": calibrated_prob,
+            "prob": round(total_score * 0.78, 1),
             "pts_ipo": pts_ipo, "ipo_comb": round(ipo_comb, 2),
             "pts_goals": pts_goals, "total_goals_brut": round(total_goals_brut, 1),
             "pts_freq": pts_freq, "avg_freq_all": round(o25_avg_rate, 1),
