@@ -423,6 +423,11 @@ def main():
                     m["ref_status"] = res.get("ref_status", "Arbitre non désigné — confiance réduite")
                     m["pen_per_match"] = res.get("pen_per_match", 0.0)
                     m["avg_booking"] = res.get("avg_booking", 0.0)
+                    m["peno_badge"] = res.get("peno_badge", "")
+                    m["peno_status"] = res.get("peno_status", "VALIDE")
+                    m["p_dom_10m"] = res.get("p_dom_10m", 0)
+                    m["p_ext_10m"] = res.get("p_ext_10m", 0)
+                    m["p_tot_10m"] = res.get("p_tot_10m", 0)
             except Exception:
                 pass
         return m
@@ -752,13 +757,15 @@ def main():
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Score ≥ 55) ──
-    # Option 1 : Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu") et score_penalty >= 55 sont retenus.
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
+    # Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu"), validés par la compétence PENO et score_penalty >= 55 sont retenus.
     pen_candidates = [
         m for m in scanned_results 
-        if m.get("score_penalty", 0) >= 55 and m.get("ref_name", "Inconnu") != "Inconnu"
+        if m.get("score_penalty", 0) >= 55 
+        and m.get("ref_name", "Inconnu") != "Inconnu"
+        and m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
     ]
-    pen_candidates.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+    pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
 
 
@@ -948,11 +955,13 @@ def main():
     pen_simples_html = ""
     for idx_ps, m in enumerate(pen_simples, 1):
         ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"🧑\u200d⚖️ Arbitre {ref}"
+        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
         sp  = m.get("score_penalty", 0)
         avg_b = m.get("avg_booking", 0.0)
         sot_c = m.get("sot_comb", 0.0)
         sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
+        peno_b = m.get("peno_badge") or ""
+        peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -962,6 +971,7 @@ def main():
           <div style="font-size:12px; color:#334155; line-height:1.9;">
             🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
             {ref_status_str}<br>
+            {peno_badge_html}
             <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
           </div>
           <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">

@@ -716,6 +716,42 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         except (ValueError, TypeError):
             pass
 
+    # ── COMPÉTENCE PENO : Analyse des 10 derniers matchs (P_dom, P_ext, P_tot) ──
+    def count_penalties_10m(matches_list, widget_stats):
+        cnt = 0
+        if isinstance(matches_list, list) and len(matches_list) > 0:
+            for m in matches_list[:10]:
+                if isinstance(m, dict):
+                    pen_cnt = m.get("penalties", 0) or (m.get("homePenalties", 0) + m.get("awayPenalties", 0))
+                    if pen_cnt:
+                        cnt += int(pen_cnt)
+                    else:
+                        incidents = m.get("incidents") or []
+                        for inc in incidents:
+                            inc_type = str(inc.get("incidentType") or inc.get("type") or "").lower()
+                            if "penalty" in inc_type:
+                                cnt += 1
+        if cnt == 0 and isinstance(widget_stats, dict):
+            cnt = int(widget_stats.get("penaltiesTotal", 0) or widget_stats.get("penalties", 0) or 0)
+        return cnt
+
+    p_dom_10m = count_penalties_10m(recent_h_all, h_dom_w)
+    p_ext_10m = count_penalties_10m(recent_a_all, a_ext_w)
+    p_tot_10m = p_dom_10m + p_ext_10m
+
+    rf_peno_penalty = 0
+    if p_dom_10m >= 3 and p_ext_10m >= 3 and p_tot_10m >= 6:
+        peno_badge = f"🔥 DOUBLE SIGNAL PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+        peno_status = "DOUBLE_SIGNAL"
+        p_pen_goals += 5
+    elif p_dom_10m >= 2 and p_ext_10m >= 2 and p_tot_10m >= 4:
+        peno_badge = f"🟢 VALIDE PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+        peno_status = "VALIDE"
+    else:
+        peno_badge = f"🛑 REJET PENO (<2 pen/équipe sur 10m : dom {p_dom_10m}, ext {p_ext_10m})"
+        peno_status = "REJET"
+        rf_peno_penalty = 25
+
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
     bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
     team_avg_booking = bp_dom + bp_ext
@@ -741,13 +777,13 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     else: p_pen_goals = 3
 
     if ref_is_known:
-        score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals))
+        score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals - rf_peno_penalty))
     else:
         # Score brut sur les 3 piliers disponibles (25 + 20 + 20 = 65 pts max)
         raw_avail = p_pen_sot + p_pen_cards + p_pen_goals
         # Normalisation sur 100 puis décote de -10% pour confiance réduite
         norm_score = (raw_avail / 65.0) * 100.0
-        score_penalty = max(0, min(100, round(norm_score * 0.90)))
+        score_penalty = max(0, min(100, round(norm_score * 0.90) - rf_peno_penalty))
 
     if is_batch:
         return {
@@ -778,6 +814,11 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "ref_status": ref_status,
             "pen_per_match": round(pen_per_match, 3),
             "avg_booking": round(avg_booking, 1),
+            "peno_badge": peno_badge,
+            "peno_status": peno_status,
+            "p_dom_10m": p_dom_10m,
+            "p_ext_10m": p_ext_10m,
+            "p_tot_10m": p_tot_10m,
         }
 
 
