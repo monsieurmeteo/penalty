@@ -428,92 +428,76 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if n_h < 3: red_flags.append(f"Échantillon DOM faible ({n_h} m)")
     if n_a < 3: red_flags.append(f"Échantillon EXT faible ({n_a} m)")
 
-    # ── BARÈME V2.1 — SCORE OVER 2.5 BUTS /100 ──
-    # Total exact 100 points
-    # 1. IPO — Indice de Potentiel Offensif (25 pts max)
+    # ══════════════════════════════════════════════════════════════
+    # 🟥 MODULE 3 — OVER 2,5 BUTS V3 (/100) — Dual Over Analyzer Spec
+    # ══════════════════════════════════════════════════════════════
     ipo_dom = (sot_a * 0.28) + (gf_a * 0.50)
     ipo_ext = (sot_b * 0.28) + (gf_b * 0.50)
     ipo_comb = ipo_dom + ipo_ext
 
-    if ipo_comb >= 3.80: pts_ipo = 25
-    elif ipo_comb >= 3.50: pts_ipo = 23
-    elif ipo_comb >= 3.20: pts_ipo = 21
-    elif ipo_comb >= 3.00: pts_ipo = 19
-    elif ipo_comb >= 2.80: pts_ipo = 17
-    elif ipo_comb >= 2.60: pts_ipo = 15
-    elif ipo_comb >= 2.40: pts_ipo = 12
-    elif ipo_comb >= 2.20: pts_ipo = 9
-    elif ipo_comb >= 2.00: pts_ipo = 6
-    else: pts_ipo = 3
+    # Bloc 1 — Potentiel offensif IPO (25 pts max)
+    if ipo_comb >= 4.00: o25_b1 = 25
+    elif ipo_comb >= 3.70: o25_b1 = 23
+    elif ipo_comb >= 3.40: o25_b1 = 21
+    elif ipo_comb >= 3.10: o25_b1 = 18
+    elif ipo_comb >= 2.80: o25_b1 = 15
+    elif ipo_comb >= 2.50: o25_b1 = 11
+    elif ipo_comb >= 2.20: o25_b1 = 7
+    else: o25_b1 = 4
+    if gf_a < 0.80 or gf_b < 0.80: o25_b1 = min(18, o25_b1)
 
-    # 2. Potentiel buts marqués + encaissés (15 pts max)
-    total_goals_brut = gf_a + ga_a + gf_b + ga_b
-    if total_goals_brut >= 6.0: pts_goals = 15
-    elif total_goals_brut >= 5.5: pts_goals = 14
-    elif total_goals_brut >= 5.0: pts_goals = 13
-    elif total_goals_brut >= 4.6: pts_goals = 11
-    elif total_goals_brut >= 4.2: pts_goals = 9
-    elif total_goals_brut >= 3.8: pts_goals = 7
-    elif total_goals_brut >= 3.4: pts_goals = 5
-    elif total_goals_brut >= 3.0: pts_goals = 3
-    else: pts_goals = 1
+    # Bloc 2 — Buts marqués + encaissés (20 pts max)
+    tot_goals_avg = gf_a + ga_a + gf_b + ga_b
+    if tot_goals_avg >= 3.40: o25_b2 = 20
+    elif tot_goals_avg >= 3.10: o25_b2 = 18
+    elif tot_goals_avg >= 2.90: o25_b2 = 16
+    elif tot_goals_avg >= 2.70: o25_b2 = 13
+    elif tot_goals_avg >= 2.50: o25_b2 = 10
+    elif tot_goals_avg >= 2.30: o25_b2 = 6
+    else: o25_b2 = 4
 
-    # 3. Fréquence historique Over 2.5 (20 pts max)
-    if o25_avg_rate >= 80.0: pts_freq = 20
-    elif o25_avg_rate >= 75.0: pts_freq = 18
-    elif o25_avg_rate >= 70.0: pts_freq = 16
-    elif o25_avg_rate >= 65.0: pts_freq = 14
-    elif o25_avg_rate >= 60.0: pts_freq = 12
-    elif o25_avg_rate >= 55.0: pts_freq = 10
-    elif o25_avg_rate >= 50.0: pts_freq = 8
-    elif o25_avg_rate >= 45.0: pts_freq = 5
-    elif o25_avg_rate >= 40.0: pts_freq = 3
-    else: pts_freq = 0
-
-    # 4. Tirs cadrés combinés (10 pts max)
-    sot_comb = sot_a + sot_b
-    if sot_comb >= 12.0: pts_sot = 10
-    elif sot_comb >= 11.0: pts_sot = 9
-    elif sot_comb >= 10.0: pts_sot = 8
-    elif sot_comb >= 9.0: pts_sot = 7
-    elif sot_comb >= 8.0: pts_sot = 6
-    elif sot_comb >= 7.0: pts_sot = 4
-    elif sot_comb >= 6.0: pts_sot = 2
-    else: pts_sot = 0
-
-    # 5. Domicile / Extérieur spécifique (20 pts max)
+    # Bloc 3 — Fréquence Over 2.5 (20 pts max)
     o25_h_dom_cnt = count_o25(recent_h_dom[:10])
     o25_a_ext_cnt = count_o25(recent_a_ext[:10])
     o25_h_dom_rate = (o25_h_dom_cnt / max(1, len(recent_h_dom[:10]))) * 100
     o25_a_ext_rate = (o25_a_ext_cnt / max(1, len(recent_a_ext[:10]))) * 100
-    avg_freq_ha = (o25_h_dom_rate + o25_a_ext_rate) / 2.0
+    comb_o25_pct = (o25_h_dom_rate + o25_a_ext_rate) / 2.0
 
-    if avg_freq_ha >= 80.0: pts_ha = 20
-    elif avg_freq_ha >= 75.0: pts_ha = 18
-    elif avg_freq_ha >= 70.0: pts_ha = 16
-    elif avg_freq_ha >= 65.0: pts_ha = 14
-    elif avg_freq_ha >= 60.0: pts_ha = 12
-    elif avg_freq_ha >= 55.0: pts_ha = 10
-    elif avg_freq_ha >= 50.0: pts_ha = 8
-    elif avg_freq_ha >= 45.0: pts_ha = 5
-    elif avg_freq_ha >= 40.0: pts_ha = 3
-    else: pts_ha = 0
+    if comb_o25_pct >= 75.0: o25_b3_raw = 20
+    elif comb_o25_pct >= 70.0: o25_b3_raw = 18
+    elif comb_o25_pct >= 65.0: o25_b3_raw = 16
+    elif comb_o25_pct >= 60.0: o25_b3_raw = 13
+    elif comb_o25_pct >= 55.0: o25_b3_raw = 10
+    elif comb_o25_pct >= 50.0: o25_b3_raw = 6
+    elif comb_o25_pct >= 45.0: o25_b3_raw = 3
+    else: o25_b3_raw = 0
 
-    # 6. Contexte Ligue Continue (10 pts max)
-    league_avg_goals = 2.75
-    if league_avg_goals >= 3.30: pts_league = 10
-    elif league_avg_goals >= 3.00: pts_league = 9
-    elif league_avg_goals >= 2.75: pts_league = 7
-    elif league_avg_goals >= 2.55: pts_league = 5
-    elif league_avg_goals >= 2.35: pts_league = 3
-    else: pts_league = 1
+    o25_b3 = o25_b3_raw
+    if min(o25_h_dom_rate, o25_a_ext_rate) < 30.0: o25_b3 = min(6, o25_b3)
+    elif min(o25_h_dom_rate, o25_a_ext_rate) < 40.0: o25_b3 = min(10, o25_b3)
+    elif min(o25_h_dom_rate, o25_a_ext_rate) < 50.0: o25_b3 = min(14, o25_b3)
 
-    raw_score = pts_ipo + pts_goals + pts_freq + pts_sot + pts_ha + pts_league
-    # Plafond Red Flags à -20 pts max
+    # Bloc 4 — Tirs cadrés (15 pts max)
+    sot_comb = sot_a + sot_b
+    if sot_comb >= 11.0: o25_b4 = 15
+    elif sot_comb >= 10.0: o25_b4 = 13
+    elif sot_comb >= 9.0: o25_b4 = 11
+    elif sot_comb >= 8.0: o25_b4 = 8
+    elif sot_comb >= 7.0: o25_b4 = 5
+    else: o25_b4 = 3
+
+    # Bloc 5 — Profil Dom/Ext (10 pts max)
+    if o25_h_dom_rate >= 70 and o25_a_ext_rate >= 70: o25_b5 = 10
+    elif o25_h_dom_rate >= 50 and o25_a_ext_rate >= 50: o25_b5 = 8
+    elif o25_h_dom_rate >= 40 or o25_a_ext_rate >= 40: o25_b5 = 6
+    else: o25_b5 = 4
+
+    # Bloc 6 — Ligue/Contexte (10 pts max)
+    o25_b6 = 8
+
     rf_pen_o25 = min(20, len(red_flags) * 10)
-    total_score = max(0, min(100, raw_score - rf_pen_o25))
+    total_score = max(0, min(100, o25_b1 + o25_b2 + o25_b3 + o25_b4 + o25_b5 + o25_b6 - rf_pen_o25))
 
-    # Classification V2
     if total_score >= 90: classe = "🔥🔥🔥 Exceptionnel"
     elif total_score >= 85: classe = "🔥🔥 Très fort"
     elif total_score >= 80: classe = "🔥 Fort"
@@ -523,136 +507,164 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif total_score >= 60: classe = "⚠️ Fragile"
     else: classe = "❌ À écarter"
 
-    calibrated_prob = int((o25_avg_rate * 0.60) + (min(90, int(xg_total * 18)) * 0.40))
-    if red_flags: calibrated_prob = max(25, calibrated_prob - (len(red_flags) * 8))
-
     verdict = f"{classe} ({total_score}/100)"
 
     # ══════════════════════════════════════════════════════════════
-    # BARÈME V2.1 OVER 1.5 /100 — Total exact 100 points
+    # 🟦 MODULE 2 — OVER 1.5 BUTS (/100) — Dual Over Analyzer Spec
     # ══════════════════════════════════════════════════════════════
+    # Bloc 1 — Buts marqués + encaissés (25 pts max)
+    if tot_goals_avg >= 3.20: o15_b1 = 25
+    elif tot_goals_avg >= 3.00: o15_b1 = 23
+    elif tot_goals_avg >= 2.80: o15_b1 = 21
+    elif tot_goals_avg >= 2.60: o15_b1 = 18
+    elif tot_goals_avg >= 2.40: o15_b1 = 15
+    elif tot_goals_avg >= 2.20: o15_b1 = 11
+    elif tot_goals_avg >= 2.00: o15_b1 = 7
+    else: o15_b1 = 4
 
-    # 1. IPO (25 pts)
-    if ipo_comb >= 3.00: p_o15_ipo = 25
-    elif ipo_comb >= 2.70: p_o15_ipo = 23
-    elif ipo_comb >= 2.40: p_o15_ipo = 21
-    elif ipo_comb >= 2.20: p_o15_ipo = 19
-    elif ipo_comb >= 2.00: p_o15_ipo = 17
-    elif ipo_comb >= 1.80: p_o15_ipo = 14
-    elif ipo_comb >= 1.60: p_o15_ipo = 11
-    elif ipo_comb >= 1.40: p_o15_ipo = 8
-    elif ipo_comb >= 1.20: p_o15_ipo = 5
-    else: p_o15_ipo = 2
+    # Bloc 2 — Fréquence Over 1.5 (25 pts max)
+    o15_h_dom_cnt = count_o15(recent_h_dom[:10])
+    o15_a_ext_cnt = count_o15(recent_a_ext[:10])
+    pct_o15_h = (o15_h_dom_cnt / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_o15_a = (o15_a_ext_cnt / max(1, len(recent_a_ext[:10]))) * 100.0
+    comb_o15_pct = (pct_o15_h + pct_o15_a) / 2.0
 
-    # 2. Buts totaux (15 pts)
-    if total_goals_brut >= 5.0: p_o15_goals = 15
-    elif total_goals_brut >= 4.5: p_o15_goals = 14
-    elif total_goals_brut >= 4.0: p_o15_goals = 13
-    elif total_goals_brut >= 3.6: p_o15_goals = 11
-    elif total_goals_brut >= 3.2: p_o15_goals = 9
-    elif total_goals_brut >= 2.8: p_o15_goals = 7
-    elif total_goals_brut >= 2.4: p_o15_goals = 5
-    elif total_goals_brut >= 2.0: p_o15_goals = 3
-    else: p_o15_goals = 1
+    if comb_o15_pct >= 90.0: o15_b2_raw = 25
+    elif comb_o15_pct >= 85.0: o15_b2_raw = 23
+    elif comb_o15_pct >= 80.0: o15_b2_raw = 21
+    elif comb_o15_pct >= 75.0: o15_b2_raw = 18
+    elif comb_o15_pct >= 70.0: o15_b2_raw = 15
+    elif comb_o15_pct >= 65.0: o15_b2_raw = 11
+    elif comb_o15_pct >= 60.0: o15_b2_raw = 7
+    else: o15_b2_raw = 4
 
-    # 3. Fréquence Over 1.5 (20 pts)
-    o15_h_all = count_o15(recent_h_all[:20])
-    o15_a_all = count_o15(recent_a_all[:20])
-    o15_avg_rate = (((o15_h_all / max(1, len(recent_h_all[:20]))) + (o15_a_all / max(1, len(recent_a_all[:20])))) / 2.0) * 100
-    if o15_avg_rate >= 90: p_o15_freq = 20
-    elif o15_avg_rate >= 85: p_o15_freq = 18
-    elif o15_avg_rate >= 80: p_o15_freq = 16
-    elif o15_avg_rate >= 75: p_o15_freq = 14
-    elif o15_avg_rate >= 70: p_o15_freq = 12
-    elif o15_avg_rate >= 65: p_o15_freq = 10
-    elif o15_avg_rate >= 60: p_o15_freq = 8
-    elif o15_avg_rate >= 55: p_o15_freq = 5
-    elif o15_avg_rate >= 50: p_o15_freq = 3
-    else: p_o15_freq = 0
+    o15_b2 = o15_b2_raw
+    if min(pct_o15_h, pct_o15_a) < 50.0: o15_b2 = min(8, o15_b2)
+    elif min(pct_o15_h, pct_o15_a) < 60.0: o15_b2 = min(13, o15_b2)
+    elif min(pct_o15_h, pct_o15_a) < 70.0: o15_b2 = min(18, o15_b2)
 
-    # 4. Tirs cadrés (10 pts)
-    p_o15_sot = pts_sot
+    # Bloc 3 — Potentiel offensif (15 pts max)
+    if ipo_comb >= 4.00: o15_b3 = 15
+    elif ipo_comb >= 3.60: o15_b3 = 13
+    elif ipo_comb >= 3.20: o15_b3 = 11
+    elif ipo_comb >= 2.80: o15_b3 = 8
+    elif ipo_comb >= 2.40: o15_b3 = 5
+    else: o15_b3 = 3
 
-    # 5. Dom/Ext spécifique Over 1.5 (20 pts)
-    if freq_o15 >= 90: p_o15_ha = 20
-    elif freq_o15 >= 85: p_o15_ha = 18
-    elif freq_o15 >= 80: p_o15_ha = 16
-    elif freq_o15 >= 75: p_o15_ha = 14
-    elif freq_o15 >= 70: p_o15_ha = 12
-    elif freq_o15 >= 65: p_o15_ha = 10
-    elif freq_o15 >= 60: p_o15_ha = 8
-    elif freq_o15 >= 55: p_o15_ha = 5
-    elif freq_o15 >= 50: p_o15_ha = 3
-    else: p_o15_ha = 0
+    # Bloc 4 — Tirs cadrés (15 pts max)
+    if sot_comb >= 10.0: o15_b4 = 15
+    elif sot_comb >= 9.0: o15_b4 = 13
+    elif sot_comb >= 8.0: o15_b4 = 11
+    elif sot_comb >= 7.0: o15_b4 = 8
+    elif sot_comb >= 6.0: o15_b4 = 5
+    else: o15_b4 = 3
 
-    # 6. Ligue (10 pts)
-    p_o15_league = pts_league
+    # Bloc 5 — Profil Dom/Ext (10 pts max)
+    o15_b5 = 10 if (pct_o15_h >= 80 and pct_o15_a >= 80) else (8 if (pct_o15_h >= 70 or pct_o15_a >= 70) else 6)
+
+    # Bloc 6 — Ligue/Contexte (10 pts max)
+    o15_b6 = 9
 
     rf_o15 = [f for f in red_flags if "Attaque" in f or "Échantillon" in f]
     rf_pen_o15 = min(15, len(rf_o15) * 5)
-    score_o15 = max(0, min(100, p_o15_ipo + p_o15_goals + p_o15_freq + p_o15_sot + p_o15_ha + p_o15_league - rf_pen_o15))
+    score_o15 = max(0, min(100, o15_b1 + o15_b2 + o15_b3 + o15_b4 + o15_b5 + o15_b6 - rf_pen_o15))
 
     # ══════════════════════════════════════════════════════════════
-    # BARÈME V2.1 BTTS OUI /100 — Logique de Confrontation (Total exact 100 pts)
+    # 🟩 MODULE 4 — BTTS OUI (/100) — BTTS Analyzer Spec
     # ══════════════════════════════════════════════════════════════
+    btts_h_cnt = count_btts(recent_h_dom[:10])
+    btts_a_cnt = count_btts(recent_a_ext[:10])
+    pct_btts_h = (btts_h_cnt / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_btts_a = (btts_a_cnt / max(1, len(recent_a_ext[:10]))) * 100.0
+    comb_btts_pct = (pct_btts_h + pct_btts_a) / 2.0
 
-    # 1. Potentiel But DOM (Attaque DOM × Défense EXT) (30 pts max)
-    comp_dom = (gf_a * 0.60) + (ga_b * 0.40)
-    if comp_dom >= 2.20: p_btts_pot_dom = 30
-    elif comp_dom >= 1.90: p_btts_pot_dom = 26
-    elif comp_dom >= 1.60: p_btts_pot_dom = 22
-    elif comp_dom >= 1.30: p_btts_pot_dom = 16
-    elif comp_dom >= 1.00: p_btts_pot_dom = 10
-    elif comp_dom >= 0.70: p_btts_pot_dom = 4
-    else: p_btts_pot_dom = 0
+    score_cnt_h = sum(1 for m in recent_h_dom[:10] if int(m.get("homeGoals", m.get("homeGoalsFt", 0))) > 0)
+    score_cnt_a = sum(1 for m in recent_a_ext[:10] if int(m.get("awayGoals", m.get("awayGoalsFt", 0))) > 0)
+    pct_score_h = (score_cnt_h / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_score_a = (score_cnt_a / max(1, len(recent_a_ext[:10]))) * 100.0
+    avg_score_pct = (pct_score_h + pct_score_a) / 2.0
 
-    # 2. Potentiel But EXT (Attaque EXT × Défense DOM) (30 pts max)
-    comp_ext = (gf_b * 0.60) + (ga_a * 0.40)
-    if comp_ext >= 2.00: p_btts_pot_ext = 30
-    elif comp_ext >= 1.70: p_btts_pot_ext = 26
-    elif comp_ext >= 1.40: p_btts_pot_ext = 22
-    elif comp_ext >= 1.10: p_btts_pot_ext = 16
-    elif comp_ext >= 0.80: p_btts_pot_ext = 10
-    elif comp_ext >= 0.50: p_btts_pot_ext = 4
-    else: p_btts_pot_ext = 0
+    concede_cnt_h = sum(1 for m in recent_h_dom[:10] if int(m.get("awayGoals", m.get("awayGoalsFt", 0))) > 0)
+    concede_cnt_a = sum(1 for m in recent_a_ext[:10] if int(m.get("homeGoals", m.get("homeGoalsFt", 0))) > 0)
+    pct_concede_h = (concede_cnt_h / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_concede_a = (concede_cnt_a / max(1, len(recent_a_ext[:10]))) * 100.0
+    avg_concede_pct = (pct_concede_h + pct_concede_a) / 2.0
 
-    # 3. Fréquence historique BTTS sur 20 matchs (20 pts max)
-    if freq_btts >= 80: p_btts_freq = 20
-    elif freq_btts >= 75: p_btts_freq = 17
-    elif freq_btts >= 70: p_btts_freq = 14
-    elif freq_btts >= 65: p_btts_freq = 11
-    elif freq_btts >= 60: p_btts_freq = 8
-    elif freq_btts >= 50: p_btts_freq = 4
-    else: p_btts_freq = 0
+    pct_cs_h = 100.0 - pct_concede_h
+    pct_cs_a = 100.0 - pct_concede_a
 
-    # 4. Fréquence BTTS Dom/Ext spécifique (10 pts max)
-    if freq_btts_dom >= 75 and freq_btts_ext >= 75: p_btts_ha = 10
-    elif freq_btts_dom >= 65 or freq_btts_ext >= 65: p_btts_ha = 8
-    elif freq_btts_dom >= 55 or freq_btts_ext >= 55: p_btts_ha = 5
-    elif freq_btts_dom >= 45 or freq_btts_ext >= 45: p_btts_ha = 2
-    else: p_btts_ha = 0
+    # Bloc 1 — Fréquence BTTS (25 pts max)
+    if comb_btts_pct >= 75.0: btts_b1_raw = 25
+    elif comb_btts_pct >= 70.0: btts_b1_raw = 23
+    elif comb_btts_pct >= 65.0: btts_b1_raw = 21
+    elif comb_btts_pct >= 60.0: btts_b1_raw = 18
+    elif comb_btts_pct >= 55.0: btts_b1_raw = 14
+    elif comb_btts_pct >= 50.0: btts_b1_raw = 10
+    elif comb_btts_pct >= 45.0: btts_b1_raw = 5
+    else: btts_b1_raw = 3
 
-    # 5. Contexte ligue (10 pts max)
-    p_btts_league = pts_league
+    btts_b1 = btts_b1_raw
+    if min(pct_btts_h, pct_btts_a) < 30.0: btts_b1 = min(7, btts_b1)
+    elif min(pct_btts_h, pct_btts_a) < 40.0: btts_b1 = min(12, btts_b1)
+    elif min(pct_btts_h, pct_btts_a) < 50.0: btts_b1 = min(17, btts_b1)
 
-    # Red flags BTTS : si une équipe marque <0.8 goal/m, si échantillon <3 ou si déséquilibre majeur (Risque Clean Sheet)
+    # Bloc 2 — Capacité à marquer (20 pts max)
+    if avg_score_pct >= 90.0: btts_b2_raw = 20
+    elif avg_score_pct >= 85.0: btts_b2_raw = 18
+    elif avg_score_pct >= 80.0: btts_b2_raw = 16
+    elif avg_score_pct >= 75.0: btts_b2_raw = 13
+    elif avg_score_pct >= 70.0: btts_b2_raw = 10
+    elif avg_score_pct >= 65.0: btts_b2_raw = 7
+    else: btts_b2_raw = 4
+
+    btts_b2 = btts_b2_raw
+    if gf_a < 0.70 or gf_b < 0.70: btts_b2 = min(8, btts_b2)
+    elif gf_a < 0.90 or gf_b < 0.90: btts_b2 = min(13, btts_b2)
+
+    # Bloc 3 — Capacité à encaisser (20 pts max)
+    if avg_concede_pct >= 80.0: btts_b3_raw = 20
+    elif avg_concede_pct >= 75.0: btts_b3_raw = 18
+    elif avg_concede_pct >= 70.0: btts_b3_raw = 16
+    elif avg_concede_pct >= 65.0: btts_b3_raw = 13
+    elif avg_concede_pct >= 60.0: btts_b3_raw = 10
+    elif avg_concede_pct >= 55.0: btts_b3_raw = 7
+    else: btts_b3_raw = 4
+
+    btts_b3 = btts_b3_raw
+    max_cs = max(pct_cs_h, pct_cs_a)
+    if max_cs >= 70.0: btts_b3 = min(5, btts_b3)
+    elif max_cs >= 60.0: btts_b3 = min(8, btts_b3)
+    elif max_cs >= 50.0: btts_b3 = min(12, btts_b3)
+
+    # Bloc 4 — Tirs cadrés (15 pts max)
+    if sot_comb >= 11.0: btts_b4_raw = 15
+    elif sot_comb >= 10.0: btts_b4_raw = 13
+    elif sot_comb >= 9.0: btts_b4_raw = 11
+    elif sot_comb >= 8.0: btts_b4_raw = 8
+    elif sot_comb >= 7.0: btts_b4_raw = 5
+    else: btts_b4_raw = 3
+
+    btts_b4 = btts_b4_raw
+    if min(sot_a, sot_b) < 2.5: btts_b4 = min(7, btts_b4)
+    elif min(sot_a, sot_b) < 3.0: btts_b4 = min(10, btts_b4)
+
+    # Bloc 5 & 6 — Profil Dom/Ext (10 pts) & Ligue (10 pts)
+    btts_b5 = 10 if (pct_btts_h >= 70 and pct_btts_a >= 70) else (8 if (pct_btts_h >= 55 and pct_btts_a >= 55) else 6)
+    btts_b6 = 8
+
     rf_btts = []
-    if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} goal/m) — risque 0 goal DOM")
-    if gf_b < 0.8: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} goal/m) — risque 0 goal EXT")
-    if n_h < 3: rf_btts.append(f"Échantillon DOM trop faible ({n_h} match)")
-    if n_a < 3: rf_btts.append(f"Échantillon EXT trop faible ({n_a} match)")
+    if gf_a < 0.8: rf_btts.append(f"Attaque DOM trop faible ({gf_a:.1f} goal/m)")
+    if gf_b < 0.8: rf_btts.append(f"Attaque EXT trop faible ({gf_b:.1f} goal/m)")
 
-    # Garde-fou Anti Clean Sheet : Déséquilibre offensif majeur ou contradiction marché bookmaker (ex: Over 2.5 @1.30 vs BTTS @2.20)
     unibet_o25 = m_unibet.get("over25") if isinstance(m_unibet, dict) else None
     unibet_btts = m_unibet.get("btts_oui") if isinstance(m_unibet, dict) else None
-
     if (gf_a >= 2.2 and gf_b < 1.0) or (gf_b >= 2.0 and gf_a < 1.0):
         rf_btts.append(f"Risque Clean Sheet / Déséquilibre offensif majeur ({gf_a:.1f} vs {gf_b:.1f})")
     elif unibet_o25 and unibet_btts and unibet_o25 <= 1.42 and unibet_btts >= 2.00:
         rf_btts.append(f"Risque Clean Sheet Bookmaker (Over 2.5 @{unibet_o25:.2f} vs BTTS @{unibet_btts:.2f})")
 
     rf_pen_btts = min(25, len(rf_btts) * 12)
-    score_btts = max(0, min(100, p_btts_pot_dom + p_btts_pot_ext + p_btts_freq + p_btts_ha + p_btts_league - rf_pen_btts))
+    score_btts = max(0, min(100, btts_b1 + btts_b2 + btts_b3 + btts_b4 + btts_b5 + btts_b6 - rf_pen_btts))
 
     # ══════════════════════════════════════════════════════════════
     # BARÈME V2.1 PENALTY /100 — Refonte prioritaire (Total exact 100 pts)
