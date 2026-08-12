@@ -27,6 +27,15 @@
       "double": true,
       "ac_score": 94
     },
+    "3362919": {
+      "match": "Cercle Bruges - St Trond",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.52,
+      "val_o25": 1.6,
+      "double": true,
+      "ac_score": 94
+    },
     "3351183": {
       "match": "Shandong - Qingdao Hainiu",
       "league": "Chine • D1 Chine",
@@ -36,21 +45,12 @@
       "double": true,
       "ac_score": 92
     },
-    "3351331": {
-      "match": "Shanghai Shen. - Henan SL",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 14h00",
-      "val_btts": 1.35,
-      "val_o25": 1.33,
-      "double": true,
-      "ac_score": 92
-    },
-    "3364958": {
-      "match": "Piast Gliwice - Wieczysta",
+    "3364814": {
+      "match": "Wisla Plock - Lech Poznan",
       "league": "Pologne • D1 Pologne",
-      "date_str": "Sam. 15/08 à 17h30",
+      "date_str": "Sam. 15/08 à 16h00",
       "val_btts": 1.5,
-      "val_o25": 1.6,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 92
     },
@@ -63,12 +63,21 @@
       "double": true,
       "ac_score": 90
     },
-    "3369447": {
-      "match": "Istra 1961 - Slaven Belupo",
-      "league": "Croatie • D1 Croatie",
-      "date_str": "Sam. 15/08 à 18h30",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
+    "3362909": {
+      "match": "SC Telstar - Spar.Rotterdam",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Ven. 14/08 à 20h00",
+      "val_btts": 1.45,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 90
+    },
+    "3364958": {
+      "match": "Piast Gliwice - Wieczysta",
+      "league": "Pologne • D1 Pologne",
+      "date_str": "Sam. 15/08 à 17h30",
+      "val_btts": 1.5,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 89
     },
@@ -90,41 +99,23 @@
       "double": true,
       "ac_score": 86
     },
-    "3359047": {
-      "match": "Charlton - Derby",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.72,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 85
-    },
-    "3365299": {
-      "match": "Slo.Bratislava - MFK Ruzomberok",
+    "3365300": {
+      "match": "Dukla Bystrica - MSK Zilina",
       "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.7,
-      "val_o25": 1.45,
+      "val_btts": 1.5,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 86
+    },
+    "3351331": {
+      "match": "Shanghai Shen. - Henan SL",
+      "league": "Chine • D1 Chine",
+      "date_str": "Sam. 15/08 à 14h00",
+      "val_btts": 1.35,
+      "val_o25": 1.33,
       "double": true,
       "ac_score": 85
-    },
-    "3366400": {
-      "match": "Sporting - Guimaraes",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Ven. 14/08 à 21h15",
-      "val_btts": 1.85,
-      "val_o25": 1.38,
-      "double": true,
-      "ac_score": 84
-    },
-    "3359051": {
-      "match": "Stoke City - Swansea",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.72,
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 83
     },
     "3363385": {
       "match": "San Diego FC - Club Puebla",
@@ -135,30 +126,12 @@
       "double": true,
       "ac_score": 82
     },
-    "3370261": {
-      "match": "KawasakiFront. - Kyoto Sanga FC",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 82
-    },
-    "3370008": {
-      "match": "JEF Utd Chiba - FC Machida",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.8,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 82
-    },
-    "3367577": {
-      "match": "Dundee Utd - Celtic",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Sam. 15/08 à 18h45",
-      "val_btts": 1.65,
-      "val_o25": 1.6,
+    "3364809": {
+      "match": "Legia Varsovie - Radomiak Radom",
+      "league": "Pologne • D1 Pologne",
+      "date_str": "Ven. 14/08 à 20h30",
+      "val_btts": 1.6,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 82
     },
@@ -180,12 +153,21 @@
       "double": true,
       "ac_score": 80
     },
-    "3370322": {
-      "match": "Thor Akureyri - Keflavik",
-      "league": "Islande • D1 Islande",
-      "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.28,
-      "val_o25": 1.25,
+    "3370312": {
+      "match": "Alverca FC - CF Estrela",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Sam. 15/08 à 16h30",
+      "val_btts": 1.72,
+      "val_o25": 1.95,
+      "double": true,
+      "ac_score": 80
+    },
+    "3363769": {
+      "match": "Konyaspor - Rizespor",
+      "league": "Turquie • D1 Turquie",
+      "date_str": "Sam. 15/08 à 18h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 80
     },
@@ -195,6 +177,24 @@
       "date_str": "Ven. 14/08 à 18h50",
       "val_btts": 1.7,
       "val_o25": 1.65,
+      "double": true,
+      "ac_score": 78
+    },
+    "3365299": {
+      "match": "Slo.Bratislava - MFK Ruzomberok",
+      "league": "Slovaquie • D1 Slovaquie",
+      "date_str": "Sam. 15/08 à 18h00",
+      "val_btts": 1.7,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 78
+    },
+    "3370322": {
+      "match": "Thor Akureyri - Keflavik",
+      "league": "Islande • D1 Islande",
+      "date_str": "Sam. 15/08 à 19h00",
+      "val_btts": 1.28,
+      "val_o25": 1.25,
       "double": true,
       "ac_score": 78
     },
@@ -216,12 +216,21 @@
       "double": true,
       "ac_score": 76
     },
-    "3365300": {
-      "match": "Dukla Bystrica - MSK Zilina",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
+    "3367580": {
+      "match": "Kilmarnock - AYR United",
+      "league": "Ecosse • Cpe Ligue Ecosse",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.72,
+      "val_o25": 1.6,
+      "double": true,
+      "ac_score": 75
+    },
+    "3366399": {
+      "match": "Rio Ave - FC Porto",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Sam. 15/08 à 21h30",
+      "val_btts": 1.8,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 75
     }
