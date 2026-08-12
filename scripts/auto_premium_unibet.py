@@ -535,22 +535,28 @@ def main():
 
         if new_s3:
             evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
-            for item in new_s3:
+            for item in new_s3[:6]:
                 badge = " ⭐⭐ DOUBLE" if item.get("double") else ""
                 evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — BTTS Oui: <b>{item['val_btts']}</b>{badge}</li>"
+            if len(new_s3) > 6:
+                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(new_s3) - 6} autres nouveaux matchs</li>"
             evo_html += '</ul>'
 
         if var_s3:
             evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote BTTS Oui :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
-            for item in var_s3:
+            for item in var_s3[:6]:
                 arrow = "🔺" if item["diff"] > 0 else "🔻"
                 evo_html += f"<li><b>{item['match']}</b> : BTTS Oui {item['old_btts']} &rarr; <b>{item['val_btts']}</b> ({arrow} {item['diff']:+0.2f})</li>"
+            if len(var_s3) > 6:
+                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(var_s3) - 6} autres variations</li>"
             evo_html += '</ul>'
 
         if drop_s3:
             evo_html += '<p style="color:#dc2626; font-weight:bold; margin-bottom:5px;">❌ Matchs sortis de la sélection :</p><ul style="margin:0 0 5px 0; font-size:13px;">'
-            for item in drop_s3:
+            for item in drop_s3[:6]:
                 evo_html += f"<li><b>{item['match']}</b> ({item['league']})</li>"
+            if len(drop_s3) > 6:
+                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(drop_s3) - 6} autres matchs expirés ou écartés</li>"
             evo_html += '</ul>'
 
         evo_html += '</div>'
