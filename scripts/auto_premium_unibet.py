@@ -775,10 +775,49 @@ def main():
         </div>
         '''
 
-    # Pré-construction HTML de TOUS les tickets combinés Multi-Marchés
+    # Thèmes de couleurs alternées pour les tickets combinés
+    TICKET_THEMES = [
+        # Thème 1: Bleu Océan
+        {
+            "bg_header": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
+            "border_card": "#93c5fd",
+            "border_left": "#2563eb",
+            "title_color": "#1e40af",
+        },
+        # Thème 2: Ambre Doré
+        {
+            "bg_header": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)",
+            "border_card": "#fde68a",
+            "border_left": "#d97706",
+            "title_color": "#92400e",
+        },
+        # Thème 3: Émeraude Menthe
+        {
+            "bg_header": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)",
+            "border_card": "#a7f3d0",
+            "border_left": "#059669",
+            "title_color": "#065f46",
+        },
+        # Thème 4: Violet Indigo
+        {
+            "bg_header": "linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)",
+            "border_card": "#ddd6fe",
+            "border_left": "#7c3aed",
+            "title_color": "#5b21b6",
+        },
+        # Thème 5: Rose Ruby
+        {
+            "bg_header": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)",
+            "border_card": "#fecdd3",
+            "border_left": "#e11d48",
+            "title_color": "#9f1239",
+        },
+    ]
+
     combos_mixed_html = ""
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
+            theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
             items_html = ""
             for item in cb["items"]:
                 m = item["m"]
@@ -793,10 +832,10 @@ def main():
                 </div>'''
             
             combos_mixed_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">🎟️ Ticket Multi-Marchés #{idx} ({cb['type']}) — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Ticket Multi-Marchés #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
                 {items_html}
