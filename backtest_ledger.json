@@ -2823,5 +2823,63 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369230",
+    "timestamp_utc": "2026-08-12T11:46:25.268931+00:00",
+    "match": "BudapestHonved vs Vasas Budapest",
+    "league": "Hongrie • D1 Hongrie",
+    "date_str": "Ven. 14/08 à 17h30",
+    "scores": {
+      "o25": 0,
+      "o15": 0,
+      "btts": 0,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363070",
+    "timestamp_utc": "2026-08-12T11:46:25.268931+00:00",
+    "match": "FC Voluntari vs Pet.Ploiesti",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Ven. 14/08 à 17h30",
+    "scores": {
+      "o25": 42,
+      "o15": 67,
+      "btts": 23,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.28,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
