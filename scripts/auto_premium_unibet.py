@@ -37,6 +37,11 @@ def format_french_date(iso_str):
     except Exception:
         return iso_str
 
+def _clean_team_key(name):
+    if not name: return ""
+    n = unicodedata.normalize('NFKD', str(name)).encode('ASCII', 'ignore').decode('ASCII').lower()
+    return re.sub(r'[^a-z0-9]', '', n)
+
 def get_unibet_active_games():
     print(f"Scraping Unibet France — {len(COUNTRIES)} catégories pays...")
 
@@ -74,7 +79,7 @@ def get_unibet_active_games():
     except Exception:
         pass
 
-    games = []
+    unique_games = {}
     for url in all_match_urls:
         parts = url.strip("/").split("/")
         if len(parts) >= 5 and "vs" in parts[-1]:
@@ -85,7 +90,9 @@ def get_unibet_active_games():
                 country = parts[4].replace("-", " ").title() if len(parts) >= 6 else ""
                 league = parts[5].replace("-", " ").title() if len(parts) >= 6 else parts[3].replace("-", " ").title()
                 league_name = f"{country} • {league}" if country else league
-                games.append({
+
+                key = (_clean_team_key(dom_name), _clean_team_key(ext_name))
+                g_item = {
                     "id": parts[-2],
                     "dom": dom_name,
                     "ext": ext_name,
@@ -93,9 +100,17 @@ def get_unibet_active_games():
                     "url": url,
                     "timestamp": int(time.time()),
                     "start_time": "À venir"
-                })
+                }
 
-    print(f"Fixtures trouvées : {len(games)}")
+                if key not in unique_games:
+                    unique_games[key] = g_item
+                else:
+                    # Remplacer les cotes boostées par la ligue officielle standard si présente
+                    if "cotes-boostees" in unique_games[key]["url"].lower() and "cotes-boostees" not in url.lower():
+                        unique_games[key] = g_item
+
+    games = list(unique_games.values())
+    print(f"Fixtures trouvées (uniques) : {len(games)}")
     return games
 
 
@@ -262,6 +277,18 @@ def main():
         for f in as_completed(futs):
             res = f.result()
             if res: scanned_all.append(res)
+
+    # Dédoublonnage strict par paire d'équipes (évite les doublons Cotes Boostées vs Ligue Officielle)
+    unique_scanned = {}
+    for m in scanned_all:
+        key = (_clean_team_key(m.get("dom")), _clean_team_key(m.get("ext")))
+        if key not in unique_scanned:
+            unique_scanned[key] = m
+        else:
+            # Privilégier la version sans 'cotes boostees'
+            if "cotes boostees" in (unique_scanned[key].get("league") or "").lower() and "cotes boostees" not in (m.get("league") or "").lower():
+                unique_scanned[key] = m
+    scanned_all = list(unique_scanned.values())
 
     # Filtre Fenêtre : 48 Heures + Nuit suivante (52h max)
     now_utc = datetime.now(timezone.utc)
@@ -569,36 +596,37 @@ def main():
     combos_2matches = []
     for s_key, s_matches in sorted(sessions_o25.items()):
         valid_matches = [m for m in s_matches if m.get("over25") and m["over25"] > 1.0]
-        used_ids = set()
+        used_keys = set()
         for i, m1 in enumerate(valid_matches):
-            if m1["id"] in used_ids: continue
+            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
+            if k1 in used_keys: continue
             c1 = m1["over25"]
             best_partner = None
             best_diff = 999.0
             fallback_partner = None
             fallback_diff = 999.0
             for m2 in valid_matches[i+1:]:
-                if m2["id"] in used_ids: continue
+                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
+                if k2 in used_keys or k2 == k1: continue
                 c2 = m2["over25"]
                 comb = round(c1 * c2, 2)
                 if comb >= 2.20:
                     diff = abs(comb - 2.20)
                     if diff < best_diff:
                         best_diff = diff
-                        best_partner = m2
+                        best_partner = (m2, k2)
                 else:
-                    # Fallback : garder la meilleure paire meme sous 2.20
                     diff = abs(comb - 2.20)
                     if diff < fallback_diff:
                         fallback_diff = diff
-                        fallback_partner = m2
-            chosen = best_partner or fallback_partner
-            if chosen:
-                used_ids.add(m1["id"])
-                used_ids.add(chosen["id"])
-                comb_odds = round(m1["over25"] * chosen["over25"], 2)
+                        fallback_partner = (m2, k2)
+            if best_partner or fallback_partner:
+                chosen_m2, k2 = best_partner or fallback_partner
+                used_keys.add(k1)
+                used_keys.add(k2)
+                comb_odds = round(m1["over25"] * chosen_m2["over25"], 2)
                 combos_2matches.append({
-                    "session": s_key, "m1": m1, "m2": chosen,
+                    "session": s_key, "m1": m1, "m2": chosen_m2,
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
@@ -634,24 +662,27 @@ def main():
     combos_o15 = []
     for s_key, s_matches in sorted(sessions_o15.items()):
         valid_o15 = [m for m in s_matches if m.get("over15") and m["over15"] > 1.0]
-        used_ids = set()
+        used_keys = set()
         # Cherche triplets dont la cote combinée est la plus proche de 2.00
         best_trio = None
         best_diff = 999.0
         for i, m1 in enumerate(valid_o15):
-            if m1["id"] in used_ids: continue
+            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
+            if k1 in used_keys: continue
             for j, m2 in enumerate(valid_o15[i+1:], i+1):
-                if m2["id"] in used_ids: continue
+                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
+                if k2 in used_keys or k2 == k1: continue
                 for m3 in valid_o15[j+1:]:
-                    if m3["id"] in used_ids: continue
+                    k3 = (_clean_team_key(m3["dom"]), _clean_team_key(m3["ext"]))
+                    if k3 in used_keys or k3 in (k1, k2): continue
                     comb = round(m1["over15"] * m2["over15"] * m3["over15"], 2)
                     diff = abs(comb - 2.00)
                     if diff < best_diff:
                         best_diff = diff
-                        best_trio = (m1, m2, m3, comb)
+                        best_trio = (m1, m2, m3, comb, k1, k2, k3)
         if best_trio:
-            m1, m2, m3, comb_odds = best_trio
-            used_ids.update([m1["id"], m2["id"], m3["id"]])
+            m1, m2, m3, comb_odds, k1, k2, k3 = best_trio
+            used_keys.update([k1, k2, k3])
             combos_o15.append({
                 "session": s_key, "m1": m1, "m2": m2, "m3": m3,
                 "comb_odds": comb_odds, "stake": 4.0,
@@ -686,36 +717,38 @@ def main():
     sessions_btts = upgrade_sessions_to_day(sessions_btts)
     combos_btts = []
     for s_key, s_matches in sorted(sessions_btts.items()):
-        used_ids = set()
+        used_keys = set()
         valid = [m for m in s_matches if m.get("btts_oui")]
         for i, m1 in enumerate(valid):
-            if m1["id"] in used_ids: continue
+            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
+            if k1 in used_keys: continue
             b1 = m1["btts_oui"]
             best_partner = None
             best_diff = 999.0
             fallback_partner = None
             fallback_diff = 999.0
             for m2 in valid[i+1:]:
-                if m2["id"] in used_ids: continue
+                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
+                if k2 in used_keys or k2 == k1: continue
                 b2 = m2["btts_oui"]
                 comb = round(b1 * b2, 2)
                 if comb >= 2.60:
                     diff = abs(comb - 2.80)
                     if diff < best_diff:
                         best_diff = diff
-                        best_partner = m2
+                        best_partner = (m2, k2)
                 else:
                     diff = abs(comb - 2.60)
                     if diff < fallback_diff:
                         fallback_diff = diff
-                        fallback_partner = m2
-            chosen = best_partner or fallback_partner
-            if chosen:
-                used_ids.add(m1["id"])
-                used_ids.add(chosen["id"])
-                comb_odds = round(m1["btts_oui"] * chosen["btts_oui"], 2)
+                        fallback_partner = (m2, k2)
+            if best_partner or fallback_partner:
+                chosen_m2, k2 = best_partner or fallback_partner
+                used_keys.add(k1)
+                used_keys.add(k2)
+                comb_odds = round(m1["btts_oui"] * chosen_m2["btts_oui"], 2)
                 combos_btts.append({
-                    "session": s_key, "m1": m1, "m2": chosen,
+                    "session": s_key, "m1": m1, "m2": chosen_m2,
                     "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
