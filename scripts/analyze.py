@@ -809,7 +809,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                             try:
                                 r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=2)
                                 if r_inc.status_code == 200:
-                                    return sum(1 for inc in r_inc.json().get("incidents", []) if inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"])
+                                    return sum(1 for inc in r_inc.json().get("incidents", []) if (inc.get("incidentClass") == "penalty" or inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"] or inc.get("isPenalty")))
                             except Exception:
                                 pass
                             return 0
