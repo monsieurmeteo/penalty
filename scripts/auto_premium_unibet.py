@@ -857,79 +857,29 @@ def main():
     if not pen_rejected_html:
         pen_rejected_html = '<div style="color:#94a3b8; font-style:italic; text-align:center; padding:6px; font-size:11px;">Aucun match éliminé par la compétence PENO sur ce scan.</div>'
 
-    # ── Carte d'appartenance aux combinés ────────────────────────────────────
-    o25_combo_map = {}  # match_id → combo_num
-    for idx_cb, cb in enumerate(combos_2matches, 1):
-        o25_combo_map[cb["m1"]["id"]] = idx_cb
-        o25_combo_map[cb["m2"]["id"]] = idx_cb
-    btts_combo_map = {}
-    for idx_cb, cb in enumerate(combos_btts, 1):
-        btts_combo_map[cb["m1"]["id"]] = idx_cb
-        btts_combo_map[cb["m2"]["id"]] = idx_cb
-    o15_combo_map = {}
-    for idx_cb, cb in enumerate(combos_o15, 1):
-        o15_combo_map[cb["m1"]["id"]] = idx_cb
-        o15_combo_map[cb["m2"]["id"]] = idx_cb
-        o15_combo_map[cb["m3"]["id"]] = idx_cb
-
     # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
     plan_rows = []
     seen_plan = set()
 
-    # Over 2.5 validés
-    for m in s3_matches:
-        cn = o25_combo_map.get(m["id"])
-        key = (m["id"], "O25")
-        if key not in seen_plan:
-            plan_rows.append({
-                "dt": m.get("dt_obj", now_utc),
-                "date_str": m.get("date_str", ""),
-                "match": f"{m['dom']} vs {m['ext']}",
-                "league": m.get("league", ""),
-                "market": "⚽ Over 2.5",
-                "cote": f"@{m['over25']:.2f}" if m.get("over25") else "—",
-                "score_label": f"{m.get('ac_score', 0)}/100",
-                "score_val": m.get("ac_score", 0),
-                "type_label": f"COMBINÉ #{cn}" if cn else "SIMPLE",
-                "bg_market": "#dbeafe", "cl_market": "#1e40af",
-            })
-            seen_plan.add(key)
-
-    # Over 1.5 (triplets)
-    for idx_cb, cb in enumerate(combos_o15, 1):
-        for m in [cb["m1"], cb["m2"], cb["m3"]]:
-            key = (m["id"], "O15")
+    # Combinés multi-marchés
+    for idx_cb, cb in enumerate(combos_mixed, 1):
+        c_type = cb["type"]
+        for item in cb["items"]:
+            m = item["m"]
+            key = (m["id"], item["market"])
             if key not in seen_plan:
                 plan_rows.append({
-                    "dt": m.get("dt_obj", now_utc),
+                    "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
                     "match": f"{m['dom']} vs {m['ext']}",
                     "league": m.get("league", ""),
-                    "market": "🛡️ Over 1.5",
-                    "cote": f"@{m['over15']:.2f}" if m.get("over15") else "—",
-                    "score_label": f"{m.get('ac_score', 0)}/100",
-                    "score_val": m.get("ac_score", 0),
-                    "type_label": f"TRIPLÉ O1.5 #{idx_cb}",
-                    "bg_market": "#d1fae5", "cl_market": "#065f46",
-                })
-                seen_plan.add(key)
-
-    # BTTS (matchs dans les combos)
-    for idx_cb, cb in enumerate(combos_btts, 1):
-        for m in [cb["m1"], cb["m2"]]:
-            key = (m["id"], "BTTS")
-            if key not in seen_plan:
-                plan_rows.append({
-                    "dt": m.get("dt_obj", now_utc),
-                    "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}",
-                    "league": m.get("league", ""),
-                    "market": "🚀 BTTS Oui",
-                    "cote": f"@{m['btts_oui']:.2f}" if m.get("btts_oui") else "—",
-                    "score_label": f"{m.get('score_btts', 0)}/100",
-                    "score_val": m.get("score_btts", 0),
-                    "type_label": f"COMBINÉ BTTS #{idx_cb}",
-                    "bg_market": "#fef3c7", "cl_market": "#92400e",
+                    "market": item["market"],
+                    "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}/100",
+                    "score_val": item["score"],
+                    "type_label": f"COMBINÉ #{idx_cb}",
+                    "bg_market": "#dbeafe" if "Over 2.5" in item["market"] else ("#fef3c7" if "BTTS" in item["market"] else "#d1fae5"),
+                    "cl_market": "#1e40af" if "Over 2.5" in item["market"] else ("#92400e" if "BTTS" in item["market"] else "#065f46"),
                 })
                 seen_plan.add(key)
 
@@ -1141,17 +1091,18 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés 2 Matchs Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket — 100% des matchs couplés)\n",
+        f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
     ]
 
-    if combos_2matches:
-        for idx, cb in enumerate(combos_2matches, 1):
-            m1, m2 = cb["m1"], cb["m2"]
-            report.append(f"### Ticket #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
-            report.append(f"- **Match 1 (Base)** : `{m1['date_str']}` — **{m1['dom']} vs {m1['ext']}** (@`{m1['over25']:.2f}`) — *{m1['league']}*")
-            report.append(f"- **Match 2 (Boost)** : `{m2['date_str']}` — **{m2['dom']} vs {m2['ext']}** (@`{m2['over25']:.2f}`) — *{m2['league']}*\n")
+    if combos_mixed:
+        for idx, cb in enumerate(combos_mixed, 1):
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            for item in cb["items"]:
+                m = item["m"]
+                report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
+            report.append("")
     else:
-        report.append("Aucun combiné 2 matchs disponible.\n")
+        report.append("Aucun combiné multi-marchés disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
     report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
