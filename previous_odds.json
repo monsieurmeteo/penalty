@@ -1,13 +1,3 @@
 {
-  "s3": {
-    "3368209": {
-      "match": "Dinamo Tirana - FK Auda",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.65,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 92
-    }
-  }
+  "s3": {}
 }
