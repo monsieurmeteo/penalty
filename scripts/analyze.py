@@ -840,10 +840,11 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     p_tot_10m = p_dom_10m + p_ext_10m
 
     rf_peno_penalty = 0
+    peno_double_signal_bonus = 0  # bonus appliqué après calcul de p_pen_goals
     if p_dom_10m >= 3 and p_ext_10m >= 3 and p_tot_10m >= 6:
         peno_badge = f"🔥 DOUBLE SIGNAL PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
         peno_status = "DOUBLE_SIGNAL"
-        p_pen_goals += 5
+        peno_double_signal_bonus = 5  # appliqué après définition de p_pen_goals
     elif p_dom_10m >= 2 and p_ext_10m >= 2 and p_tot_10m >= 4:
         peno_badge = f"🟢 VALIDE PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
         peno_status = "VALIDE"
@@ -876,6 +877,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     elif total_goals_brut >= 3.8 or ipo_comb >= 2.5: p_pen_goals = 12
     elif total_goals_brut >= 3.0: p_pen_goals = 8
     else: p_pen_goals = 3
+    p_pen_goals = min(25, p_pen_goals + peno_double_signal_bonus)  # bonus DOUBLE SIGNAL appliqué ici
 
     if ref_is_known:
         score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals - rf_peno_penalty))
@@ -931,7 +933,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
     print(f"\n🔥 SCORE OVER 2,5 : {total_score}/100")
     print(f"📊 CLASSEMENT : {classe}")
-    print(f"🛡️ PROBABILITÉ STATISTIQUE : {calibrated_prob} %\n")
+    print(f"🛡️ PROBABILITÉ STATISTIQUE : {round(total_score * 0.78, 1)} %\n")
     print(f"1. Potentiel offensif (IPO {ipo_comb:.2f}) : {pts_ipo}/25")
     print(f"2. Buts marqués/encaissés ({total_goals_brut:.1f}b) : {pts_goals}/15")
     print(f"3. Historique Over 2,5 ({o25_avg_rate:.0f}%) : {pts_freq}/20")
