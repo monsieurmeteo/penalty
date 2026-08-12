@@ -591,183 +591,87 @@ def main():
             result[key] = unique
         return {k: v for k, v in result.items() if v}
 
-    # ── 1. GENERATION COMBINES OVER 2.5 (2 Matchs — Cote Min 2.20 — Stake 4€) ──
-    sessions_o25 = {}
-    for m in s3_matches:
-        if not m.get("over25"): continue
+    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Cote Min 2.20 — Chronologique — Sans Penalty) ──
+    mixed_selections = []
+    
+    for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
-        sessions_o25.setdefault(s_key, []).append(m)
+        
+        # 1. Over 2.5 si Score >= 75
+        if m.get("ac_score", 0) >= 75 and m.get("over25"):
+            mixed_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt,
+                "market": "🟥 Over 2.5", "odds": m["over25"],
+                "score": m.get("ac_score", 0)
+            })
+        # 2. BTTS Oui si Score >= 75
+        elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
+            mixed_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt,
+                "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
+                "score": m.get("score_btts", 0)
+            })
+        # 3. Over 1.5 si Score >= 75
+        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
+            mixed_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt,
+                "market": "🟦 Over 1.5", "odds": m["over15"],
+                "score": m.get("score_o15", 0)
+            })
 
-    sessions_o25 = upgrade_sessions_to_day(sessions_o25)
-    combos_2matches = []
-    for s_key, s_matches in sorted(sessions_o25.items()):
-        valid_matches = [m for m in s_matches if m.get("over25") and m["over25"] > 1.0]
-        used_keys = set()
-        for i, m1 in enumerate(valid_matches):
-            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
-            if k1 in used_keys: continue
-            c1 = m1["over25"]
-            best_partner = None
-            best_diff = 999.0
-            fallback_partner = None
-            fallback_diff = 999.0
-            for m2 in valid_matches[i+1:]:
-                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
-                if k2 in used_keys or k2 == k1: continue
-                c2 = m2["over25"]
-                comb = round(c1 * c2, 2)
-                if comb >= 2.20:
-                    diff = abs(comb - 2.20)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = (m2, k2)
-                else:
-                    diff = abs(comb - 2.20)
-                    if diff < fallback_diff:
-                        fallback_diff = diff
-                        fallback_partner = (m2, k2)
-            if best_partner or fallback_partner:
-                chosen_m2, k2 = best_partner or fallback_partner
-                used_keys.add(k1)
-                used_keys.add(k2)
-                comb_odds = round(m1["over25"] * chosen_m2["over25"], 2)
-                combos_2matches.append({
-                    "session": s_key, "m1": m1, "m2": chosen_m2,
-                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
+    # Tri strict par ordre chronologique
+    mixed_selections.sort(key=lambda x: x["dt"])
 
-    # Fallback cross-sessions : si 0 combiné mais ≥2 matchs validés toutes sessions confondues
-    if not combos_2matches:
-        all_o25 = sorted(s3_matches, key=lambda x: x.get("over25", 0), reverse=True)
-        used_global = set()
-        for i, m1 in enumerate(all_o25):
-            if m1["id"] in used_global: continue
-            for m2 in all_o25[i+1:]:
-                if m2["id"] in used_global: continue
-                comb_odds = round(m1["over25"] * m2["over25"], 2)
-                s_key = get_betting_session_key(m1.get("dt_obj"))
-                used_global.add(m1["id"]); used_global.add(m2["id"])
-                combos_2matches.append({
-                    "session": s_key, "m1": m1, "m2": m2,
-                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-                break
+    used_match_ids = set()
+    combos_mixed = []
 
+    for i, s1 in enumerate(mixed_selections):
+        if s1["id"] in used_match_ids: continue
 
-    # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote ≈ 2.00 — Stake 4€ — Grille PENO Score ≥ 75 & Freq ≥ 65%) ──
-    # Pool dédié : score_o15 >= 75 et freq_o15 >= 65% (Filtres bloquants Compétence PENO Module 2)
-    o15_candidates = [
-        m for m in scanned_results 
-        if m.get("score_o15", 0) >= 75 
-        and m.get("freq_o15", 0.0) >= 0.65 
-        and m.get("over15")
-    ]
-    o15_candidates.sort(key=lambda x: x.get("score_o15", 0), reverse=True)
-    sessions_o15 = {}
-    for m in o15_candidates:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
-        sessions_o15.setdefault(s_key, []).append(m)
-
-    sessions_o15 = upgrade_sessions_to_day(sessions_o15)
-    combos_o15 = []
-    for s_key, s_matches in sorted(sessions_o15.items()):
-        valid_o15 = [m for m in s_matches if m.get("over15") and m["over15"] > 1.0]
-        used_keys = set()
-        # Cherche triplets dont la cote combinée est la plus proche de 2.00
+        best_partner = None
         best_trio = None
         best_diff = 999.0
-        for i, m1 in enumerate(valid_o15):
-            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
-            if k1 in used_keys: continue
-            for j, m2 in enumerate(valid_o15[i+1:], i+1):
-                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
-                if k2 in used_keys or k2 == k1: continue
-                for m3 in valid_o15[j+1:]:
-                    k3 = (_clean_team_key(m3["dom"]), _clean_team_key(m3["ext"]))
-                    if k3 in used_keys or k3 in (k1, k2): continue
-                    comb = round(m1["over15"] * m2["over15"] * m3["over15"], 2)
-                    diff = abs(comb - 2.00)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_trio = (m1, m2, m3, comb, k1, k2, k3)
-        if best_trio:
-            m1, m2, m3, comb_odds, k1, k2, k3 = best_trio
-            used_keys.update([k1, k2, k3])
-            combos_o15.append({
-                "session": s_key, "m1": m1, "m2": m2, "m3": m3,
-                "comb_odds": comb_odds, "stake": 4.0,
-                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+
+        for j, s2 in enumerate(mixed_selections[i+1:], i+1):
+            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+
+            comb2 = round(s1["odds"] * s2["odds"], 2)
+            if comb2 >= 2.20:
+                diff = abs(comb2 - 2.30)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = s2
+            else:
+                for s3 in mixed_selections[j+1:]:
+                    if s3["id"] in used_match_ids or s3["id"] in (s1["id"], s2["id"]): continue
+                    comb3 = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
+                    if comb3 >= 2.20:
+                        diff = abs(comb3 - 2.30)
+                        if diff < best_diff:
+                            best_diff = diff
+                            best_trio = (s2, s3, comb3)
+
+        if best_partner:
+            used_match_ids.add(s1["id"])
+            used_match_ids.add(best_partner["id"])
+            comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            combos_mixed.append({
+                "type": "Doublé Multi-Marchés",
+                "items": [s1, best_partner],
+                "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
-
-    # Fallback cross-sessions si 0 combo mais >= 3 matchs au total
-    if not combos_o15:
-        all_o15_pool = sorted(o15_candidates, key=lambda x: x.get("score_o15", 0), reverse=True)
-        if len(all_o15_pool) >= 3:
-            m1, m2, m3 = all_o15_pool[0], all_o15_pool[1], all_o15_pool[2]
-            comb_odds = round(m1["over15"] * m2["over15"] * m3["over15"], 2)
-            s_key = get_betting_session_key(m1.get("dt_obj", now_utc))
-            combos_o15.append({
-                "session": s_key, "m1": m1, "m2": m2, "m3": m3,
-                "comb_odds": comb_odds, "stake": 4.0,
-                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+        elif best_trio:
+            s2, s3, comb3 = best_trio
+            used_match_ids.add(s1["id"])
+            used_match_ids.add(s2["id"])
+            used_match_ids.add(s3["id"])
+            combos_mixed.append({
+                "type": "Triplé Multi-Marchés",
+                "items": [s1, s2, s3],
+                "comb_odds": comb3,
+                "stake": 4.0, "gain": round(4.0 * comb3, 2), "profit": round(4.0 * comb3 - 4.0, 2)
             })
-
-
-
-    # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€ — Grille PENO Score ≥ 75 & Freq ≥ 50%) ──
-    # Barème PENO Module 4 (Score BTTS >= 75, freq_btts >= 50% & Garde-fou Anti Clean Sheet)
-    btts_candidates = [
-        m for m in scanned_results 
-        if m.get("score_btts", 0) >= 75 
-        and m.get("freq_btts", 0.0) >= 0.50 
-        and m.get("btts_oui")
-    ]
-    btts_candidates.sort(key=lambda x: x.get("score_btts", 0), reverse=True)
-    sessions_btts = {}
-    for m in btts_candidates:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
-        sessions_btts.setdefault(s_key, []).append(m)
-
-    sessions_btts = upgrade_sessions_to_day(sessions_btts)
-    combos_btts = []
-    for s_key, s_matches in sorted(sessions_btts.items()):
-        used_keys = set()
-        valid = [m for m in s_matches if m.get("btts_oui")]
-        for i, m1 in enumerate(valid):
-            k1 = (_clean_team_key(m1["dom"]), _clean_team_key(m1["ext"]))
-            if k1 in used_keys: continue
-            b1 = m1["btts_oui"]
-            best_partner = None
-            best_diff = 999.0
-            fallback_partner = None
-            fallback_diff = 999.0
-            for m2 in valid[i+1:]:
-                k2 = (_clean_team_key(m2["dom"]), _clean_team_key(m2["ext"]))
-                if k2 in used_keys or k2 == k1: continue
-                b2 = m2["btts_oui"]
-                comb = round(b1 * b2, 2)
-                if comb >= 2.60:
-                    diff = abs(comb - 2.80)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = (m2, k2)
-                else:
-                    diff = abs(comb - 2.60)
-                    if diff < fallback_diff:
-                        fallback_diff = diff
-                        fallback_partner = (m2, k2)
-            if best_partner or fallback_partner:
-                chosen_m2, k2 = best_partner or fallback_partner
-                used_keys.add(k1)
-                used_keys.add(k2)
-                comb_odds = round(m1["btts_oui"] * chosen_m2["btts_oui"], 2)
-                combos_btts.append({
-                    "session": s_key, "m1": m1, "m2": chosen_m2,
-                    "comb_odds": comb_odds, "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
     # Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu"), validés par la compétence PENO et score_penalty >= 55 sont retenus.
@@ -871,106 +775,35 @@ def main():
         </div>
         '''
 
-    # Pré-construction HTML de TOUS les tickets combinés OVER 2.5
-    combos_html = ""
-    if combos_2matches:
-        current_sess = None
-        for idx, cb in enumerate(combos_2matches, 1):
-            m1, m2 = cb["m1"], cb["m2"]
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess:
-                current_sess = sess_label
-                try:
-                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                except Exception:
-                    dt_sess = sess_label
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                combos_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION {slot_label} DU {dt_sess}</div>'
-
-            proof_m1 = render_match_proof_html(m1)
-            proof_m2 = render_match_proof_html(m2)
-
-            combos_html += f'''
+    # Pré-construction HTML de TOUS les tickets combinés Multi-Marchés
+    combos_mixed_html = ""
+    if combos_mixed:
+        for idx, cb in enumerate(combos_mixed, 1):
+            items_html = ""
+            for item in cb["items"]:
+                m = item["m"]
+                mk = item["market"]
+                o = item["odds"]
+                sc = item["score"]
+                proof = render_match_proof_html(m)
+                items_html += f'''
+                <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
+                    🔹 <b>{mk}</b> : <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']}) — Score: {sc}/100</span>
+                    {proof}
+                </div>'''
+            
+            combos_mixed_html += f'''
             <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:12px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">🎟️ Ticket Over 2.5 #{idx} — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
+                <span style="font-weight:800; color:#0f172a; font-size:13px;">🎟️ Ticket Multi-Marchés #{idx} ({cb['type']}) — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">@{cb['comb_odds']:.2f}</span></span>
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
-                <div style="margin-bottom:6px;">🔹 <b>Match 1 (Sécurisant)</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m1['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']})</span>
-                    {proof_m1}
-                </div>
-                <div>🔸 <b>Match 2 (Rendement)</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &nbsp;&bull;&nbsp; Over 2.5: <b>@{m2['over25']:.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']})</span>
-                    {proof_m2}
-                </div>
+                {items_html}
               </div>
-            </div>
-            '''
+            </div>'''
     else:
-        combos_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucune association optimale de 2 matchs Over 2.5 trouvée.</div>'
-
-    # Pré-construction HTML des tickets OVER 1.5 (Triplés)
-    combos_o15_html = ""
-    if combos_o15:
-        current_sess_o15 = None
-        for idx, cb in enumerate(combos_o15, 1):
-            m1, m2, m3 = cb["m1"], cb["m2"], cb["m3"]
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess_o15:
-                current_sess_o15 = sess_label
-                try:
-                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                except Exception:
-                    dt_sess = sess_label
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                combos_o15_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #10b981;">📅 SESSION {slot_label} DU {dt_sess}</div>'
-            combos_o15_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">🛡️ Triplé Over 1.5 #{idx} — Cote Totale: <span style="background:#d1fae5; color:#065f46; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
-              </div>
-              <div style="font-size:12px; color:#334155; line-height:1.7;">
-                <div style="margin-bottom:4px;">✅ <b>Match 1</b> : <span style="color:#059669; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &bull; Over 1.5: <b>@{m1.get('over15', 0):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']}) — Score: {m1.get('ac_score',0)}/100</span></div>
-                <div style="margin-bottom:4px;">✅ <b>Match 2</b> : <span style="color:#059669; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &bull; Over 1.5: <b>@{m2.get('over15', 0):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']}) — Score: {m2.get('ac_score',0)}/100</span></div>
-                <div>✅ <b>Match 3</b> : <span style="color:#059669; font-weight:700;">{m3['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m3['dom']} vs {m3['ext']}</b> &bull; Over 1.5: <b>@{m3.get('over15', 0):.2f}</b> <span style="color:#64748b; font-size:11px;">({m3['league']}) — Score: {m3.get('ac_score',0)}/100</span></div>
-              </div>
-            </div>
-            '''
-    else:
-        combos_o15_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun triplé Over 1.5 disponible (moins de 3 matchs avec score ≥ 65/100).</div>'
-
-
-
-    # Pré-construction HTML des tickets BTTS OUI (Doublés)
-    combos_btts_html = ""
-    if combos_btts:
-        current_sess_btts = None
-        for idx, cb in enumerate(combos_btts, 1):
-            m1, m2 = cb["m1"], cb["m2"]
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess_btts:
-                current_sess_btts = sess_label
-                try:
-                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                except Exception:
-                    dt_sess = sess_label
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                combos_btts_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:15px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #f59e0b;">📅 SESSION {slot_label} DU {dt_sess}</div>'
-            combos_btts_html += f'''
-            <div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:10px; padding:12px 14px; margin-bottom:10px; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:8px; margin-bottom:8px;">
-                <span style="font-weight:800; color:#0f172a; font-size:13px;">🚀 Doublé BTTS Oui #{idx} — Cote Totale: <span style="background:#fef3c7; color:#92400e; padding:2px 7px; border-radius:5px;">{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:6px;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
-              </div>
-              <div style="font-size:12px; color:#334155; line-height:1.7;">
-                <div style="margin-bottom:4px;">⚽ <b>Match 1</b> : <span style="color:#0284c7; font-weight:700;">{m1['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m1['dom']} vs {m1['ext']}</b> &bull; BTTS Oui: <b>@{m1.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m1['league']}) — Score BTTS: {m1.get('score_btts',0)}/100</span></div>
-                <div>⚽ <b>Match 2</b> : <span style="color:#0284c7; font-weight:700;">{m2['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m2['dom']} vs {m2['ext']}</b> &bull; BTTS Oui: <b>@{m2.get('btts_oui', 1.75):.2f}</b> <span style="color:#64748b; font-size:11px;">({m2['league']}) — Score BTTS: {m2.get('score_btts',0)}/100</span></div>
-              </div>
-            </div>
-            '''
-    else:
-        combos_btts_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé BTTS disponible.</div>'
+        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné multi-marchés disponible (moins de 2 sélections éligibles).</div>'
 
     # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
     pen_simples_html = ""
@@ -1184,10 +1017,8 @@ def main():
     now_local = datetime.now(timezone(timedelta(hours=2)))
     days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
     date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
-    nb_o25  = len(s3_matches)
-    nb_co25 = len(combos_2matches)
-    nb_btts_c = len(combos_btts)
-    nb_pen  = len(pen_simples)
+    nb_mixed = len(combos_mixed)
+    nb_pen   = len(pen_simples)
 
     html_body = f"""
     <!DOCTYPE html>
@@ -1200,15 +1031,14 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse AdamChoi · Mise à jour : {now_str} · Fenêtre 48h + nuit</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Fenêtre 48h + nuit</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_o25}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">OVER 2.5</div><div style="font-size:10px; color:#3b82f6;">{nb_co25} combiné(s)</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#92400e;">{nb_btts_c}</div><div style="font-size:10px; font-weight:700; color:#92400e;">BTTS OUI</div><div style="font-size:10px; color:#d97706;">{nb_btts_c} combiné(s)</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.20</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">en 48h</div></div></td>
               </tr>
@@ -1239,37 +1069,19 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS OVER 2.5 -->
+          <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🔥 1. COMBINÉS OVER 2.5 &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(2 matchs — Mise 4 € — Cote min 2.20)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_2matches)} ticket(s)</span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5, Over 1.5, BTTS — Cote min 2.20)</span></span>
+              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
-            {combos_html}
+            {combos_mixed_html}
           </div>
 
-          <!-- SECTION 3 : COMBINÉS OVER 1.5 -->
-          <div style="padding:12px 16px 10px 16px; background:#f0fdf4; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#065f46; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ 2. COMBINÉS OVER 1.5 &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(3 matchs — Mise 4 € — Cote ≈ 2.00)</span></span>
-              <span style="font-size:11px; background:#d1fae5; color:#065f46; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_o15)} ticket(s)</span>
-            </div>
-            {combos_o15_html}
-          </div>
-
-          <!-- SECTION 4 : COMBINÉS BTTS OUI -->
-          <div style="padding:12px 16px 10px 16px; background:#ffffff; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 3. COMBINÉS BTTS OUI &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(2 matchs — Mise 4 € — Cote min 2.60)</span></span>
-              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_btts)} ticket(s)</span>
-            </div>
-            {combos_btts_html}
-          </div>
-
-          <!-- SECTION 5 : PENALTY OUI PARIS SIMPLES -->
+          <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
           <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 4. PENALTY OUI — PARIS SIMPLES</span>
+              <span>⚡ 2. PENALTY OUI — PARIS SIMPLES</span>
               <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
             <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
@@ -1378,7 +1190,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(s3_matches)} Over 2.5 · {len(combos_2matches)} combos · {len(pen_simples)} Penalty OUI · {len(combos_btts)} BTTS"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.20) · {len(pen_simples)} Penalty OUI"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
