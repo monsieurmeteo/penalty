@@ -270,7 +270,7 @@ def scan_unibet_match_details(game):
     return None
 
 def main():
-    print("=== AUTOMATISATION UNIBET — MÉTHODE YOUTUBE OVER 2.5 (48H) ===")
+    print("=== AUTOMATISATION UNIBET — MÉTHODE FOOTBALL MULTI-MARCHÉS (3 JOURNÉES + NUITS) ===")
     matches_to_scan = get_unibet_active_games()
 
     scanned_all = []
@@ -292,9 +292,9 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : 48 Heures + Nuit suivante (52h max)
+    # Filtre Fenêtre : 3 Journées + Nuits suivantes (76 Heures max : ex 12+nuit, 13+nuit, 14+nuit)
     now_utc = datetime.now(timezone.utc)
-    limit_52h = now_utc + timedelta(hours=52)
+    limit_76h = now_utc + timedelta(hours=76)
 
     scanned_results = []
     for m in scanned_all:
@@ -302,7 +302,7 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_52h:
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_76h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
@@ -310,13 +310,13 @@ def main():
         else:
             scanned_results.append(m)
 
-    # Fallback de sécurité : Si aucun match dans la fenêtre 52h (ex: dimanche soir), prendre tous les matchs à venir
+    # Fallback de sécurité : Si aucun match dans la fenêtre 76h, prendre tous les matchs à venir
     if len(scanned_results) == 0 and scanned_all:
-        print("⚠️ Aucun match dans la fenêtre 52h — Utilisation des prochains matchs disponibles...")
+        print("⚠️ Aucun match dans la fenêtre 76h — Utilisation des prochains matchs disponibles...")
         scanned_results = scanned_all
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs dans la fenêtre 48h & Nuit Suivante : {len(scanned_results)}")
+    print(f"Matchs dans la fenêtre 3 Journées + Nuits Suivantes (76h) : {len(scanned_results)}")
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
@@ -557,110 +557,116 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : JOUR (06h→23h59) ou NUIT (00h→05h59)
-    # Si une session n'a qu'1 match → on regroupe à la journée calendaire (fallback "mixte")
+    # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
     def get_betting_session_key(m_dt, slot_only=False):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
+        # Si le match a lieu entre 00h00 et 05h59, il appartient à la nuit de la journée précédente
+        if local_dt.hour < 6:
+            betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            betting_date = local_dt.strftime("%Y-%m-%d")
         slot = "nuit" if local_dt.hour < 6 else "jour"
         if slot_only:
             return slot
-        return f"{local_dt.strftime('%Y-%m-%d')}-{slot}"
+        return f"{betting_date}-block"
 
     def upgrade_sessions_to_day(sessions_dict):
-        """Si une session JOUR/NUIT n'a qu'1 match, fusionne avec l'autre slot du même jour."""
-        day_groups = {}
-        for key, matches in sessions_dict.items():
-            day = key[:10]  # "YYYY-MM-DD"
-            day_groups.setdefault(day, []).extend(matches)
-        result = {}
-        for key, matches in sessions_dict.items():
-            day = key[:10]
-            if len(matches) < 2 and len(day_groups[day]) >= 2:
-                # Fusionner dans une session "mixte" pour ce jour
-                result[f"{day}-mixte"] = day_groups[day]
-            else:
-                result[key] = matches
-        # Dédoublonner (un match peut apparaître dans plusieurs keys après fusion)
-        seen = {}
-        for key, matches in result.items():
-            unique = []
-            for m in matches:
-                if m["id"] not in seen:
-                    seen[m["id"]] = True
-                    unique.append(m)
-            result[key] = unique
-        return {k: v for k, v in result.items() if v}
+        return sessions_dict
 
-    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Cote Min 2.00 — Chronologique — Sans Penalty) ──
+    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Bloc Journée + Nuit — Cote Min 2.00) ──
     mixed_selections = []
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s_key = get_betting_session_key(m_dt)
+        block_key = get_betting_session_key(m_dt)
         
         # 1. Over 2.5 si Score >= 75
         if m.get("ac_score", 0) >= 75 and m.get("over25"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟥 Over 2.5", "odds": m["over25"],
                 "score": m.get("ac_score", 0)
             })
         # 2. BTTS Oui si Score >= 75
         elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
                 "score": m.get("score_btts", 0)
             })
         # 3. Over 1.5 si Score >= 75
         elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": m["over15"],
                 "score": m.get("score_o15", 0)
             })
 
-    # Tri strict global par ordre chronologique continu (Journée + Nuit)
-    mixed_selections.sort(key=lambda x: x["dt"])
+    # Regroupement strict par Bloc [Journée + Nuit Suivante]
+    blocks_mixed = {}
+    for s in mixed_selections:
+        blocks_mixed.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    for i, s1 in enumerate(mixed_selections):
+    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs
+    for b_key in sorted(blocks_mixed.keys()):
+        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
+        for i, s1 in enumerate(block_items):
+            if s1["id"] in used_match_ids: continue
+
+            best_partner = None
+            fallback_partner = None
+            best_diff = 999.0
+            fallback_diff = 999.0
+
+            for s2 in block_items[i+1:]:
+                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+
+                comb2 = round(s1["odds"] * s2["odds"], 2)
+                if comb2 >= 2.00:
+                    diff = abs(comb2 - 2.10)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_partner = s2
+                else:
+                    diff = abs(comb2 - 2.00)
+                    if diff < fallback_diff:
+                        fallback_diff = diff
+                        fallback_partner = s2
+
+            chosen_partner = best_partner or fallback_partner
+            if chosen_partner:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(chosen_partner["id"])
+                comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
+                combos_mixed.append({
+                    "session": b_key,
+                    "type": "Doublé 2 Matchs",
+                    "items": [s1, chosen_partner],
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+
+    # Fallback pour sélections isolées non couplées dans leur bloc
+    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
+    unpaired_selections.sort(key=lambda x: x["dt"])
+    for i, s1 in enumerate(unpaired_selections):
         if s1["id"] in used_match_ids: continue
-
-        best_partner = None
-        fallback_partner = None
-        best_diff = 999.0
-        fallback_diff = 999.0
-
-        for s2 in mixed_selections[i+1:]:
+        for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-
-            comb2 = round(s1["odds"] * s2["odds"], 2)
-            if comb2 >= 2.00:
-                diff = abs(comb2 - 2.10)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_partner = s2
-            else:
-                diff = abs(comb2 - 2.00)
-                if diff < fallback_diff:
-                    fallback_diff = diff
-                    fallback_partner = s2
-
-        chosen_partner = best_partner or fallback_partner
-        if chosen_partner:
+            comb_odds = round(s1["odds"] * s2["odds"], 2)
             used_match_ids.add(s1["id"])
-            used_match_ids.add(chosen_partner["id"])
-            comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
+            used_match_ids.add(s2["id"])
             combos_mixed.append({
-                "session": s1["session"],
+                "session": f"{s1['session']}-mixte",
                 "type": "Doublé 2 Matchs",
-                "items": [s1, chosen_partner],
+                "items": [s1, s2],
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
+            break
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
     # Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu"), validés par la compétence PENO et score_penalty >= 55 sont retenus.
@@ -814,9 +820,7 @@ def main():
                     dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
                 except Exception:
                     dt_sess = sess_label
-                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
-                border_col = "#3b82f6" if "JOUR" in slot_label else ("#8b5cf6" if "NUIT" in slot_label else "#64748b")
-                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:16px 0 8px 0; padding-bottom:4px; border-bottom:2px solid {border_col};">📅 SESSION {slot_label} DU {dt_sess}</div>'
+                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:18px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 CRENEAU [JOURNÉE DU {dt_sess} + NUIT SUIVANTE]</div>'
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
             items_html = ""
@@ -966,7 +970,7 @@ def main():
             f'</tr>'
         )
     if not plan_rows_html:
-        plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu dans les prochaines 48h.</td></tr>'
+        plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu sur le créneau à venir.</td></tr>'
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
@@ -1021,7 +1025,7 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Fenêtre 48h + nuit</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Fenêtre Journées + Nuits</p>
           </div>
 
           <!-- COMPTEURS -->
@@ -1030,7 +1034,7 @@ def main():
               <tr>
                 <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">en 48h</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Jour + Nuit</div></div></td>
               </tr>
             </table>
           </div>
@@ -1124,10 +1128,10 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & BTTS — 48H & NUIT SUIVANTE",
+        "# ⚽ SÉLECTION OVER 2.5 & BTTS — JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
-        f"### 📈 Statistiques Moyennes du Marché (Unibet France 48h)",
+        f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
