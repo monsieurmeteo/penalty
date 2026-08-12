@@ -629,10 +629,11 @@ def main():
         if s1["id"] in used_match_ids: continue
 
         best_partner = None
-        best_trio = None
+        fallback_partner = None
         best_diff = 999.0
+        fallback_diff = 999.0
 
-        for j, s2 in enumerate(mixed_selections[i+1:], i+1):
+        for s2 in mixed_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
             comb2 = round(s1["odds"] * s2["odds"], 2)
@@ -642,35 +643,21 @@ def main():
                     best_diff = diff
                     best_partner = s2
             else:
-                for s3 in mixed_selections[j+1:]:
-                    if s3["id"] in used_match_ids or s3["id"] in (s1["id"], s2["id"]): continue
-                    comb3 = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
-                    if comb3 >= 2.20:
-                        diff = abs(comb3 - 2.30)
-                        if diff < best_diff:
-                            best_diff = diff
-                            best_trio = (s2, s3, comb3)
+                diff = abs(comb2 - 2.20)
+                if diff < fallback_diff:
+                    fallback_diff = diff
+                    fallback_partner = s2
 
-        if best_partner:
+        chosen_partner = best_partner or fallback_partner
+        if chosen_partner:
             used_match_ids.add(s1["id"])
-            used_match_ids.add(best_partner["id"])
-            comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            used_match_ids.add(chosen_partner["id"])
+            comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
             combos_mixed.append({
-                "type": "Doublé Multi-Marchés",
-                "items": [s1, best_partner],
+                "type": "Doublé 2 Matchs",
+                "items": [s1, chosen_partner],
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
-        elif best_trio:
-            s2, s3, comb3 = best_trio
-            used_match_ids.add(s1["id"])
-            used_match_ids.add(s2["id"])
-            used_match_ids.add(s3["id"])
-            combos_mixed.append({
-                "type": "Triplé Multi-Marchés",
-                "items": [s1, s2, s3],
-                "comb_odds": comb3,
-                "stake": 4.0, "gain": round(4.0 * comb3, 2), "profit": round(4.0 * comb3 - 4.0, 2)
             })
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
