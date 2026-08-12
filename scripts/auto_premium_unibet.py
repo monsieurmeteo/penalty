@@ -768,6 +768,15 @@ def main():
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
 
+    # Matchs éliminés spécifiquement par la compétence PENO (< 2 pen/10m) pour information transparente
+    pen_rejected = [
+        m for m in scanned_results
+        if m.get("score_penalty", 0) >= 55
+        and m.get("ref_name", "Inconnu") != "Inconnu"
+        and m.get("peno_status") == "REJET"
+    ]
+    pen_rejected.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+
 
 
     def render_match_proof_html(m):
@@ -980,6 +989,28 @@ def main():
         </div>'''
     if not pen_simples_html:
         pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
+
+    # ── HTML Matchs Éliminés par la Compétence PENO ─────────────────────────────
+    pen_rejected_html = ""
+    for idx_pr, m in enumerate(pen_rejected, 1):
+        ref = m.get("ref_name", "Inconnu")
+        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
+        sp  = m.get("score_penalty", 0)
+        p_dom = m.get("p_dom_10m", 0)
+        p_ext = m.get("p_ext_10m", 0)
+        pen_rejected_html += f'''
+        <div style="background:#fff1f2; border:1px solid #fecdd3; border-left:4px solid #e11d48; border-radius:8px; padding:10px 12px; margin-bottom:8px; opacity:0.95;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-weight:800; color:#881337; font-size:12px;">🚫 #{idx_pr} — {m["dom"]} vs {m["ext"]}</span>
+            <span style="background:#ffe4e6; color:#9f1239; font-weight:700; font-size:11px; padding:2px 7px; border-radius:5px;">Score Brut: {sp}/100</span>
+          </div>
+          <div style="font-size:11px; color:#4c0519; line-height:1.7;">
+            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b;">{m["league"]}</span> &nbsp;•&nbsp; {ref_status_str}<br>
+            <span style="color:#e11d48; font-weight:800;">🛑 ÉLIMINÉ PAR LA COMPÉTENCE PENO</span> : Moins de 2 pénaltys/10m (Dom: <b>{p_dom}</b> / Ext: <b>{p_ext}</b>)
+          </div>
+        </div>'''
+    if not pen_rejected_html:
+        pen_rejected_html = '<div style="color:#94a3b8; font-style:italic; text-align:center; padding:6px; font-size:11px;">Aucun match éliminé par la compétence PENO sur ce scan.</div>'
 
     # ── Carte d'appartenance aux combinés ────────────────────────────────────
     o25_combo_map = {}  # match_id → combo_num
@@ -1233,6 +1264,18 @@ def main():
               🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire
             </div>
             {pen_simples_html}
+          </div>
+
+          <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
+          <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
+            <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🛡️ MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO</span>
+              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} neutralisé(s)</span>
+            </div>
+            <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
+              💡 <b>Information transparente</b> : Ces matchs avaient un bon score AdamChoi (≥ 55/100) et un arbitre nommé, mais la compétence PENO vous évite de parier car au moins une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
+            </div>
+            {pen_rejected_html}
           </div>
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
