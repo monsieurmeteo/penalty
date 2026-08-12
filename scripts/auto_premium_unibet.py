@@ -1411,15 +1411,15 @@ def main():
                 "gain": c["gain"],
                 "profit": c["profit"],
                 "match1": {
-                    "dom": c["m1"]["dom"], "ext": c["m1"]["ext"],
-                    "league": c["m1"]["league"], "over25": c["m1"]["over25"], "date_str": c["m1"]["date_str"]
+                    "dom": c["items"][0]["m"]["dom"], "ext": c["items"][0]["m"]["ext"],
+                    "league": c["items"][0]["m"]["league"], "over25": c["items"][0]["m"].get("over25"), "date_str": c["items"][0]["m"]["date_str"]
                 },
                 "match2": {
-                    "dom": c["m2"]["dom"], "ext": c["m2"]["ext"],
-                    "league": c["m2"]["league"], "over25": c["m2"]["over25"], "date_str": c["m2"]["date_str"]
+                    "dom": c["items"][1]["m"]["dom"], "ext": c["items"][1]["m"]["ext"],
+                    "league": c["items"][1]["m"]["league"], "over25": c["items"][1]["m"].get("over25"), "date_str": c["items"][1]["m"]["date_str"]
                 }
             }
-            for c in combos_mixed
+            for c in combos_mixed if len(c.get("items", [])) >= 2
         ]
 
         dash_data = {
@@ -1456,8 +1456,8 @@ def main():
         now_iso = datetime.now(timezone.utc).isoformat()
 
         o25_selected_ids = {m["id"] for cb in combos_mixed for m in [i["m"] for i in cb["items"]]}
-        o15_selected_ids = {m["id"] for cb in combos_o15 for m in [cb["m1"], cb["m2"], cb["m3"]]}
-        btts_selected_ids = {m["id"] for cb in combos_btts for m in [cb["m1"], cb["m2"]]}
+        o15_selected_ids = set()
+        btts_selected_ids = set()
         pen_selected_ids = {m["id"] for m in pen_simples}
 
         new_entries = 0
