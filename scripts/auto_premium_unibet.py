@@ -24,7 +24,9 @@ COUNTRIES = [
     "serbie", "roumanie", "ukraine", "republique-tcheque", "hongrie", "bulgarie", "slovaquie",
     "suede", "norvege", "danemark", "finlande", "irlande", "islande", "lettonie", "lituanie", "estonie",
     "bresil", "argentine", "colombie", "mexique", "chili", "equateur", "paraguay", "uruguay", "usa", "canada",
-    "japon", "coree-du-sud", "australie", "coupes-d-europe", "international"
+    "japon", "coree-du-sud", "australie", "coupes-d-europe", "international",
+    "afrique-du-sud", "arabie-saoudite", "emirats-arabes-unis", "egypte", "maroc", "algerie", "tunisie",
+    "chine", "inde", "israel", "perou", "bolivie", "venezuela", "costa-rica", "honduras", "guatemala"
 ]
 
 def format_french_date(iso_str):
