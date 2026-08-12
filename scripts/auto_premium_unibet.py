@@ -653,10 +653,15 @@ def main():
                 break
 
 
-    # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote ≈ 2.00 — Stake 4€) ──
-    # Pool dédié : score AdamChoi >= 65 (plus souple que Over 2.5)
-    o15_candidates = [m for m in scanned_results if m.get("ac_score", 0) >= 65 and m.get("over15")]
-    o15_candidates.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    # ── 2. GENERATION COMBINES OVER 1.5 (3 Matchs — Cote ≈ 2.00 — Stake 4€ — Grille PENO Score ≥ 75 & Freq ≥ 65%) ──
+    # Pool dédié : score_o15 >= 75 et freq_o15 >= 65% (Filtres bloquants Compétence PENO Module 2)
+    o15_candidates = [
+        m for m in scanned_results 
+        if m.get("score_o15", 0) >= 75 
+        and m.get("freq_o15", 0.0) >= 0.65 
+        and m.get("over15")
+    ]
+    o15_candidates.sort(key=lambda x: x.get("score_o15", 0), reverse=True)
     sessions_o15 = {}
     for m in o15_candidates:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -696,7 +701,7 @@ def main():
 
     # Fallback cross-sessions si 0 combo mais >= 3 matchs au total
     if not combos_o15:
-        all_o15_pool = sorted(o15_candidates, key=lambda x: x.get("ac_score", 0), reverse=True)
+        all_o15_pool = sorted(o15_candidates, key=lambda x: x.get("score_o15", 0), reverse=True)
         if len(all_o15_pool) >= 3:
             m1, m2, m3 = all_o15_pool[0], all_o15_pool[1], all_o15_pool[2]
             comb_odds = round(m1["over15"] * m2["over15"] * m3["over15"], 2)
@@ -709,9 +714,14 @@ def main():
 
 
 
-    # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€) ──
-    # Barème V2 BTTS /100 (6 piliers : Attaque DOM/EXT, Défense DOM/EXT, Fréquence BTTS, Ligue)
-    btts_candidates = [m for m in scanned_results if m.get("score_btts", 0) >= 65 and m.get("btts_oui")]
+    # ── 3. GENERATION COMBINES BTTS OUI (2 Matchs — Cote Min 2.60 — Stake 4€ — Grille PENO Score ≥ 75 & Freq ≥ 50%) ──
+    # Barème PENO Module 4 (Score BTTS >= 75, freq_btts >= 50% & Garde-fou Anti Clean Sheet)
+    btts_candidates = [
+        m for m in scanned_results 
+        if m.get("score_btts", 0) >= 75 
+        and m.get("freq_btts", 0.0) >= 0.50 
+        and m.get("btts_oui")
+    ]
     btts_candidates.sort(key=lambda x: x.get("score_btts", 0), reverse=True)
     sessions_btts = {}
     for m in btts_candidates:
