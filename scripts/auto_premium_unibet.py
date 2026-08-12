@@ -620,71 +620,47 @@ def main():
                 "score": m.get("score_o15", 0)
             })
 
-    # Regroupement par session JOUR / NUIT
-    sessions_mixed = {}
-    for s in mixed_selections:
-        sessions_mixed.setdefault(s["session"], []).append(s)
+    # Tri strict global par ordre chronologique continu (Journée + Nuit)
+    mixed_selections.sort(key=lambda x: x["dt"])
 
     used_match_ids = set()
     combos_mixed = []
 
-    # Appariement par 2 au sein de chaque session JOUR / NUIT (ordre chronologique)
-    for s_key in sorted(sessions_mixed.keys()):
-        sess_items = sorted(sessions_mixed[s_key], key=lambda x: x["dt"])
-        for i, s1 in enumerate(sess_items):
-            if s1["id"] in used_match_ids: continue
-
-            best_partner = None
-            fallback_partner = None
-            best_diff = 999.0
-            fallback_diff = 999.0
-
-            for s2 in sess_items[i+1:]:
-                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-
-                comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.00:
-                    diff = abs(comb2 - 2.10)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = s2
-                else:
-                    diff = abs(comb2 - 2.00)
-                    if diff < fallback_diff:
-                        fallback_diff = diff
-                        fallback_partner = s2
-
-            chosen_partner = best_partner or fallback_partner
-            if chosen_partner:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(chosen_partner["id"])
-                comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
-                combos_mixed.append({
-                    "session": s_key,
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, chosen_partner],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-
-    # Fallback pour sélections isolées non couplées dans leur session
-    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
-    unpaired_selections.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired_selections):
+    for i, s1 in enumerate(mixed_selections):
         if s1["id"] in used_match_ids: continue
-        for s2 in unpaired_selections[i+1:]:
+
+        best_partner = None
+        fallback_partner = None
+        best_diff = 999.0
+        fallback_diff = 999.0
+
+        for s2 in mixed_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
+
+            comb2 = round(s1["odds"] * s2["odds"], 2)
+            if comb2 >= 2.00:
+                diff = abs(comb2 - 2.10)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = s2
+            else:
+                diff = abs(comb2 - 2.00)
+                if diff < fallback_diff:
+                    fallback_diff = diff
+                    fallback_partner = s2
+
+        chosen_partner = best_partner or fallback_partner
+        if chosen_partner:
             used_match_ids.add(s1["id"])
-            used_match_ids.add(s2["id"])
+            used_match_ids.add(chosen_partner["id"])
+            comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
             combos_mixed.append({
-                "session": f"{s1['session']}-mixte",
+                "session": s1["session"],
                 "type": "Doublé 2 Matchs",
-                "items": [s1, s2],
+                "items": [s1, chosen_partner],
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
-            break
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
     # Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu"), validés par la compétence PENO et score_penalty >= 55 sont retenus.
