@@ -591,7 +591,7 @@ def main():
             result[key] = unique
         return {k: v for k, v in result.items() if v}
 
-    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Cote Min 2.20 — Chronologique — Sans Penalty) ──
+    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Cote Min 2.00 — Chronologique — Sans Penalty) ──
     mixed_selections = []
     
     for m in scanned_results:
@@ -637,13 +637,13 @@ def main():
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
             comb2 = round(s1["odds"] * s2["odds"], 2)
-            if comb2 >= 2.20:
-                diff = abs(comb2 - 2.30)
+            if comb2 >= 2.00:
+                diff = abs(comb2 - 2.10)
                 if diff < best_diff:
                     best_diff = diff
                     best_partner = s2
             else:
-                diff = abs(comb2 - 2.20)
+                diff = abs(comb2 - 2.00)
                 if diff < fallback_diff:
                     fallback_diff = diff
                     fallback_partner = s2
@@ -1014,7 +1014,7 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">en 48h</div></div></td>
               </tr>
@@ -1048,7 +1048,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5, Over 1.5, BTTS — Cote min 2.20)</span></span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5, Over 1.5, BTTS — Cote min 2.00)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1117,7 +1117,7 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.00 — Mise 4,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1167,7 +1167,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.20) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.00) · {len(pen_simples)} Penalty OUI"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
