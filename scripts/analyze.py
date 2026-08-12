@@ -798,17 +798,17 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             from curl_cffi import requests as cf_requests
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
             q_name = ALIAS_MAP_SOFASCORE.get(t_name, t_name)
-            r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={q_name}", impersonate="chrome120", headers=headers, timeout=2)
+            r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={q_name}", impersonate="chrome120", headers=headers, timeout=6)
             if r.status_code == 200:
                 teams = [x for x in r.json().get("results", []) if x.get("type") == "team"]
                 if teams:
                     t_id = teams[0]["entity"]["id"]
-                    r_ev = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{t_id}/events/last/0", impersonate="chrome120", headers=headers, timeout=2)
+                    r_ev = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{t_id}/events/last/0", impersonate="chrome120", headers=headers, timeout=6)
                     if r_ev.status_code == 200:
                         events = sorted(r_ev.json().get("events", []), key=lambda x: x.get("startTimestamp", 0), reverse=True)
                         def _chk_inc(ev_id):
                             try:
-                                r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=2)
+                                r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=6)
                                 if r_inc.status_code == 200:
                                     return sum(1 for inc in r_inc.json().get("incidents", []) if (inc.get("incidentClass") == "penalty" or inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"] or inc.get("isPenalty")))
                             except Exception:
