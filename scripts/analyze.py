@@ -797,7 +797,8 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         try:
             from curl_cffi import requests as cf_requests
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-            r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={t_name}", impersonate="chrome120", headers=headers, timeout=2)
+            q_name = ALIAS_MAP_SOFASCORE.get(t_name, t_name)
+            r = cf_requests.get(f"https://api.sofascore.com/api/v1/search/all?q={q_name}", impersonate="chrome120", headers=headers, timeout=2)
             if r.status_code == 200:
                 teams = [x for x in r.json().get("results", []) if x.get("type") == "team"]
                 if teams:
