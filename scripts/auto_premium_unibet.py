@@ -1419,7 +1419,7 @@ def main():
                     "league": c["m2"]["league"], "over25": c["m2"]["over25"], "date_str": c["m2"]["date_str"]
                 }
             }
-            for c in combos_2matches
+            for c in combos_mixed
         ]
 
         dash_data = {
@@ -1455,7 +1455,7 @@ def main():
         seen_ids = {entry.get("match_id") for entry in existing if isinstance(entry, dict)}
         now_iso = datetime.now(timezone.utc).isoformat()
 
-        o25_selected_ids = {m["id"] for cb in combos_2matches for m in [cb["m1"], cb["m2"]]}
+        o25_selected_ids = {m["id"] for cb in combos_mixed for m in [i["m"] for i in cb["items"]]}
         o15_selected_ids = {m["id"] for cb in combos_o15 for m in [cb["m1"], cb["m2"], cb["m3"]]}
         btts_selected_ids = {m["id"] for cb in combos_btts for m in [cb["m1"], cb["m2"]]}
         pen_selected_ids = {m["id"] for m in pen_simples}
