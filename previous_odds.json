@@ -171,21 +171,21 @@
       "double": true,
       "ac_score": 90
     },
-    "3362919": {
-      "match": "Cercle Bruges - St Trond",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.52,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 90
-    },
     "3369456": {
       "match": "Reims - Dunkerque",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.7,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 90
+    },
+    "3362919": {
+      "match": "Cercle Bruges - St Trond",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.52,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 90
     },
@@ -252,21 +252,21 @@
       "double": true,
       "ac_score": 89
     },
-    "3363353": {
-      "match": "Orlando City - Atl. San Luis",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.4,
-      "val_o25": 1.36,
-      "double": true,
-      "ac_score": 88
-    },
     "3371089": {
       "match": "Orlando City - Atletico San L",
       "league": "Cotes Boostees • Cotes Boostees Leagues Cup",
       "date_str": "Jeu. 13/08 à 01h30",
       "val_btts": null,
       "val_o25": null,
+      "double": true,
+      "ac_score": 88
+    },
+    "3363353": {
+      "match": "Orlando City - Atl. San Luis",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Jeu. 13/08 à 01h30",
+      "val_btts": 1.4,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 88
     },
@@ -450,21 +450,21 @@
       "double": true,
       "ac_score": 82
     },
-    "3370008": {
-      "match": "JEF Utd Chiba - FC Machida",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.8,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 82
-    },
     "3370261": {
       "match": "KawasakiFront. - Kyoto Sanga FC",
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.5,
       "val_o25": 1.6,
+      "double": true,
+      "ac_score": 82
+    },
+    "3370008": {
+      "match": "JEF Utd Chiba - FC Machida",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.8,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 82
     },
