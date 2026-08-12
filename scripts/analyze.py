@@ -827,8 +827,15 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
     bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
 
-    p_dom_10m = p_dom_sf if p_dom_sf is not None else 0
-    p_ext_10m = p_ext_sf if p_ext_sf is not None else 0
+    if p_dom_sf is not None:
+        p_dom_10m = p_dom_sf
+    else:
+        p_dom_10m = min(4, max(2, round(gf_a + (sot_a / 3.0)))) if (gf_a >= 1.2 or sot_a >= 4.0) else 1
+
+    if p_ext_sf is not None:
+        p_ext_10m = p_ext_sf
+    else:
+        p_ext_10m = min(4, max(2, round(gf_b + (sot_b / 3.0)))) if (gf_b >= 1.2 or sot_b >= 4.0) else 1
 
     p_tot_10m = p_dom_10m + p_ext_10m
 
