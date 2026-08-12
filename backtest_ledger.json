@@ -2701,5 +2701,69 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3370732",
+    "timestamp_utc": "2026-08-12T08:02:58.791743+00:00",
+    "match": "Paris SG vs Aston Villa",
+    "league": "Cotes Boostees • Cotes Boostees Supercoupe D Europe",
+    "date_str": "Mer. 12/08 à 21h00",
+    "scores": {
+      "o25": 71,
+      "o15": 73,
+      "btts": 60,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Omar Abdulkadir Artan",
+      "status": "👨‍⚖️ Arbitre Omar Abdulkadir Artan (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370733",
+    "timestamp_utc": "2026-08-12T08:02:58.791743+00:00",
+    "match": "Paris SG vs Aston Villa",
+    "league": "Cotes Boostees • Cotes Boostees Supercoupe D Europe",
+    "date_str": "Mer. 12/08 à 21h00",
+    "scores": {
+      "o25": 71,
+      "o15": 73,
+      "btts": 60,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Omar Abdulkadir Artan",
+      "status": "👨‍⚖️ Arbitre Omar Abdulkadir Artan (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [
+      "O15",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
