@@ -144,21 +144,21 @@
       "double": true,
       "ac_score": 92
     },
-    "3351331": {
-      "match": "Shanghai Shen. - Henan SL",
-      "league": "Chine • D1 Chine",
-      "date_str": "Sam. 15/08 à 14h00",
-      "val_btts": 1.35,
-      "val_o25": 1.33,
-      "double": true,
-      "ac_score": 92
-    },
     "3351330": {
       "match": "Yunnan Yukun - Dalian Yingbo",
       "league": "Chine • D1 Chine",
       "date_str": "Sam. 15/08 à 14h00",
       "val_btts": 1.3,
       "val_o25": 1.3,
+      "double": true,
+      "ac_score": 92
+    },
+    "3351331": {
+      "match": "Shanghai Shen. - Henan SL",
+      "league": "Chine • D1 Chine",
+      "date_str": "Sam. 15/08 à 14h00",
+      "val_btts": 1.35,
+      "val_o25": 1.33,
       "double": true,
       "ac_score": 92
     },
@@ -189,21 +189,21 @@
       "double": true,
       "ac_score": 90
     },
-    "3362919": {
-      "match": "Cercle Bruges - St Trond",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.52,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 90
-    },
     "3369456": {
       "match": "Reims - Dunkerque",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.7,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 90
+    },
+    "3362919": {
+      "match": "Cercle Bruges - St Trond",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.52,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 90
     },
@@ -337,7 +337,7 @@
       "match": "Rapid Vienne - Paide",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Mer. 12/08 à 18h00",
-      "val_btts": 1.8,
+      "val_btts": 1.75,
       "val_o25": 1.25,
       "double": true,
       "ac_score": 86
@@ -351,21 +351,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
     "3368774": {
       "match": "Anderlecht - PAOK Salonique",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.62,
       "val_o25": 1.78,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -495,21 +495,21 @@
       "double": true,
       "ac_score": 82
     },
-    "3370008": {
-      "match": "JEF Utd Chiba - FC Machida",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.8,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 82
-    },
     "3370261": {
       "match": "KawasakiFront. - Kyoto Sanga FC",
       "league": "Japon • D1 Japon",
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.5,
       "val_o25": 1.6,
+      "double": true,
+      "ac_score": 82
+    },
+    "3370008": {
+      "match": "JEF Utd Chiba - FC Machida",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.8,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 82
     },
@@ -648,21 +648,21 @@
       "double": true,
       "ac_score": 78
     },
-    "3370012": {
-      "match": "Urawa Reds - Hiroshima",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.65,
-      "val_o25": 1.72,
-      "double": true,
-      "ac_score": 78
-    },
     "3366110": {
       "match": "Torreense - Penafiel",
       "league": "Portugal • D2 Portugal",
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.75,
       "val_o25": 1.9,
+      "double": true,
+      "ac_score": 78
+    },
+    "3370012": {
+      "match": "Urawa Reds - Hiroshima",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.65,
+      "val_o25": 1.72,
       "double": true,
       "ac_score": 78
     },
