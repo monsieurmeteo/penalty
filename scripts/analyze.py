@@ -804,7 +804,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                     t_id = teams[0]["entity"]["id"]
                     r_ev = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{t_id}/events/last/0", impersonate="chrome120", headers=headers, timeout=2)
                     if r_ev.status_code == 200:
-                        events = r_ev.json().get("events", [])
+                        events = sorted(r_ev.json().get("events", []), key=lambda x: x.get("startTimestamp", 0), reverse=True)
                         def _chk_inc(ev_id):
                             try:
                                 r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=2)
@@ -814,7 +814,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                                 pass
                             return 0
                         with ThreadPoolExecutor(max_workers=5) as p_ex:
-                            res_list = p_ex.map(_chk_inc, [ev.get("id") for ev in events[:8] if ev.get("id")])
+                            res_list = p_ex.map(_chk_inc, [ev.get("id") for ev in events[:10] if ev.get("id")])
                             return sum(res_list)
         except Exception:
             pass
