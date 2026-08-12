@@ -2641,5 +2641,36 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3366976",
+    "timestamp_utc": "2026-08-12T02:03:01.229504+00:00",
+    "match": "Al Shabab vs Al Qadisiya",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Jeu. 13/08 à 20h00",
+    "scores": {
+      "o25": 85,
+      "o15": 91,
+      "btts": 78,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.52
+    },
+    "selected_markets": [
+      "BTTS"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
