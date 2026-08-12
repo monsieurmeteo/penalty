@@ -596,69 +596,95 @@ def main():
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        s_key = get_betting_session_key(m_dt)
         
         # 1. Over 2.5 si Score >= 75
         if m.get("ac_score", 0) >= 75 and m.get("over25"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt,
+                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
                 "market": "🟥 Over 2.5", "odds": m["over25"],
                 "score": m.get("ac_score", 0)
             })
         # 2. BTTS Oui si Score >= 75
         elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt,
+                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
                 "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
                 "score": m.get("score_btts", 0)
             })
         # 3. Over 1.5 si Score >= 75
         elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
             mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt,
+                "m": m, "id": m["id"], "dt": m_dt, "session": s_key,
                 "market": "🟦 Over 1.5", "odds": m["over15"],
                 "score": m.get("score_o15", 0)
             })
 
-    # Tri strict par ordre chronologique
-    mixed_selections.sort(key=lambda x: x["dt"])
+    # Regroupement par session JOUR / NUIT
+    sessions_mixed = {}
+    for s in mixed_selections:
+        sessions_mixed.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    for i, s1 in enumerate(mixed_selections):
+    # Appariement par 2 au sein de chaque session JOUR / NUIT (ordre chronologique)
+    for s_key in sorted(sessions_mixed.keys()):
+        sess_items = sorted(sessions_mixed[s_key], key=lambda x: x["dt"])
+        for i, s1 in enumerate(sess_items):
+            if s1["id"] in used_match_ids: continue
+
+            best_partner = None
+            fallback_partner = None
+            best_diff = 999.0
+            fallback_diff = 999.0
+
+            for s2 in sess_items[i+1:]:
+                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+
+                comb2 = round(s1["odds"] * s2["odds"], 2)
+                if comb2 >= 2.00:
+                    diff = abs(comb2 - 2.10)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_partner = s2
+                else:
+                    diff = abs(comb2 - 2.00)
+                    if diff < fallback_diff:
+                        fallback_diff = diff
+                        fallback_partner = s2
+
+            chosen_partner = best_partner or fallback_partner
+            if chosen_partner:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(chosen_partner["id"])
+                comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
+                combos_mixed.append({
+                    "session": s_key,
+                    "type": "Doublé 2 Matchs",
+                    "items": [s1, chosen_partner],
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+
+    # Fallback pour sélections isolées non couplées dans leur session
+    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
+    unpaired_selections.sort(key=lambda x: x["dt"])
+    for i, s1 in enumerate(unpaired_selections):
         if s1["id"] in used_match_ids: continue
-
-        best_partner = None
-        fallback_partner = None
-        best_diff = 999.0
-        fallback_diff = 999.0
-
-        for s2 in mixed_selections[i+1:]:
+        for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-
-            comb2 = round(s1["odds"] * s2["odds"], 2)
-            if comb2 >= 2.00:
-                diff = abs(comb2 - 2.10)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_partner = s2
-            else:
-                diff = abs(comb2 - 2.00)
-                if diff < fallback_diff:
-                    fallback_diff = diff
-                    fallback_partner = s2
-
-        chosen_partner = best_partner or fallback_partner
-        if chosen_partner:
+            comb_odds = round(s1["odds"] * s2["odds"], 2)
             used_match_ids.add(s1["id"])
-            used_match_ids.add(chosen_partner["id"])
-            comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
+            used_match_ids.add(s2["id"])
             combos_mixed.append({
+                "session": f"{s1['session']}-mixte",
                 "type": "Doublé 2 Matchs",
-                "items": [s1, chosen_partner],
+                "items": [s1, s2],
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
+            break
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre désigné obligatoire + Validé PENO + Score ≥ 55) ──
     # Seuls les matchs avec un arbitre officiel connu (ref_name != "Inconnu"), validés par la compétence PENO et score_penalty >= 55 sont retenus.
@@ -803,7 +829,19 @@ def main():
 
     combos_mixed_html = ""
     if combos_mixed:
+        current_sess = None
         for idx, cb in enumerate(combos_mixed, 1):
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess:
+                current_sess = sess_label
+                try:
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                except Exception:
+                    dt_sess = sess_label
+                slot_label = "🌙 NUIT" if sess_label.endswith("-nuit") else ("🔀 MIXTE" if sess_label.endswith("-mixte") else "☀️ JOUR")
+                border_col = "#3b82f6" if "JOUR" in slot_label else ("#8b5cf6" if "NUIT" in slot_label else "#64748b")
+                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:16px 0 8px 0; padding-bottom:4px; border-bottom:2px solid {border_col};">📅 SESSION {slot_label} DU {dt_sess}</div>'
+
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
             items_html = ""
             for item in cb["items"]:
