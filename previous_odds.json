@@ -171,21 +171,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
     "3368774": {
       "match": "Anderlecht - PAOK Salonique",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.62,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -198,21 +198,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3369455": {
-      "match": "St Etienne - Clermont",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.7,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 86
-    },
     "3369453": {
       "match": "Red Star - Sochaux",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.8,
       "val_o25": 1.98,
+      "double": true,
+      "ac_score": 86
+    },
+    "3369455": {
+      "match": "St Etienne - Clermont",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.7,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 86
     },
@@ -283,7 +283,7 @@
       "match": "Hearts - Benfica",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h45",
-      "val_btts": 1.6,
+      "val_btts": 1.62,
       "val_o25": 1.42,
       "double": true,
       "ac_score": 80
