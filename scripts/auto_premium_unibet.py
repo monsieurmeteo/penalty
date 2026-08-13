@@ -603,13 +603,6 @@ def main():
                 "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
                 "score": m.get("score_btts", 0)
             })
-        # 3. Over 1.5 si Score >= 75
-        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟦 Over 1.5", "odds": m["over15"],
-                "score": m.get("score_o15", 0)
-            })
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
@@ -619,16 +612,14 @@ def main():
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs
+    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs (Cote Min: 2.00 STRICT)
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
         for i, s1 in enumerate(block_items):
             if s1["id"] in used_match_ids: continue
 
             best_partner = None
-            fallback_partner = None
             best_diff = 999.0
-            fallback_diff = 999.0
 
             for s2 in block_items[i+1:]:
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
@@ -639,26 +630,20 @@ def main():
                     if diff < best_diff:
                         best_diff = diff
                         best_partner = s2
-                else:
-                    diff = abs(comb2 - 2.00)
-                    if diff < fallback_diff:
-                        fallback_diff = diff
-                        fallback_partner = s2
 
-            chosen_partner = best_partner or fallback_partner
-            if chosen_partner:
+            if best_partner:
                 used_match_ids.add(s1["id"])
-                used_match_ids.add(chosen_partner["id"])
-                comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
+                used_match_ids.add(best_partner["id"])
+                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
                 combos_mixed.append({
                     "session": b_key,
                     "type": "Doublé 2 Matchs",
-                    "items": [s1, chosen_partner],
+                    "items": [s1, best_partner],
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # Fallback pour sélections isolées non couplées dans leur bloc
+    # Fallback pour sélections isolées non couplées dans leur bloc (Cote Min: 2.00 STRICT)
     unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
     unpaired_selections.sort(key=lambda x: x["dt"])
     for i, s1 in enumerate(unpaired_selections):
@@ -666,16 +651,17 @@ def main():
         for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            used_match_ids.add(s1["id"])
-            used_match_ids.add(s2["id"])
-            combos_mixed.append({
-                "session": f"{s1['session']}-mixte",
-                "type": "Doublé 2 Matchs",
-                "items": [s1, s2],
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
-            break
+            if comb_odds >= 2.00:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(s2["id"])
+                combos_mixed.append({
+                    "session": f"{s1['session']}-mixte",
+                    "type": "Doublé 2 Matchs",
+                    "items": [s1, s2],
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+                break
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
