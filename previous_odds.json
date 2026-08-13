@@ -13,8 +13,8 @@
       "match": "KI Klaksvik - Lech Poznan",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 21h45",
-      "val_btts": 1.6,
-      "val_o25": 1.55,
+      "val_btts": 1.62,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 96
     },
@@ -85,7 +85,7 @@
       "match": "Saint Gall - SherifTiraspol",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.7,
+      "val_btts": 1.65,
       "val_o25": 1.4,
       "double": true,
       "ac_score": 90
@@ -112,8 +112,8 @@
       "match": "CSKA Sofia - Mac.Tel Aviv",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.65,
-      "val_o25": 1.8,
+      "val_btts": 1.62,
+      "val_o25": 1.78,
       "double": true,
       "ac_score": 89
     },
@@ -157,7 +157,7 @@
       "match": "Sion - FC Noah",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h15",
-      "val_btts": 1.6,
+      "val_btts": 1.65,
       "val_o25": 1.55,
       "double": true,
       "ac_score": 86
@@ -333,15 +333,6 @@
       "double": true,
       "ac_score": 78
     },
-    "3362922": {
-      "match": "Elfsborg - Vasteras SK",
-      "league": "Suede • D1 Suede",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 78
-    },
     "3365837": {
       "match": "Academica - Feirense",
       "league": "Portugal • D2 Portugal",
@@ -351,14 +342,14 @@
       "double": true,
       "ac_score": 78
     },
-    "3369878": {
-      "match": "Max.Rogachev - BoracBanjaLuka",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
+    "3362922": {
+      "match": "Elfsborg - Vasteras SK",
+      "league": "Suede • D1 Suede",
+      "date_str": "Ven. 14/08 à 19h00",
       "val_btts": 1.6,
-      "val_o25": 1.75,
+      "val_o25": 1.62,
       "double": true,
-      "ac_score": 77
+      "ac_score": 78
     },
     "3369248": {
       "match": "Nordsjaelland - ValurReykjavik",
@@ -366,6 +357,15 @@
       "date_str": "Jeu. 13/08 à 19h00",
       "val_btts": 1.9,
       "val_o25": 1.15,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369878": {
+      "match": "Max.Rogachev - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 77
     },
