@@ -4494,5 +4494,160 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352444",
+    "timestamp_utc": "2026-08-13T18:03:34.608025+00:00",
+    "match": "RosarioCentral vs Corinthians",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Ven. 14/08 à 02h30",
+    "scores": {
+      "o25": 68,
+      "o15": 79,
+      "btts": 53,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Andrés Matonte",
+      "status": "👨‍⚖️ Arbitre Andrés Matonte (43 m, 0.21 pen/m)",
+      "pen_per_match": 0.209
+    },
+    "odds": {
+      "o25": 3.0,
+      "o15": 1.65,
+      "btts": 2.3
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363388",
+    "timestamp_utc": "2026-08-13T18:03:34.608025+00:00",
+    "match": "Cruz Azul vs Chicago Fire",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Ven. 14/08 à 03h00",
+    "scores": {
+      "o25": 96,
+      "o15": 95,
+      "btts": 96,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363390",
+    "timestamp_utc": "2026-08-13T18:03:34.608025+00:00",
+    "match": "Portland vs Club Tijuana",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Ven. 14/08 à 04h30",
+    "scores": {
+      "o25": 60,
+      "o15": 74,
+      "btts": 43,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371242",
+    "timestamp_utc": "2026-08-13T18:03:34.608025+00:00",
+    "match": "PFK TuranTovuz vs FK Gabala",
+    "league": "Azerbaidjan • D1 Azerbaidjan",
+    "date_str": "Ven. 14/08 à 17h30",
+    "scores": {
+      "o25": 87,
+      "o15": 93,
+      "btts": 78,
+      "penalty": 81
+    },
+    "referee": {
+      "name": "Kevin Ortega",
+      "status": "👨‍⚖️ Arbitre Kevin Ortega (34 m, 0.32 pen/m)",
+      "pen_per_match": 0.324
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371356",
+    "timestamp_utc": "2026-08-13T18:03:34.608025+00:00",
+    "match": "Birzebbuga vs Floriana FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Ven. 14/08 à 18h00",
+    "scores": {
+      "o25": 69,
+      "o15": 87,
+      "btts": 73,
+      "penalty": 21
+    },
+    "referee": {
+      "name": "Flavio Rodrigues De Souza",
+      "status": "👨‍⚖️ Arbitre Flavio Rodrigues De Souza (36 m, 0.19 pen/m)",
+      "pen_per_match": 0.194
+    },
+    "odds": {
+      "o25": 1.77,
+      "o15": 1.24,
+      "btts": 1.61
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
