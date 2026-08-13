@@ -4,7 +4,7 @@
       "match": "KI Klaksvik - Lech Poznan",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 19h30",
-      "val_btts": 1.6,
+      "val_btts": 1.55,
       "val_o25": 1.52,
       "double": true,
       "ac_score": 96
@@ -13,8 +13,8 @@
       "match": "Rangers - Jagiellonia",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.7,
-      "val_o25": 1.6,
+      "val_btts": 1.65,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 96
     },
@@ -36,6 +36,15 @@
       "double": true,
       "ac_score": 94
     },
+    "3368778": {
+      "match": "Hajduk Split - FK Zalgiris",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.7,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 94
+    },
     "3368209": {
       "match": "Dinamo Tirana - FK Auda",
       "league": "Coupes D Europe • Europa Conference",
@@ -45,12 +54,12 @@
       "double": true,
       "ac_score": 94
     },
-    "3368778": {
-      "match": "Hajduk Split - FK Zalgiris",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
-      "val_btts": 1.7,
-      "val_o25": 1.4,
+    "3369439": {
+      "match": "Dinamo Zagreb - NK Rudes",
+      "league": "Croatie • D1 Croatie",
+      "date_str": "Ven. 14/08 à 20h00",
+      "val_btts": 2.0,
+      "val_o25": 1.25,
       "double": true,
       "ac_score": 94
     },
@@ -60,15 +69,6 @@
       "date_str": "Ven. 14/08 à 20h00",
       "val_btts": 1.45,
       "val_o25": 1.5,
-      "double": true,
-      "ac_score": 94
-    },
-    "3369439": {
-      "match": "Dinamo Zagreb - NK Rudes",
-      "league": "Croatie • D1 Croatie",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.9,
-      "val_o25": 1.25,
       "double": true,
       "ac_score": 94
     },
@@ -85,8 +85,8 @@
       "match": "Saint Gall - SherifTiraspol",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.75,
-      "val_o25": 1.45,
+      "val_btts": 1.7,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 90
     },
@@ -113,7 +113,7 @@
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h00",
       "val_btts": 1.65,
-      "val_o25": 1.85,
+      "val_o25": 1.82,
       "double": true,
       "ac_score": 89
     },
@@ -140,7 +140,7 @@
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Ven. 14/08 à 00h00",
       "val_btts": 1.9,
-      "val_o25": 1.65,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 87
     },
@@ -162,15 +162,6 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
     "3368774": {
       "match": "Anderlecht - PAOK Salonique",
       "league": "Coupes D Europe • Europa League",
@@ -186,6 +177,15 @@
       "date_str": "Jeu. 13/08 à 20h30",
       "val_btts": 1.65,
       "val_o25": 1.65,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -211,7 +211,7 @@
       "match": "Red Star - Sochaux",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.8,
+      "val_btts": 1.82,
       "val_o25": 2.0,
       "double": true,
       "ac_score": 86
@@ -220,8 +220,8 @@
       "match": "KF Shkendija - Hibernian",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.55,
+      "val_btts": 1.55,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 85
     },
@@ -274,8 +274,8 @@
       "match": "Hearts - Benfica",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h45",
-      "val_btts": 1.55,
-      "val_o25": 1.4,
+      "val_btts": 1.6,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 80
     },
@@ -324,21 +324,21 @@
       "double": true,
       "ac_score": 78
     },
-    "3362922": {
-      "match": "Elfsborg - Vasteras SK",
-      "league": "Suede • D1 Suede",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.6,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 78
-    },
     "3365837": {
       "match": "Academica - Feirense",
       "league": "Portugal • D2 Portugal",
       "date_str": "Ven. 14/08 à 19h00",
       "val_btts": 1.75,
       "val_o25": 2.05,
+      "double": true,
+      "ac_score": 78
+    },
+    "3362922": {
+      "match": "Elfsborg - Vasteras SK",
+      "league": "Suede • D1 Suede",
+      "date_str": "Ven. 14/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 78
     },

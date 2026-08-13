@@ -4242,5 +4242,67 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371296",
+    "timestamp_utc": "2026-08-13T09:20:10.072401+00:00",
+    "match": "Al Wahda vs Ajman",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Ven. 14/08 à 18h45",
+    "scores": {
+      "o25": 60,
+      "o15": 69,
+      "btts": 36,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367995",
+    "timestamp_utc": "2026-08-13T09:20:10.072401+00:00",
+    "match": "Stellenbosch vs Marumo Gallants",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Ven. 14/08 à 19h30",
+    "scores": {
+      "o25": 44,
+      "o15": 76,
+      "btts": 48,
+      "penalty": 18
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.4,
+      "o15": 1.45,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
