@@ -72,21 +72,21 @@
       "double": true,
       "ac_score": 92
     },
-    "3369456": {
-      "match": "Reims - Dunkerque",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.7,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 90
-    },
     "3362919": {
       "match": "Cercle Bruges - St Trond",
       "league": "Belgique • D1 Belgique",
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.52,
       "val_o25": 1.62,
+      "double": true,
+      "ac_score": 90
+    },
+    "3369456": {
+      "match": "Reims - Dunkerque",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.7,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 90
     },
@@ -193,8 +193,8 @@
       "match": "Vancouver FC - Pacific FC",
       "league": "Canada • D1 Canada",
       "date_str": "Sam. 15/08 à 03h00",
-      "val_btts": 1.55,
-      "val_o25": 1.4,
+      "val_btts": 1.6,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 81
     },
@@ -216,21 +216,21 @@
       "double": true,
       "ac_score": 80
     },
-    "3363807": {
-      "match": "Galatasaray - Belediyespor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Ven. 14/08 à 20h30",
-      "val_btts": 2.0,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 80
-    },
     "3371357": {
       "match": "Balzan FC - Marsaxlokk FC",
       "league": "Malte • D1 Malte",
       "date_str": "Ven. 14/08 à 20h30",
       "val_btts": 1.63,
       "val_o25": 1.83,
+      "double": true,
+      "ac_score": 80
+    },
+    "3363807": {
+      "match": "Galatasaray - Belediyespor",
+      "league": "Turquie • D1 Turquie",
+      "date_str": "Ven. 14/08 à 20h30",
+      "val_btts": 2.0,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 80
     },
@@ -283,8 +283,8 @@
       "match": "Cienciano - Botafogo",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Ven. 14/08 à 02h30",
-      "val_btts": 1.65,
-      "val_o25": 1.85,
+      "val_btts": 1.6,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 77
     }

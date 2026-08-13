@@ -4803,5 +4803,67 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3370010",
+    "timestamp_utc": "2026-08-13T21:09:21.585366+00:00",
+    "match": "Mito Hollyhock vs Gamba Osaka",
+    "league": "Japon • D1 Japon",
+    "date_str": "Sam. 15/08 à 11h00",
+    "scores": {
+      "o25": 69,
+      "o15": 89,
+      "btts": 86,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370013",
+    "timestamp_utc": "2026-08-13T21:09:21.585366+00:00",
+    "match": "Kashima vs Nagoya Grampus",
+    "league": "Japon • D1 Japon",
+    "date_str": "Sam. 15/08 à 11h00",
+    "scores": {
+      "o25": 72,
+      "o15": 87,
+      "btts": 56,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
