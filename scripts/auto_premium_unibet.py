@@ -634,7 +634,7 @@ def main():
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
                 comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.15:
+                if comb2 >= 1.01:  # pas de cote minimale
                     diff = abs(comb2 - 2.10)
                     if diff < best_diff:
                         best_diff = diff
@@ -660,7 +660,7 @@ def main():
         for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.15:
+            if comb_odds >= 1.01:  # pas de cote minimale
                 used_match_ids.add(s1["id"])
                 used_match_ids.add(s2["id"])
                 combos_mixed.append({
