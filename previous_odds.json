@@ -13,19 +13,10 @@
       "match": "Rangers - Jagiellonia",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.7,
+      "val_btts": 1.72,
       "val_o25": 1.62,
       "double": true,
       "ac_score": 96
-    },
-    "3363380": {
-      "match": "Monterrey - Nashville SC",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Jeu. 13/08 à 02h00",
-      "val_btts": 1.45,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 94
     },
     "3366976": {
       "match": "Al Shabab - Al Qadisiya",
@@ -63,12 +54,12 @@
       "double": true,
       "ac_score": 94
     },
-    "3362466": {
-      "match": "Inter Miami - FC Leon",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.4,
-      "val_o25": 1.48,
+    "3351183": {
+      "match": "Shandong - Qingdao Hainiu",
+      "league": "Chine • D1 Chine",
+      "date_str": "Ven. 14/08 à 13h35",
+      "val_btts": 1.42,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 92
     },
@@ -90,24 +81,6 @@
       "double": true,
       "ac_score": 89
     },
-    "3371089": {
-      "match": "Orlando City - Atletico San L",
-      "league": "Cotes Boostees • Cotes Boostees Leagues Cup",
-      "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": null,
-      "val_o25": null,
-      "double": true,
-      "ac_score": 88
-    },
-    "3363353": {
-      "match": "Orlando City - Atl. San Luis",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Jeu. 13/08 à 01h30",
-      "val_btts": 1.45,
-      "val_o25": 1.36,
-      "double": true,
-      "ac_score": 88
-    },
     "3368777": {
       "match": "Györ ETO FC - Riga FC",
       "league": "Coupes D Europe • Europa Conference",
@@ -122,7 +95,7 @@
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h00",
       "val_btts": 1.5,
-      "val_o25": 1.3,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 86
     },
@@ -179,15 +152,6 @@
       "val_o25": 1.38,
       "double": true,
       "ac_score": 80
-    },
-    "3367940": {
-      "match": "C.A. Tigre - Torque",
-      "league": "Amerique • Copa Sudamericana",
-      "date_str": "Jeu. 13/08 à 00h00",
-      "val_btts": 2.3,
-      "val_o25": 2.6,
-      "double": true,
-      "ac_score": 78
     },
     "3368308": {
       "match": "Shelbourne FC - Ajax",

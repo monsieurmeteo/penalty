@@ -3087,5 +3087,34 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352448",
+    "timestamp_utc": "2026-08-13T00:03:09.415055+00:00",
+    "match": "Mirassol SP vs LDU Quito",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Ven. 14/08 à 00h00",
+    "scores": {
+      "o25": 53,
+      "o15": 66,
+      "btts": 61,
+      "penalty": 57
+    },
+    "referee": {
+      "name": "Alexis Herrera",
+      "status": "👨‍⚖️ Arbitre Alexis Herrera (31 m, 0.45 pen/m)",
+      "pen_per_match": 0.452
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.95
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
