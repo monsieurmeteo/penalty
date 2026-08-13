@@ -4649,5 +4649,159 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363323",
+    "timestamp_utc": "2026-08-13T20:04:20.182096+00:00",
+    "match": "Celik Zenica vs Siroki Brijeg",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Ven. 14/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 97,
+      "btts": 88,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371357",
+    "timestamp_utc": "2026-08-13T20:04:20.182096+00:00",
+    "match": "Balzan FC vs Marsaxlokk FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Ven. 14/08 à 20h30",
+    "scores": {
+      "o25": 80,
+      "o15": 74,
+      "btts": 63,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Richard Eley",
+      "status": "👨‍⚖️ Arbitre Richard Eley (22 m, 0.09 pen/m)",
+      "pen_per_match": 0.091
+    },
+    "odds": {
+      "o25": 1.83,
+      "o15": 1.26,
+      "btts": 1.63
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363741",
+    "timestamp_utc": "2026-08-13T20:04:20.182096+00:00",
+    "match": "Cambrian Utd vs Flint Town",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 58,
+      "o15": 74,
+      "btts": 67,
+      "penalty": 26
+    },
+    "referee": {
+      "name": "Alan Dale",
+      "status": "👨‍⚖️ Arbitre Alan Dale (16 m, 0.19 pen/m)",
+      "pen_per_match": 0.188
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362917",
+    "timestamp_utc": "2026-08-13T20:04:20.182096+00:00",
+    "match": "Connah`s Quay vs Trefelin BGC",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 78,
+      "o15": 90,
+      "btts": 81,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Jordan Curran",
+      "status": "👨‍⚖️ Arbitre Jordan Curran (10 m, 0.30 pen/m)",
+      "pen_per_match": 0.3
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363937",
+    "timestamp_utc": "2026-08-13T20:04:20.182096+00:00",
+    "match": "Airbus FC vs Ammanford",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 80,
+      "o15": 83,
+      "btts": 50,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
