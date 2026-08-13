@@ -54,21 +54,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3362909": {
-      "match": "SC Telstar - Spar.Rotterdam",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 94
-    },
     "3369439": {
       "match": "Dinamo Zagreb - NK Rudes",
       "league": "Croatie • D1 Croatie",
       "date_str": "Ven. 14/08 à 20h00",
       "val_btts": 1.9,
       "val_o25": 1.25,
+      "double": true,
+      "ac_score": 94
+    },
+    "3362909": {
+      "match": "SC Telstar - Spar.Rotterdam",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Ven. 14/08 à 20h00",
+      "val_btts": 1.45,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 94
     },
@@ -85,17 +85,8 @@
       "match": "Saint Gall - SherifTiraspol",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h00",
-      "val_btts": 1.65,
+      "val_btts": 1.7,
       "val_o25": 1.4,
-      "double": true,
-      "ac_score": 90
-    },
-    "3362919": {
-      "match": "Cercle Bruges - St Trond",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.52,
-      "val_o25": 1.62,
       "double": true,
       "ac_score": 90
     },
@@ -105,6 +96,15 @@
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.7,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 90
+    },
+    "3362919": {
+      "match": "Cercle Bruges - St Trond",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.52,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 90
     },
@@ -157,25 +157,7 @@
       "match": "Sion - FC Noah",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h15",
-      "val_btts": 1.65,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 86
-    },
-    "3369520": {
-      "match": "Motherwell - HJK Helsinki",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.7,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 86
-    },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
+      "val_btts": 1.6,
       "val_o25": 1.55,
       "double": true,
       "ac_score": 86
@@ -189,12 +171,39 @@
       "double": true,
       "ac_score": 86
     },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 86
+    },
+    "3369520": {
+      "match": "Motherwell - HJK Helsinki",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.7,
+      "val_o25": 1.7,
+      "double": true,
+      "ac_score": 86
+    },
     "3368094": {
       "match": "Vasco De Gama - Olimp.Asuncion",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Ven. 14/08 à 00h00",
       "val_btts": 1.95,
-      "val_o25": 2.05,
+      "val_o25": 2.1,
+      "double": true,
+      "ac_score": 86
+    },
+    "3369453": {
+      "match": "Red Star - Sochaux",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.85,
+      "val_o25": 1.98,
       "double": true,
       "ac_score": 86
     },
@@ -204,15 +213,6 @@
       "date_str": "Ven. 14/08 à 20h45",
       "val_btts": 1.7,
       "val_o25": 1.6,
-      "double": true,
-      "ac_score": 86
-    },
-    "3369453": {
-      "match": "Red Star - Sochaux",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.8,
-      "val_o25": 1.98,
       "double": true,
       "ac_score": 86
     },
@@ -374,7 +374,16 @@
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 19h30",
       "val_btts": 1.5,
-      "val_o25": 1.55,
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 77
+    },
+    "3368095": {
+      "match": "Cienciano - Botafogo",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Ven. 14/08 à 02h30",
+      "val_btts": 1.65,
+      "val_o25": 1.85,
       "double": true,
       "ac_score": 77
     },
