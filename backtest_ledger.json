@@ -3180,5 +3180,131 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363389",
+    "timestamp_utc": "2026-08-13T04:03:33.065904+00:00",
+    "match": "Philadelphia vs Santos Laguna",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Ven. 14/08 à 01h00",
+    "scores": {
+      "o25": 68,
+      "o15": 81,
+      "btts": 70,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.1,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363391",
+    "timestamp_utc": "2026-08-13T04:03:33.065904+00:00",
+    "match": "NY City FC vs Club Necaxa",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Ven. 14/08 à 01h30",
+    "scores": {
+      "o25": 72,
+      "o15": 94,
+      "btts": 63,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363387",
+    "timestamp_utc": "2026-08-13T04:03:33.065904+00:00",
+    "match": "Club America vs Austin FC",
+    "league": "Amerique • Leagues Cup",
+    "date_str": "Ven. 14/08 à 02h30",
+    "scores": {
+      "o25": 94,
+      "o15": 97,
+      "btts": 61,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368095",
+    "timestamp_utc": "2026-08-13T04:03:33.065904+00:00",
+    "match": "Cienciano vs Botafogo",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Ven. 14/08 à 02h30",
+    "scores": {
+      "o25": 77,
+      "o15": 97,
+      "btts": 70,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Augusto Bergelio Aragón Bautista",
+      "status": "👨‍⚖️ Arbitre Augusto Bergelio Aragón Bautista (42 m, 0.29 pen/m)",
+      "pen_per_match": 0.286
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
