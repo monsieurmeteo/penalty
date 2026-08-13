@@ -3306,5 +3306,386 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3364138",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Holstein Kiel vs St Pauli",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Ven. 14/08 à 18h30",
+    "scores": {
+      "o25": 89,
+      "o15": 97,
+      "btts": 88,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Max Burda",
+      "status": "👨‍⚖️ Arbitre Max Burda (19 m, 0.42 pen/m)",
+      "pen_per_match": 0.421
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363496",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Braunschweig vs Bochum",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Ven. 14/08 à 18h30",
+    "scores": {
+      "o25": 71,
+      "o15": 93,
+      "btts": 90,
+      "penalty": 70
+    },
+    "referee": {
+      "name": "Marc-Philipp Eckermann",
+      "status": "👨‍⚖️ Arbitre Marc-Philipp Eckermann (13 m, 0.23 pen/m)",
+      "pen_per_match": 0.231
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366986",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Neom SC vs Al Feiha",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Ven. 14/08 à 18h50",
+    "scores": {
+      "o25": 78,
+      "o15": 87,
+      "btts": 62,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365837",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Academica vs Feirense",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Ven. 14/08 à 19h00",
+    "scores": {
+      "o25": 78,
+      "o15": 79,
+      "btts": 67,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362922",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Elfsborg vs Vasteras SK",
+    "league": "Suede • D1 Suede",
+    "date_str": "Ven. 14/08 à 19h00",
+    "scores": {
+      "o25": 78,
+      "o15": 89,
+      "btts": 73,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365144",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Viborg FF vs Aarhus GF",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Ven. 14/08 à 19h00",
+    "scores": {
+      "o25": 48,
+      "o15": 68,
+      "btts": 76,
+      "penalty": 34
+    },
+    "referee": {
+      "name": "Mikkel Redder",
+      "status": "👨‍⚖️ Arbitre Mikkel Redder (18 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362910",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Rosenborg vs Viking FK",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Ven. 14/08 à 19h00",
+    "scores": {
+      "o25": 82,
+      "o15": 91,
+      "btts": 57,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.36
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362925",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Lask Linz vs SV Ried",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Ven. 14/08 à 19h30",
+    "scores": {
+      "o25": 80,
+      "o15": 90,
+      "btts": 71,
+      "penalty": 100
+    },
+    "referee": {
+      "name": "Alain Sadikovski",
+      "status": "👨‍⚖️ Arbitre Alain Sadikovski (10 m, 0.60 pen/m)",
+      "pen_per_match": 0.6
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366979",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Al Hilal vs Al Faisaly",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Ven. 14/08 à 20h00",
+    "scores": {
+      "o25": 64,
+      "o15": 71,
+      "btts": 40,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.22,
+      "o15": 1.05,
+      "btts": 1.9
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369439",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Dinamo Zagreb vs NK Rudes",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Ven. 14/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 97,
+      "btts": 80,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.28,
+      "o15": 1.07,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366975",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "Al Ettifaq vs Al Riyadh",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Ven. 14/08 à 20h00",
+    "scores": {
+      "o25": 80,
+      "o15": 89,
+      "btts": 82,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362909",
+    "timestamp_utc": "2026-08-13T06:04:05.031153+00:00",
+    "match": "SC Telstar vs Spar.Rotterdam",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Ven. 14/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 93,
+      "btts": 72,
+      "penalty": 56
+    },
+    "referee": {
+      "name": "Ingmar Oostrom",
+      "status": "👨‍⚖️ Arbitre Ingmar Oostrom (26 m, 0.19 pen/m)",
+      "pen_per_match": 0.192
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
