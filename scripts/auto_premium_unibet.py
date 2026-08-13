@@ -674,11 +674,12 @@ def main():
             })
             break
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO : >= 2 pen/10m Dom & Ext) ──
-    # Tous les matchs validés par la compétence PENO (>= 2 pen/10m Domicile ET Extérieur) sont retenus.
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 70) ──
+    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 70
     pen_candidates = [
-        m for m in scanned_results 
+        m for m in scanned_results
         if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
+        and m.get("score_penalty", 0) >= 70
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
