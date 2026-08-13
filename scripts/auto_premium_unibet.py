@@ -589,10 +589,9 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Over 2.5 si Score >= 75 ET cote Over 2.5 < Under 2.5 (marché cohérent Unibet)
+        # 1. Over 2.5 si Score >= 75
         o25 = m.get("over25")
-        u25 = m.get("under25")
-        if m.get("ac_score", 0) >= 75 and o25 and u25 and o25 < u25:
+        if m.get("ac_score", 0) >= 75 and o25:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟥 Over 2.5", "odds": o25,
@@ -612,6 +611,15 @@ def main():
                 "market": "🟦 Over 1.5", "odds": m["over15"],
                 "score": m.get("score_o15", 0)
             })
+
+    # ── DIAGNOSTIC : breakdown des filtres ──
+    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
+    n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
+    n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and not m.get("under25"))
+    n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
+    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    print(f"📊 Sélections brutes : Over2.5✅={n_o25_ok} | Over2.5❌filtre={n_o25_excl} | Over2.5❓no_under={n_o25_noc} | BTTS={n_btts} | Over1.5={n_o15}")
+    print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
@@ -634,7 +642,7 @@ def main():
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
                 comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 1.01:  # pas de cote minimale
+                if comb2 >= 2.15:
                     diff = abs(comb2 - 2.10)
                     if diff < best_diff:
                         best_diff = diff
@@ -660,7 +668,7 @@ def main():
         for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 1.01:  # pas de cote minimale
+            if comb_odds >= 2.15:
                 used_match_ids.add(s1["id"])
                 used_match_ids.add(s2["id"])
                 combos_mixed.append({
