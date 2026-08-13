@@ -5,7 +5,7 @@
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 13/08 à 19h30",
       "val_btts": 1.6,
-      "val_o25": 1.5,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 96
     },
@@ -31,17 +31,8 @@
       "match": "Motherwell - HJK Helsinki",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.6,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 94
-    },
-    "3368209": {
-      "match": "Dinamo Tirana - FK Auda",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
-      "val_o25": 1.75,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 94
     },
@@ -51,6 +42,15 @@
       "date_str": "Jeu. 13/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.35,
+      "double": true,
+      "ac_score": 94
+    },
+    "3368209": {
+      "match": "Dinamo Tirana - FK Auda",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 21h00",
+      "val_btts": 1.65,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 94
     },
@@ -90,12 +90,30 @@
       "double": true,
       "ac_score": 87
     },
+    "3367939": {
+      "match": "Santos - CSD Macara",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Ven. 14/08 à 00h00",
+      "val_btts": 1.8,
+      "val_o25": 1.62,
+      "double": true,
+      "ac_score": 87
+    },
     "3363381": {
       "match": "Dep. Toluca - Dallas FC",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h00",
       "val_btts": 1.5,
       "val_o25": 1.32,
+      "double": true,
+      "ac_score": 86
+    },
+    "3368206": {
+      "match": "Austria Vienne - Beit.Jerusalem",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 20h30",
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 86
     },
@@ -108,12 +126,12 @@
       "double": true,
       "ac_score": 86
     },
-    "3368206": {
-      "match": "Austria Vienne - Beit.Jerusalem",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 20h30",
-      "val_btts": 1.5,
-      "val_o25": 1.55,
+    "3368094": {
+      "match": "Vasco De Gama - Olimp.Asuncion",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Ven. 14/08 à 00h00",
+      "val_btts": 1.8,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 86
     },
@@ -139,8 +157,8 @@
       "match": "San Diego FC - Club Puebla",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h15",
-      "val_btts": 1.45,
-      "val_o25": 1.38,
+      "val_btts": 1.4,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 82
     },
@@ -166,17 +184,8 @@
       "match": "Seattle - Chivas",
       "league": "Amerique • Leagues Cup",
       "date_str": "Jeu. 13/08 à 04h30",
-      "val_btts": 1.4,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 77
-    },
-    "3369248": {
-      "match": "Nordsjaelland - ValurReykjavik",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 13/08 à 19h00",
-      "val_btts": 2.0,
-      "val_o25": 1.18,
+      "val_btts": 1.5,
+      "val_o25": 1.45,
       "double": true,
       "ac_score": 77
     },
@@ -186,6 +195,15 @@
       "date_str": "Jeu. 13/08 à 19h00",
       "val_btts": 1.6,
       "val_o25": 1.75,
+      "double": true,
+      "ac_score": 77
+    },
+    "3369248": {
+      "match": "Nordsjaelland - ValurReykjavik",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 13/08 à 19h00",
+      "val_btts": 2.0,
+      "val_o25": 1.18,
       "double": true,
       "ac_score": 77
     },

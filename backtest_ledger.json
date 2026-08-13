@@ -3116,5 +3116,69 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3367939",
+    "timestamp_utc": "2026-08-13T02:03:48.525261+00:00",
+    "match": "Santos vs CSD Macara",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Ven. 14/08 à 00h00",
+    "scores": {
+      "o25": 87,
+      "o15": 93,
+      "btts": 78,
+      "penalty": 81
+    },
+    "referee": {
+      "name": "Kevin Ortega",
+      "status": "👨‍⚖️ Arbitre Kevin Ortega (34 m, 0.32 pen/m)",
+      "pen_per_match": 0.324
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.2,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368094",
+    "timestamp_utc": "2026-08-13T02:03:48.525261+00:00",
+    "match": "Vasco De Gama vs Olimp.Asuncion",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Ven. 14/08 à 00h00",
+    "scores": {
+      "o25": 86,
+      "o15": 83,
+      "btts": 59,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Darío Herrera",
+      "status": "👨‍⚖️ Arbitre Darío Herrera (45 m, 0.20 pen/m)",
+      "pen_per_match": 0.2
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
