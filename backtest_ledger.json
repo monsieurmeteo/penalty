@@ -3687,5 +3687,560 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3367549",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "FC CSKA 1948 vs Cherno More",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Ven. 14/08 à 20h15",
+    "scores": {
+      "o25": 42,
+      "o15": 52,
+      "btts": 22,
+      "penalty": 12
+    },
+    "referee": {
+      "name": "Mariyan Grebencharski",
+      "status": "👨‍⚖️ Arbitre Mariyan Grebencharski (15 m, 0.13 pen/m)",
+      "pen_per_match": 0.133
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363078",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "FC Arges vs FC Constanta",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Ven. 14/08 à 20h30",
+    "scores": {
+      "o25": 68,
+      "o15": 70,
+      "btts": 48,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364809",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Legia Varsovie vs Radomiak Radom",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Ven. 14/08 à 20h30",
+    "scores": {
+      "o25": 72,
+      "o15": 77,
+      "btts": 64,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.18,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360607",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "RealSociedad B vs Castellon",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Ven. 14/08 à 20h30",
+    "scores": {
+      "o25": 84,
+      "o15": 97,
+      "btts": 94,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363807",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Galatasaray vs Belediyespor",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Ven. 14/08 à 20h30",
+    "scores": {
+      "o25": 80,
+      "o15": 90,
+      "btts": 58,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369451",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Dijon vs Pau",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 71,
+      "o15": 70,
+      "btts": 48,
+      "penalty": 64
+    },
+    "referee": {
+      "name": "Gabriel Henry",
+      "status": "👨‍⚖️ Arbitre Gabriel Henry (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.78
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369455",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "St Etienne vs Clermont",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 86,
+      "o15": 83,
+      "btts": 50,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Mickaël Leleu",
+      "status": "👨‍⚖️ Arbitre Mickaël Leleu (16 m, 0.31 pen/m)",
+      "pen_per_match": 0.312
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362919",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Cercle Bruges vs St Trond",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 90,
+      "o15": 90,
+      "btts": 68,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Jan Boterberg",
+      "status": "👨‍⚖️ Arbitre Jan Boterberg (25 m, 0.44 pen/m)",
+      "pen_per_match": 0.44
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.52
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369456",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Reims vs Dunkerque",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 90,
+      "o15": 87,
+      "btts": 73,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Pierre Gaillouste",
+      "status": "👨‍⚖️ Arbitre Pierre Gaillouste (16 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370278",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Laval vs Nantes",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 50,
+      "o15": 64,
+      "btts": 39,
+      "penalty": 21
+    },
+    "referee": {
+      "name": "Antoine Valnet",
+      "status": "👨‍⚖️ Arbitre Antoine Valnet (17 m, 0.18 pen/m)",
+      "pen_per_match": 0.176
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.32,
+      "btts": 1.82
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369450",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Grenoble vs Metz",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 64,
+      "o15": 74,
+      "btts": 59,
+      "penalty": 33
+    },
+    "referee": {
+      "name": "Faouzi Benchabane",
+      "status": "👨‍⚖️ Arbitre Faouzi Benchabane (16 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369452",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Guingamp vs Boulogne",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 50,
+      "o15": 61,
+      "btts": 39,
+      "penalty": 39
+    },
+    "referee": {
+      "name": "Remi Landry",
+      "status": "👨‍⚖️ Arbitre Remi Landry (16 m, 0.31 pen/m)",
+      "pen_per_match": 0.312
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.78
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367580",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Kilmarnock vs AYR United",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 71,
+      "o15": 79,
+      "btts": 70,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Sean Murdoch",
+      "status": "👨‍⚖️ Arbitre Sean Murdoch (22 m, 0.32 pen/m)",
+      "pen_per_match": 0.318
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369449",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Annecy FC vs Rodez",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 87,
+      "o15": 90,
+      "btts": 86,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Geoffrey Kubler",
+      "status": "👨‍⚖️ Arbitre Geoffrey Kubler (16 m, 0.44 pen/m)",
+      "pen_per_match": 0.438
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369453",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Red Star vs Sochaux",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 86,
+      "o15": 83,
+      "btts": 71,
+      "penalty": 64
+    },
+    "referee": {
+      "name": "Pierre Retail",
+      "status": "👨‍⚖️ Arbitre Pierre Retail (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369454",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Nancy vs Montpellier",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 34,
+      "o15": 59,
+      "btts": 38,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Azzedine Souifi",
+      "status": "👨‍⚖️ Arbitre Azzedine Souifi (16 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.82,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359044",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Wolverhampton vs Blackburn",
+    "league": "Angleterre • Championship",
+    "date_str": "Ven. 14/08 à 21h00",
+    "scores": {
+      "o25": 74,
+      "o15": 92,
+      "btts": 75,
+      "penalty": 26
+    },
+    "referee": {
+      "name": "Farai Hallam",
+      "status": "👨‍⚖️ Arbitre Farai Hallam (27 m, 0.07 pen/m)",
+      "pen_per_match": 0.074
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366400",
+    "timestamp_utc": "2026-08-13T08:03:55.525931+00:00",
+    "match": "Sporting vs Guimaraes",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Ven. 14/08 à 21h15",
+    "scores": {
+      "o25": 84,
+      "o15": 92,
+      "btts": 52,
+      "penalty": 38
+    },
+    "referee": {
+      "name": "David Rafael Oliveira Silva",
+      "status": "👨‍⚖️ Arbitre David Rafael Oliveira Silva (24 m, 0.17 pen/m)",
+      "pen_per_match": 0.167
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 1.85
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
