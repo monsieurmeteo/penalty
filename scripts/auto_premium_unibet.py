@@ -589,11 +589,13 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Over 2.5 si Score >= 75
-        if m.get("ac_score", 0) >= 75 and m.get("over25"):
+        # 1. Over 2.5 si Score >= 75 ET cote Over 2.5 < Under 2.5 (marché cohérent Unibet)
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        if m.get("ac_score", 0) >= 75 and o25 and u25 and o25 < u25:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟥 Over 2.5", "odds": m["over25"],
+                "market": "🟥 Over 2.5", "odds": o25,
                 "score": m.get("ac_score", 0)
             })
         # 2. BTTS Oui si Score >= 75
@@ -632,7 +634,7 @@ def main():
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
                 comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.00:
+                if comb2 >= 2.15:
                     diff = abs(comb2 - 2.10)
                     if diff < best_diff:
                         best_diff = diff
@@ -658,7 +660,7 @@ def main():
         for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.00:
+            if comb_odds >= 2.15:
                 used_match_ids.add(s1["id"])
                 used_match_ids.add(s2["id"])
                 combos_mixed.append({
