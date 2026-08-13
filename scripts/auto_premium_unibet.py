@@ -382,10 +382,13 @@ def main():
             for date_block in refs_raw.get("dates", []):
                 for lg in date_block.get("leagues", []):
                     for fx in lg.get("fixtures", []):
-                        eid = str(fx.get("externalid", ""))
-                        if eid and fx.get("refereeId"):
-                            d_refs[eid] = {"refereeId": fx["refereeId"], "refereeName": fx.get("refereeName", "Inconnu")}
-            print(f"✅ Arbitres désignés chargés : {len(d_refs)} matchs")
+                        eids = [str(k) for k in [fx.get("externalid"), fx.get("externalId"), fx.get("id")] if k]
+                        ref_name = fx.get("refereeName") or fx.get("referee_name")
+                        if ref_name and ref_name != "Inconnu":
+                            ref_entry = {"refereeId": fx.get("refereeId", 0), "refereeName": ref_name}
+                            for e_key in eids:
+                                d_refs[e_key] = ref_entry
+            print(f"✅ Arbitres désignés chargés : {len(d_refs)} entrées correspondantes")
         except Exception as e_refs:
             d_refs = {}
             print(f"⚠️ Arbitres non chargés ({type(e_refs).__name__}: {e_refs})")
@@ -674,12 +677,12 @@ def main():
             })
             break
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 70) ──
-    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 70
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
+    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
     pen_candidates = [
         m for m in scanned_results
         if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 70
+        and m.get("score_penalty", 0) >= 80
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates

@@ -223,7 +223,8 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
 
                     if combined > best_score:
                         best_score = combined
-                        best_match = (fx.get("externalId"), h_name, a_name, lg.get("league"))
+                        fx_id = fx.get("externalId") or fx.get("externalid") or fx.get("id")
+                        best_match = (fx_id, h_name, a_name, lg.get("league"))
 
     # 1er passage : recherche dans le bon pays uniquement
     if target_country:
