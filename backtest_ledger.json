@@ -4335,5 +4335,133 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3366824",
+    "timestamp_utc": "2026-08-13T12:03:26.896006+00:00",
+    "match": "Uni.Concepcion vs La Serena",
+    "league": "Chili • D1 Chili",
+    "date_str": "Sam. 15/08 à 01h00",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366946",
+    "timestamp_utc": "2026-08-13T12:03:26.896006+00:00",
+    "match": "Llaneros FC vs DeportesTolima",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Sam. 15/08 à 01h00",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367800",
+    "timestamp_utc": "2026-08-13T12:03:26.896006+00:00",
+    "match": "Racing Club vs CA Banfield",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 15/08 à 01h30",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367599",
+    "timestamp_utc": "2026-08-13T12:03:26.896006+00:00",
+    "match": "Ind.Del Valle vs Delfin SC",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Sam. 15/08 à 02h00",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 2.2
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
