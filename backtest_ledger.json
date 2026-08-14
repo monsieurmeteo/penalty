@@ -8471,5 +8471,94 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3370292",
+    "timestamp_utc": "2026-08-14T22:03:09.900489+00:00",
+    "match": "FC Crusaders vs Ballymena Utd",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 82,
+      "o15": 91,
+      "btts": 59,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367174",
+    "timestamp_utc": "2026-08-14T22:03:09.900489+00:00",
+    "match": "Portimonense vs Vizela",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 16/08 à 12h00",
+    "scores": {
+      "o25": 53,
+      "o15": 61,
+      "btts": 45,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Hélder Carvalho",
+      "status": "👨‍⚖️ Arbitre Hélder Carvalho (20 m, 0.65 pen/m)",
+      "pen_per_match": 0.65
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367166",
+    "timestamp_utc": "2026-08-14T22:03:09.900489+00:00",
+    "match": "LNZ Cherkasy vs Ch.Odessa",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Dim. 16/08 à 12h00",
+    "scores": {
+      "o25": 44,
+      "o15": 66,
+      "btts": 30,
+      "penalty": 25
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.95
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
