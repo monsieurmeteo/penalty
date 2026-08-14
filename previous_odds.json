@@ -1,23 +1,5 @@
 {
   "s3": {
-    "3371296": {
-      "match": "Al Wahda - Ajman",
-      "league": "Emirats Arabes Unis • D1 Emirats Au",
-      "date_str": "Ven. 14/08 à 18h45",
-      "val_btts": 1.48,
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 96
-    },
-    "3369661": {
-      "match": "KI Klaksvik - Lech Poznan",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.7,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 96
-    },
     "3369228": {
       "match": "Ujpest - MTK Budapest",
       "league": "Hongrie • D1 Hongrie",
@@ -35,24 +17,6 @@
       "val_o25": 1.45,
       "double": true,
       "ac_score": 96
-    },
-    "3369439": {
-      "match": "Dinamo Zagreb - NK Rudes",
-      "league": "Croatie • D1 Croatie",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 2.2,
-      "val_o25": 1.28,
-      "double": true,
-      "ac_score": 94
-    },
-    "3362909": {
-      "match": "SC Telstar - Spar.Rotterdam",
-      "league": "Pays Bas • D1 Pays Bas",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 94
     },
     "3363064": {
       "match": "Exce.Rotterdam - PSV Eindhoven",
@@ -148,7 +112,7 @@
       "match": "Reims - Dunkerque",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.65,
+      "val_btts": 1.7,
       "val_o25": 1.75,
       "double": true,
       "ac_score": 90
@@ -170,15 +134,6 @@
       "val_o25": 1.78,
       "double": true,
       "ac_score": 90
-    },
-    "3364138": {
-      "match": "Holstein Kiel - St Pauli",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Ven. 14/08 à 18h30",
-      "val_btts": 1.52,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 89
     },
     "3359045": {
       "match": "Bolton - Preston",
@@ -261,21 +216,21 @@
       "double": true,
       "ac_score": 87
     },
-    "3369455": {
-      "match": "St Etienne - Clermont",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.8,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 86
-    },
     "3369453": {
       "match": "Red Star - Sochaux",
       "league": "France • Ligue 2 Bkt",
       "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.78,
-      "val_o25": 1.95,
+      "val_btts": 1.75,
+      "val_o25": 1.9,
+      "double": true,
+      "ac_score": 86
+    },
+    "3369455": {
+      "match": "St Etienne - Clermont",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 14/08 à 20h45",
+      "val_btts": 1.85,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 86
     },
@@ -283,7 +238,7 @@
       "match": "Radnik Surdul. - FK Macva Sabac",
       "league": "Serbie • D1 Serbie",
       "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.7,
+      "val_btts": 1.8,
       "val_o25": 1.75,
       "double": true,
       "ac_score": 86
@@ -329,7 +284,7 @@
       "league": "Espagne • Laliga 2",
       "date_str": "Ven. 14/08 à 20h30",
       "val_btts": 1.5,
-      "val_o25": 1.52,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 84
     },
@@ -369,12 +324,12 @@
       "double": true,
       "ac_score": 83
     },
-    "3362910": {
-      "match": "Rosenborg - Viking FK",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.36,
-      "val_o25": 1.38,
+    "3370261": {
+      "match": "KawasakiFront. - Kyoto Sanga FC",
+      "league": "Japon • D1 Japon",
+      "date_str": "Sam. 15/08 à 12h00",
+      "val_btts": 1.6,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 82
     },
@@ -384,15 +339,6 @@
       "date_str": "Sam. 15/08 à 12h00",
       "val_btts": 1.82,
       "val_o25": 2.0,
-      "double": true,
-      "ac_score": 82
-    },
-    "3370261": {
-      "match": "KawasakiFront. - Kyoto Sanga FC",
-      "league": "Japon • D1 Japon",
-      "date_str": "Sam. 15/08 à 12h00",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
       "double": true,
       "ac_score": 82
     },
@@ -432,24 +378,6 @@
       "double": true,
       "ac_score": 81
     },
-    "3362925": {
-      "match": "Lask Linz - SV Ried",
-      "league": "Autriche • D1 Autriche",
-      "date_str": "Ven. 14/08 à 19h30",
-      "val_btts": 1.6,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 80
-    },
-    "3366975": {
-      "match": "Al Ettifaq - Al Riyadh",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.45,
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 80
-    },
     "3371357": {
       "match": "Balzan FC - Marsaxlokk FC",
       "league": "Malte • D1 Malte",
@@ -472,7 +400,7 @@
       "match": "Airbus FC - Ammanford",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.5,
+      "val_btts": 1.45,
       "val_o25": 1.52,
       "double": true,
       "ac_score": 80
@@ -504,39 +432,12 @@
       "double": true,
       "ac_score": 80
     },
-    "3366986": {
-      "match": "Neom SC - Al Feiha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 14/08 à 18h50",
-      "val_btts": 1.72,
-      "val_o25": 1.72,
-      "double": true,
-      "ac_score": 78
-    },
-    "3362922": {
-      "match": "Elfsborg - Vasteras SK",
-      "league": "Suede • D1 Suede",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.65,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 78
-    },
-    "3365837": {
-      "match": "Academica - Feirense",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Ven. 14/08 à 19h00",
-      "val_btts": 1.8,
-      "val_o25": 2.05,
-      "double": true,
-      "ac_score": 78
-    },
     "3363323": {
       "match": "Celik Zenica - Siroki Brijeg",
       "league": "Bosnie Herzeg • D1 Bosnie",
       "date_str": "Ven. 14/08 à 20h00",
-      "val_btts": 1.75,
-      "val_o25": 2.0,
+      "val_btts": 1.8,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 78
     },
@@ -544,7 +445,7 @@
       "match": "Connah`s Quay - Trefelin BGC",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 14/08 à 20h45",
-      "val_btts": 1.7,
+      "val_btts": 1.8,
       "val_o25": 1.4,
       "double": true,
       "ac_score": 78
@@ -589,7 +490,7 @@
       "match": "Atlante FC - Dep. Toluca",
       "league": "Mexique • D1 Mexique",
       "date_str": "Dim. 16/08 à 01h00",
-      "val_btts": 1.65,
+      "val_btts": 1.6,
       "val_o25": 1.52,
       "double": true,
       "ac_score": 77

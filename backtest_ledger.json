@@ -8349,5 +8349,34 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3362918",
+    "timestamp_utc": "2026-08-14T18:04:03.303509+00:00",
+    "match": "The New Saints vs Briton Ferry L",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 74,
+      "o15": 90,
+      "btts": 56,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.32,
+      "o15": 1.08,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
