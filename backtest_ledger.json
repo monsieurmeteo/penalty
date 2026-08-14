@@ -8317,5 +8317,37 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3365988",
+    "timestamp_utc": "2026-08-14T16:03:40.773672+00:00",
+    "match": "Atlas FC vs Tigres UANL",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 16/08 à 05h10",
+    "scores": {
+      "o25": 80,
+      "o15": 83,
+      "btts": 68,
+      "penalty": 93
+    },
+    "referee": {
+      "name": "César Arturo Ramos Palazuelos",
+      "status": "👨‍⚖️ Arbitre César Arturo Ramos Palazuelos (21 m, 0.57 pen/m)",
+      "pen_per_match": 0.571
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
