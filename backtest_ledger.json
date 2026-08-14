@@ -5109,5 +5109,405 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371210",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Haverfordwest vs Penybont FC",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 14/08 à 20h45",
+    "scores": {
+      "o25": 63,
+      "o15": 79,
+      "btts": 75,
+      "penalty": 51
+    },
+    "referee": {
+      "name": "Tony Harrington",
+      "status": "👨‍⚖️ Arbitre Tony Harrington (13 m, 0.08 pen/m)",
+      "pen_per_match": 0.077
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364497",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Gwangju FC vs Pohang",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Sam. 15/08 à 12h30",
+    "scores": {
+      "o25": 35,
+      "o15": 65,
+      "btts": 33,
+      "penalty": 23
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364499",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "FC Seoul vs Daejeon",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Sam. 15/08 à 12h30",
+    "scores": {
+      "o25": 75,
+      "o15": 70,
+      "btts": 36,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364518",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Jeju vs FC Anyang",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Sam. 15/08 à 12h30",
+    "scores": {
+      "o25": 71,
+      "o15": 86,
+      "btts": 82,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363498",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Osnabrück vs FC Magdeburg",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Sam. 15/08 à 13h00",
+    "scores": {
+      "o25": 68,
+      "o15": 81,
+      "btts": 48,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Wolfgang Haslberger",
+      "status": "👨‍⚖️ Arbitre Wolfgang Haslberger (16 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363593",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Hertha Berlin vs FC Heidenheim",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Sam. 15/08 à 13h00",
+    "scores": {
+      "o25": 61,
+      "o15": 84,
+      "btts": 78,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Lukas Benen",
+      "status": "👨‍⚖️ Arbitre Lukas Benen (15 m, 0.40 pen/m)",
+      "pen_per_match": 0.4
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.42
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351322",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Liaoning Sheny vs Shenzhen Peng",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 15/08 à 13h00",
+    "scores": {
+      "o25": 62,
+      "o15": 71,
+      "btts": 45,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.42
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363497",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Greuther Furth vs Nuremberg",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Sam. 15/08 à 13h00",
+    "scores": {
+      "o25": 75,
+      "o15": 99,
+      "btts": 88,
+      "penalty": 56
+    },
+    "referee": {
+      "name": "Tom Bauer",
+      "status": "👨‍⚖️ Arbitre Tom Bauer (15 m, 0.07 pen/m)",
+      "pen_per_match": 0.067
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359045",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Bolton vs Preston",
+    "league": "Angleterre • Championship",
+    "date_str": "Sam. 15/08 à 13h30",
+    "scores": {
+      "o25": 89,
+      "o15": 97,
+      "btts": 85,
+      "penalty": 60
+    },
+    "referee": {
+      "name": "Adam Herczeg",
+      "status": "👨‍⚖️ Arbitre Adam Herczeg (25 m, 0.12 pen/m)",
+      "pen_per_match": 0.12
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351327",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Tianjin Tigers vs Beijing Guoan",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 15/08 à 13h35",
+    "scores": {
+      "o25": 83,
+      "o15": 89,
+      "btts": 78,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351328",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Zhejiang FC vs Chengdu Rong.",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 15/08 à 13h35",
+    "scores": {
+      "o25": 73,
+      "o15": 88,
+      "btts": 78,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.32,
+      "o15": 1.08,
+      "btts": 1.3
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351331",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Shanghai Shen. vs Henan SL",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 15/08 à 14h00",
+    "scores": {
+      "o25": 92,
+      "o15": 95,
+      "btts": 88,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.33,
+      "o15": 1.08,
+      "btts": 1.35
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3351330",
+    "timestamp_utc": "2026-08-14T00:04:01.369204+00:00",
+    "match": "Yunnan Yukun vs Dalian Yingbo",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 15/08 à 14h00",
+    "scores": {
+      "o25": 92,
+      "o15": 95,
+      "btts": 88,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.07,
+      "btts": 1.3
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
