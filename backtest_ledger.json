@@ -7284,5 +7284,588 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3364811",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Widzew Lodz vs Korona Kielce",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Sam. 15/08 à 20h15",
+    "scores": {
+      "o25": 66,
+      "o15": 79,
+      "btts": 61,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Karol Arys",
+      "status": "👨‍⚖️ Arbitre Karol Arys (27 m, 0.11 pen/m)",
+      "pen_per_match": 0.111
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369919",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Ludogorets vs Botev Plovdiv",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Sam. 15/08 à 20h15",
+    "scores": {
+      "o25": 77,
+      "o15": 79,
+      "btts": 46,
+      "penalty": 90
+    },
+    "referee": {
+      "name": "Dragomir Draganov",
+      "status": "👨‍⚖️ Arbitre Dragomir Draganov (14 m, 0.36 pen/m)",
+      "pen_per_match": 0.357
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363075",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Rapid Bucarest vs DinamoBucarest",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Sam. 15/08 à 20h30",
+    "scores": {
+      "o25": 60,
+      "o15": 88,
+      "btts": 74,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364677",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Kaiserslautern vs Karlsruhe",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Sam. 15/08 à 20h30",
+    "scores": {
+      "o25": 94,
+      "o15": 97,
+      "btts": 68,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Richard Hempel",
+      "status": "👨‍⚖️ Arbitre Richard Hempel (14 m, 0.29 pen/m)",
+      "pen_per_match": 0.286
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365301",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Podbrezova vs As Trencin",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Sam. 15/08 à 20h30",
+    "scores": {
+      "o25": 84,
+      "o15": 87,
+      "btts": 59,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Marián Ruc",
+      "status": "👨‍⚖️ Arbitre Marián Ruc (11 m, 0.45 pen/m)",
+      "pen_per_match": 0.455
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363750",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Gaziantep Spor vs Alanyaspor",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Sam. 15/08 à 20h30",
+    "scores": {
+      "o25": 71,
+      "o15": 89,
+      "btts": 85,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Yasin Kol",
+      "status": "👨‍⚖️ Arbitre Yasin Kol (21 m, 0.38 pen/m)",
+      "pen_per_match": 0.381
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.22,
+      "btts": 1.62
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363768",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Genclerbirligi vs Fenerbahce",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Sam. 15/08 à 20h30",
+    "scores": {
+      "o25": 89,
+      "o15": 99,
+      "btts": 68,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Oğuzhan Aksu",
+      "status": "👨‍⚖️ Arbitre Oğuzhan Aksu (21 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.82
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363080",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "RC Genk vs Westerlo",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Sam. 15/08 à 20h45",
+    "scores": {
+      "o25": 66,
+      "o15": 79,
+      "btts": 42,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Lawrence Visser",
+      "status": "👨‍⚖️ Arbitre Lawrence Visser (27 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363083",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Louvain vs Club Bruges",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Sam. 15/08 à 20h45",
+    "scores": {
+      "o25": 85,
+      "o15": 93,
+      "btts": 69,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Jasper Vergoote",
+      "status": "👨‍⚖️ Arbitre Jasper Vergoote (26 m, 0.31 pen/m)",
+      "pen_per_match": 0.308
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363061",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "FortunaSittard vs SC Cambuur",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 15/08 à 21h00",
+    "scores": {
+      "o25": 96,
+      "o15": 99,
+      "btts": 98,
+      "penalty": 76
+    },
+    "referee": {
+      "name": "Martin van den Kerkhof",
+      "status": "👨‍⚖️ Arbitre Martin van den Kerkhof (27 m, 0.26 pen/m)",
+      "pen_per_match": 0.259
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369396",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Guarani vs Rubio Nu",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Sam. 15/08 à 21h00",
+    "scores": {
+      "o25": 44,
+      "o15": 55,
+      "btts": 30,
+      "penalty": 35
+    },
+    "referee": {
+      "name": "Alipio Colman",
+      "status": "👨‍⚖️ Arbitre Alipio Colman (24 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369300",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Manta FC vs FC Leones",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Sam. 15/08 à 21h00",
+    "scores": {
+      "o25": 22,
+      "o15": 44,
+      "btts": 16,
+      "penalty": 18
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.4,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370116",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "FK Cukaricki vs OFK Belgrade",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Sam. 15/08 à 21h00",
+    "scores": {
+      "o25": 94,
+      "o15": 93,
+      "btts": 83,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.25,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369444",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "NK Osijek vs Lok.Zagreb",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Sam. 15/08 à 21h00",
+    "scores": {
+      "o25": 48,
+      "o15": 74,
+      "btts": 12,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Ante Terzić",
+      "status": "👨‍⚖️ Arbitre Ante Terzić (17 m, 0.35 pen/m)",
+      "pen_per_match": 0.353
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367318",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Fluminense vs Palmeiras",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Sam. 15/08 à 21h30",
+    "scores": {
+      "o25": 89,
+      "o15": 87,
+      "btts": 77,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Anderson Daronco",
+      "status": "👨‍⚖️ Arbitre Anderson Daronco (42 m, 0.17 pen/m)",
+      "pen_per_match": 0.167
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366399",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Rio Ave vs FC Porto",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Sam. 15/08 à 21h30",
+    "scores": {
+      "o25": 94,
+      "o15": 90,
+      "btts": 79,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Miguel André Monteiro Fonseca",
+      "status": "👨‍⚖️ Arbitre Miguel André Monteiro Fonseca (18 m, 0.50 pen/m)",
+      "pen_per_match": 0.5
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.95
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360668",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "FC Séville vs Rayo Vallecano",
+    "league": "Espagne • Laliga",
+    "date_str": "Sam. 15/08 à 21h30",
+    "scores": {
+      "o25": 53,
+      "o15": 80,
+      "btts": 63,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.1,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360598",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Majorque vs Valladolid",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 15/08 à 21h30",
+    "scores": {
+      "o25": 90,
+      "o15": 93,
+      "btts": 86,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367790",
+    "timestamp_utc": "2026-08-14T08:04:56.380903+00:00",
+    "match": "Estudiantes LP vs Gimnasia LP",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 15/08 à 21h45",
+    "scores": {
+      "o25": 68,
+      "o15": 70,
+      "btts": 45,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Yael Falcón Pérez",
+      "status": "👨‍⚖️ Arbitre Yael Falcón Pérez (49 m, 0.12 pen/m)",
+      "pen_per_match": 0.122
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
