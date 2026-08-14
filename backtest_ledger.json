@@ -8254,5 +8254,68 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3367792",
+    "timestamp_utc": "2026-08-14T14:03:36.731450+00:00",
+    "match": "CA Platense vs Boca Juniors",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 16/08 à 02h15",
+    "scores": {
+      "o25": 59,
+      "o15": 78,
+      "btts": 39,
+      "penalty": 65
+    },
+    "referee": {
+      "name": "Jorge Baliño",
+      "status": "👨‍⚖️ Arbitre Jorge Baliño (22 m, 0.23 pen/m)",
+      "pen_per_match": 0.227
+    },
+    "odds": {
+      "o25": 2.6,
+      "o15": 1.52,
+      "btts": 2.1
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365996",
+    "timestamp_utc": "2026-08-14T14:03:36.731450+00:00",
+    "match": "Monterrey vs FC Juarez",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 16/08 à 03h10",
+    "scores": {
+      "o25": 92,
+      "o15": 97,
+      "btts": 90,
+      "penalty": 95
+    },
+    "referee": {
+      "name": "Luis Rodriguez",
+      "status": "👨‍⚖️ Arbitre Luis Rodriguez (6 m, 0.50 pen/m)",
+      "pen_per_match": 0.5
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
