@@ -6615,5 +6615,674 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3366977",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Al Taawon vs Al Khaleej",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Sam. 15/08 à 18h15",
+    "scores": {
+      "o25": 82,
+      "o15": 97,
+      "btts": 96,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363082",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "KV Kortrijk vs Royal Antwerp",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Sam. 15/08 à 18h15",
+    "scores": {
+      "o25": 65,
+      "o15": 80,
+      "btts": 56,
+      "penalty": 13
+    },
+    "referee": {
+      "name": "Nicolas Laforge",
+      "status": "👨‍⚖️ Arbitre Nicolas Laforge (26 m, 0.08 pen/m)",
+      "pen_per_match": 0.077
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369447",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Istra 1961 vs Slaven Belupo",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Sam. 15/08 à 18h30",
+    "scores": {
+      "o25": 89,
+      "o15": 99,
+      "btts": 79,
+      "penalty": 77
+    },
+    "referee": {
+      "name": "Patrik Kolarić",
+      "status": "👨‍⚖️ Arbitre Patrik Kolarić (19 m, 0.37 pen/m)",
+      "pen_per_match": 0.368
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359052",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Sheffield Utd vs Birmingham",
+    "league": "Angleterre • Championship",
+    "date_str": "Sam. 15/08 à 18h30",
+    "scores": {
+      "o25": 70,
+      "o15": 92,
+      "btts": 83,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Gavin Ward",
+      "status": "👨‍⚖️ Arbitre Gavin Ward (26 m, 0.12 pen/m)",
+      "pen_per_match": 0.115
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365895",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Khor Fakkan vs Shabab Al Ahli",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Sam. 15/08 à 18h45",
+    "scores": {
+      "o25": 55,
+      "o15": 63,
+      "btts": 53,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.48
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363063",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Utrecht vs AZ Alkmaar",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 15/08 à 18h45",
+    "scores": {
+      "o25": 72,
+      "o15": 90,
+      "btts": 58,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Danny Desmond Makkelie",
+      "status": "👨‍⚖️ Arbitre Danny Desmond Makkelie (26 m, 0.50 pen/m)",
+      "pen_per_match": 0.5
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.15,
+      "btts": 1.42
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367577",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Dundee Utd vs Celtic",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Sam. 15/08 à 18h45",
+    "scores": {
+      "o25": 82,
+      "o15": 97,
+      "btts": 85,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.2,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370115",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Radnik Surdul. vs FK Macva Sabac",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 86,
+      "o15": 95,
+      "btts": 73,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370471",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Viseu vs Santa Clara",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 56,
+      "o15": 61,
+      "btts": 45,
+      "penalty": 39
+    },
+    "referee": {
+      "name": "João António Ferreira Gonçalves",
+      "status": "👨‍⚖️ Arbitre João António Ferreira Gonçalves (26 m, 0.38 pen/m)",
+      "pen_per_match": 0.385
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.78
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370322",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Thor Akureyri vs Keflavik",
+    "league": "Islande • D1 Islande",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 80,
+      "o15": 79,
+      "btts": 84,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.07,
+      "btts": 1.28
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360599",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Real Oviedo vs Granada CF",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 75,
+      "o15": 87,
+      "btts": 68,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366110",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Torreense vs Penafiel",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 78,
+      "o15": 75,
+      "btts": 56,
+      "penalty": 97
+    },
+    "referee": {
+      "name": "Márcio André Dias Torres",
+      "status": "👨‍⚖️ Arbitre Márcio André Dias Torres (19 m, 0.53 pen/m)",
+      "pen_per_match": 0.526
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369269",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Cadix vs Celta Fortuna",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 50,
+      "o15": 63,
+      "btts": 33,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367796",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "San Lorenzo vs Union Santa Fe",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 15/08 à 19h30",
+    "scores": {
+      "o25": 71,
+      "o15": 84,
+      "btts": 61,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Leandro Rey Hilfer",
+      "status": "👨‍⚖️ Arbitre Leandro Rey Hilfer (48 m, 0.31 pen/m)",
+      "pen_per_match": 0.312
+    },
+    "odds": {
+      "o25": 2.35,
+      "o15": 1.45,
+      "btts": 1.95
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360664",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Alaves vs Getafe",
+    "league": "Espagne • Laliga",
+    "date_str": "Sam. 15/08 à 19h30",
+    "scores": {
+      "o25": 53,
+      "o15": 67,
+      "btts": 65,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.9,
+      "o15": 1.6,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363091",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Sturm Graz vs SCR Altach",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Sam. 15/08 à 19h30",
+    "scores": {
+      "o25": 50,
+      "o15": 77,
+      "btts": 37,
+      "penalty": 17
+    },
+    "referee": {
+      "name": "Florian Jäger",
+      "status": "👨‍⚖️ Arbitre Florian Jäger (6 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367798",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "CA Aldosivi vs C.A. Tigre",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 15/08 à 19h30",
+    "scores": {
+      "o25": 40,
+      "o15": 53,
+      "btts": 37,
+      "penalty": 9
+    },
+    "referee": {
+      "name": "Juan Pafundi",
+      "status": "👨‍⚖️ Arbitre Juan Pafundi (49 m, 0.12 pen/m)",
+      "pen_per_match": 0.122
+    },
+    "odds": {
+      "o25": 2.6,
+      "o15": 1.52,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363064",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Exce.Rotterdam vs PSV Eindhoven",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 99,
+      "btts": 92,
+      "penalty": 67
+    },
+    "referee": {
+      "name": "Marc Nagtegaal",
+      "status": "👨‍⚖️ Arbitre Marc Nagtegaal (28 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.28,
+      "o15": 1.07,
+      "btts": 1.38
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367998",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Durban City vs Richards Bay",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 40,
+      "o15": 52,
+      "btts": 36,
+      "penalty": 5
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.6,
+      "o15": 1.55,
+      "btts": 2.05
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366981",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Al Ittihad FC vs Al Kholood",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 88,
+      "o15": 81,
+      "btts": 65,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371288",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Milford FC vs Kruger United",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 43,
+      "o15": 56,
+      "btts": 42,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.4,
+      "o15": 1.45,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366980",
+    "timestamp_utc": "2026-08-14T06:04:07.083569+00:00",
+    "match": "Al Nassr vs Al Fateh",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 64,
+      "o15": 82,
+      "btts": 51,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.2,
+      "o15": 1.05,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
