@@ -692,8 +692,8 @@ def main():
 
 
 
-    def render_match_proof_html(m):
-        score = m.get("ac_score", 0)
+    def render_match_proof_html(m, sel_score=None):
+        score = sel_score if sel_score is not None else m.get("ac_score", 0)
         # Pas de données AdamChoi pour ce match → ne pas afficher de bloc vide
         if not score:
             return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
@@ -831,7 +831,7 @@ def main():
                 mk = item["market"]
                 o = item["odds"]
                 sc = item["score"]
-                proof = render_match_proof_html(m)
+                proof = render_match_proof_html(m, sel_score=sc)
                 items_html += f'''
                 <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
