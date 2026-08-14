@@ -697,7 +697,14 @@ def main():
         # Pas de données AdamChoi pour ce match → ne pas afficher de bloc vide
         if not score:
             return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
-        classe = m.get("ac_classe", "Bon potentiel")
+        # Recalculer le label à partir du score de sélection réel (pas toujours ac_score)
+        if score >= 90:   classe = "🔥🔥🔥 Exceptionnel"
+        elif score >= 85: classe = "🔥🔥 Très fort"
+        elif score >= 80: classe = "🔥 Fort"
+        elif score >= 75: classe = "✅ Bon potentiel"
+        elif score >= 70: classe = "🟡 Intéressant"
+        elif score >= 65: classe = "⚠️ Moyen"
+        else:             classe = "⚠️ Fragile"
         pts_ipo = m.get("pts_ipo", 0)
         ipo_val = m.get("ipo_comb", 0.0)
         pts_goals = m.get("pts_goals", 0)
