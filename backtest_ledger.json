@@ -7867,5 +7867,274 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3365891",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Al Dhafra vs Sharjah",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Sam. 15/08 à 16h10",
+    "scores": {
+      "o25": 60,
+      "o15": 79,
+      "btts": 62,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.58,
+      "o15": 1.15,
+      "btts": 1.52
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365898",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Al Wasl vs Dubai UnitedFC",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Sam. 15/08 à 18h45",
+    "scores": {
+      "o25": 64,
+      "o15": 82,
+      "btts": 51,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370133",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Cavalry vs Forge",
+    "league": "Canada • D1 Canada",
+    "date_str": "Sam. 15/08 à 23h00",
+    "scores": {
+      "o25": 86,
+      "o15": 95,
+      "btts": 85,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367152",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "D. Limache vs Uni.De Chile",
+    "league": "Chili • D1 Chili",
+    "date_str": "Sam. 15/08 à 23h30",
+    "scores": {
+      "o25": 66,
+      "o15": 72,
+      "btts": 33,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368074",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "CS Trinidense vs Nac.Asuncion",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Sam. 15/08 à 23h30",
+    "scores": {
+      "o25": 71,
+      "o15": 93,
+      "btts": 91,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Derlis Fabián López López",
+      "status": "👨‍⚖️ Arbitre Derlis Fabián López López (37 m, 0.54 pen/m)",
+      "pen_per_match": 0.541
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367123",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Atletico PR vs Bragantino SP",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Sam. 15/08 à 23h30",
+    "scores": {
+      "o25": 70,
+      "o15": 90,
+      "btts": 53,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Alex Gomes Stefano",
+      "status": "👨‍⚖️ Arbitre Alex Gomes Stefano (40 m, 0.33 pen/m)",
+      "pen_per_match": 0.325
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.72
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369595",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Guayaquil FC vs Libertad Loja",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Sam. 15/08 à 23h30",
+    "scores": {
+      "o25": 24,
+      "o15": 46,
+      "btts": 22,
+      "penalty": 8
+    },
+    "referee": {
+      "name": "Jennifer Mishel Canchingre Preciado",
+      "status": "👨‍⚖️ Arbitre Jennifer Mishel Canchingre Preciado (13 m, 0.08 pen/m)",
+      "pen_per_match": 0.077
+    },
+    "odds": {
+      "o25": 2.2,
+      "o15": 1.4,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367801",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Belgrano vs Ind. Rivadavia",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 16/08 à 00h00",
+    "scores": {
+      "o25": 57,
+      "o15": 68,
+      "btts": 39,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Nazareno Arasa",
+      "status": "👨‍⚖️ Arbitre Nazareno Arasa (49 m, 0.29 pen/m)",
+      "pen_per_match": 0.286
+    },
+    "odds": {
+      "o25": 2.35,
+      "o15": 1.45,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367799",
+    "timestamp_utc": "2026-08-14T10:03:09.408918+00:00",
+    "match": "Newell OldBoys vs Dep. Riestra",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 16/08 à 00h00",
+    "scores": {
+      "o25": 22,
+      "o15": 47,
+      "btts": 30,
+      "penalty": 12
+    },
+    "referee": {
+      "name": "Luis Lobo Medina",
+      "status": "👨‍⚖️ Arbitre Luis Lobo Medina (47 m, 0.17 pen/m)",
+      "pen_per_match": 0.17
+    },
+    "odds": {
+      "o25": 2.7,
+      "o15": 1.55,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
