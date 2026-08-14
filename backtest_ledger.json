@@ -8136,5 +8136,123 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3365995",
+    "timestamp_utc": "2026-08-14T12:04:08.690493+00:00",
+    "match": "Atlante FC vs Dep. Toluca",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 16/08 à 01h00",
+    "scores": {
+      "o25": 77,
+      "o15": 95,
+      "btts": 72,
+      "penalty": 67
+    },
+    "referee": {
+      "name": "Salvador Pérez Villalobos",
+      "status": "👨‍⚖️ Arbitre Salvador Pérez Villalobos (8 m, 0.12 pen/m)",
+      "pen_per_match": 0.125
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367153",
+    "timestamp_utc": "2026-08-14T12:04:08.690493+00:00",
+    "match": "Everton Vina vs Audax Italiano",
+    "league": "Chili • D1 Chili",
+    "date_str": "Dim. 16/08 à 02h00",
+    "scores": {
+      "o25": 50,
+      "o15": 55,
+      "btts": 30,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367121",
+    "timestamp_utc": "2026-08-14T12:04:08.690493+00:00",
+    "match": "Sao Paulo vs Coritiba",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 02h00",
+    "scores": {
+      "o25": 68,
+      "o15": 79,
+      "btts": 45,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Charly Wendy Straub Deretti",
+      "status": "👨‍⚖️ Arbitre Charly Wendy Straub Deretti (6 m, 0.67 pen/m)",
+      "pen_per_match": 0.667
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367597",
+    "timestamp_utc": "2026-08-14T12:04:08.690493+00:00",
+    "match": "Mushuc Runa vs Barcelona SC",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Dim. 16/08 à 02h00",
+    "scores": {
+      "o25": 47,
+      "o15": 67,
+      "btts": 52,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.25,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
