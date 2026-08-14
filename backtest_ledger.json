@@ -8378,5 +8378,98 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3362916",
+    "timestamp_utc": "2026-08-14T20:03:53.171804+00:00",
+    "match": "Barry Town FC vs Cardiff",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Sam. 15/08 à 13h30",
+    "scores": {
+      "o25": 66,
+      "o15": 89,
+      "btts": 53,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Andrew Humphries",
+      "status": "👨‍⚖️ Arbitre Andrew Humphries (30 m, 0.20 pen/m)",
+      "pen_per_match": 0.2
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370296",
+    "timestamp_utc": "2026-08-14T20:03:53.171804+00:00",
+    "match": "Coleraine vs FC Larne",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 86,
+      "o15": 90,
+      "btts": 63,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370293",
+    "timestamp_utc": "2026-08-14T20:03:53.171804+00:00",
+    "match": "Bangor FC vs Cliftonville",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 69,
+      "o15": 87,
+      "btts": 52,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
