@@ -597,14 +597,7 @@ def main():
                 "market": "🟥 Over 2.5", "odds": o25,
                 "score": m.get("ac_score", 0)
             })
-        # 2. BTTS Oui si Score >= 75
-        elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
-                "score": m.get("score_btts", 0)
-            })
-        # 3. Over 1.5 si Score >= 75
+        # 2. Over 1.5 si Score >= 75 (BTTS supprimé)
         elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
@@ -613,12 +606,10 @@ def main():
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
-    n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
-    n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and not m.get("under25"))
-    n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
-    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
-    print(f"📊 Sélections brutes : Over2.5✅={n_o25_ok} | Over2.5❌filtre={n_o25_excl} | Over2.5❓no_under={n_o25_noc} | BTTS={n_btts} | Over1.5={n_o15}")
+    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25"))
+    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 75 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"])
+    print(f"📊 Sélections brutes : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre connu)={n_pen}")
     print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
@@ -685,7 +676,8 @@ def main():
     pen_candidates = [
         m for m in scanned_results
         if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 80
+        and m.get("score_penalty", 0) >= 75
+        and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]  # arbitre obligatoirement connu
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
@@ -994,6 +986,10 @@ def main():
         o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
         score_v = m.get("ac_score", 0)
         btts_v = m.get("score_btts", 0)
+        o15_v = m.get("score_o15", 0)
+        o15_bg = "#dcfce7" if o15_v >= 75 else ("#fef3c7" if o15_v >= 50 else "#f1f5f9")
+        o15_cl = "#15803d" if o15_v >= 75 else ("#92400e" if o15_v >= 50 else "#94a3b8")
+        o15_badge = f'<span style="background:{o15_bg}; color:{o15_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{o15_v}/100</span>' if o15_v > 0 else '<span style="color:#94a3b8;">—</span>'
         
         # Badges scores
         score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
@@ -1013,7 +1009,7 @@ def main():
             f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{score_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{btts_badge}</td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{o15_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{ref_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
@@ -1079,7 +1075,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5, Over 1.5, BTTS — Cote min 2.00)</span></span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 75/100)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1118,7 +1114,7 @@ def main():
                   <th style="padding:7px 8px; text-align:left;">Heure</th>
                   <th style="padding:7px 8px; text-align:left;">Match</th>
                   <th style="padding:7px 6px; text-align:center;">Score Over 2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Score BTTS</th>
+                  <th style="padding:7px 6px; text-align:center;">Score O1.5</th>
                   <th style="padding:7px 6px; text-align:center;">Cote O2.5</th>
                   <th style="padding:7px 6px; text-align:center;">Arbitre</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
