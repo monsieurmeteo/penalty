@@ -1,14 +1,5 @@
 {
   "s3": {
-    "3370294": {
-      "match": "Linfield - Glentoran",
-      "league": "Irlande Du Nord • D1 Irlande Nord",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 96
-    },
     "3369228": {
       "match": "Ujpest - MTK Budapest",
       "league": "Hongrie • D1 Hongrie",
@@ -31,7 +22,7 @@
       "match": "FortunaSittard - SC Cambuur",
       "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Sam. 15/08 à 21h00",
-      "val_btts": 1.48,
+      "val_btts": 1.5,
       "val_o25": 1.45,
       "double": true,
       "ac_score": 96
@@ -77,7 +68,7 @@
       "league": "Suisse • Cpe Suisse",
       "date_str": "Sam. 15/08 à 16h00",
       "val_btts": 2.2,
-      "val_o25": 1.22,
+      "val_o25": 1.18,
       "double": true,
       "ac_score": 94
     },
@@ -112,7 +103,7 @@
       "match": "Rio Ave - FC Porto",
       "league": "Portugal • Liga Portugal",
       "date_str": "Sam. 15/08 à 21h30",
-      "val_btts": 2.0,
+      "val_btts": 2.05,
       "val_o25": 1.7,
       "double": true,
       "ac_score": 94
@@ -130,7 +121,7 @@
       "match": "Willem II - NEC Nimègue",
       "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Sam. 15/08 à 16h30",
-      "val_btts": 1.45,
+      "val_btts": 1.48,
       "val_o25": 1.4,
       "double": true,
       "ac_score": 92
@@ -139,7 +130,7 @@
       "match": "Piast Gliwice - Wieczysta",
       "league": "Pologne • D1 Pologne",
       "date_str": "Sam. 15/08 à 17h30",
-      "val_btts": 1.5,
+      "val_btts": 1.45,
       "val_o25": 1.6,
       "double": true,
       "ac_score": 92
@@ -171,12 +162,21 @@
       "double": true,
       "ac_score": 92
     },
+    "3365999": {
+      "match": "Santos Laguna - Chivas",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Lun. 17/08 à 03h10",
+      "val_btts": 1.55,
+      "val_o25": 1.48,
+      "double": true,
+      "ac_score": 92
+    },
     "3367579": {
       "match": "Aberdeen - Dundee FC",
       "league": "Ecosse • Cpe Ligue Ecosse",
       "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.6,
-      "val_o25": 1.72,
+      "val_btts": 1.55,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 90
     },
@@ -189,21 +189,21 @@
       "double": true,
       "ac_score": 90
     },
-    "3363227": {
-      "match": "KV Beveren - Anderlecht",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 90
-    },
     "3363493": {
       "match": "Dynamo Dresden - SV Darmstadt",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
       "val_btts": 1.48,
       "val_o25": 1.52,
+      "double": true,
+      "ac_score": 90
+    },
+    "3363227": {
+      "match": "KV Beveren - Anderlecht",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Dim. 16/08 à 13h30",
+      "val_btts": 1.6,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 90
     },
@@ -234,15 +234,6 @@
       "double": true,
       "ac_score": 90
     },
-    "3363079": {
-      "match": "Saint-Gilloise - Zulte Waregem",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.72,
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 89
-    },
     "3365305": {
       "match": "MFK Skalica - FK Kosice",
       "league": "Slovaquie • D1 Slovaquie",
@@ -252,12 +243,21 @@
       "double": true,
       "ac_score": 89
     },
+    "3368849": {
+      "match": "Nafta Lendava - NK Celje",
+      "league": "Slovenie • D1 Slovenie",
+      "date_str": "Sam. 15/08 à 18h00",
+      "val_btts": 1.4,
+      "val_o25": 1.42,
+      "double": true,
+      "ac_score": 89
+    },
     "3369447": {
       "match": "Istra 1961 - Slaven Belupo",
       "league": "Croatie • D1 Croatie",
       "date_str": "Sam. 15/08 à 18h30",
-      "val_btts": 1.55,
-      "val_o25": 1.6,
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 89
     },
@@ -275,7 +275,7 @@
       "league": "Bresil • D1 Bresil",
       "date_str": "Sam. 15/08 à 21h30",
       "val_btts": 1.8,
-      "val_o25": 2.05,
+      "val_o25": 2.1,
       "double": true,
       "ac_score": 89
     },
@@ -301,8 +301,8 @@
       "match": "Al Ittihad FC - Al Kholood",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Sam. 15/08 à 20h00",
-      "val_btts": 1.62,
-      "val_o25": 1.5,
+      "val_btts": 1.65,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 88
     },
@@ -319,7 +319,7 @@
       "match": "FC Meyrin - NeuchatelXamax",
       "league": "Suisse • Cpe Suisse",
       "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.5,
+      "val_btts": 1.45,
       "val_o25": 1.32,
       "double": true,
       "ac_score": 87
@@ -423,15 +423,6 @@
       "double": true,
       "ac_score": 86
     },
-    "3359047": {
-      "match": "Charlton - Derby",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.78,
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 85
-    },
     "3365299": {
       "match": "Slo.Bratislava - MFK Ruzomberok",
       "league": "Slovaquie • D1 Slovaquie",
@@ -509,7 +500,7 @@
       "league": "Ukraine • D1 Ukraine",
       "date_str": "Dim. 16/08 à 17h00",
       "val_btts": 1.72,
-      "val_o25": 1.65,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 84
     },
@@ -526,8 +517,8 @@
       "match": "Stoke City - Swansea",
       "league": "Angleterre • Championship",
       "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.7,
-      "val_o25": 1.9,
+      "val_btts": 1.65,
+      "val_o25": 1.82,
       "double": true,
       "ac_score": 83
     },
@@ -580,8 +571,8 @@
       "match": "Dundee Utd - Celtic",
       "league": "Ecosse • Cpe Ligue Ecosse",
       "date_str": "Sam. 15/08 à 18h45",
-      "val_btts": 1.55,
-      "val_o25": 1.5,
+      "val_btts": 1.45,
+      "val_o25": 1.45,
       "double": true,
       "ac_score": 82
     },
@@ -589,7 +580,7 @@
       "match": "Twente - Zwolle",
       "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Dim. 16/08 à 14h30",
-      "val_btts": 1.72,
+      "val_btts": 1.7,
       "val_o25": 1.35,
       "double": true,
       "ac_score": 82
@@ -617,7 +608,7 @@
       "league": "Espagne • Laliga 2",
       "date_str": "Sam. 15/08 à 17h00",
       "val_btts": 1.72,
-      "val_o25": 1.72,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 80
     },
@@ -666,21 +657,12 @@
       "double": true,
       "ac_score": 80
     },
-    "3370470": {
-      "match": "Uniao Leiria - Benfica B",
-      "league": "Portugal • D2 Portugal",
-      "date_str": "Sam. 15/08 à 15h00",
-      "val_btts": 1.55,
-      "val_o25": 1.72,
-      "double": true,
-      "ac_score": 78
-    },
     "3366110": {
       "match": "Torreense - Penafiel",
       "league": "Portugal • D2 Portugal",
       "date_str": "Sam. 15/08 à 19h00",
       "val_btts": 1.75,
-      "val_o25": 1.9,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 78
     },
@@ -708,15 +690,6 @@
       "date_str": "Dim. 16/08 à 16h30",
       "val_btts": 1.55,
       "val_o25": 1.55,
-      "double": true,
-      "ac_score": 78
-    },
-    "3367581": {
-      "match": "Rangers - St Mirren",
-      "league": "Ecosse • Cpe Ligue Ecosse",
-      "date_str": "Dim. 16/08 à 17h00",
-      "val_btts": 1.65,
-      "val_o25": 1.48,
       "double": true,
       "ac_score": 78
     },
@@ -819,20 +792,11 @@
       "double": true,
       "ac_score": 76
     },
-    "3359048": {
-      "match": "Middlesbrough - Lincoln",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.82,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 75
-    },
     "3365300": {
       "match": "Dukla Bystrica - MSK Zilina",
       "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Sam. 15/08 à 18h00",
-      "val_btts": 1.55,
+      "val_btts": 1.5,
       "val_o25": 1.5,
       "double": true,
       "ac_score": 75
@@ -841,8 +805,8 @@
       "match": "Real Oviedo - Granada CF",
       "league": "Espagne • Laliga 2",
       "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.8,
-      "val_o25": 2.05,
+      "val_btts": 1.9,
+      "val_o25": 2.15,
       "double": true,
       "ac_score": 75
     },

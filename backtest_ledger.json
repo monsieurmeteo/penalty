@@ -12194,5 +12194,126 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3368849",
+    "timestamp_utc": "2026-08-15T14:03:46.095475+00:00",
+    "match": "Nafta Lendava vs NK Celje",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Sam. 15/08 à 18h00",
+    "scores": {
+      "o25": 89,
+      "o15": 97,
+      "btts": 88,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Alen Bubek",
+      "status": "👨‍⚖️ Arbitre Alen Bubek (9 m, 0.44 pen/m)",
+      "pen_per_match": 0.444
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370759",
+    "timestamp_utc": "2026-08-15T14:03:46.095475+00:00",
+    "match": "Caernarfon vs Colwyn Bay",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Sam. 15/08 à 18h15",
+    "scores": {
+      "o25": 34,
+      "o15": 48,
+      "btts": 31,
+      "penalty": 31
+    },
+    "referee": {
+      "name": "José Burgos",
+      "status": "👨‍⚖️ Arbitre José Burgos (33 m, 0.24 pen/m)",
+      "pen_per_match": 0.242
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365893",
+    "timestamp_utc": "2026-08-15T14:03:46.095475+00:00",
+    "match": "Hatta Club vs Al Jazira",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Dim. 16/08 à 16h10",
+    "scores": {
+      "o25": 71,
+      "o15": 77,
+      "btts": 56,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.48
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365999",
+    "timestamp_utc": "2026-08-15T14:03:46.095475+00:00",
+    "match": "Santos Laguna vs Chivas",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Lun. 17/08 à 03h10",
+    "scores": {
+      "o25": 92,
+      "o15": 93,
+      "btts": 90,
+      "penalty": 76
+    },
+    "referee": {
+      "name": "Vicente Jassiel Reynoso Arce",
+      "status": "👨‍⚖️ Arbitre Vicente Jassiel Reynoso Arce (17 m, 0.18 pen/m)",
+      "pen_per_match": 0.176
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
