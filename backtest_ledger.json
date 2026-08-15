@@ -11125,5 +11125,537 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3364812",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Gornik Zabrze vs Wisla Cracovie",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Dim. 16/08 à 20h15",
+    "scores": {
+      "o25": 82,
+      "o15": 93,
+      "btts": 80,
+      "penalty": 76
+    },
+    "referee": {
+      "name": "Damian Sylwestrzak",
+      "status": "👨‍⚖️ Arbitre Damian Sylwestrzak (26 m, 0.19 pen/m)",
+      "pen_per_match": 0.192
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367548",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Lokomo.Plovdiv vs Dunav Rousse",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Dim. 16/08 à 20h15",
+    "scores": {
+      "o25": 55,
+      "o15": 81,
+      "btts": 50,
+      "penalty": 42
+    },
+    "referee": {
+      "name": "Dimitar Dimitrov",
+      "status": "👨‍⚖️ Arbitre Dimitar Dimitrov (16 m, 0.31 pen/m)",
+      "pen_per_match": 0.312
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.32,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363067",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Hunedoara vs Cfr Cluj",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Dim. 16/08 à 20h30",
+    "scores": {
+      "o25": 72,
+      "o15": 83,
+      "btts": 47,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363752",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Amedspor vs Erzurum BB",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Dim. 16/08 à 20h30",
+    "scores": {
+      "o25": 63,
+      "o15": 92,
+      "btts": 73,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Halil Umut Meler",
+      "status": "👨‍⚖️ Arbitre Halil Umut Meler (20 m, 0.45 pen/m)",
+      "pen_per_match": 0.45
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363753",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Besiktas vs Eyupspor",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Dim. 16/08 à 20h30",
+    "scores": {
+      "o25": 68,
+      "o15": 80,
+      "btts": 55,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Oğuzhan Çakır",
+      "status": "👨‍⚖️ Arbitre Oğuzhan Çakır (25 m, 0.36 pen/m)",
+      "pen_per_match": 0.36
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.75
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3358047",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Lens vs Paris SG",
+    "league": "France • Trophee Des Champions",
+    "date_str": "Dim. 16/08 à 20h45",
+    "scores": {
+      "o25": 81,
+      "o15": 93,
+      "btts": 90,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367122",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Atletico MG vs Gremio",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 53,
+      "o15": 76,
+      "btts": 53,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Bruno Arleu de Araujo",
+      "status": "👨‍⚖️ Arbitre Bruno Arleu de Araujo (45 m, 0.31 pen/m)",
+      "pen_per_match": 0.311
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368073",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Sp.Luqueno vs Libertad",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 78,
+      "o15": 87,
+      "btts": 64,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Mario Alberto Díaz de Vivar",
+      "status": "👨‍⚖️ Arbitre Mario Alberto Díaz de Vivar (40 m, 0.45 pen/m)",
+      "pen_per_match": 0.45
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370118",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "FK Zemun vs Mladost Lucani",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 31,
+      "o15": 58,
+      "btts": 27,
+      "penalty": 23
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370719",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Parti.Belgrade vs Radnicki 1923",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 74,
+      "o15": 87,
+      "btts": 52,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367321",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Cobresal vs Deportes Conc.",
+    "league": "Chili • D1 Chili",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 62,
+      "o15": 64,
+      "btts": 34,
+      "penalty": 50
+    },
+    "referee": {
+      "name": "Mario Salvo",
+      "status": "👨‍⚖️ Arbitre Mario Salvo (8 m, 0.75 pen/m)",
+      "pen_per_match": 0.75
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367313",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Vasco De Gama vs Santos",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 92,
+      "o15": 93,
+      "btts": 88,
+      "penalty": 76
+    },
+    "referee": {
+      "name": "Lucas Casagrande",
+      "status": "👨‍⚖️ Arbitre Lucas Casagrande (36 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369594",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Orense SC vs Dep.Cuenca",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 50,
+      "o15": 72,
+      "btts": 41,
+      "penalty": 37
+    },
+    "referee": {
+      "name": "Álex Cajas",
+      "status": "👨‍⚖️ Arbitre Álex Cajas (47 m, 0.26 pen/m)",
+      "pen_per_match": 0.255
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.33,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369443",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "HNK Gorica vs Hajduk Split",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Dim. 16/08 à 21h00",
+    "scores": {
+      "o25": 68,
+      "o15": 86,
+      "btts": 48,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Patrik Pavlešić",
+      "status": "👨‍⚖️ Arbitre Patrik Pavlešić (18 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370346",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Braga vs Gil Vicente",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Dim. 16/08 à 21h30",
+    "scores": {
+      "o25": 96,
+      "o15": 97,
+      "btts": 86,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Fabio Verssimo",
+      "status": "👨‍⚖️ Arbitre Fabio Verssimo (21 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.82,
+      "o15": 1.25,
+      "btts": 1.85
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360605",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Las Palmas vs Albacete",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 16/08 à 21h30",
+    "scores": {
+      "o25": 70,
+      "o15": 77,
+      "btts": 48,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370475",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Famalicao vs CS Maritimo",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Dim. 16/08 à 21h30",
+    "scores": {
+      "o25": 68,
+      "o15": 84,
+      "btts": 44,
+      "penalty": 63
+    },
+    "referee": {
+      "name": "Miguel Bertolo Nogueira",
+      "status": "👨‍⚖️ Arbitre Miguel Bertolo Nogueira (23 m, 0.61 pen/m)",
+      "pen_per_match": 0.609
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.82
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363208",
+    "timestamp_utc": "2026-08-15T08:03:54.953532+00:00",
+    "match": "Inter Toronto vs HFX Wanderers",
+    "league": "Canada • D1 Canada",
+    "date_str": "Dim. 16/08 à 22h00",
+    "scores": {
+      "o25": 83,
+      "o15": 89,
+      "btts": 89,
+      "penalty": 33
+    },
+    "referee": {
+      "name": "Joe Dickerson",
+      "status": "👨‍⚖️ Arbitre Joe Dickerson (27 m, 0.30 pen/m)",
+      "pen_per_match": 0.296
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
