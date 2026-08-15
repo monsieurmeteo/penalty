@@ -8560,5 +8560,485 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371616",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "FC Bavois vs Servette FC",
+    "league": "Suisse • Cpe Suisse",
+    "date_str": "Sam. 15/08 à 15h00",
+    "scores": {
+      "o25": 53,
+      "o15": 67,
+      "btts": 53,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.28,
+      "o15": 1.07,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371615",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "FC Courtetelle vs FC Bâle",
+    "league": "Suisse • Cpe Suisse",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 94,
+      "o15": 95,
+      "btts": 86,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Michael Näther",
+      "status": "👨‍⚖️ Arbitre Michael Näther (12 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.2,
+      "o15": 1.04,
+      "btts": 2.2
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369954",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "FC Meyrin vs NeuchatelXamax",
+    "league": "Suisse • Cpe Suisse",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 87,
+      "o15": 99,
+      "btts": 86,
+      "penalty": 57
+    },
+    "referee": {
+      "name": "Maximiliano Quintero Hernández",
+      "status": "👨‍⚖️ Arbitre Maximiliano Quintero Hernández (17 m, 0.24 pen/m)",
+      "pen_per_match": 0.235
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363211",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "ADO Den Haag vs Groningen",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 16/08 à 12h15",
+    "scores": {
+      "o25": 75,
+      "o15": 90,
+      "btts": 67,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Jeroen Manschot",
+      "status": "👨‍⚖️ Arbitre Jeroen Manschot (28 m, 0.32 pen/m)",
+      "pen_per_match": 0.321
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.48
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364500",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Bucheon FC vs Jeonbuk",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Dim. 16/08 à 12h30",
+    "scores": {
+      "o25": 56,
+      "o15": 63,
+      "btts": 39,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364512",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Ulsan vs Gangwon FC",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Dim. 16/08 à 12h30",
+    "scores": {
+      "o25": 74,
+      "o15": 75,
+      "btts": 53,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364501",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Incheon FC vs Gimcheon",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Dim. 16/08 à 12h30",
+    "scores": {
+      "o25": 57,
+      "o15": 68,
+      "btts": 50,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363493",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Dynamo Dresden vs SV Darmstadt",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 16/08 à 13h30",
+    "scores": {
+      "o25": 90,
+      "o15": 99,
+      "btts": 92,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Konrad Oldhfer",
+      "status": "👨‍⚖️ Arbitre Konrad Oldhfer (15 m, 0.47 pen/m)",
+      "pen_per_match": 0.467
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363227",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "KV Beveren vs Anderlecht",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Dim. 16/08 à 13h30",
+    "scores": {
+      "o25": 90,
+      "o15": 99,
+      "btts": 80,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Nathan Verboomen",
+      "status": "👨‍⚖️ Arbitre Nathan Verboomen (26 m, 0.23 pen/m)",
+      "pen_per_match": 0.231
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363592",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Hanovre vs Wolfsburg",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 16/08 à 13h30",
+    "scores": {
+      "o25": 75,
+      "o15": 83,
+      "btts": 79,
+      "penalty": 56
+    },
+    "referee": {
+      "name": "Timo Gansloweit",
+      "status": "👨‍⚖️ Arbitre Timo Gansloweit (17 m, 0.12 pen/m)",
+      "pen_per_match": 0.118
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363495",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Bielefeld vs Cottbus",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 16/08 à 13h30",
+    "scores": {
+      "o25": 89,
+      "o15": 95,
+      "btts": 86,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Florian Lechner",
+      "status": "👨‍⚖️ Arbitre Florian Lechner (16 m, 0.44 pen/m)",
+      "pen_per_match": 0.438
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.52
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365551",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Nordsjaelland vs Silkeborg",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 90,
+      "o15": 97,
+      "btts": 77,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Sandi Putros",
+      "status": "👨‍⚖️ Arbitre Sandi Putros (16 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365552",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Odense vs Horsens",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 56,
+      "o15": 75,
+      "btts": 76,
+      "penalty": 18
+    },
+    "referee": {
+      "name": "Jakob Kehlet",
+      "status": "👨‍⚖️ Arbitre Jakob Kehlet (14 m, 0.21 pen/m)",
+      "pen_per_match": 0.214
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363241",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Brommapojkarna vs Örgryte",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 50,
+      "o15": 78,
+      "btts": 46,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Joakim Sars",
+      "status": "👨‍⚖️ Arbitre Joakim Sars (7 m, 0.71 pen/m)",
+      "pen_per_match": 0.714
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363239",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Djurgårdens vs AIK Solna",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 96,
+      "o15": 97,
+      "btts": 84,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Fredrik Klitte",
+      "status": "👨‍⚖️ Arbitre Fredrik Klitte (33 m, 0.18 pen/m)",
+      "pen_per_match": 0.182
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363242",
+    "timestamp_utc": "2026-08-15T00:02:58.141082+00:00",
+    "match": "Degerfors IF vs IFK Göteborg",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 31,
+      "o15": 63,
+      "btts": 46,
+      "penalty": 16
+    },
+    "referee": {
+      "name": "Kristoffer Karlsson",
+      "status": "👨‍⚖️ Arbitre Kristoffer Karlsson (33 m, 0.06 pen/m)",
+      "pen_per_match": 0.061
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
