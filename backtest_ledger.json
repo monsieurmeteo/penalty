@@ -11657,5 +11657,244 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371098",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Limavady vs CarrickRangers",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 64,
+      "o15": 94,
+      "btts": 56,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370294",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Linfield vs Glentoran",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 96,
+      "o15": 95,
+      "btts": 55,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367803",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "River Plate vs Argentinos Jrs",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 16/08 à 23h00",
+    "scores": {
+      "o25": 70,
+      "o15": 77,
+      "btts": 51,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Facundo Tello Figueroa",
+      "status": "👨‍⚖️ Arbitre Facundo Tello Figueroa (36 m, 0.11 pen/m)",
+      "pen_per_match": 0.111
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42,
+      "btts": 1.95
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369596",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Emelec vs Tecnico Uni.",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Dim. 16/08 à 23h15",
+    "scores": {
+      "o25": 38,
+      "o15": 58,
+      "btts": 24,
+      "penalty": 10
+    },
+    "referee": {
+      "name": "Henri Arizaga",
+      "status": "👨‍⚖️ Arbitre Henri Arizaga (12 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368053",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Olimp.Asuncion vs Ameliano",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Dim. 16/08 à 23h30",
+    "scores": {
+      "o25": 65,
+      "o15": 84,
+      "btts": 69,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Carlos Benitez",
+      "status": "👨‍⚖️ Arbitre Carlos Benitez (31 m, 0.68 pen/m)",
+      "pen_per_match": 0.677
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367315",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Mirassol SP vs Flamengo",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 23h30",
+    "scores": {
+      "o25": 87,
+      "o15": 93,
+      "btts": 81,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Rafael Rodrigo Klein",
+      "status": "👨‍⚖️ Arbitre Rafael Rodrigo Klein (44 m, 0.14 pen/m)",
+      "pen_per_match": 0.136
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367316",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Vitoria BA vs Botafogo",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 23h30",
+    "scores": {
+      "o25": 73,
+      "o15": 88,
+      "btts": 55,
+      "penalty": 78
+    },
+    "referee": {
+      "name": "Paulo Cesar Zanovelli",
+      "status": "👨‍⚖️ Arbitre Paulo Cesar Zanovelli (37 m, 0.35 pen/m)",
+      "pen_per_match": 0.351
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367320",
+    "timestamp_utc": "2026-08-15T10:03:35.270426+00:00",
+    "match": "Colo Colo vs O'Higgins",
+    "league": "Chili • D1 Chili",
+    "date_str": "Dim. 16/08 à 23h30",
+    "scores": {
+      "o25": 84,
+      "o15": 93,
+      "btts": 66,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Fernando Vejar",
+      "status": "👨‍⚖️ Arbitre Fernando Vejar (21 m, 0.29 pen/m)",
+      "pen_per_match": 0.286
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
