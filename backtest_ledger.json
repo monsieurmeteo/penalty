@@ -9040,5 +9040,659 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3370295",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "FC Portadown vs Dungannon",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 15/08 à 16h00",
+    "scores": {
+      "o25": 83,
+      "o15": 93,
+      "btts": 78,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363221",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Aalesunds vs Vålerenga",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 16/08 à 14h30",
+    "scores": {
+      "o25": 92,
+      "o15": 99,
+      "btts": 92,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.32
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363219",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Twente vs Zwolle",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 16/08 à 14h30",
+    "scores": {
+      "o25": 87,
+      "o15": 99,
+      "btts": 88,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367169",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Meta. 1925 vs Shakht.Donetsk",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Dim. 16/08 à 14h30",
+    "scores": {
+      "o25": 76,
+      "o15": 85,
+      "btts": 77,
+      "penalty": 97
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.75
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363216",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Feyenoord vs GOAhead Eagles",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 16/08 à 14h30",
+    "scores": {
+      "o25": 78,
+      "o15": 91,
+      "btts": 67,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359053",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Watford vs Southampton",
+    "league": "Angleterre • Championship",
+    "date_str": "Dim. 16/08 à 14h30",
+    "scores": {
+      "o25": 92,
+      "o15": 99,
+      "btts": 77,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364808",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Motor Lublin vs GKS Katowice",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Dim. 16/08 à 14h45",
+    "scores": {
+      "o25": 92,
+      "o15": 97,
+      "btts": 90,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.42
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370473",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Amarante FC vs Lusitania",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 84,
+      "o15": 94,
+      "btts": 88,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367584",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Hibernian vs PartickThis.",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 53,
+      "o15": 72,
+      "btts": 25,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368072",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Cerro Porteno vs San Lorenzo",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 47,
+      "o15": 63,
+      "btts": 22,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363237",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "HJK Helsinki vs FF Jaro",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 68,
+      "o15": 77,
+      "btts": 46,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.36,
+      "o15": 1.1,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367582",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Hearts vs Inverness Cal.",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 47,
+      "o15": 60,
+      "btts": 34,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.95
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367583",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Stenhousemuir vs Motherwell",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 77,
+      "o15": 81,
+      "btts": 75,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370702",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Chippa Utd vs Orlando Pir.",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 74,
+      "o15": 93,
+      "btts": 57,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368821",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Nomme Kalju vs Parnu JK Vapru",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 80,
+      "o15": 93,
+      "btts": 89,
+      "penalty": 54
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367317",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Chapecoense SC vs Bahia Salvador",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 73,
+      "o15": 89,
+      "btts": 85,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363228",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "La Louviere vs La Gantoise",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 53,
+      "o15": 74,
+      "btts": 29,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3355821",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Arsenal vs Man. City",
+    "league": "Angleterre • Community Shield",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 38,
+      "o15": 50,
+      "btts": 41,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363085",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "FC Lahti vs Kups",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 74,
+      "o15": 85,
+      "btts": 56,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365561",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "Lyngby BK vs Midtjylland",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 98,
+      "o15": 99,
+      "btts": 90,
+      "penalty": 97
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370481",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "FC Narva vs Paide",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 71,
+      "o15": 81,
+      "btts": 61,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363084",
+    "timestamp_utc": "2026-08-15T02:04:15.835044+00:00",
+    "match": "AC Oulu vs Inter Turku",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 65,
+      "o15": 77,
+      "btts": 52,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
