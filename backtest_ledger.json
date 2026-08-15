@@ -10501,5 +10501,629 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3367581",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Rangers vs St Mirren",
+    "league": "Ecosse • Cpe Ligue Ecosse",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 78,
+      "o15": 90,
+      "btts": 81,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Jordan Curran",
+      "status": "👨‍⚖️ Arbitre Jordan Curran (10 m, 0.30 pen/m)",
+      "pen_per_match": 0.3
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369446",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "NK Varazdin vs HNK Rijeka",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Dim. 16/08 à 18h30",
+    "scores": {
+      "o25": 60,
+      "o15": 76,
+      "btts": 45,
+      "penalty": 77
+    },
+    "referee": {
+      "name": "Ivan Vukančić",
+      "status": "👨‍⚖️ Arbitre Ivan Vukančić (16 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370610",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Nublense vs Uni.La Calera",
+    "league": "Chili • D1 Chili",
+    "date_str": "Dim. 16/08 à 18h30",
+    "scores": {
+      "o25": 53,
+      "o15": 65,
+      "btts": 34,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Juan Lara",
+      "status": "👨‍⚖️ Arbitre Juan Lara (20 m, 0.40 pen/m)",
+      "pen_per_match": 0.4
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.75
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363236",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "KV Mechelen vs Standard Liège",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Dim. 16/08 à 18h30",
+    "scores": {
+      "o25": 80,
+      "o15": 89,
+      "btts": 73,
+      "penalty": 74
+    },
+    "referee": {
+      "name": "Bram Van Driessche",
+      "status": "👨‍⚖️ Arbitre Bram Van Driessche (24 m, 0.38 pen/m)",
+      "pen_per_match": 0.375
+    },
+    "odds": {
+      "o25": 1.82,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363210",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "FK Zalgiris vs FK Banga",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Dim. 16/08 à 18h30",
+    "scores": {
+      "o25": 77,
+      "o15": 89,
+      "btts": 66,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365894",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Baniyas SC vs Al Ain",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Dim. 16/08 à 18h45",
+    "scores": {
+      "o25": 64,
+      "o15": 82,
+      "btts": 51,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.12,
+      "btts": 1.66
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363249",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Rapid Vienne vs Grazer AK 1902",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 60,
+      "o15": 79,
+      "btts": 41,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Arnes Talic",
+      "status": "👨‍⚖️ Arbitre Arnes Talic (16 m, 0.62 pen/m)",
+      "pen_per_match": 0.625
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366398",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Arouca vs Moreirense",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 83,
+      "o15": 93,
+      "btts": 77,
+      "penalty": 89
+    },
+    "referee": {
+      "name": "André Filipe Domingues Narciso",
+      "status": "👨‍⚖️ Arbitre André Filipe Domingues Narciso (15 m, 0.67 pen/m)",
+      "pen_per_match": 0.667
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370496",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "FC Porto B vs SC Farense",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 63,
+      "o15": 66,
+      "btts": 36,
+      "penalty": 83
+    },
+    "referee": {
+      "name": "Pedro Miguel Torres Ramalho",
+      "status": "👨‍⚖️ Arbitre Pedro Miguel Torres Ramalho (17 m, 0.53 pen/m)",
+      "pen_per_match": 0.529
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360671",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Espanyol vs Levante",
+    "league": "Espagne • Laliga",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 71,
+      "o15": 95,
+      "btts": 59,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.78
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360601",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Burgos CF vs Cordoba",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 74,
+      "o15": 86,
+      "btts": 63,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370119",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "IMT N.Belgrade vs Radnicki Nis",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 74,
+      "o15": 87,
+      "btts": 52,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.32,
+      "btts": 1.75
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365547",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "KFC Komarno vs FK DAC 1904",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 86,
+      "o15": 87,
+      "btts": 75,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Erik Gemzický",
+      "status": "👨‍⚖️ Arbitre Erik Gemzický (15 m, 0.27 pen/m)",
+      "pen_per_match": 0.267
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360597",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Gérone vs CD Leganes",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 61,
+      "o15": 74,
+      "btts": 44,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363231",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Lommel United vs Charleroi",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Dim. 16/08 à 19h15",
+    "scores": {
+      "o25": 78,
+      "o15": 97,
+      "btts": 69,
+      "penalty": 89
+    },
+    "referee": {
+      "name": "Kevin Van Damme",
+      "status": "👨‍⚖️ Arbitre Kevin Van Damme (18 m, 0.50 pen/m)",
+      "pen_per_match": 0.5
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363215",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Fredrikstad vs Kristiansund",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 16/08 à 19h15",
+    "scores": {
+      "o25": 56,
+      "o15": 78,
+      "btts": 58,
+      "penalty": 23
+    },
+    "referee": {
+      "name": "Mathias Støfringshaug",
+      "status": "👨‍⚖️ Arbitre Mathias Støfringshaug (21 m, 0.24 pen/m)",
+      "pen_per_match": 0.238
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364641",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Hafnarfjordur vs Vikingur Reyk.",
+    "league": "Islande • D1 Islande",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 87,
+      "o15": 99,
+      "btts": 94,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.33,
+      "o15": 1.08,
+      "btts": 1.42
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365136",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "KR Reykjavik vs Breidablik",
+    "league": "Islande • D1 Islande",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 96,
+      "o15": 95,
+      "btts": 96,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.1,
+      "o15": 1.02,
+      "btts": 1.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365997",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "UNAM Pumas vs Queretaro FC",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 90,
+      "o15": 95,
+      "btts": 78,
+      "penalty": 93
+    },
+    "referee": {
+      "name": "Karen Hernández Andrade",
+      "status": "👨‍⚖️ Arbitre Karen Hernández Andrade (10 m, 0.60 pen/m)",
+      "pen_per_match": 0.6
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370321",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Vestmannaeyjar vs IA Akranes",
+    "league": "Islande • D1 Islande",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 95,
+      "btts": 92,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.35
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367804",
+    "timestamp_utc": "2026-08-15T06:03:54.041279+00:00",
+    "match": "Sarmiento vs CA Huracan",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 47,
+      "o15": 61,
+      "btts": 36,
+      "penalty": 21
+    },
+    "referee": {
+      "name": "Hernán Mastrángelo",
+      "status": "👨‍⚖️ Arbitre Hernán Mastrángelo (38 m, 0.13 pen/m)",
+      "pen_per_match": 0.132
+    },
+    "odds": {
+      "o25": 2.8,
+      "o15": 1.6,
+      "btts": 2.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
