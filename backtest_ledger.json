@@ -9694,5 +9694,812 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369868",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Debrecen vs Györ ETO FC",
+    "league": "Hongrie • D1 Hongrie",
+    "date_str": "Dim. 16/08 à 16h30",
+    "scores": {
+      "o25": 53,
+      "o15": 77,
+      "btts": 47,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.4
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370472",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "CD Nacional vs Estoril Praia",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Dim. 16/08 à 16h30",
+    "scores": {
+      "o25": 78,
+      "o15": 87,
+      "btts": 52,
+      "penalty": 93
+    },
+    "referee": {
+      "name": "Bruno José Ribeiro Pires Costa",
+      "status": "👨‍⚖️ Arbitre Bruno José Ribeiro Pires Costa (19 m, 0.63 pen/m)",
+      "pen_per_match": 0.632
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.22,
+      "btts": 1.62
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370474",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Leixoes vs CD Tondela",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 16/08 à 16h30",
+    "scores": {
+      "o25": 84,
+      "o15": 93,
+      "btts": 88,
+      "penalty": 84
+    },
+    "referee": {
+      "name": "Luis Miguel Branco Godinho",
+      "status": "👨‍⚖️ Arbitre Luis Miguel Branco Godinho (28 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363243",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Kalmar FF vs Hammarby",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 16/08 à 16h30",
+    "scores": {
+      "o25": 78,
+      "o15": 97,
+      "btts": 81,
+      "penalty": 51
+    },
+    "referee": {
+      "name": "Granit Maqedonci",
+      "status": "👨‍⚖️ Arbitre Granit Maqedonci (32 m, 0.19 pen/m)",
+      "pen_per_match": 0.188
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363240",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "GAIS Göteborg vs Malmö",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 16/08 à 16h30",
+    "scores": {
+      "o25": 70,
+      "o15": 85,
+      "btts": 62,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Richard Sundell",
+      "status": "👨‍⚖️ Arbitre Richard Sundell (34 m, 0.12 pen/m)",
+      "pen_per_match": 0.118
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.48
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363220",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Ajax vs Heerenveen",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 16/08 à 16h45",
+    "scores": {
+      "o25": 92,
+      "o15": 99,
+      "btts": 73,
+      "penalty": 51
+    },
+    "referee": {
+      "name": "Alex Bos",
+      "status": "👨‍⚖️ Arbitre Alex Bos (26 m, 0.19 pen/m)",
+      "pen_per_match": 0.192
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363217",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "SK Brann vs HamKam",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 89,
+      "o15": 93,
+      "btts": 85,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Mohammad Usman Aslam",
+      "status": "👨‍⚖️ Arbitre Mohammad Usman Aslam (25 m, 0.56 pen/m)",
+      "pen_per_match": 0.56
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.48
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360674",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Santander vs Villarreal",
+    "league": "Espagne • Laliga",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 87,
+      "o15": 97,
+      "btts": 96,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363245",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "WSG Tirol vs Salzbourg",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 74,
+      "o15": 95,
+      "btts": 82,
+      "penalty": 52
+    },
+    "referee": {
+      "name": "Chiristian-Petru Ciochirca",
+      "status": "👨‍⚖️ Arbitre Chiristian-Petru Ciochirca (14 m, 0.36 pen/m)",
+      "pen_per_match": 0.357
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363218",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Molde vs Tromsø",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 88,
+      "o15": 88,
+      "btts": 79,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Espen Eskås",
+      "status": "👨‍⚖️ Arbitre Espen Eskås (15 m, 0.27 pen/m)",
+      "pen_per_match": 0.267
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367171",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Dynamo Kiev vs Kolos Kovalivk",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 84,
+      "o15": 87,
+      "btts": 60,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18,
+      "btts": 1.68
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359054",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Burnley vs West Ham",
+    "league": "Angleterre • Championship",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 55,
+      "o15": 68,
+      "btts": 25,
+      "penalty": 27
+    },
+    "referee": {
+      "name": "Joshua Smith",
+      "status": "👨‍⚖️ Arbitre Joshua Smith (30 m, 0.23 pen/m)",
+      "pen_per_match": 0.233
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.52
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363244",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "TSV Hartberg vs Austria Vienne",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 78,
+      "o15": 91,
+      "btts": 71,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Emil Ristoskov",
+      "status": "👨‍⚖️ Arbitre Emil Ristoskov (3 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365548",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Spartak Trnava vs MFK Zemplin",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 86,
+      "o15": 90,
+      "btts": 52,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Lukáš Dzivjak",
+      "status": "👨‍⚖️ Arbitre Lukáš Dzivjak (12 m, 0.42 pen/m)",
+      "pen_per_match": 0.417
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.18,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360602",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Eibar vs Tenerife",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 56,
+      "o15": 78,
+      "btts": 37,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363222",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Sarpsborg 08 vs Sandefjord",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 16/08 à 17h00",
+    "scores": {
+      "o25": 53,
+      "o15": 64,
+      "btts": 73,
+      "penalty": 29
+    },
+    "referee": {
+      "name": "Christian Moen",
+      "status": "👨‍⚖️ Arbitre Christian Moen (19 m, 0.26 pen/m)",
+      "pen_per_match": 0.263
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364810",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "KS Cracovia vs RKS Rakow",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Dim. 16/08 à 17h30",
+    "scores": {
+      "o25": 67,
+      "o15": 82,
+      "btts": 82,
+      "penalty": 33
+    },
+    "referee": {
+      "name": "Paweł Raczkowski",
+      "status": "👨‍⚖️ Arbitre Paweł Raczkowski (24 m, 0.29 pen/m)",
+      "pen_per_match": 0.292
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363076",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Otelul Galati vs Uni.Craiova",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Dim. 16/08 à 17h30",
+    "scores": {
+      "o25": 74,
+      "o15": 86,
+      "btts": 67,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369229",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Puskas Academy vs Paksi SE",
+    "league": "Hongrie • D1 Hongrie",
+    "date_str": "Dim. 16/08 à 17h30",
+    "scores": {
+      "o25": 76,
+      "o15": 95,
+      "btts": 69,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.1,
+      "btts": 1.33
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367990",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "TS Galaxy FC vs Golden Arrows",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Dim. 16/08 à 17h30",
+    "scores": {
+      "o25": 53,
+      "o15": 76,
+      "btts": 52,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363209",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Kauno Zalgiris vs FK Transinvest",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Dim. 16/08 à 17h45",
+    "scores": {
+      "o25": 77,
+      "o15": 81,
+      "btts": 75,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368816",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Harju JK vs FC Levadia",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 96,
+      "o15": 99,
+      "btts": 90,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.07,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363767",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Basaksehir vs Kocaelispor",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 59,
+      "o15": 81,
+      "btts": 38,
+      "penalty": 39
+    },
+    "referee": {
+      "name": "Mehmet Türkmen",
+      "status": "👨‍⚖️ Arbitre Mehmet Türkmen (21 m, 0.38 pen/m)",
+      "pen_per_match": 0.381
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.2,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368817",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "FC Flora vs FC Kuressaare",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 78,
+      "o15": 83,
+      "btts": 48,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365558",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Randers FC vs FC Copenhague",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 87,
+      "o15": 95,
+      "btts": 87,
+      "penalty": 46
+    },
+    "referee": {
+      "name": "Jakob A. Sundberg",
+      "status": "👨‍⚖️ Arbitre Jakob A. Sundberg (16 m, 0.19 pen/m)",
+      "pen_per_match": 0.188
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.5
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367547",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "CSKA Sofia vs Botev Vratsa",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 72,
+      "o15": 83,
+      "btts": 63,
+      "penalty": 22
+    },
+    "referee": {
+      "name": "Nikola Popov",
+      "status": "👨‍⚖️ Arbitre Nikola Popov (15 m, 0.13 pen/m)",
+      "pen_per_match": 0.133
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22,
+      "btts": 2.05
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363207",
+    "timestamp_utc": "2026-08-15T04:02:51.069505+00:00",
+    "match": "Supra Quebec vs Atl.Ottawa",
+    "league": "Canada • D1 Canada",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 72,
+      "o15": 76,
+      "btts": 82,
+      "penalty": 48
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

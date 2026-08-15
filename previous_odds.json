@@ -72,6 +72,15 @@
       "double": true,
       "ac_score": 96
     },
+    "3368816": {
+      "match": "Harju JK - FC Levadia",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Dim. 16/08 à 18h00",
+      "val_btts": 1.6,
+      "val_o25": 1.3,
+      "double": true,
+      "ac_score": 96
+    },
     "3365305": {
       "match": "MFK Skalica - FK Kosice",
       "league": "Slovaquie • D1 Slovaquie",
@@ -126,15 +135,6 @@
       "double": true,
       "ac_score": 92
     },
-    "3363221": {
-      "match": "Aalesunds - Vålerenga",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Dim. 16/08 à 14h30",
-      "val_btts": 1.32,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 92
-    },
     "3359053": {
       "match": "Watford - Southampton",
       "league": "Angleterre • Championship",
@@ -144,12 +144,30 @@
       "double": true,
       "ac_score": 92
     },
+    "3363221": {
+      "match": "Aalesunds - Vålerenga",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Dim. 16/08 à 14h30",
+      "val_btts": 1.32,
+      "val_o25": 1.35,
+      "double": true,
+      "ac_score": 92
+    },
     "3364808": {
       "match": "Motor Lublin - GKS Katowice",
       "league": "Pologne • D1 Pologne",
       "date_str": "Dim. 16/08 à 14h45",
       "val_btts": 1.42,
       "val_o25": 1.5,
+      "double": true,
+      "ac_score": 92
+    },
+    "3363220": {
+      "match": "Ajax - Heerenveen",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Dim. 16/08 à 16h45",
+      "val_btts": 1.48,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 92
     },
@@ -171,21 +189,21 @@
       "double": true,
       "ac_score": 90
     },
+    "3370296": {
+      "match": "Coleraine - FC Larne",
+      "league": "Irlande Du Nord • D1 Irlande Nord",
+      "date_str": "Sam. 15/08 à 16h00",
+      "val_btts": 1.55,
+      "val_o25": 1.7,
+      "double": true,
+      "ac_score": 89
+    },
     "3359051": {
       "match": "Stoke City - Swansea",
       "league": "Angleterre • Championship",
       "date_str": "Sam. 15/08 à 16h00",
       "val_btts": 1.75,
       "val_o25": 1.95,
-      "double": true,
-      "ac_score": 89
-    },
-    "3370296": {
-      "match": "Coleraine - FC Larne",
-      "league": "Irlande Du Nord • D1 Irlande Nord",
-      "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
       "double": true,
       "ac_score": 89
     },
@@ -198,12 +216,30 @@
       "double": true,
       "ac_score": 89
     },
+    "3363217": {
+      "match": "SK Brann - HamKam",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.48,
+      "val_o25": 1.4,
+      "double": true,
+      "ac_score": 89
+    },
     "3366981": {
       "match": "Al Ittihad FC - Al Kholood",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Sam. 15/08 à 20h00",
       "val_btts": 1.65,
       "val_o25": 1.5,
+      "double": true,
+      "ac_score": 88
+    },
+    "3363218": {
+      "match": "Molde - Tromsø",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.5,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 88
     },
@@ -243,6 +279,24 @@
       "double": true,
       "ac_score": 87
     },
+    "3360674": {
+      "match": "Santander - Villarreal",
+      "league": "Espagne • Laliga",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 87
+    },
+    "3365558": {
+      "match": "Randers FC - FC Copenhague",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Dim. 16/08 à 18h00",
+      "val_btts": 1.5,
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 87
+    },
     "3365300": {
       "match": "Dukla Bystrica - MSK Zilina",
       "league": "Slovaquie • D1 Slovaquie",
@@ -270,12 +324,21 @@
       "double": true,
       "ac_score": 86
     },
+    "3365548": {
+      "match": "Spartak Trnava - MFK Zemplin",
+      "league": "Slovaquie • D1 Slovaquie",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.75,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 86
+    },
     "3351331": {
       "match": "Shanghai Shen. - Henan SL",
       "league": "Chine • D1 Chine",
       "date_str": "Sam. 15/08 à 14h00",
       "val_btts": 1.35,
-      "val_o25": 1.38,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 85
     },
@@ -284,7 +347,7 @@
       "league": "Irlande Du Nord • D1 Irlande Nord",
       "date_str": "Sam. 15/08 à 16h00",
       "val_btts": 1.5,
-      "val_o25": 1.5,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 85
     },
@@ -342,12 +405,30 @@
       "double": true,
       "ac_score": 84
     },
+    "3370474": {
+      "match": "Leixoes - CD Tondela",
+      "league": "Portugal • D2 Portugal",
+      "date_str": "Dim. 16/08 à 16h30",
+      "val_btts": 1.6,
+      "val_o25": 1.85,
+      "double": true,
+      "ac_score": 84
+    },
+    "3367171": {
+      "match": "Dynamo Kiev - Kolos Kovalivk",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.68,
+      "val_o25": 1.6,
+      "double": true,
+      "ac_score": 84
+    },
     "3370295": {
       "match": "FC Portadown - Dungannon",
       "league": "Irlande Du Nord • D1 Irlande Nord",
       "date_str": "Sam. 15/08 à 16h00",
       "val_btts": 1.55,
-      "val_o25": 1.65,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 83
     },
@@ -418,7 +499,7 @@
       "match": "Louvain - Club Bruges",
       "league": "Belgique • D1 Belgique",
       "date_str": "Sam. 15/08 à 20h45",
-      "val_btts": 1.6,
+      "val_btts": 1.62,
       "val_o25": 1.4,
       "double": true,
       "ac_score": 81
@@ -445,8 +526,8 @@
       "match": "FC Meyrin - NeuchatelXamax",
       "league": "Suisse • Cpe Suisse",
       "date_str": "Sam. 15/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.3,
+      "val_btts": 1.5,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 80
     },
@@ -491,7 +572,7 @@
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 16/08 à 16h00",
       "val_btts": 1.55,
-      "val_o25": 1.4,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 80
     },
@@ -549,21 +630,21 @@
       "double": true,
       "ac_score": 78
     },
-    "3360599": {
-      "match": "Real Oviedo - Granada CF",
-      "league": "Espagne • Laliga 2",
-      "date_str": "Sam. 15/08 à 19h00",
-      "val_btts": 1.8,
-      "val_o25": 1.85,
-      "double": true,
-      "ac_score": 78
-    },
     "3370322": {
       "match": "Thor Akureyri - Keflavik",
       "league": "Islande • D1 Islande",
       "date_str": "Sam. 15/08 à 19h00",
       "val_btts": 1.28,
       "val_o25": 1.3,
+      "double": true,
+      "ac_score": 78
+    },
+    "3360599": {
+      "match": "Real Oviedo - Granada CF",
+      "league": "Espagne • Laliga 2",
+      "date_str": "Sam. 15/08 à 19h00",
+      "val_btts": 1.8,
+      "val_o25": 1.85,
       "double": true,
       "ac_score": 78
     },
@@ -594,6 +675,42 @@
       "double": true,
       "ac_score": 78
     },
+    "3370472": {
+      "match": "CD Nacional - Estoril Praia",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Dim. 16/08 à 16h30",
+      "val_btts": 1.62,
+      "val_o25": 1.78,
+      "double": true,
+      "ac_score": 78
+    },
+    "3363243": {
+      "match": "Kalmar FF - Hammarby",
+      "league": "Suede • D1 Suede",
+      "date_str": "Dim. 16/08 à 16h30",
+      "val_btts": 1.55,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 78
+    },
+    "3363244": {
+      "match": "TSV Hartberg - Austria Vienne",
+      "league": "Autriche • D1 Autriche",
+      "date_str": "Dim. 16/08 à 17h00",
+      "val_btts": 1.6,
+      "val_o25": 1.8,
+      "double": true,
+      "ac_score": 78
+    },
+    "3368817": {
+      "match": "FC Flora - FC Kuressaare",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Dim. 16/08 à 18h00",
+      "val_btts": 1.6,
+      "val_o25": 1.35,
+      "double": true,
+      "ac_score": 78
+    },
     "3351327": {
       "match": "Tianjin Tigers - Beijing Guoan",
       "league": "Chine • D1 Chine",
@@ -621,6 +738,15 @@
       "double": true,
       "ac_score": 77
     },
+    "3363209": {
+      "match": "Kauno Zalgiris - FK Transinvest",
+      "league": "Lituanie • D1 Lituanie",
+      "date_str": "Dim. 16/08 à 17h45",
+      "val_btts": 1.72,
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 77
+    },
     "3351328": {
       "match": "Zhejiang FC - Chengdu Rong.",
       "league": "Chine • D1 Chine",
@@ -645,6 +771,15 @@
       "date_str": "Dim. 16/08 à 14h30",
       "val_btts": 1.75,
       "val_o25": 1.8,
+      "double": true,
+      "ac_score": 76
+    },
+    "3369229": {
+      "match": "Puskas Academy - Paksi SE",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Dim. 16/08 à 17h30",
+      "val_btts": 1.33,
+      "val_o25": 1.38,
       "double": true,
       "ac_score": 76
     },
@@ -688,7 +823,7 @@
       "match": "Rio Ave - FC Porto",
       "league": "Portugal • Liga Portugal",
       "date_str": "Sam. 15/08 à 21h30",
-      "val_btts": 1.95,
+      "val_btts": 2.0,
       "val_o25": 1.7,
       "double": true,
       "ac_score": 75
