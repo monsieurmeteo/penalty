@@ -12796,5 +12796,34 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3351480",
+    "timestamp_utc": "2026-08-15T20:03:19.807215+00:00",
+    "match": "San Jose vs Saint Louis SC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 16/08 à 04h30",
+    "scores": {
+      "o25": 67,
+      "o15": 94,
+      "btts": 76,
+      "penalty": 50
+    },
+    "referee": {
+      "name": "Jon Freemon",
+      "status": "👨‍⚖️ Arbitre Jon Freemon (34 m, 0.26 pen/m)",
+      "pen_per_match": 0.265
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12,
+      "btts": 1.38
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
