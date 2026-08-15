@@ -12315,5 +12315,185 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371452",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "Sabah FK vs FK Kapaz",
+    "league": "Azerbaidjan • D1 Azerbaidjan",
+    "date_str": "Sam. 15/08 à 18h45",
+    "scores": {
+      "o25": 83,
+      "o15": 84,
+      "btts": 81,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.36,
+      "o15": 1.09,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368987",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "Torp.Kutaisi vs Iberia 1999",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 94,
+      "o15": 95,
+      "btts": 92,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371298",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "FC Wiltz vs FC Differdange",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Sam. 15/08 à 19h00",
+    "scores": {
+      "o25": 71,
+      "o15": 79,
+      "btts": 70,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Sean Murdoch",
+      "status": "👨‍⚖️ Arbitre Sean Murdoch (22 m, 0.32 pen/m)",
+      "pen_per_match": 0.318
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.58
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363260",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "Viktoria Plzen vs FC Fastav Zlin",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Sam. 15/08 à 20h00",
+    "scores": {
+      "o25": 39,
+      "o15": 71,
+      "btts": 57,
+      "penalty": 17
+    },
+    "referee": {
+      "name": "Marek Radina",
+      "status": "👨‍⚖️ Arbitre Marek Radina (29 m, 0.24 pen/m)",
+      "pen_per_match": 0.241
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368848",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "O.Ljubljana vs NK Maribor",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Sam. 15/08 à 20h15",
+    "scores": {
+      "o25": 41,
+      "o15": 63,
+      "btts": 34,
+      "penalty": 46
+    },
+    "referee": {
+      "name": "Mateo Tozan",
+      "status": "👨‍⚖️ Arbitre Mateo Tozan (12 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366000",
+    "timestamp_utc": "2026-08-15T16:03:39.155571+00:00",
+    "match": "Club Tijuana vs Cruz Azul",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Lun. 17/08 à 05h00",
+    "scores": {
+      "o25": 77,
+      "o15": 90,
+      "btts": 94,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Víctor Alfonso Cáceres Hernández",
+      "status": "👨‍⚖️ Arbitre Víctor Alfonso Cáceres Hernández (18 m, 0.44 pen/m)",
+      "pen_per_match": 0.444
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.6
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
