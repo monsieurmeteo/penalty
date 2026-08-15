@@ -14,7 +14,7 @@
       "league": "Etats Unis • Mls",
       "date_str": "Dim. 16/08 à 02h30",
       "val_btts": 1.35,
-      "val_o25": 1.38,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 96
     },
@@ -31,7 +31,7 @@
       "match": "Harju JK - FC Levadia",
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 16/08 à 18h00",
-      "val_btts": 1.55,
+      "val_btts": 1.6,
       "val_o25": 1.3,
       "double": true,
       "ac_score": 96
@@ -58,8 +58,8 @@
       "match": "Charlotte FC - Columbus Crew",
       "league": "Etats Unis • Mls",
       "date_str": "Dim. 16/08 à 01h30",
-      "val_btts": 1.5,
-      "val_o25": 1.6,
+      "val_btts": 1.45,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 94
     },
@@ -72,21 +72,21 @@
       "double": true,
       "ac_score": 94
     },
-    "3351422": {
-      "match": "Atlanta Utd - NY Red Bulls",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 16/08 à 01h30",
-      "val_btts": 1.32,
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 92
-    },
     "3351421": {
       "match": "Orlando City - FC Cincinnati",
       "league": "Etats Unis • Mls",
       "date_str": "Dim. 16/08 à 01h30",
       "val_btts": 1.25,
       "val_o25": 1.25,
+      "double": true,
+      "ac_score": 92
+    },
+    "3351422": {
+      "match": "Atlanta Utd - NY Red Bulls",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 16/08 à 01h30",
+      "val_btts": 1.32,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 92
     },
@@ -103,7 +103,7 @@
       "match": "Ajax - Heerenveen",
       "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Dim. 16/08 à 16h45",
-      "val_btts": 1.48,
+      "val_btts": 1.5,
       "val_o25": 1.35,
       "double": true,
       "ac_score": 92
@@ -175,7 +175,7 @@
       "match": "Bielefeld - Cottbus",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.5,
+      "val_btts": 1.52,
       "val_o25": 1.5,
       "double": true,
       "ac_score": 89
@@ -242,15 +242,6 @@
       "val_o25": 1.55,
       "double": true,
       "ac_score": 87
-    },
-    "3370133": {
-      "match": "Cavalry - Forge",
-      "league": "Canada • D1 Canada",
-      "date_str": "Sam. 15/08 à 23h00",
-      "val_btts": 1.72,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 86
     },
     "3370473": {
       "match": "Amarante FC - Lusitania",
@@ -319,7 +310,7 @@
       "match": "Dynamo Kiev - Kolos Kovalivk",
       "league": "Ukraine • D1 Ukraine",
       "date_str": "Dim. 16/08 à 17h00",
-      "val_btts": 1.72,
+      "val_btts": 1.75,
       "val_o25": 1.7,
       "double": true,
       "ac_score": 84
@@ -328,7 +319,7 @@
       "match": "Colo Colo - O'Higgins",
       "league": "Chili • D1 Chili",
       "date_str": "Dim. 16/08 à 23h30",
-      "val_btts": 1.6,
+      "val_btts": 1.65,
       "val_o25": 1.5,
       "double": true,
       "ac_score": 84
@@ -382,8 +373,8 @@
       "match": "Lens - Paris SG",
       "league": "France • Trophee Des Champions",
       "date_str": "Dim. 16/08 à 20h45",
-      "val_btts": 1.55,
-      "val_o25": 1.6,
+      "val_btts": 1.5,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 81
     },
@@ -441,21 +432,21 @@
       "double": true,
       "ac_score": 78
     },
-    "3370472": {
-      "match": "CD Nacional - Estoril Praia",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Dim. 16/08 à 16h30",
-      "val_btts": 1.62,
-      "val_o25": 1.78,
-      "double": true,
-      "ac_score": 78
-    },
     "3363243": {
       "match": "Kalmar FF - Hammarby",
       "league": "Suede • D1 Suede",
       "date_str": "Dim. 16/08 à 16h30",
       "val_btts": 1.55,
       "val_o25": 1.55,
+      "double": true,
+      "ac_score": 78
+    },
+    "3370472": {
+      "match": "CD Nacional - Estoril Praia",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Dim. 16/08 à 16h30",
+      "val_btts": 1.62,
+      "val_o25": 1.78,
       "double": true,
       "ac_score": 78
     },
