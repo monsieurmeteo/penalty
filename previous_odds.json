@@ -22,8 +22,8 @@
       "match": "KR Reykjavik - Breidablik",
       "league": "Islande • D1 Islande",
       "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.2,
-      "val_o25": 1.15,
+      "val_btts": 1.16,
+      "val_o25": 1.1,
       "double": true,
       "ac_score": 96
     },
@@ -42,6 +42,15 @@
       "date_str": "Dim. 16/08 à 20h00",
       "val_btts": 1.35,
       "val_o25": 1.38,
+      "double": true,
+      "ac_score": 94
+    },
+    "3370614": {
+      "match": "ValurReykjavik - KA Akureyri",
+      "league": "Islande • D1 Islande",
+      "date_str": "Lun. 17/08 à 20h00",
+      "val_btts": 1.25,
+      "val_o25": 1.25,
       "double": true,
       "ac_score": 94
     },
@@ -81,21 +90,21 @@
       "double": true,
       "ac_score": 92
     },
-    "3363227": {
-      "match": "KV Beveren - Anderlecht",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 90
-    },
     "3363493": {
       "match": "Dynamo Dresden - SV Darmstadt",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
       "val_btts": 1.45,
       "val_o25": 1.5,
+      "double": true,
+      "ac_score": 90
+    },
+    "3363227": {
+      "match": "KV Beveren - Anderlecht",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Dim. 16/08 à 13h30",
+      "val_btts": 1.52,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 90
     },
@@ -112,8 +121,8 @@
       "match": "Aalesunds - Vålerenga",
       "league": "Norvege • D1 Norvege",
       "date_str": "Dim. 16/08 à 14h30",
-      "val_btts": 1.35,
-      "val_o25": 1.36,
+      "val_btts": 1.32,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 90
     },
@@ -139,8 +148,8 @@
       "match": "Bielefeld - Cottbus",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.52,
-      "val_o25": 1.5,
+      "val_btts": 1.5,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 89
     },
@@ -193,7 +202,7 @@
       "match": "Hafnarfjordur - Vikingur Reyk.",
       "league": "Islande • D1 Islande",
       "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.42,
+      "val_btts": 1.4,
       "val_o25": 1.35,
       "double": true,
       "ac_score": 87
@@ -238,8 +247,8 @@
       "match": "Spartak Trnava - MFK Zemplin",
       "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Dim. 16/08 à 17h00",
-      "val_btts": 1.75,
-      "val_o25": 1.65,
+      "val_btts": 1.7,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 86
     },
@@ -261,21 +270,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3368821": {
-      "match": "Nomme Kalju - Parnu JK Vapru",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Dim. 16/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 85
-    },
     "3370481": {
       "match": "FC Narva - Paide",
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 16/08 à 16h00",
       "val_btts": 1.55,
       "val_o25": 1.6,
+      "double": true,
+      "ac_score": 85
+    },
+    "3368821": {
+      "match": "Nomme Kalju - Parnu JK Vapru",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Dim. 16/08 à 16h00",
+      "val_btts": 1.55,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 85
     },
@@ -292,7 +301,7 @@
       "match": "Leixoes - CD Tondela",
       "league": "Portugal • D2 Portugal",
       "date_str": "Dim. 16/08 à 16h30",
-      "val_btts": 1.55,
+      "val_btts": 1.6,
       "val_o25": 1.85,
       "double": true,
       "ac_score": 84
@@ -328,7 +337,7 @@
       "match": "Twente - Zwolle",
       "league": "Pays Bas • D1 Pays Bas",
       "date_str": "Dim. 16/08 à 14h30",
-      "val_btts": 1.7,
+      "val_btts": 1.65,
       "val_o25": 1.35,
       "double": true,
       "ac_score": 82
@@ -338,7 +347,7 @@
       "league": "Pologne • D1 Pologne",
       "date_str": "Dim. 16/08 à 20h15",
       "val_btts": 1.5,
-      "val_o25": 1.65,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 82
     },
@@ -347,7 +356,7 @@
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Lun. 17/08 à 17h30",
       "val_btts": 1.55,
-      "val_o25": 1.52,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 82
     },
@@ -364,8 +373,8 @@
       "match": "Hearts - Inverness Cal.",
       "league": "Ecosse • Cpe Ligue Ecosse",
       "date_str": "Dim. 16/08 à 15h00",
-      "val_btts": 1.9,
-      "val_o25": 1.5,
+      "val_btts": 1.95,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 80
     },
@@ -374,7 +383,7 @@
       "league": "Belgique • D1 Belgique",
       "date_str": "Dim. 16/08 à 18h30",
       "val_btts": 1.65,
-      "val_o25": 1.82,
+      "val_o25": 1.85,
       "double": true,
       "ac_score": 80
     },
@@ -392,7 +401,7 @@
       "league": "Suede • D1 Suede",
       "date_str": "Dim. 16/08 à 16h30",
       "val_btts": 1.55,
-      "val_o25": 1.55,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 78
     },
@@ -463,8 +472,8 @@
       "match": "FK Zalgiris - FK Banga",
       "league": "Lituanie • D1 Lituanie",
       "date_str": "Dim. 16/08 à 18h30",
-      "val_btts": 1.55,
-      "val_o25": 1.65,
+      "val_btts": 1.5,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 77
     },
@@ -472,7 +481,7 @@
       "match": "Club Tijuana - Cruz Azul",
       "league": "Mexique • D1 Mexique",
       "date_str": "Lun. 17/08 à 05h00",
-      "val_btts": 1.6,
+      "val_btts": 1.55,
       "val_o25": 1.7,
       "double": true,
       "ac_score": 77
@@ -481,8 +490,8 @@
       "match": "Puskas Academy - Paksi SE",
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Dim. 16/08 à 17h30",
-      "val_btts": 1.33,
-      "val_o25": 1.38,
+      "val_btts": 1.35,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 76
     },
@@ -499,8 +508,8 @@
       "match": "Hanovre - Wolfsburg",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.45,
-      "val_o25": 1.52,
+      "val_btts": 1.42,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 75
     }

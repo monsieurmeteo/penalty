@@ -13129,5 +13129,212 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363434",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "Häcken vs Halmstads",
+    "league": "Suede • D1 Suede",
+    "date_str": "Lun. 17/08 à 19h00",
+    "scores": {
+      "o25": 56,
+      "o15": 88,
+      "btts": 60,
+      "penalty": 23
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.36,
+      "o15": 1.1,
+      "btts": 1.62
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360603",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "Gijon vs Sabadell",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Lun. 17/08 à 19h00",
+    "scores": {
+      "o25": 64,
+      "o15": 88,
+      "btts": 64,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365853",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "Brøndby vs Sønderjyske",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Lun. 17/08 à 19h00",
+    "scores": {
+      "o25": 72,
+      "o15": 83,
+      "btts": 47,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Frederik Svendsen",
+      "status": "👨‍⚖️ Arbitre Frederik Svendsen (16 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366111",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "FC Felgueiras vs AVS Futebol",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Lun. 17/08 à 19h00",
+    "scores": {
+      "o25": 53,
+      "o15": 61,
+      "btts": 36,
+      "penalty": 30
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367802",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "Estudiantes Rí vs Tucuman",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Lun. 17/08 à 19h45",
+    "scores": {
+      "o25": 21,
+      "o15": 45,
+      "btts": 25,
+      "penalty": 7
+    },
+    "referee": {
+      "name": "Fernando Echenique",
+      "status": "👨‍⚖️ Arbitre Fernando Echenique (38 m, 0.16 pen/m)",
+      "pen_per_match": 0.158
+    },
+    "odds": {
+      "o25": 2.6,
+      "o15": 1.52,
+      "btts": 2.1
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370117",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "FK Novi Pazar vs Vojvodina",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Lun. 17/08 à 20h00",
+    "scores": {
+      "o25": 72,
+      "o15": 83,
+      "btts": 82,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370614",
+    "timestamp_utc": "2026-08-16T06:02:20.065489+00:00",
+    "match": "ValurReykjavik vs KA Akureyri",
+    "league": "Islande • D1 Islande",
+    "date_str": "Lun. 17/08 à 20h00",
+    "scores": {
+      "o25": 94,
+      "o15": 97,
+      "btts": 94,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.25,
+      "o15": 1.06,
+      "btts": 1.25
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
