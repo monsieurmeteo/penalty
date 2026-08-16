@@ -13336,5 +13336,330 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371986",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "SC Cham vs SC Kriens",
+    "league": "Suisse • Cpe Suisse",
+    "date_str": "Dim. 16/08 à 14h00",
+    "scores": {
+      "o25": 59,
+      "o15": 64,
+      "btts": 60,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372044",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "FC Biel Bienne vs Aarau",
+    "league": "Suisse • Cpe Suisse",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 48,
+      "o15": 65,
+      "btts": 51,
+      "penalty": 35
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25,
+      "btts": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368183",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "FC Arda vs Lokomo.Sofia",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Lun. 17/08 à 20h15",
+    "scores": {
+      "o25": 59,
+      "o15": 83,
+      "btts": 64,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363756",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "Samsunspor vs Göztepe AS",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Lun. 17/08 à 20h30",
+    "scores": {
+      "o25": 96,
+      "o15": 99,
+      "btts": 98,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363066",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "FCSB vs FC Botosani",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Lun. 17/08 à 20h30",
+    "scores": {
+      "o25": 70,
+      "o15": 91,
+      "btts": 67,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.6
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360667",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "La Corogne vs Elche",
+    "league": "Espagne • Laliga",
+    "date_str": "Lun. 17/08 à 21h00",
+    "scores": {
+      "o25": 56,
+      "o15": 80,
+      "btts": 82,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.1,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3359055",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "Cardiff vs Wrexham",
+    "league": "Angleterre • Championship",
+    "date_str": "Lun. 17/08 à 21h00",
+    "scores": {
+      "o25": 78,
+      "o15": 97,
+      "btts": 71,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.52
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369666",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "Casa Pia vs Benfica",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Lun. 17/08 à 21h15",
+    "scores": {
+      "o25": 80,
+      "o15": 83,
+      "btts": 72,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 2.1
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364642",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "Fram Reykjavik vs Stjarnan",
+    "league": "Islande • D1 Islande",
+    "date_str": "Lun. 17/08 à 21h15",
+    "scores": {
+      "o25": 98,
+      "o15": 99,
+      "btts": 91,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.2,
+      "o15": 1.05,
+      "btts": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360604",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "Almeria vs Club Eldense",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Lun. 17/08 à 21h30",
+    "scores": {
+      "o25": 74,
+      "o15": 79,
+      "btts": 71,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.18,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367793",
+    "timestamp_utc": "2026-08-16T08:03:24.760618+00:00",
+    "match": "CA Lanus vs Independiente",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Lun. 17/08 à 22h00",
+    "scores": {
+      "o25": 58,
+      "o15": 66,
+      "btts": 34,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.35,
+      "o15": 1.45,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
