@@ -12825,5 +12825,67 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363259",
+    "timestamp_utc": "2026-08-16T00:03:13.923667+00:00",
+    "match": "Banik Ostrava vs SK Lisen",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Dim. 16/08 à 15h00",
+    "scores": {
+      "o25": 57,
+      "o15": 81,
+      "btts": 56,
+      "penalty": 27
+    },
+    "referee": {
+      "name": "Jan Všetečka",
+      "status": "👨‍⚖️ Arbitre Jan Všetečka (17 m, 0.24 pen/m)",
+      "pen_per_match": 0.235
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.18,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371908",
+    "timestamp_utc": "2026-08-16T00:03:13.923667+00:00",
+    "match": "Atert Bissen vs Niedercorn",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 90,
+      "o15": 99,
+      "btts": 80,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Nathan Verboomen",
+      "status": "👨‍⚖️ Arbitre Nathan Verboomen (26 m, 0.23 pen/m)",
+      "pen_per_match": 0.231
+    },
+    "odds": {
+      "o25": 1.58,
+      "o15": 1.15,
+      "btts": 1.52
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
