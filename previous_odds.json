@@ -1,23 +1,5 @@
 {
   "s3": {
-    "3351437": {
-      "match": "Salt Lake - Minnesota Utd",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 16/08 à 03h30",
-      "val_btts": 1.45,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 98
-    },
-    "3351430": {
-      "match": "Nashville SC - Inter Miami",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 16/08 à 02h30",
-      "val_btts": 1.35,
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 96
-    },
     "3363239": {
       "match": "Djurgårdens - AIK Solna",
       "league": "Suede • D1 Suede",
@@ -63,15 +45,6 @@
       "double": true,
       "ac_score": 94
     },
-    "3365996": {
-      "match": "Monterrey - FC Juarez",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Dim. 16/08 à 03h10",
-      "val_btts": 1.5,
-      "val_o25": 1.45,
-      "double": true,
-      "ac_score": 92
-    },
     "3363220": {
       "match": "Ajax - Heerenveen",
       "league": "Pays Bas • D1 Pays Bas",
@@ -85,7 +58,7 @@
       "match": "Vasco De Gama - Santos",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 16/08 à 21h00",
-      "val_btts": 1.65,
+      "val_btts": 1.72,
       "val_o25": 1.85,
       "double": true,
       "ac_score": 92
@@ -99,21 +72,21 @@
       "double": true,
       "ac_score": 92
     },
-    "3363227": {
-      "match": "KV Beveren - Anderlecht",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.6,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 90
-    },
     "3363493": {
       "match": "Dynamo Dresden - SV Darmstadt",
       "league": "Allemagne • Bundesliga 2",
       "date_str": "Dim. 16/08 à 13h30",
       "val_btts": 1.45,
       "val_o25": 1.5,
+      "double": true,
+      "ac_score": 90
+    },
+    "3363227": {
+      "match": "KV Beveren - Anderlecht",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Dim. 16/08 à 13h30",
+      "val_btts": 1.6,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 90
     },
@@ -252,21 +225,21 @@
       "double": true,
       "ac_score": 86
     },
-    "3370481": {
-      "match": "FC Narva - Paide",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Dim. 16/08 à 16h00",
-      "val_btts": 1.55,
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 85
-    },
     "3368821": {
       "match": "Nomme Kalju - Parnu JK Vapru",
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 16/08 à 16h00",
       "val_btts": 1.55,
       "val_o25": 1.4,
+      "double": true,
+      "ac_score": 85
+    },
+    "3370481": {
+      "match": "FC Narva - Paide",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Dim. 16/08 à 16h00",
+      "val_btts": 1.55,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 85
     },
@@ -347,7 +320,7 @@
       "league": "France • Trophee Des Champions",
       "date_str": "Dim. 16/08 à 20h45",
       "val_btts": 1.5,
-      "val_o25": 1.55,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 81
     },
@@ -356,7 +329,7 @@
       "league": "Mexique • D1 Mexique",
       "date_str": "Dim. 16/08 à 05h10",
       "val_btts": 1.72,
-      "val_o25": 1.95,
+      "val_o25": 2.0,
       "double": true,
       "ac_score": 80
     },
@@ -387,29 +360,11 @@
       "double": true,
       "ac_score": 80
     },
-    "3351432": {
-      "match": "Houston - LA Galaxy",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 16/08 à 02h30",
-      "val_btts": 1.55,
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 78
-    },
     "3367317": {
       "match": "Chapecoense SC - Bahia Salvador",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 16/08 à 16h00",
       "val_btts": 1.65,
-      "val_o25": 1.78,
-      "double": true,
-      "ac_score": 78
-    },
-    "3370472": {
-      "match": "CD Nacional - Estoril Praia",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Dim. 16/08 à 16h30",
-      "val_btts": 1.62,
       "val_o25": 1.78,
       "double": true,
       "ac_score": 78
@@ -420,6 +375,15 @@
       "date_str": "Dim. 16/08 à 16h30",
       "val_btts": 1.55,
       "val_o25": 1.55,
+      "double": true,
+      "ac_score": 78
+    },
+    "3370472": {
+      "match": "CD Nacional - Estoril Praia",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Dim. 16/08 à 16h30",
+      "val_btts": 1.62,
+      "val_o25": 1.78,
       "double": true,
       "ac_score": 78
     },
@@ -458,15 +422,6 @@
       "val_o25": 1.85,
       "double": true,
       "ac_score": 78
-    },
-    "3351436": {
-      "match": "Colorado - Kansas City",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 16/08 à 03h30",
-      "val_btts": 1.5,
-      "val_o25": 1.38,
-      "double": true,
-      "ac_score": 77
     },
     "3367583": {
       "match": "Stenhousemuir - Motherwell",
