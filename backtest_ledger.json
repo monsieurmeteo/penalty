@@ -13661,5 +13661,212 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371909",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "US Mondorf vs F91 Dudelange",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.66,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371665",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "US Rumelange vs FC Rosport",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 57,
+      "o15": 57,
+      "btts": 32,
+      "penalty": 45
+    },
+    "referee": {
+      "name": "David Huamaní Rojas",
+      "status": "👨‍⚖️ Arbitre David Huamaní Rojas (5 m, 0.40 pen/m)",
+      "pen_per_match": 0.4
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.35
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371668",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "UN Kaerjeng vs Walferdange",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 47,
+      "o15": 64,
+      "btts": 21,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370853",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "US Hostert vs Etz.Ettelbruck",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367791",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "VelezSarsfield vs Defensa Y Jus.",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Mar. 18/08 à 00h15",
+    "scores": {
+      "o25": 60,
+      "o15": 66,
+      "btts": 39,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Nicolás Ramírez",
+      "status": "👨‍⚖️ Arbitre Nicolás Ramírez (37 m, 0.35 pen/m)",
+      "pen_per_match": 0.351
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38,
+      "btts": 2.0
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364404",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "Internacional vs Remo PA",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Mar. 18/08 à 01h00",
+    "scores": {
+      "o25": 73,
+      "o15": 87,
+      "btts": 63,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369394",
+    "timestamp_utc": "2026-08-16T12:03:07.582582+00:00",
+    "match": "CSD Macara vs CDUC Ecuador",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Mar. 18/08 à 02h00",
+    "scores": {
+      "o25": 56,
+      "o15": 70,
+      "btts": 48,
+      "penalty": 25
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.7
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
