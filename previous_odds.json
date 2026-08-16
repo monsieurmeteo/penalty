@@ -9,23 +9,14 @@
       "double": true,
       "ac_score": 98
     },
-    "3365136": {
-      "match": "KR Reykjavik - Breidablik",
-      "league": "Islande • D1 Islande",
-      "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.16,
-      "val_o25": 1.1,
+    "3351655": {
+      "match": "NY City FC - Philadelphia",
+      "league": "Etats Unis • Mls",
+      "date_str": "Lun. 17/08 à 00h00",
+      "val_btts": 1.45,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 96
-    },
-    "3370321": {
-      "match": "Vestmannaeyjar - IA Akranes",
-      "league": "Islande • D1 Islande",
-      "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.35,
-      "val_o25": 1.38,
-      "double": true,
-      "ac_score": 94
     },
     "3369982": {
       "match": "Sliema FC - Hibernians FC",
@@ -51,6 +42,15 @@
       "date_str": "Dim. 16/08 à 21h00",
       "val_btts": 1.65,
       "val_o25": 1.8,
+      "double": true,
+      "ac_score": 92
+    },
+    "3351358": {
+      "match": "Chicago Fire - Portland",
+      "league": "Etats Unis • Mls",
+      "date_str": "Lun. 17/08 à 00h00",
+      "val_btts": 1.35,
+      "val_o25": 1.28,
       "double": true,
       "ac_score": 92
     },
@@ -81,15 +81,6 @@
       "double": true,
       "ac_score": 91
     },
-    "3365997": {
-      "match": "UNAM Pumas - Queretaro FC",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.55,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 90
-    },
     "3363066": {
       "match": "FCSB - FC Botosani",
       "league": "Roumanie • D1 Roumanie",
@@ -99,29 +90,11 @@
       "double": true,
       "ac_score": 90
     },
-    "3365558": {
-      "match": "Randers FC - FC Copenhague",
-      "league": "Danemark • D1 Danemark",
-      "date_str": "Dim. 16/08 à 18h00",
-      "val_btts": 1.5,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 87
-    },
-    "3364641": {
-      "match": "Hafnarfjordur - Vikingur Reyk.",
-      "league": "Islande • D1 Islande",
-      "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.4,
-      "val_o25": 1.36,
-      "double": true,
-      "ac_score": 87
-    },
     "3367315": {
       "match": "Mirassol SP - Flamengo",
       "league": "Bresil • D1 Bresil",
       "date_str": "Dim. 16/08 à 23h30",
-      "val_btts": 1.72,
+      "val_btts": 1.65,
       "val_o25": 1.8,
       "double": true,
       "ac_score": 87
@@ -144,12 +117,12 @@
       "double": true,
       "ac_score": 87
     },
-    "3365547": {
-      "match": "KFC Komarno - FK DAC 1904",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Dim. 16/08 à 19h00",
-      "val_btts": 1.65,
-      "val_o25": 1.9,
+    "3351673": {
+      "match": "Seattle - Vancouver",
+      "league": "Etats Unis • Mls",
+      "date_str": "Lun. 17/08 à 04h30",
+      "val_btts": 1.45,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 86
     },
@@ -171,19 +144,19 @@
       "double": true,
       "ac_score": 84
     },
-    "3366398": {
-      "match": "Arouca - Moreirense",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Dim. 16/08 à 19h00",
-      "val_btts": 1.85,
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 83
-    },
     "3364812": {
       "match": "Gornik Zabrze - Wisla Cracovie",
       "league": "Pologne • D1 Pologne",
       "date_str": "Dim. 16/08 à 20h15",
+      "val_btts": 1.45,
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 82
+    },
+    "3351433": {
+      "match": "Austin FC - Dallas FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Lun. 17/08 à 02h30",
       "val_btts": 1.45,
       "val_o25": 1.55,
       "double": true,
@@ -198,30 +171,12 @@
       "double": true,
       "ac_score": 82
     },
-    "3363236": {
-      "match": "KV Mechelen - Standard Liège",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Dim. 16/08 à 18h30",
-      "val_btts": 1.72,
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 80
-    },
-    "3363231": {
-      "match": "Lommel United - Charleroi",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Dim. 16/08 à 19h15",
-      "val_btts": 1.52,
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 78
-    },
     "3368073": {
       "match": "Sp.Luqueno - Libertad",
       "league": "Paraguay • D1 Paraguay",
       "date_str": "Dim. 16/08 à 21h00",
       "val_btts": 1.65,
-      "val_o25": 1.85,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 78
     },
@@ -234,28 +189,10 @@
       "double": true,
       "ac_score": 78
     },
-    "3363210": {
-      "match": "FK Zalgiris - FK Banga",
-      "league": "Lituanie • D1 Lituanie",
-      "date_str": "Dim. 16/08 à 18h30",
-      "val_btts": 1.45,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 77
-    },
-    "3370731": {
-      "match": "Zira FK - Safa",
-      "league": "Azerbaidjan • D1 Azerbaidjan",
-      "date_str": "Dim. 16/08 à 19h00",
-      "val_btts": 1.65,
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 77
-    },
     "3366000": {
       "match": "Club Tijuana - Cruz Azul",
       "league": "Mexique • D1 Mexique",
-      "date_str": "Lun. 17/08 à 05h00",
+      "date_str": "Lun. 17/08 à 05h10",
       "val_btts": 1.6,
       "val_o25": 1.75,
       "double": true,
@@ -278,15 +215,6 @@
       "val_o25": 2.1,
       "double": true,
       "ac_score": 76
-    },
-    "3363258": {
-      "match": "Slovan Liberec - Slavia Prague",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "date_str": "Dim. 16/08 à 20h00",
-      "val_btts": 1.65,
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 75
     }
   }
 }
