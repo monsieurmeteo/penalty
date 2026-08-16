@@ -14078,5 +14078,218 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371664",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "Racing Union vs Sw.Hesperange",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 18h00",
+    "scores": {
+      "o25": 52,
+      "o15": 71,
+      "btts": 36,
+      "penalty": 34
+    },
+    "referee": {
+      "name": "Kalle Nummela",
+      "status": "👨‍⚖️ Arbitre Kalle Nummela (23 m, 0.39 pen/m)",
+      "pen_per_match": 0.391
+    },
+    "odds": {
+      "o25": 1.25,
+      "o15": 1.05,
+      "btts": 1.85
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370731",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "Zira FK vs Safa",
+    "league": "Azerbaidjan • D1 Azerbaidjan",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 77,
+      "o15": 89,
+      "btts": 66,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368988",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "FC Samgurali vs Dinamo Batumi",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Dim. 16/08 à 19h00",
+    "scores": {
+      "o25": 63,
+      "o15": 93,
+      "btts": 71,
+      "penalty": 46
+    },
+    "referee": {
+      "name": "Nikita Novikov",
+      "status": "👨‍⚖️ Arbitre Nikita Novikov (3 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363258",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "Slovan Liberec vs Slavia Prague",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Dim. 16/08 à 20h00",
+    "scores": {
+      "o25": 75,
+      "o15": 85,
+      "btts": 66,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Dominik Starý",
+      "status": "👨‍⚖️ Arbitre Dominik Starý (22 m, 0.45 pen/m)",
+      "pen_per_match": 0.455
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2,
+      "btts": 1.65
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368852",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "FC Koper vs NK Bravo",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Dim. 16/08 à 20h15",
+    "scores": {
+      "o25": 91,
+      "o15": 93,
+      "btts": 89,
+      "penalty": 55
+    },
+    "referee": {
+      "name": "Alen Borošak",
+      "status": "👨‍⚖️ Arbitre Alen Borošak (11 m, 0.18 pen/m)",
+      "pen_per_match": 0.182
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12,
+      "btts": 1.45
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369982",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "Sliema FC vs Hibernians FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Dim. 16/08 à 20h30",
+    "scores": {
+      "o25": 94,
+      "o15": 95,
+      "btts": 92,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.64
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365990",
+    "timestamp_utc": "2026-08-16T16:02:29.986737+00:00",
+    "match": "CF Pachuca vs Club Puebla",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Mar. 18/08 à 05h00",
+    "scores": {
+      "o25": 60,
+      "o15": 68,
+      "btts": 56,
+      "penalty": 29
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.18,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
