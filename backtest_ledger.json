@@ -12887,5 +12887,247 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3368998",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "UNA Strassen vs Jeunesse Esch",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Dim. 16/08 à 16h00",
+    "scores": {
+      "o25": 87,
+      "o15": 90,
+      "btts": 77,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363433",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "IF Gnistan vs Ilves",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Lun. 17/08 à 17h00",
+    "scores": {
+      "o25": 92,
+      "o15": 97,
+      "btts": 84,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12,
+      "btts": 1.4
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3367172",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "Zhytomyr vs Zorya Lugansk",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Lun. 17/08 à 17h00",
+    "scores": {
+      "o25": 87,
+      "o15": 99,
+      "btts": 90,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22,
+      "btts": 1.75
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363431",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "FA Siauliai vs FK Panevezys",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Lun. 17/08 à 17h00",
+    "scores": {
+      "o25": 56,
+      "o15": 63,
+      "btts": 39,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15,
+      "btts": 1.45
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363071",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "Universit Cluj vs Uta Arad",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Lun. 17/08 à 17h30",
+    "scores": {
+      "o25": 71,
+      "o15": 77,
+      "btts": 56,
+      "penalty": 61
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.65
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370134",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "Zalaegerszeg vs Ferencvaros",
+    "league": "Hongrie • D1 Hongrie",
+    "date_str": "Lun. 17/08 à 17h30",
+    "scores": {
+      "o25": 82,
+      "o15": 93,
+      "btts": 76,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363429",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "Dziugas vs FK Suduva",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Lun. 17/08 à 17h45",
+    "scores": {
+      "o25": 86,
+      "o15": 97,
+      "btts": 74,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369920",
+    "timestamp_utc": "2026-08-16T04:03:10.054385+00:00",
+    "match": "Spartak Varna vs FK Septemvri",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Lun. 17/08 à 18h00",
+    "scores": {
+      "o25": 36,
+      "o15": 63,
+      "btts": 45,
+      "penalty": 46
+    },
+    "referee": {
+      "name": "Stanimir Trenchev",
+      "status": "👨‍⚖️ Arbitre Stanimir Trenchev (9 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3,
+      "btts": 1.75
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

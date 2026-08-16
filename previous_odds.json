@@ -72,14 +72,14 @@
       "double": true,
       "ac_score": 92
     },
-    "3363493": {
-      "match": "Dynamo Dresden - SV Darmstadt",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 16/08 à 13h30",
-      "val_btts": 1.45,
-      "val_o25": 1.5,
+    "3363433": {
+      "match": "IF Gnistan - Ilves",
+      "league": "Finlande • D1 Finlande",
+      "date_str": "Lun. 17/08 à 17h00",
+      "val_btts": 1.4,
+      "val_o25": 1.48,
       "double": true,
-      "ac_score": 90
+      "ac_score": 92
     },
     "3363227": {
       "match": "KV Beveren - Anderlecht",
@@ -87,6 +87,15 @@
       "date_str": "Dim. 16/08 à 13h30",
       "val_btts": 1.6,
       "val_o25": 1.7,
+      "double": true,
+      "ac_score": 90
+    },
+    "3363493": {
+      "match": "Dynamo Dresden - SV Darmstadt",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 16/08 à 13h30",
+      "val_btts": 1.45,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 90
     },
@@ -153,11 +162,20 @@
       "double": true,
       "ac_score": 88
     },
+    "3368998": {
+      "match": "UNA Strassen - Jeunesse Esch",
+      "league": "Luxembourg • D1 Luxembourg",
+      "date_str": "Dim. 16/08 à 16h00",
+      "val_btts": 1.8,
+      "val_o25": 1.52,
+      "double": true,
+      "ac_score": 87
+    },
     "3360674": {
       "match": "Santander - Villarreal",
       "league": "Espagne • Laliga",
       "date_str": "Dim. 16/08 à 17h00",
-      "val_btts": 1.52,
+      "val_btts": 1.55,
       "val_o25": 1.65,
       "double": true,
       "ac_score": 87
@@ -198,6 +216,15 @@
       "double": true,
       "ac_score": 87
     },
+    "3367172": {
+      "match": "Zhytomyr - Zorya Lugansk",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Lun. 17/08 à 17h00",
+      "val_btts": 1.75,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 87
+    },
     "3370473": {
       "match": "Amarante FC - Lusitania",
       "league": "Portugal • D2 Portugal",
@@ -221,7 +248,16 @@
       "league": "Slovaquie • D1 Slovaquie",
       "date_str": "Dim. 16/08 à 19h00",
       "val_btts": 1.65,
-      "val_o25": 1.8,
+      "val_o25": 1.85,
+      "double": true,
+      "ac_score": 86
+    },
+    "3363429": {
+      "match": "Dziugas - FK Suduva",
+      "league": "Lituanie • D1 Lituanie",
+      "date_str": "Lun. 17/08 à 17h45",
+      "val_btts": 1.8,
+      "val_o25": 2.0,
       "double": true,
       "ac_score": 86
     },
@@ -256,7 +292,7 @@
       "match": "Leixoes - CD Tondela",
       "league": "Portugal • D2 Portugal",
       "date_str": "Dim. 16/08 à 16h30",
-      "val_btts": 1.6,
+      "val_btts": 1.55,
       "val_o25": 1.85,
       "double": true,
       "ac_score": 84
@@ -288,15 +324,6 @@
       "double": true,
       "ac_score": 83
     },
-    "3363208": {
-      "match": "Inter Toronto - HFX Wanderers",
-      "league": "Canada • D1 Canada",
-      "date_str": "Dim. 16/08 à 22h00",
-      "val_btts": 1.42,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 83
-    },
     "3363219": {
       "match": "Twente - Zwolle",
       "league": "Pays Bas • D1 Pays Bas",
@@ -315,23 +342,14 @@
       "double": true,
       "ac_score": 82
     },
-    "3358047": {
-      "match": "Lens - Paris SG",
-      "league": "France • Trophee Des Champions",
-      "date_str": "Dim. 16/08 à 20h45",
-      "val_btts": 1.5,
+    "3370134": {
+      "match": "Zalaegerszeg - Ferencvaros",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Lun. 17/08 à 17h30",
+      "val_btts": 1.55,
       "val_o25": 1.52,
       "double": true,
-      "ac_score": 81
-    },
-    "3365988": {
-      "match": "Atlas FC - Tigres UANL",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Dim. 16/08 à 05h10",
-      "val_btts": 1.72,
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 80
+      "ac_score": 82
     },
     "3363216": {
       "match": "Feyenoord - GOAhead Eagles",
@@ -400,8 +418,8 @@
       "match": "FC Flora - FC Kuressaare",
       "league": "Estonie • D1 Estonie",
       "date_str": "Dim. 16/08 à 18h00",
-      "val_btts": 1.6,
-      "val_o25": 1.38,
+      "val_btts": 1.65,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 78
     },
@@ -409,8 +427,8 @@
       "match": "Lommel United - Charleroi",
       "league": "Belgique • D1 Belgique",
       "date_str": "Dim. 16/08 à 19h15",
-      "val_btts": 1.65,
-      "val_o25": 1.78,
+      "val_btts": 1.62,
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 78
     },
@@ -445,8 +463,8 @@
       "match": "FK Zalgiris - FK Banga",
       "league": "Lituanie • D1 Lituanie",
       "date_str": "Dim. 16/08 à 18h30",
-      "val_btts": 1.6,
-      "val_o25": 1.72,
+      "val_btts": 1.55,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 77
     },
