@@ -13,8 +13,8 @@
       "match": "ValurReykjavik - KA Akureyri",
       "league": "Islande • D1 Islande",
       "date_str": "Lun. 17/08 à 20h00",
-      "val_btts": 1.22,
-      "val_o25": 1.22,
+      "val_btts": 1.25,
+      "val_o25": 1.25,
       "double": true,
       "ac_score": 94
     },
@@ -76,8 +76,8 @@
       "match": "Zhytomyr - Zorya Lugansk",
       "league": "Ukraine • D1 Ukraine",
       "date_str": "Lun. 17/08 à 17h00",
-      "val_btts": 1.9,
-      "val_o25": 1.65,
+      "val_btts": 1.85,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 87
     },
