@@ -9,6 +9,42 @@
       "double": true,
       "ac_score": 98
     },
+    "3363756": {
+      "match": "Samsunspor - Göztepe AS",
+      "league": "Turquie • D1 Turquie",
+      "date_str": "Lun. 17/08 à 20h30",
+      "val_btts": 1.65,
+      "val_o25": 1.82,
+      "double": true,
+      "ac_score": 96
+    },
+    "3366000": {
+      "match": "Club Tijuana - Cruz Azul",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Lun. 17/08 à 05h10",
+      "val_btts": 1.6,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 92
+    },
+    "3370134": {
+      "match": "Zalaegerszeg - Ferencvaros",
+      "league": "Hongrie • D1 Hongrie",
+      "date_str": "Lun. 17/08 à 17h30",
+      "val_btts": 1.6,
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 92
+    },
+    "3365989": {
+      "match": "Club Necaxa - FC Leon",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Mar. 18/08 à 03h00",
+      "val_btts": 1.45,
+      "val_o25": 1.6,
+      "double": true,
+      "ac_score": 92
+    },
     "3370614": {
       "match": "ValurReykjavik - KA Akureyri",
       "league": "Islande • D1 Islande",
@@ -16,34 +52,16 @@
       "val_btts": 1.25,
       "val_o25": 1.28,
       "double": true,
-      "ac_score": 94
-    },
-    "3365999": {
-      "match": "Santos Laguna - Chivas",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Lun. 17/08 à 03h10",
-      "val_btts": 1.55,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 92
-    },
-    "3363433": {
-      "match": "IF Gnistan - Ilves",
-      "league": "Finlande • D1 Finlande",
-      "date_str": "Lun. 17/08 à 17h00",
-      "val_btts": 1.4,
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 92
-    },
-    "3363066": {
-      "match": "FCSB - FC Botosani",
-      "league": "Roumanie • D1 Roumanie",
-      "date_str": "Lun. 17/08 à 20h30",
-      "val_btts": 1.6,
-      "val_o25": 1.55,
-      "double": true,
       "ac_score": 90
+    },
+    "3370729": {
+      "match": "FC Qarabag - Shamakhi FC",
+      "league": "Azerbaidjan • D1 Azerbaidjan",
+      "date_str": "Lun. 17/08 à 17h30",
+      "val_btts": 1.55,
+      "val_o25": 1.45,
+      "double": true,
+      "ac_score": 89
     },
     "3363429": {
       "match": "Dziugas - FK Suduva",
@@ -54,15 +72,6 @@
       "double": true,
       "ac_score": 89
     },
-    "3367172": {
-      "match": "Zhytomyr - Zorya Lugansk",
-      "league": "Ukraine • D1 Ukraine",
-      "date_str": "Lun. 17/08 à 17h00",
-      "val_btts": 1.8,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 87
-    },
     "3370274": {
       "match": "FC Gagra - FC Spaeri",
       "league": "Georgie • D1 Georgie",
@@ -70,7 +79,16 @@
       "val_btts": 1.65,
       "val_o25": 1.8,
       "double": true,
-      "ac_score": 87
+      "ac_score": 86
+    },
+    "3367172": {
+      "match": "Zhytomyr - Zorya Lugansk",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Lun. 17/08 à 17h00",
+      "val_btts": 1.8,
+      "val_o25": 1.75,
+      "double": true,
+      "ac_score": 85
     },
     "3351673": {
       "match": "Seattle - Vancouver",
@@ -79,43 +97,34 @@
       "val_btts": 1.45,
       "val_o25": 1.5,
       "double": true,
-      "ac_score": 86
-    },
-    "3351433": {
-      "match": "Austin FC - Dallas FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Lun. 17/08 à 02h30",
-      "val_btts": 1.45,
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 82
-    },
-    "3370134": {
-      "match": "Zalaegerszeg - Ferencvaros",
-      "league": "Hongrie • D1 Hongrie",
-      "date_str": "Lun. 17/08 à 17h30",
-      "val_btts": 1.55,
-      "val_o25": 1.5,
-      "double": true,
       "ac_score": 82
     },
     "3369666": {
       "match": "Casa Pia - Benfica",
       "league": "Portugal • Liga Portugal",
       "date_str": "Lun. 17/08 à 21h15",
-      "val_btts": 2.1,
+      "val_btts": 2.05,
       "val_o25": 1.52,
+      "double": true,
+      "ac_score": 80
+    },
+    "3363433": {
+      "match": "IF Gnistan - Ilves",
+      "league": "Finlande • D1 Finlande",
+      "date_str": "Lun. 17/08 à 17h00",
+      "val_btts": 1.4,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 78
     },
-    "3366000": {
-      "match": "Club Tijuana - Cruz Azul",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Lun. 17/08 à 05h10",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
+    "3359055": {
+      "match": "Cardiff - Wrexham",
+      "league": "Angleterre • Championship",
+      "date_str": "Lun. 17/08 à 21h00",
+      "val_btts": 1.55,
+      "val_o25": 1.65,
       "double": true,
-      "ac_score": 77
+      "ac_score": 78
     },
     "3370571": {
       "match": "Birkirkara FC - Gzira United",
@@ -126,23 +135,23 @@
       "double": true,
       "ac_score": 77
     },
-    "3363756": {
-      "match": "Samsunspor - Göztepe AS",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Lun. 17/08 à 20h30",
+    "3365853": {
+      "match": "Brøndby - Sønderjyske",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Lun. 17/08 à 19h00",
       "val_btts": 1.65,
-      "val_o25": 1.82,
+      "val_o25": 1.5,
       "double": true,
-      "ac_score": 76
+      "ac_score": 75
     },
-    "3360667": {
-      "match": "La Corogne - Elche",
-      "league": "Espagne • Laliga",
-      "date_str": "Lun. 17/08 à 21h00",
-      "val_btts": 1.8,
-      "val_o25": 2.15,
+    "3364404": {
+      "match": "Internacional - Remo PA",
+      "league": "Bresil • D1 Bresil",
+      "date_str": "Mar. 18/08 à 01h00",
+      "val_btts": 1.72,
+      "val_o25": 1.7,
       "double": true,
-      "ac_score": 76
+      "ac_score": 75
     }
   }
 }
