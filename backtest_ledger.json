@@ -14561,5 +14561,125 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3372407",
+    "timestamp_utc": "2026-08-17T08:02:54.735589+00:00",
+    "match": "Shanghai Shen. vs Beijing Guoan",
+    "league": "Chine • D1 Chine",
+    "date_str": "Mar. 18/08 à 13h35",
+    "scores": {
+      "o25": 92,
+      "o15": 97,
+      "btts": 94,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09,
+      "btts": 1.32
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370866",
+    "timestamp_utc": "2026-08-17T08:02:54.735589+00:00",
+    "match": "Fenerbahce vs Lyon",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 18/08 à 21h00",
+    "scores": {
+      "o25": 80,
+      "o15": 83,
+      "btts": 51,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Sven Jablonski",
+      "status": "👨‍⚖️ Arbitre Sven Jablonski (12 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.2,
+      "btts": 1.55
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370856",
+    "timestamp_utc": "2026-08-17T08:02:54.735589+00:00",
+    "match": "Dinamo Zagreb vs Viking FK",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 18/08 à 21h00",
+    "scores": {
+      "o25": 62,
+      "o15": 71,
+      "btts": 38,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.18,
+      "btts": 1.55
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370838",
+    "timestamp_utc": "2026-08-17T08:02:54.735589+00:00",
+    "match": "Levski Sofia vs AEK Athènes",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mar. 18/08 à 21h00",
+    "scores": {
+      "o25": 76,
+      "o15": 77,
+      "btts": 60,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Glenn Nyberg",
+      "status": "👨‍⚖️ Arbitre Glenn Nyberg (19 m, 0.21 pen/m)",
+      "pen_per_match": 0.211
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32,
+      "btts": 1.78
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
