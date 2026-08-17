@@ -673,16 +673,23 @@ def main():
                 break
 
     # ── 3b. ORPHELINS — Doublés + Triplés (Score ≥ 80, cotes réelles uniquement) ──
-    orphan_o25 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 2.5" in s["market"]]
+    # IDs des matchs déjà utilisés en penalty (ne pas les dupliquer dans les orphelins)
+    pen_ids = {m["id"] for m in scanned_results
+               if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
+               and m.get("score_penalty", 0) >= 80
+               and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]}
+    all_used = used_match_ids | pen_ids
+
+    orphan_o25 = [s for s in mixed_selections if s["id"] not in all_used and "Over 2.5" in s["market"]]
     # Over 1.5 : uniquement cotes réelles Unibet (pas d'estimations)
-    orphan_o15 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 1.5" in s["market"] and s["m"].get("over15_real", False)]
+    orphan_o15 = [s for s in mixed_selections if s["id"] not in all_used and "Over 1.5" in s["market"] and s["m"].get("over15_real", False)]
     orphan_o25.sort(key=lambda x: x["dt"])
     orphan_o15.sort(key=lambda x: x["dt"])
 
     combos_orphans = []
     used_orphan_ids = set()
 
-    # Doublés Duo Mixte : 1× Over 2.5 + 1× Over 1.5 (cote ≥ 1.60)
+    # Tier 1 — Doublés Mixte : 1× Over 2.5 + 1× Over 1.5 (cote ≥ 1.60)
     for s_o25 in orphan_o25:
         if s_o25["id"] in used_orphan_ids: continue
         teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
@@ -698,7 +705,7 @@ def main():
             used_orphan_ids.add(s_o15["id"])
             break
 
-    # Triplés : 2× Over 2.5 + 1× Over 1.5 (cote ≥ 1.80) — avec orphelins restants
+    # Tier 2 — Triplés : 2× Over 2.5 + 1× Over 1.5 (cote ≥ 1.80)
     remaining_o25 = [s for s in orphan_o25 if s["id"] not in used_orphan_ids]
     remaining_o15 = [s for s in orphan_o15 if s["id"] not in used_orphan_ids]
     used_triplet_ids = set()
@@ -708,7 +715,7 @@ def main():
             if j <= i or s2["id"] in used_triplet_ids: continue
             teams_12 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower(),
                         s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
-            if len(teams_12) < 4: continue  # doublon d'équipe
+            if len(teams_12) < 4: continue
             for s3 in remaining_o15:
                 if s3["id"] in used_triplet_ids: continue
                 teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
@@ -720,6 +727,26 @@ def main():
                 used_triplet_ids.update([s1["id"], s2["id"], s3["id"]])
                 break
             if s1["id"] in used_triplet_ids: break
+
+    # Tier 3 — Doublés purs Over 1.5 pour orphelins restants sans partenaire O2.5 (cote ≥ 1.60)
+    solo_o15 = [s for s in orphan_o15 if s["id"] not in used_orphan_ids and s["id"] not in used_triplet_ids]
+    solo_o15.sort(key=lambda x: x["dt"])
+    used_solo_ids = set()
+    for i, s1 in enumerate(solo_o15):
+        if s1["id"] in used_solo_ids: continue
+        teams_1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+        for s2 in solo_o15[i+1:]:
+            if s2["id"] in used_solo_ids: continue
+            teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
+            if teams_1 & teams_2: continue
+            comb_odds = round(s1["odds"] * s2["odds"], 2)
+            if comb_odds < 1.60: continue
+            combos_orphans.append({"type": "Doublé O1.5", "items": [s1, s2], "comb_odds": comb_odds,
+                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
+            used_solo_ids.add(s1["id"])
+            used_solo_ids.add(s2["id"])
+            break
+
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
