@@ -1138,31 +1138,30 @@ def main():
     if combos_orphans:
         orphan_items_html = ""
         for idx_o, cb in enumerate(combos_orphans, 1):
-            s1, s2 = cb["items"][0], cb["items"][1]
-            mk1, o1, sc1 = s1["market"], s1["odds"], s1["score"]
-            mk2, o2, sc2 = s2["market"], s2["odds"], s2["score"]
-            m1, m2 = s1["m"], s2["m"]
-            sc1_color = "#dc2626" if sc1 >= 90 else "#ea580c" if sc1 >= 85 else "#f59e0b" if sc1 >= 80 else "#10b981"
-            sc2_color = "#dc2626" if sc2 >= 90 else "#ea580c" if sc2 >= 85 else "#f59e0b" if sc2 >= 80 else "#10b981"
+            combo_type = cb.get("type", "Doublé")
+            label = "Triplé" if len(cb["items"]) == 3 else "Doublé"
+            rows_html = ""
+            for k, s in enumerate(cb["items"]):
+                mk, odds, sc = s["market"], s["odds"], s["score"]
+                m = s["m"]
+                sc_color = "#dc2626" if sc >= 90 else "#ea580c" if sc >= 85 else "#f59e0b" if sc >= 80 else "#10b981"
+                border = "border-bottom:1px solid #f0f9ff;" if k < len(cb["items"]) - 1 else ""
+                rows_html += f"""
+                <div style="padding:4px 0; {border}">
+                  🔹 <b>{mk}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m.get('date_str','')}</span> &bull; <b>{m.get('dom','')} vs {m.get('ext','')}</b> &bull; Cote: <b>@{odds:.2f}</b>
+                  <span style="color:#64748b; font-size:10px;"> ({m.get('league','')})</span>
+                  <span style="background:{sc_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc}/100</span>
+                </div>"""
             orphan_items_html += f"""
             <div style="background:#fff; border:1px solid #e0f2fe; border-left:4px solid #0ea5e9; border-radius:8px; padding:10px 12px; margin-bottom:10px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <span style="font-weight:800; color:#0369a1; font-size:12px;">🎟️ Duo Mixte #{idx_o} — Cote Totale: <b>@{cb['comb_odds']:.2f}</b></span>
+                <span style="font-weight:800; color:#0369a1; font-size:12px;">🎟️ {label} #{idx_o} <span style="font-size:10px; color:#64748b;">({combo_type})</span> — Cote Totale: <b>@{cb['comb_odds']:.2f}</b></span>
                 <span style="font-size:11px; color:#15803d; font-weight:700; background:#dcfce7; padding:2px 8px; border-radius:5px;">Mise 4€ ➔ Gain: {cb['gain']:.2f}€</span>
               </div>
-              <div style="font-size:12px; color:#334155;">
-                <div style="padding:4px 0; border-bottom:1px solid #f0f9ff;">
-                  🔹 <b>{mk1}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m1.get('date_str','')}</span> &bull; <b>{m1.get('dom','')} vs {m1.get('ext','')}</b> &bull; Cote: <b>@{o1:.2f}</b>
-                  <span style="color:#64748b; font-size:10px;"> ({m1.get('league','')})</span>
-                  <span style="background:{sc1_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc1}/100</span>
-                </div>
-                <div style="padding:4px 0;">
-                  🔹 <b>{mk2}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m2.get('date_str','')}</span> &bull; <b>{m2.get('dom','')} vs {m2.get('ext','')}</b> &bull; Cote: <b>@{o2:.2f}</b>
-                  <span style="color:#64748b; font-size:10px;"> ({m2.get('league','')})</span>
-                  <span style="background:{sc2_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc2}/100</span>
-                </div>
+              <div style="font-size:12px; color:#334155;">{rows_html}
               </div>
             </div>"""
+
 
         orphans_section_html = f"""
           <div style="padding:12px 16px 10px 16px; background:#f0f9ff; border-top:2px solid #bae6fd;">
