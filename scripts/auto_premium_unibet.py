@@ -519,7 +519,7 @@ def main():
     for k, v in curr_state["s3"].items():
         if k in prev_s3:
             old_btts = prev_s3[k].get("val_btts")
-            if old_btts and old_btts != v["val_btts"]:
+            if old_btts and v.get("val_btts") and old_btts != v["val_btts"]:
                 diff = round(v["val_btts"] - old_btts, 2)
                 var_s3.append({**v, "old_btts": old_btts, "diff": diff})
 
