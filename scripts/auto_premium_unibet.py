@@ -687,7 +687,7 @@ def main():
             teams_o15 = {s_o15["m"].get("dom","").lower(), s_o15["m"].get("ext","").lower()}
             if teams_o25 & teams_o15: continue  # doublon d'équipe interdit
             comb_odds = round(s_o25["odds"] * s_o15["odds"], 2)
-            if comb_odds < 1.70: continue  # cote minimale Duo Mixte
+            if comb_odds < 1.60: continue  # cote minimale Duo Mixte
             combos_orphans.append({
                 "items": [s_o25, s_o15],
                 "comb_odds": comb_odds,
@@ -1153,7 +1153,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 75/100)</span></span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 80/100)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
