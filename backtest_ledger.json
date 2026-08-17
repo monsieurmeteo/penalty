@@ -14681,5 +14681,67 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352461",
+    "timestamp_utc": "2026-08-17T10:02:50.386875+00:00",
+    "match": "Ind. Rivadavia vs Fluminense",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 19/08 à 00h00",
+    "scores": {
+      "o25": 73,
+      "o15": 88,
+      "btts": 83,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.45,
+      "o15": 1.48,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368624",
+    "timestamp_utc": "2026-08-17T10:02:50.386875+00:00",
+    "match": "CD Recoleta vs Boca Juniors",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Mer. 19/08 à 00h00",
+    "scores": {
+      "o25": 83,
+      "o15": 91,
+      "btts": 85,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28,
+      "btts": 1.9
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
