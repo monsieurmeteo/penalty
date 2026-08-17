@@ -13,7 +13,7 @@
       "match": "ValurReykjavik - KA Akureyri",
       "league": "Islande • D1 Islande",
       "date_str": "Lun. 17/08 à 20h00",
-      "val_btts": 1.25,
+      "val_btts": 1.22,
       "val_o25": 1.25,
       "double": true,
       "ac_score": 94
@@ -76,7 +76,7 @@
       "match": "Zhytomyr - Zorya Lugansk",
       "league": "Ukraine • D1 Ukraine",
       "date_str": "Lun. 17/08 à 17h00",
-      "val_btts": 1.85,
+      "val_btts": 1.8,
       "val_o25": 1.6,
       "double": true,
       "ac_score": 87
@@ -121,7 +121,7 @@
       "match": "Casa Pia - Benfica",
       "league": "Portugal • Liga Portugal",
       "date_str": "Lun. 17/08 à 21h15",
-      "val_btts": 2.1,
+      "val_btts": 2.15,
       "val_o25": 1.5,
       "double": true,
       "ac_score": 78
