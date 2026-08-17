@@ -18,15 +18,6 @@
       "double": true,
       "ac_score": 96
     },
-    "3366000": {
-      "match": "Club Tijuana - Cruz Azul",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Lun. 17/08 à 05h10",
-      "val_btts": 1.6,
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 92
-    },
     "3370134": {
       "match": "Zalaegerszeg - Ferencvaros",
       "league": "Hongrie • D1 Hongrie",
@@ -89,15 +80,6 @@
       "val_o25": 1.75,
       "double": true,
       "ac_score": 85
-    },
-    "3351673": {
-      "match": "Seattle - Vancouver",
-      "league": "Etats Unis • Mls",
-      "date_str": "Lun. 17/08 à 04h30",
-      "val_btts": 1.45,
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 82
     },
     "3369666": {
       "match": "Casa Pia - Benfica",
