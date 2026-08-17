@@ -18,6 +18,15 @@
       "double": true,
       "ac_score": 94
     },
+    "3370997": {
+      "match": "DeportesTolima - Ind.Del Valle",
+      "league": "Amerique • Copa Libertadores",
+      "date_str": "Mer. 19/08 à 02h30",
+      "val_btts": 1.8,
+      "val_o25": 2.05,
+      "double": true,
+      "ac_score": 94
+    },
     "3363433": {
       "match": "IF Gnistan - Ilves",
       "league": "Finlande • D1 Finlande",
@@ -49,7 +58,7 @@
       "match": "FC Qarabag - Shamakhi FC",
       "league": "Azerbaidjan • D1 Azerbaidjan",
       "date_str": "Lun. 17/08 à 17h30",
-      "val_btts": 1.6,
+      "val_btts": 1.65,
       "val_o25": 1.48,
       "double": true,
       "ac_score": 89
@@ -94,7 +103,7 @@
       "match": "Zalaegerszeg - Ferencvaros",
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Lun. 17/08 à 17h30",
-      "val_btts": 1.55,
+      "val_btts": 1.5,
       "val_o25": 1.48,
       "double": true,
       "ac_score": 82

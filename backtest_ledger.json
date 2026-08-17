@@ -14743,5 +14743,36 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3370997",
+    "timestamp_utc": "2026-08-17T12:35:34.547111+00:00",
+    "match": "DeportesTolima vs Ind.Del Valle",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 19/08 à 02h30",
+    "scores": {
+      "o25": 94,
+      "o15": 93,
+      "btts": 67,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35,
+      "btts": 1.8
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
