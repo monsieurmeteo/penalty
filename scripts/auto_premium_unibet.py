@@ -709,7 +709,26 @@ def main():
                 break
             if s1["id"] in used_orphan_ids: break
 
-    # Tier 2 — Doublés Mixte avec les O2.5 restants : 1× Over 2.5 + 1× Over 1.5
+    # Tier 1b — Triplé 1×O2.5 + 2×O1.5 (quand 1 seul O2.5 orphelin)
+    for s_o25 in orphan_o25:
+        if s_o25["id"] in used_orphan_ids: continue
+        teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
+        for i, s_o15a in enumerate(orphan_o15):
+            if s_o15a["id"] in used_orphan_ids: continue
+            teams_a = {s_o15a["m"].get("dom","").lower(), s_o15a["m"].get("ext","").lower()}
+            if teams_o25 & teams_a: continue
+            for s_o15b in orphan_o15[i+1:]:
+                if s_o15b["id"] in used_orphan_ids or s_o15b["id"] == s_o15a["id"]: continue
+                teams_b = {s_o15b["m"].get("dom","").lower(), s_o15b["m"].get("ext","").lower()}
+                if (teams_o25 | teams_a) & teams_b: continue
+                comb_odds = round(s_o25["odds"] * s_o15a["odds"] * s_o15b["odds"], 2)
+                combos_orphans.append({"type": "Triplé O2.5+2×O1.5", "items": [s_o25, s_o15a, s_o15b], "comb_odds": comb_odds,
+                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
+                used_orphan_ids.update([s_o25["id"], s_o15a["id"], s_o15b["id"]])
+                break
+            if s_o25["id"] in used_orphan_ids: break
+
+    # Tier 2 — Doublé Mixte de secours pour O2.5 vraiment isolé (pas de 2 O1.5 compatibles)
     for s_o25 in orphan_o25:
         if s_o25["id"] in used_orphan_ids: continue
         teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
