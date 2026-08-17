@@ -671,6 +671,33 @@ def main():
                 })
                 break
 
+    # ── 3b. DUO MIXTE ORPHELINS — Combinés sans cote minimale (Score ≥ 80, non appariés) ──
+    orphan_o25 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 2.5" in s["market"]]
+    orphan_o15 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 1.5" in s["market"]]
+    orphan_o25.sort(key=lambda x: x["dt"])
+    orphan_o15.sort(key=lambda x: x["dt"])
+
+    combos_orphans = []
+    used_orphan_ids = set()
+    for s_o25 in orphan_o25:
+        if s_o25["id"] in used_orphan_ids: continue
+        teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
+        for s_o15 in orphan_o15:
+            if s_o15["id"] in used_orphan_ids or s_o15["id"] == s_o25["id"]: continue
+            teams_o15 = {s_o15["m"].get("dom","").lower(), s_o15["m"].get("ext","").lower()}
+            if teams_o25 & teams_o15: continue  # doublon d'équipe interdit
+            comb_odds = round(s_o25["odds"] * s_o15["odds"], 2)
+            if comb_odds < 1.70: continue  # cote minimale Duo Mixte
+            combos_orphans.append({
+                "items": [s_o25, s_o15],
+                "comb_odds": comb_odds,
+                "gain": round(4.0 * comb_odds, 2),
+                "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
+            used_orphan_ids.add(s_o25["id"])
+            used_orphan_ids.add(s_o15["id"])
+            break
+
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
     pen_candidates = [
@@ -1023,6 +1050,50 @@ def main():
             f'</tr>'
         )
 
+    # ── Section Duo Mixte Orphelins ──────────────────────────────────────────
+    if combos_orphans:
+        orphan_items_html = ""
+        for idx_o, cb in enumerate(combos_orphans, 1):
+            s1, s2 = cb["items"][0], cb["items"][1]
+            mk1, o1, sc1 = s1["market"], s1["odds"], s1["score"]
+            mk2, o2, sc2 = s2["market"], s2["odds"], s2["score"]
+            m1, m2 = s1["m"], s2["m"]
+            sc1_color = "#dc2626" if sc1 >= 90 else "#ea580c" if sc1 >= 85 else "#f59e0b" if sc1 >= 80 else "#10b981"
+            sc2_color = "#dc2626" if sc2 >= 90 else "#ea580c" if sc2 >= 85 else "#f59e0b" if sc2 >= 80 else "#10b981"
+            orphan_items_html += f"""
+            <div style="background:#fff; border:1px solid #e0f2fe; border-left:4px solid #0ea5e9; border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-weight:800; color:#0369a1; font-size:12px;">🎟️ Duo Mixte #{idx_o} — Cote Totale: <b>@{cb['comb_odds']:.2f}</b></span>
+                <span style="font-size:11px; color:#15803d; font-weight:700; background:#dcfce7; padding:2px 8px; border-radius:5px;">Mise 4€ ➔ Gain: {cb['gain']:.2f}€</span>
+              </div>
+              <div style="font-size:12px; color:#334155;">
+                <div style="padding:4px 0; border-bottom:1px solid #f0f9ff;">
+                  🔹 <b>{mk1}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m1.get('date_str','')}</span> &bull; <b>{m1.get('dom','')} vs {m1.get('ext','')}</b> &bull; Cote: <b>@{o1:.2f}</b>
+                  <span style="color:#64748b; font-size:10px;"> ({m1.get('league','')})</span>
+                  <span style="background:{sc1_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc1}/100</span>
+                </div>
+                <div style="padding:4px 0;">
+                  🔹 <b>{mk2}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m2.get('date_str','')}</span> &bull; <b>{m2.get('dom','')} vs {m2.get('ext','')}</b> &bull; Cote: <b>@{o2:.2f}</b>
+                  <span style="color:#64748b; font-size:10px;"> ({m2.get('league','')})</span>
+                  <span style="background:{sc2_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc2}/100</span>
+                </div>
+              </div>
+            </div>"""
+
+        orphans_section_html = f"""
+          <div style="padding:12px 16px 10px 16px; background:#f0f9ff; border-top:2px solid #bae6fd;">
+            <div style="font-size:14px; font-weight:800; color:#0369a1; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔀 3. DUO MIXTE — COMBINÉS ORPHELINS (Score ≥ 80) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">1× Over 2.5 + 1× Over 1.5 — Sans cote minimum</span></span>
+              <span style="font-size:11px; background:#bae6fd; color:#0369a1; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_orphans)} ticket(s)</span>
+            </div>
+            <div style="font-size:11px; color:#0369a1; background:#e0f2fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
+              💡 Ces combinés associent <b>1 match Over 2.5 + 1 match Over 1.5</b> (Score ≥ 80/100) qui n'ont pas trouvé de partenaire à cote ≥ 2.15. Aucune équipe dupliquée.
+            </div>
+            {orphan_items_html}
+          </div>"""
+    else:
+        orphans_section_html = ""
+
     # ── Email HTML Nouveau Design ─────────────────────────────────────────────
     now_local = datetime.now(timezone(timedelta(hours=2)))
     days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
@@ -1099,6 +1170,9 @@ def main():
             </div>
             {pen_simples_html}
           </div>
+
+          <!-- SECTION 3b : DUO MIXTE ORPHELINS (Score >= 80, pas de cote minimum) -->
+          {orphans_section_html}
 
           <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
           <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
