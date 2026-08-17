@@ -13,8 +13,8 @@
       "match": "ValurReykjavik - KA Akureyri",
       "league": "Islande • D1 Islande",
       "date_str": "Lun. 17/08 à 20h00",
-      "val_btts": 1.25,
-      "val_o25": 1.25,
+      "val_btts": 1.22,
+      "val_o25": 1.22,
       "double": true,
       "ac_score": 94
     },
@@ -31,8 +31,8 @@
       "match": "Shanghai Shen. - Beijing Guoan",
       "league": "Chine • D1 Chine",
       "date_str": "Mar. 18/08 à 13h35",
-      "val_btts": 1.32,
-      "val_o25": 1.35,
+      "val_btts": 1.3,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 92
     },
@@ -49,8 +49,8 @@
       "match": "FC Qarabag - Shamakhi FC",
       "league": "Azerbaidjan • D1 Azerbaidjan",
       "date_str": "Lun. 17/08 à 17h30",
-      "val_btts": 1.55,
-      "val_o25": 1.45,
+      "val_btts": 1.6,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 89
     },
@@ -67,7 +67,7 @@
       "match": "Zhytomyr - Zorya Lugansk",
       "league": "Ukraine • D1 Ukraine",
       "date_str": "Lun. 17/08 à 17h00",
-      "val_btts": 1.75,
+      "val_btts": 1.9,
       "val_o25": 1.65,
       "double": true,
       "ac_score": 87
@@ -94,8 +94,8 @@
       "match": "Zalaegerszeg - Ferencvaros",
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Lun. 17/08 à 17h30",
-      "val_btts": 1.6,
-      "val_o25": 1.5,
+      "val_btts": 1.55,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 82
     },
@@ -130,7 +130,7 @@
       "match": "Samsunspor - Göztepe AS",
       "league": "Turquie • D1 Turquie",
       "date_str": "Lun. 17/08 à 20h30",
-      "val_btts": 1.72,
+      "val_btts": 1.7,
       "val_o25": 1.85,
       "double": true,
       "ac_score": 76
@@ -139,8 +139,8 @@
       "match": "La Corogne - Elche",
       "league": "Espagne • Laliga",
       "date_str": "Lun. 17/08 à 21h00",
-      "val_btts": 1.85,
-      "val_o25": 2.15,
+      "val_btts": 1.82,
+      "val_o25": 2.1,
       "double": true,
       "ac_score": 76
     },
