@@ -698,7 +698,6 @@ def main():
             teams_o15 = {s_o15["m"].get("dom","").lower(), s_o15["m"].get("ext","").lower()}
             if teams_o25 & teams_o15: continue
             comb_odds = round(s_o25["odds"] * s_o15["odds"], 2)
-            if comb_odds < 1.60: continue
             combos_orphans.append({"type": "Doublé Mixte", "items": [s_o25, s_o15], "comb_odds": comb_odds,
                 "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
             used_orphan_ids.add(s_o25["id"])
@@ -721,7 +720,6 @@ def main():
                 teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
                 if teams_12 & teams_3: continue
                 comb_odds = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
-                if comb_odds < 1.80: continue
                 combos_orphans.append({"type": "Triplé 2×O2.5+O1.5", "items": [s1, s2, s3], "comb_odds": comb_odds,
                     "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
                 used_triplet_ids.update([s1["id"], s2["id"], s3["id"]])
@@ -740,7 +738,6 @@ def main():
             teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
             if teams_1 & teams_2: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds < 1.60: continue
             combos_orphans.append({"type": "Doublé O1.5", "items": [s1, s2], "comb_odds": comb_odds,
                 "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
             used_solo_ids.add(s1["id"])
