@@ -724,14 +724,34 @@ def main():
             used_orphan_ids.add(s_o15["id"])
             break
 
-    # Tier 3 — Doublés purs Over 1.5 pour les O1.5 restants sans partenaire O2.5
+    # Tier 3 — Triplés purs 3× Over 1.5 EN PRIORITÉ (meilleure cote)
     solo_o15 = [s for s in orphan_o15 if s["id"] not in used_orphan_ids]
     solo_o15.sort(key=lambda x: x["dt"])
     used_solo_ids = set()
     for i, s1 in enumerate(solo_o15):
         if s1["id"] in used_solo_ids: continue
         teams_1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
-        for s2 in solo_o15[i+1:]:
+        for j, s2 in enumerate(solo_o15):
+            if j <= i or s2["id"] in used_solo_ids: continue
+            teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
+            if teams_1 & teams_2: continue
+            for s3 in solo_o15[j+1:]:
+                if s3["id"] in used_solo_ids: continue
+                teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
+                if (teams_1 | teams_2) & teams_3: continue
+                comb_odds = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
+                combos_orphans.append({"type": "Triplé 3×O1.5", "items": [s1, s2, s3], "comb_odds": comb_odds,
+                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
+                used_solo_ids.update([s1["id"], s2["id"], s3["id"]])
+                break
+            if s1["id"] in used_solo_ids: break
+
+    # Tier 4 — Doublés O1.5 purs pour les restants impairs
+    remaining_solo = [s for s in solo_o15 if s["id"] not in used_solo_ids]
+    for i, s1 in enumerate(remaining_solo):
+        if s1["id"] in used_solo_ids: continue
+        teams_1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+        for s2 in remaining_solo[i+1:]:
             if s2["id"] in used_solo_ids: continue
             teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
             if teams_1 & teams_2: continue
@@ -741,7 +761,6 @@ def main():
             used_solo_ids.add(s1["id"])
             used_solo_ids.add(s2["id"])
             break
-
 
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
