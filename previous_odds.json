@@ -9,15 +9,6 @@
       "double": true,
       "ac_score": 98
     },
-    "3370614": {
-      "match": "ValurReykjavik - KA Akureyri",
-      "league": "Islande • D1 Islande",
-      "date_str": "Lun. 17/08 à 20h00",
-      "val_btts": 1.25,
-      "val_o25": 1.2,
-      "double": true,
-      "ac_score": 94
-    },
     "3370997": {
       "match": "DeportesTolima - Ind.Del Valle",
       "league": "Amerique • Copa Libertadores",
@@ -77,7 +68,7 @@
       "league": "Turquie • D1 Turquie",
       "date_str": "Lun. 17/08 à 20h30",
       "val_btts": 1.65,
-      "val_o25": 1.82,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 76
     },
