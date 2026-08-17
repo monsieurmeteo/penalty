@@ -14774,5 +14774,65 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352440",
+    "timestamp_utc": "2026-08-17T17:31:43.455282+00:00",
+    "match": "Uni.Catolica vs Estudiantes LP",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 19/08 à 02h30",
+    "scores": {
+      "o25": 57,
+      "o15": 81,
+      "btts": 35,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.25,
+      "o15": 1.4,
+      "btts": 1.9
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368631",
+    "timestamp_utc": "2026-08-17T17:31:43.455282+00:00",
+    "match": "Sao Paulo vs Bolivar La Paz",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Mer. 19/08 à 02h30",
+    "scores": {
+      "o25": 73,
+      "o15": 95,
+      "btts": 94,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18,
+      "btts": 1.8
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
