@@ -256,6 +256,7 @@ def scan_unibet_match_details(game):
                 "date_str": format_french_date(start_iso),
                 "c1": c1, "cx": cx, "c2": c2,
                 "over15": over15 or (round(1.0 + (over25 - 1.0) * 0.45, 2) if over25 else 1.25),
+                "over15_real": over15 is not None,  # True = cote Unibet réelle, False = estimée
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
                 "btts_oui": btts_oui,
@@ -671,32 +672,54 @@ def main():
                 })
                 break
 
-    # ── 3b. DUO MIXTE ORPHELINS — Combinés sans cote minimale (Score ≥ 80, non appariés) ──
+    # ── 3b. ORPHELINS — Doublés + Triplés (Score ≥ 80, cotes réelles uniquement) ──
     orphan_o25 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 2.5" in s["market"]]
-    orphan_o15 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 1.5" in s["market"]]
+    # Over 1.5 : uniquement cotes réelles Unibet (pas d'estimations)
+    orphan_o15 = [s for s in mixed_selections if s["id"] not in used_match_ids and "Over 1.5" in s["market"] and s["m"].get("over15_real", False)]
     orphan_o25.sort(key=lambda x: x["dt"])
     orphan_o15.sort(key=lambda x: x["dt"])
 
     combos_orphans = []
     used_orphan_ids = set()
+
+    # Doublés Duo Mixte : 1× Over 2.5 + 1× Over 1.5 (cote ≥ 1.60)
     for s_o25 in orphan_o25:
         if s_o25["id"] in used_orphan_ids: continue
         teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
         for s_o15 in orphan_o15:
             if s_o15["id"] in used_orphan_ids or s_o15["id"] == s_o25["id"]: continue
             teams_o15 = {s_o15["m"].get("dom","").lower(), s_o15["m"].get("ext","").lower()}
-            if teams_o25 & teams_o15: continue  # doublon d'équipe interdit
+            if teams_o25 & teams_o15: continue
             comb_odds = round(s_o25["odds"] * s_o15["odds"], 2)
-            if comb_odds < 1.60: continue  # cote minimale Duo Mixte
-            combos_orphans.append({
-                "items": [s_o25, s_o15],
-                "comb_odds": comb_odds,
-                "gain": round(4.0 * comb_odds, 2),
-                "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
+            if comb_odds < 1.60: continue
+            combos_orphans.append({"type": "Doublé Mixte", "items": [s_o25, s_o15], "comb_odds": comb_odds,
+                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
             used_orphan_ids.add(s_o25["id"])
             used_orphan_ids.add(s_o15["id"])
             break
+
+    # Triplés : 2× Over 2.5 + 1× Over 1.5 (cote ≥ 1.80) — avec orphelins restants
+    remaining_o25 = [s for s in orphan_o25 if s["id"] not in used_orphan_ids]
+    remaining_o15 = [s for s in orphan_o15 if s["id"] not in used_orphan_ids]
+    used_triplet_ids = set()
+    for i, s1 in enumerate(remaining_o25):
+        if s1["id"] in used_triplet_ids: continue
+        for j, s2 in enumerate(remaining_o25):
+            if j <= i or s2["id"] in used_triplet_ids: continue
+            teams_12 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower(),
+                        s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
+            if len(teams_12) < 4: continue  # doublon d'équipe
+            for s3 in remaining_o15:
+                if s3["id"] in used_triplet_ids: continue
+                teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
+                if teams_12 & teams_3: continue
+                comb_odds = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
+                if comb_odds < 1.80: continue
+                combos_orphans.append({"type": "Triplé 2×O2.5+O1.5", "items": [s1, s2, s3], "comb_odds": comb_odds,
+                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
+                used_triplet_ids.update([s1["id"], s2["id"], s3["id"]])
+                break
+            if s1["id"] in used_triplet_ids: break
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
