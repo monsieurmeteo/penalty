@@ -574,7 +574,7 @@ def main():
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 80 and m.get("over25"))
     n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
-    n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 80 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"])
+    n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 80 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"] and m.get("pen_per_match", 0.0) > 0.30)
     print(f"📊 Sélections brutes : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre connu)={n_pen}")
     print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
 
@@ -642,7 +642,8 @@ def main():
     pen_ids = {m["id"] for m in scanned_results
                if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
                and m.get("score_penalty", 0) >= 80
-               and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]}
+               and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
+               and m.get("pen_per_match", 0.0) > 0.30}
     all_used = used_match_ids | pen_ids
 
     orphan_o25 = [s for s in mixed_selections if s["id"] not in all_used and "Over 2.5" in s["market"]]
@@ -754,6 +755,7 @@ def main():
         if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
         and m.get("score_penalty", 0) >= 80
         and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]  # arbitre obligatoirement connu
+        and m.get("pen_per_match", 0.0) > 0.30  # arbitre au sifflet ultra-facile (>0.30 pen/m)
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
