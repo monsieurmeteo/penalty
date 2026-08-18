@@ -15155,5 +15155,89 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3365169",
+    "timestamp_utc": "2026-08-18T11:26:08.052900+00:00",
+    "match": "Forge vs Supra Quebec",
+    "league": "Canada • D1 Canada",
+    "date_str": "Jeu. 20/08 à 01h00",
+    "scores": {
+      "o25": 78,
+      "o15": 83,
+      "btts": 63,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372490",
+    "timestamp_utc": "2026-08-18T11:26:08.052900+00:00",
+    "match": "Atl.Ottawa vs Vancouver FC",
+    "league": "Canada • D1 Canada",
+    "date_str": "Jeu. 20/08 à 01h00",
+    "scores": {
+      "o25": 72,
+      "o15": 87,
+      "btts": 83,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370795",
+    "timestamp_utc": "2026-08-18T11:26:08.052900+00:00",
+    "match": "Cucuta vs Inter Bogota",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Jeu. 20/08 à 01h00",
+    "scores": {
+      "o25": 63,
+      "o15": 83,
+      "btts": 80,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.3
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
