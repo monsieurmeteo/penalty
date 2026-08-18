@@ -8,14 +8,6 @@
       "double": true,
       "ac_score": 94
     },
-    "3372408": {
-      "match": "Shanghai Port - Dalian Yingbo",
-      "league": "Chine • D1 Chine",
-      "date_str": "Mer. 19/08 à 13h35",
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 92
-    },
     "3352385": {
       "match": "Orlando City - Chicago Fire",
       "league": "Etats Unis • Mls",
@@ -36,7 +28,7 @@
       "match": "Atl. Madrid - Malaga",
       "league": "Espagne • Laliga",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.65,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 89
     },
@@ -60,7 +52,7 @@
       "match": "CD Recoleta - Boca Juniors",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Mer. 19/08 à 00h00",
-      "val_o25": 1.8,
+      "val_o25": 1.72,
       "double": true,
       "ac_score": 83
     },
@@ -84,7 +76,7 @@
       "match": "Fenerbahce - Lyon",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
-      "val_o25": 1.7,
+      "val_o25": 1.68,
       "double": true,
       "ac_score": 80
     },
