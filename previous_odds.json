@@ -4,8 +4,8 @@
       "match": "DeportesTolima - Ind.Del Valle",
       "league": "Amerique • Copa Libertadores",
       "date_str": "Mer. 19/08 à 02h30",
-      "val_btts": 1.8,
-      "val_o25": 2.1,
+      "val_btts": 1.9,
+      "val_o25": 2.15,
       "double": true,
       "ac_score": 94
     },
@@ -27,11 +27,20 @@
       "double": true,
       "ac_score": 92
     },
+    "3367991": {
+      "match": "Mamelodi - Marumo Gallants",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
+      "date_str": "Mer. 19/08 à 19h30",
+      "val_btts": 1.9,
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 89
+    },
     "3368624": {
       "match": "CD Recoleta - Boca Juniors",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Mer. 19/08 à 00h00",
-      "val_btts": 1.9,
+      "val_btts": 1.95,
       "val_o25": 1.9,
       "double": true,
       "ac_score": 83
@@ -49,8 +58,8 @@
       "match": "Levski Sofia - AEK Athènes",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
-      "val_btts": 1.8,
-      "val_o25": 2.05,
+      "val_btts": 1.85,
+      "val_o25": 2.1,
       "double": true,
       "ac_score": 76
     }

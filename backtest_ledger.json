@@ -14863,5 +14863,34 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3367991",
+    "timestamp_utc": "2026-08-18T06:03:29.411446+00:00",
+    "match": "Mamelodi vs Marumo Gallants",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mer. 19/08 à 19h30",
+    "scores": {
+      "o25": 89,
+      "o15": 99,
+      "btts": 80,
+      "penalty": 73
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15,
+      "btts": 1.9
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
