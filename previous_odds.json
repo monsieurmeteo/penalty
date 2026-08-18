@@ -12,7 +12,7 @@
       "match": "Shanghai Shen. - Beijing Guoan",
       "league": "Chine • D1 Chine",
       "date_str": "Mar. 18/08 à 13h35",
-      "val_o25": 1.32,
+      "val_o25": 1.3,
       "double": true,
       "ac_score": 92
     },
@@ -20,7 +20,7 @@
       "match": "Shanghai Port - Dalian Yingbo",
       "league": "Chine • D1 Chine",
       "date_str": "Mer. 19/08 à 13h35",
-      "val_o25": 1.42,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 92
     },
@@ -44,7 +44,7 @@
       "match": "CD Recoleta - Boca Juniors",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Mer. 19/08 à 00h00",
-      "val_o25": 1.9,
+      "val_o25": 1.85,
       "double": true,
       "ac_score": 83
     },
@@ -68,6 +68,14 @@
       "match": "Levski Sofia - AEK Athènes",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
+      "val_o25": 2.2,
+      "double": true,
+      "ac_score": 76
+    },
+    "3352459": {
+      "match": "Cerro Porteno - Palmeiras",
+      "league": "Amerique • Copa Libertadores",
+      "date_str": "Jeu. 20/08 à 00h00",
       "val_o25": 2.15,
       "double": true,
       "ac_score": 76

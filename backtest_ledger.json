@@ -15043,5 +15043,117 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371766",
+    "timestamp_utc": "2026-08-18T10:03:38.066116+00:00",
+    "match": "Aguilas vs Llaneros FC",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Mer. 19/08 à 23h00",
+    "scores": {
+      "o25": 66,
+      "o15": 87,
+      "btts": 72,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352462",
+    "timestamp_utc": "2026-08-18T10:03:38.066116+00:00",
+    "match": "Coquimbo U. vs CA Platense",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Jeu. 20/08 à 00h00",
+    "scores": {
+      "o25": 71,
+      "o15": 93,
+      "btts": 75,
+      "penalty": 44
+    },
+    "referee": {
+      "name": "Bruno Pérez",
+      "status": "👨‍⚖️ Arbitre Bruno Pérez (24 m, 0.21 pen/m)",
+      "pen_per_match": 0.208
+    },
+    "odds": {
+      "o25": 2.3,
+      "o15": 1.42
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368625",
+    "timestamp_utc": "2026-08-18T10:03:38.066116+00:00",
+    "match": "Atletico MG vs Bragantino SP",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Jeu. 20/08 à 00h00",
+    "scores": {
+      "o25": 72,
+      "o15": 77,
+      "btts": 47,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352459",
+    "timestamp_utc": "2026-08-18T10:03:38.066116+00:00",
+    "match": "Cerro Porteno vs Palmeiras",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Jeu. 20/08 à 00h00",
+    "scores": {
+      "o25": 76,
+      "o15": 85,
+      "btts": 55,
+      "penalty": 64
+    },
+    "referee": {
+      "name": "Facundo Tello Figueroa",
+      "status": "👨‍⚖️ Arbitre Facundo Tello Figueroa (37 m, 0.14 pen/m)",
+      "pen_per_match": 0.135
+    },
+    "odds": {
+      "o25": 2.15,
+      "o15": 1.38
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
