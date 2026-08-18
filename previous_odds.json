@@ -4,7 +4,7 @@
       "match": "DeportesTolima - Ind.Del Valle",
       "league": "Amerique • Copa Libertadores",
       "date_str": "Mer. 19/08 à 02h30",
-      "val_o25": 2.15,
+      "val_o25": 2.25,
       "double": true,
       "ac_score": 94
     },
@@ -44,7 +44,7 @@
       "match": "Columbus Crew - CF Montreal",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.48,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 85
     },
@@ -52,7 +52,7 @@
       "match": "CD Recoleta - Boca Juniors",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Mer. 19/08 à 00h00",
-      "val_o25": 1.72,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 83
     },
@@ -76,7 +76,7 @@
       "match": "Fenerbahce - Lyon",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
-      "val_o25": 1.68,
+      "val_o25": 1.72,
       "double": true,
       "ac_score": 80
     },
@@ -100,7 +100,7 @@
       "match": "Forge - Supra Quebec",
       "league": "Canada • D1 Canada",
       "date_str": "Jeu. 20/08 à 01h00",
-      "val_o25": 1.65,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 78
     },
@@ -124,7 +124,7 @@
       "match": "Toronto FC - Charlotte FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.55,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 75
     }
