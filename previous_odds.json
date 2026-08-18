@@ -4,25 +4,9 @@
       "match": "DeportesTolima - Ind.Del Valle",
       "league": "Amerique • Copa Libertadores",
       "date_str": "Mer. 19/08 à 02h30",
-      "val_o25": 2.25,
+      "val_o25": 2.3,
       "double": true,
       "ac_score": 94
-    },
-    "3372490": {
-      "match": "Atl.Ottawa - Vancouver FC",
-      "league": "Canada • D1 Canada",
-      "date_str": "Jeu. 20/08 à 01h00",
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 94
-    },
-    "3365169": {
-      "match": "Forge - Supra Quebec",
-      "league": "Canada • D1 Canada",
-      "date_str": "Jeu. 20/08 à 01h00",
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 92
     },
     "3352385": {
       "match": "Orlando City - Chicago Fire",
@@ -30,23 +14,15 @@
       "date_str": "Jeu. 20/08 à 01h30",
       "val_o25": 1.32,
       "double": true,
-      "ac_score": 92
-    },
-    "3352400": {
-      "match": "Salt Lake - Dallas FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.42,
-      "double": true,
-      "ac_score": 92
-    },
-    "3352384": {
-      "match": "FC Cincinnati - NY City FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.38,
-      "double": true,
       "ac_score": 90
+    },
+    "3367991": {
+      "match": "Mamelodi - Marumo Gallants",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
+      "date_str": "Mer. 19/08 à 19h30",
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 89
     },
     "3360670": {
       "match": "Atl. Madrid - Malaga",
@@ -56,19 +32,43 @@
       "double": true,
       "ac_score": 89
     },
-    "3352390": {
-      "match": "Philadelphia - Inter Miami",
+    "3352400": {
+      "match": "Salt Lake - Dallas FC",
       "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.35,
+      "date_str": "Jeu. 20/08 à 03h30",
+      "val_o25": 1.42,
       "double": true,
-      "ac_score": 88
+      "ac_score": 89
     },
     "3352388": {
       "match": "DC United - New England",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
       "val_o25": 1.65,
+      "double": true,
+      "ac_score": 88
+    },
+    "3352412": {
+      "match": "LA Galaxy - San Jose",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 04h30",
+      "val_o25": 1.38,
+      "double": true,
+      "ac_score": 88
+    },
+    "3352386": {
+      "match": "Columbus Crew - CF Montreal",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 01h30",
+      "val_o25": 1.5,
+      "double": true,
+      "ac_score": 85
+    },
+    "3352398": {
+      "match": "Seattle - Austin FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 03h30",
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 85
     },
@@ -80,43 +80,35 @@
       "double": true,
       "ac_score": 83
     },
-    "3352391": {
-      "match": "Kansas City - Saint Louis SC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 02h00",
-      "val_o25": 1.42,
-      "double": true,
-      "ac_score": 83
-    },
-    "3352410": {
-      "match": "Portland - San Diego FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 04h30",
-      "val_o25": 1.32,
-      "double": true,
-      "ac_score": 83
-    },
     "3370864": {
       "match": "Slo.Bratislava - NK Celje",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.72,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 82
     },
-    "3371766": {
-      "match": "Aguilas - Llaneros FC",
-      "league": "Colombie • D1 Colombie",
-      "date_str": "Mer. 19/08 à 23h00",
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 82
-    },
-    "3352389": {
-      "match": "NY Red Bulls - Nashville SC",
+    "3352384": {
+      "match": "FC Cincinnati - NY City FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.48,
+      "val_o25": 1.38,
+      "double": true,
+      "ac_score": 82
+    },
+    "3352399": {
+      "match": "Colorado - Los Angeles FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 03h30",
+      "val_o25": 1.6,
+      "double": true,
+      "ac_score": 82
+    },
+    "3352390": {
+      "match": "Philadelphia - Inter Miami",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 01h30",
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 80
     },
@@ -128,13 +120,29 @@
       "double": true,
       "ac_score": 80
     },
-    "3352412": {
-      "match": "LA Galaxy - San Jose",
+    "3352411": {
+      "match": "Vancouver - Houston",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 04h30",
-      "val_o25": 1.38,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 80
+    },
+    "3352410": {
+      "match": "Portland - San Diego FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 20/08 à 04h30",
+      "val_o25": 1.32,
+      "double": true,
+      "ac_score": 79
+    },
+    "3365169": {
+      "match": "Forge - Supra Quebec",
+      "league": "Canada • D1 Canada",
+      "date_str": "Jeu. 20/08 à 01h00",
+      "val_o25": 1.62,
+      "double": true,
+      "ac_score": 78
     },
     "3352459": {
       "match": "Cerro Porteno - Palmeiras",
@@ -144,35 +152,11 @@
       "double": true,
       "ac_score": 76
     },
-    "3352399": {
-      "match": "Colorado - Los Angeles FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 76
-    },
     "3352387": {
       "match": "Toronto FC - Charlotte FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
       "val_o25": 1.62,
-      "double": true,
-      "ac_score": 75
-    },
-    "3352386": {
-      "match": "Columbus Crew - CF Montreal",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 75
-    },
-    "3352398": {
-      "match": "Seattle - Austin FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.48,
       "double": true,
       "ac_score": 75
     }
