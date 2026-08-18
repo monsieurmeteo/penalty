@@ -14834,5 +14834,34 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3372408",
+    "timestamp_utc": "2026-08-18T00:03:18.802990+00:00",
+    "match": "Shanghai Port vs Dalian Yingbo",
+    "league": "Chine • D1 Chine",
+    "date_str": "Mer. 19/08 à 13h35",
+    "scores": {
+      "o25": 92,
+      "o15": 97,
+      "btts": 94,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.12,
+      "btts": 1.5
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
