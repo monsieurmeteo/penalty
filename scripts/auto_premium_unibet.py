@@ -130,7 +130,6 @@ def scan_unibet_match_details(game):
         c1, cx, c2 = None, None, None
         over15, over25, under25 = None, None, None
         s22 = None
-        btts_oui, btts_non = None, None
         start_iso = ""
 
         for js in json_scripts:
@@ -190,19 +189,6 @@ def scan_unibet_match_details(game):
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
-                    # BTTS Oui/Non
-                    if any(kw in m_desc for kw in ["les 2 équipes marqueront", "deux équipes marqueront"]) and (btts_oui is None or btts_non is None):
-                        for o in outcomes:
-                            o_desc = (o.get("description") or "").strip().lower()
-                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                            if o_desc == "oui": btts_oui = p_val
-                            elif o_desc == "non": btts_non = p_val
-                    elif btts_oui is None and m_desc in ["quelle équipe marquera ?", "quelle équipe marquera"]:
-                        for o in outcomes:
-                            o_desc = (o.get("description") or "").strip().lower()
-                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                            if "les 2 équipes marquent" in o_desc or "les deux équipes marquent" in o_desc:
-                                btts_oui = p_val
 
             # Buteur le plus proche de la moyenne des cotes
             buteur_name = None
@@ -259,8 +245,6 @@ def scan_unibet_match_details(game):
                 "over15_real": over15 is not None,  # True = cote Unibet réelle, False = estimée
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
-                "btts_oui": btts_oui,
-                "btts_non": btts_non,
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
@@ -473,19 +457,13 @@ def main():
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
-    all_btts = [m["btts_oui"] for m in scanned_results if m.get("btts_oui") is not None]
 
     avg_all_o25 = round(sum(all_o25) / len(all_o25), 2) if all_o25 else 0.0
-    avg_all_btts = round(sum(all_btts) / len(all_btts), 2) if all_btts else 0.0
 
     sel_o25 = [m["over25"] for m in s3_matches if m.get("over25") is not None]
-    sel_btts = [m["btts_oui"] for m in s3_matches if m.get("btts_oui") is not None]
-
     avg_sel_o25 = round(sum(sel_o25) / len(sel_o25), 2) if sel_o25 else 0.0
-    avg_sel_btts = round(sum(sel_btts) / len(sel_btts), 2) if sel_btts else 0.0
 
     print(f"Moyenne globale Over 2.5 ({len(all_o25)} matchs) : {avg_all_o25:.2f} (Retenus : {avg_sel_o25:.2f})")
-    print(f"Moyenne globale BTTS Oui ({len(all_btts)} matchs) : {avg_all_btts:.2f} (Retenus : {avg_sel_btts:.2f})")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -503,7 +481,6 @@ def main():
                 "match": f"{m['dom']} - {m['ext']}",
                 "league": m["league"],
                 "date_str": m["date_str"],
-                "val_btts": m.get("btts_oui"),
                 "val_o25": m.get("over25"),
                 "double": m.get("double_confirm", True),
                 "ac_score": m.get("ac_score", 0),
@@ -515,13 +492,6 @@ def main():
     prev_s3 = prev_state.get("s3", {})
     new_s3   = [v for k, v in curr_state["s3"].items() if k not in prev_s3]
     drop_s3  = [v for k, v in prev_s3.items() if k not in curr_state["s3"]]
-    var_s3   = []
-    for k, v in curr_state["s3"].items():
-        if k in prev_s3:
-            old_btts = prev_s3[k].get("val_btts")
-            if old_btts and v.get("val_btts") and old_btts != v["val_btts"]:
-                diff = round(v["val_btts"] - old_btts, 2)
-                var_s3.append({**v, "old_btts": old_btts, "diff": diff})
 
     try:
         with open(history_file, "w", encoding="utf-8") as f:
@@ -533,7 +503,7 @@ def main():
 
     # ── Bloc Évolutions HTML ─────────────────────────────────────────────────
     evo_html = ""
-    if new_s3 or var_s3 or drop_s3:
+    if new_s3 or drop_s3:
         evo_html += '<div style="background:#fefce8; border:1px solid #fde68a; border-radius:8px; padding:15px; margin-bottom:25px;">'
         evo_html += '<h3 style="color:#92400e; margin-top:0; border-bottom:1px solid #fde68a; padding-bottom:5px;">📊 ÉVOLUTIONS DEPUIS LE DERNIER RUN (~2h)</h3>'
 
@@ -541,18 +511,9 @@ def main():
             evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
             for item in new_s3[:6]:
                 badge = " ⭐⭐ DOUBLE" if item.get("double") else ""
-                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — BTTS Oui: <b>{item['val_btts']}</b>{badge}</li>"
+                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — Over 2.5: <b>@{item.get('val_o25','?')}</b>{badge}</li>"
             if len(new_s3) > 6:
                 evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(new_s3) - 6} autres nouveaux matchs</li>"
-            evo_html += '</ul>'
-
-        if var_s3:
-            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote BTTS Oui :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
-            for item in var_s3[:6]:
-                arrow = "🔺" if item["diff"] > 0 else "🔻"
-                evo_html += f"<li><b>{item['match']}</b> : BTTS Oui {item['old_btts']} &rarr; <b>{item['val_btts']}</b> ({arrow} {item['diff']:+0.2f})</li>"
-            if len(var_s3) > 6:
-                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(var_s3) - 6} autres variations</li>"
             evo_html += '</ul>'
 
         if drop_s3:
@@ -1103,20 +1064,15 @@ def main():
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
         o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
         score_v = m.get("ac_score", 0)
-        btts_v = m.get("score_btts", 0)
         o15_v = m.get("score_o15", 0)
         o15_bg = "#dcfce7" if o15_v >= 75 else ("#fef3c7" if o15_v >= 50 else "#f1f5f9")
         o15_cl = "#15803d" if o15_v >= 75 else ("#92400e" if o15_v >= 50 else "#94a3b8")
         o15_badge = f'<span style="background:{o15_bg}; color:{o15_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{o15_v}/100</span>' if o15_v > 0 else '<span style="color:#94a3b8;">—</span>'
-        
+
         # Badges scores
         score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
         score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
         score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
-
-        btts_bg = "#dcfce7" if btts_v >= 65 else ("#fef3c7" if btts_v >= 50 else "#f1f5f9")
-        btts_cl = "#15803d" if btts_v >= 65 else ("#92400e" if btts_v >= 50 else "#94a3b8")
-        btts_badge = f'<span style="background:{btts_bg}; color:{btts_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{btts_v}/100</span>' if btts_v > 0 else '<span style="color:#94a3b8;">—</span>'
 
         ref_n = m.get("ref_name", "Inconnu")
         ref_badge = f'<span style="font-size:10px; color:#475569; font-weight:600;">👨‍⚖️ {ref_n}</span>' if ref_n != "Inconnu" else '<span style="color:#94a3b8; font-size:10px;">—</span>'
@@ -1301,12 +1257,10 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & BTTS — JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION OVER 2.5 & OVER 1.5 — JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
-        f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
         f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.00 — Mise 4,00 € / ticket)\n",
     ]
@@ -1322,26 +1276,20 @@ def main():
         report.append("Aucun combiné multi-marchés disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("| Date | Ligue | Match | Over 2.5 | Buteur Moyenne |")
+    report.append("| :---: | :--- | :--- | :---: | :--- |")
     for m in s3_matches:
         o25 = m.get("over25", "N/A")
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{btts_cell}** | **{o25}** | {but} |")
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{o25}** | {but} |")
 
     report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Raison du Rejet |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("| Date | Ligue | Match | Over 2.5 | Raison du Rejet |")
+    report.append("| :---: | :--- | :--- | :---: | :--- |")
     for m in rejected_matches:
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else "N/A"
         reason = m.get("rejection_reason", "Non éligible")
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {btts_val} | {o25_val} | {reason} |")
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {o25_val} | {reason} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -1491,8 +1439,6 @@ def main():
                     "is_selected": True,
                     "selection_status": "WON" if is_won else "PENDING",
                     "rejection_reason": None,
-                    "btts_oui": m.get("btts_oui"),
-                    "btts_non": m.get("btts_non"),
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
@@ -1516,8 +1462,6 @@ def main():
                     "is_selected": True,
                     "selection_status": "PENDING",
                     "rejection_reason": None,
-                    "btts_oui": m.get("btts_oui"),
-                    "btts_non": m.get("btts_non"),
                     "over25": m.get("over25"),
                     "buteur_name": m.get("buteur_name"),
                     "buteur_cote": m.get("buteur_cote"),
@@ -1542,8 +1486,6 @@ def main():
                 "is_selected": False,
                 "selection_status": "PENDING",
                 "rejection_reason": m.get("rejection_reason"),
-                "btts_oui": m.get("btts_oui"),
-                "btts_non": m.get("btts_non"),
                 "over25": m.get("over25"),
                 "buteur_name": m.get("buteur_name"),
                 "buteur_cote": m.get("buteur_cote"),
@@ -1570,7 +1512,6 @@ def main():
             "initial_bankroll": 100.0,
             "current_bankroll": 100.0,
             "avg_odds_over25_global": avg_all_o25,
-            "avg_odds_btts_global": avg_all_btts,
             "last_update": datetime.now(timezone.utc).isoformat()
         }
 
@@ -1662,7 +1603,6 @@ def main():
                 "odds": {
                     "o25": m.get("over25"),
                     "o15": m.get("over15"),
-                    "btts": m.get("btts_oui")
                 },
                 "selected_markets": sels,
                 "result": None,
