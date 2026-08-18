@@ -409,6 +409,10 @@ def main():
                     m["score_o15"] = res.get("score_o15", 0)
                     m["score_btts"] = res.get("score_btts", 0)
                     m["score_penalty"] = res.get("score_penalty", 0)
+                    m["pts_pen_ref"] = res.get("pts_pen_ref", 0)
+                    m["pts_pen_sot"] = res.get("pts_pen_sot", 0)
+                    m["pts_pen_cards"] = res.get("pts_pen_cards", 0)
+                    m["pts_pen_goals"] = res.get("pts_pen_goals", 0)
                     m["ref_name"] = res.get("ref_name", "Inconnu")
                     m["ref_status"] = res.get("ref_status", "Arbitre non désigné — confiance réduite")
                     m["pen_per_match"] = res.get("pen_per_match", 0.0)
@@ -944,17 +948,27 @@ def main():
         sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
         peno_b = m.get("peno_badge") or ""
         peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
+        pts_r = m.get("pts_pen_ref", 0)
+        pts_s = m.get("pts_pen_sot", 0)
+        pts_c = m.get("pts_pen_cards", 0)
+        pts_g = m.get("pts_pen_goals", 0)
+        pen_rate = m.get("pen_per_match", 0.0)
+        pen_audit_html = f'''
+            <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:5px 8px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
+              <b>📊 DÉCOMPOSITION DU SCORE ({sp}/100) :</b><br>
+              1. Arbitre ({pen_rate:.2f} pen/m) : <b>{pts_r}/35</b> &nbsp;|&nbsp; 2. Tirs Cadrés ({sot_c:.1f}/m) : <b>{pts_s}/25</b> &nbsp;|&nbsp; 3. Cartons ({avg_b:.0f} pts) : <b>{pts_c}/20</b> &nbsp;|&nbsp; 4. Attaque + Bonus : <b>{pts_g}/20</b>
+            </div>'''
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
             <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
           </div>
-          <div style="font-size:12px; color:#334155; line-height:1.9;">
+          <div style="font-size:12px; color:#334155; line-height:1.8;">
             🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
             {ref_status_str}<br>
             {peno_badge_html}
-            <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
+            {pen_audit_html}
           </div>
           <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
             🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
