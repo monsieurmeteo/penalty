@@ -15239,5 +15239,233 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352385",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "Orlando City vs Chicago Fire",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 90,
+      "o15": 95,
+      "btts": 94,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.32,
+      "o15": 1.08
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352390",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "Philadelphia vs Inter Miami",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 80,
+      "o15": 81,
+      "btts": 72,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352389",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "NY Red Bulls vs Nashville SC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 68,
+      "o15": 77,
+      "btts": 41,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.45,
+      "o15": 1.12
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352387",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "Toronto FC vs Charlotte FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 75,
+      "o15": 86,
+      "btts": 82,
+      "penalty": 36
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352384",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "FC Cincinnati vs NY City FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 82,
+      "o15": 93,
+      "btts": 83,
+      "penalty": 43
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.1
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352388",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "DC United vs New England",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 88,
+      "o15": 88,
+      "btts": 85,
+      "penalty": 68
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352386",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "Columbus Crew vs CF Montreal",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 01h30",
+    "scores": {
+      "o25": 85,
+      "o15": 91,
+      "btts": 52,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352391",
+    "timestamp_utc": "2026-08-18T12:03:47.608983+00:00",
+    "match": "Kansas City vs Saint Louis SC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 02h00",
+    "scores": {
+      "o25": 71,
+      "o15": 93,
+      "btts": 78,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.1
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
