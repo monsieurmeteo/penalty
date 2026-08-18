@@ -15467,5 +15467,122 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3368629",
+    "timestamp_utc": "2026-08-18T12:31:09.444614+00:00",
+    "match": "Torque vs C.A. Tigre",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Jeu. 20/08 à 02h30",
+    "scores": {
+      "o25": 63,
+      "o15": 68,
+      "btts": 46,
+      "penalty": 41
+    },
+    "referee": {
+      "name": "Guillermo Enrique Guerrero Alcivar",
+      "status": "👨‍⚖️ Arbitre Guillermo Enrique Guerrero Alcivar (37 m, 0.30 pen/m)",
+      "pen_per_match": 0.297
+    },
+    "odds": {
+      "o25": 2.05,
+      "o15": 1.35
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352394",
+    "timestamp_utc": "2026-08-18T12:31:09.444614+00:00",
+    "match": "Minnesota Utd vs Atlanta Utd",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 02h30",
+    "scores": {
+      "o25": 37,
+      "o15": 62,
+      "btts": 51,
+      "penalty": 18
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.55,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352456",
+    "timestamp_utc": "2026-08-18T12:31:09.444614+00:00",
+    "match": "Flamengo vs Cruzeiro",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Jeu. 20/08 à 02h30",
+    "scores": {
+      "o25": 80,
+      "o15": 97,
+      "btts": 75,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "Gustavo Tejera",
+      "status": "👨‍⚖️ Arbitre Gustavo Tejera (39 m, 0.41 pen/m)",
+      "pen_per_match": 0.41
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371001",
+    "timestamp_utc": "2026-08-18T12:31:09.444614+00:00",
+    "match": "Ind.Santa Fe vs River Plate",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Jeu. 20/08 à 02h30",
+    "scores": {
+      "o25": 58,
+      "o15": 76,
+      "btts": 48,
+      "penalty": 81
+    },
+    "referee": {
+      "name": "Jesús Valenzuela Sáez",
+      "status": "👨‍⚖️ Arbitre Jesús Valenzuela Sáez (37 m, 0.32 pen/m)",
+      "pen_per_match": 0.324
+    },
+    "odds": {
+      "o25": 2.25,
+      "o15": 1.4
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

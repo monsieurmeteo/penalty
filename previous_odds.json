@@ -68,7 +68,7 @@
       "match": "Slo.Bratislava - NK Celje",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.7,
+      "val_o25": 1.72,
       "double": true,
       "ac_score": 82
     },
@@ -84,7 +84,7 @@
       "match": "Fenerbahce - Lyon",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
-      "val_o25": 1.6,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 80
     },
@@ -93,6 +93,14 @@
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
       "val_o25": 1.35,
+      "double": true,
+      "ac_score": 80
+    },
+    "3352456": {
+      "match": "Flamengo - Cruzeiro",
+      "league": "Amerique • Copa Libertadores",
+      "date_str": "Jeu. 20/08 à 02h30",
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 80
     },
