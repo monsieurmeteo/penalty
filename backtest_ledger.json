@@ -14892,5 +14892,156 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3368854",
+    "timestamp_utc": "2026-08-18T08:03:40.413117+00:00",
+    "match": "Celtic vs Lask Linz",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mer. 19/08 à 21h00",
+    "scores": {
+      "o25": 63,
+      "o15": 72,
+      "btts": 75,
+      "penalty": 58
+    },
+    "referee": {
+      "name": "Sandro Schärer",
+      "status": "👨‍⚖️ Arbitre Sandro Schärer (11 m, 0.27 pen/m)",
+      "pen_per_match": 0.273
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 1.72
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360670",
+    "timestamp_utc": "2026-08-18T08:03:40.413117+00:00",
+    "match": "Atl. Madrid vs Malaga",
+    "league": "Espagne • Laliga",
+    "date_str": "Mer. 19/08 à 21h00",
+    "scores": {
+      "o25": 89,
+      "o15": 95,
+      "btts": 94,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2,
+      "btts": 2.0
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370858",
+    "timestamp_utc": "2026-08-18T08:03:40.413117+00:00",
+    "match": "Hap.Beer Sheva vs Sabah FK",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mer. 19/08 à 21h00",
+    "scores": {
+      "o25": 60,
+      "o15": 81,
+      "btts": 38,
+      "penalty": 70
+    },
+    "referee": {
+      "name": "Davide Massa",
+      "status": "👨‍⚖️ Arbitre Davide Massa (19 m, 0.26 pen/m)",
+      "pen_per_match": 0.263
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25,
+      "btts": 1.62
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370864",
+    "timestamp_utc": "2026-08-18T08:03:40.413117+00:00",
+    "match": "Slo.Bratislava vs NK Celje",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mer. 19/08 à 21h00",
+    "scores": {
+      "o25": 82,
+      "o15": 95,
+      "btts": 70,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Felix Zwayer",
+      "status": "👨‍⚖️ Arbitre Felix Zwayer (18 m, 0.28 pen/m)",
+      "pen_per_match": 0.278
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22,
+      "btts": 1.7
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370861",
+    "timestamp_utc": "2026-08-18T08:03:40.413117+00:00",
+    "match": "NEC Nimègue vs Bodø/Glimt",
+    "league": "Coupes D Europe • Championsleague",
+    "date_str": "Mer. 19/08 à 21h00",
+    "scores": {
+      "o25": 68,
+      "o15": 80,
+      "btts": 67,
+      "penalty": 92
+    },
+    "referee": {
+      "name": "François Letexier",
+      "status": "👨‍⚖️ Arbitre François Letexier (19 m, 0.47 pen/m)",
+      "pen_per_match": 0.474
+    },
+    "odds": {
+      "o25": 1.4,
+      "o15": 1.1,
+      "btts": 1.36
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
