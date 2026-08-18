@@ -5,7 +5,7 @@
       "league": "Amerique • Copa Libertadores",
       "date_str": "Mer. 19/08 à 02h30",
       "val_btts": 1.8,
-      "val_o25": 2.05,
+      "val_o25": 2.1,
       "double": true,
       "ac_score": 94
     },
@@ -23,7 +23,7 @@
       "league": "Chine • D1 Chine",
       "date_str": "Mer. 19/08 à 13h35",
       "val_btts": 1.5,
-      "val_o25": 1.4,
+      "val_o25": 1.42,
       "double": true,
       "ac_score": 92
     },
@@ -49,8 +49,8 @@
       "match": "Levski Sofia - AEK Athènes",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mar. 18/08 à 21h00",
-      "val_btts": 1.78,
-      "val_o25": 2.0,
+      "val_btts": 1.8,
+      "val_o25": 2.05,
       "double": true,
       "ac_score": 76
     }
