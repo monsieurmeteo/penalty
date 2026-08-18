@@ -15584,5 +15584,173 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3352399",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "Colorado vs Los Angeles FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 03h30",
+    "scores": {
+      "o25": 76,
+      "o15": 77,
+      "btts": 58,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352400",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "Salt Lake vs Dallas FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 03h30",
+    "scores": {
+      "o25": 92,
+      "o15": 99,
+      "btts": 98,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.42,
+      "o15": 1.12
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352398",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "Seattle vs Austin FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 03h30",
+    "scores": {
+      "o25": 75,
+      "o15": 91,
+      "btts": 56,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352411",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "Vancouver vs Houston",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 04h30",
+    "scores": {
+      "o25": 74,
+      "o15": 90,
+      "btts": 66,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352412",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "LA Galaxy vs San Jose",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 04h30",
+    "scores": {
+      "o25": 80,
+      "o15": 97,
+      "btts": 90,
+      "penalty": 86
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.1
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3352410",
+    "timestamp_utc": "2026-08-18T20:03:50.986094+00:00",
+    "match": "Portland vs San Diego FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 20/08 à 04h30",
+    "scores": {
+      "o25": 83,
+      "o15": 89,
+      "btts": 83,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.32,
+      "o15": 1.08
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
