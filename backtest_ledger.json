@@ -16858,5 +16858,33 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369679",
+    "timestamp_utc": "2026-08-19T22:04:22.627318+00:00",
+    "match": "Kashiwa Reysol vs VV Nagasaki",
+    "league": "Japon • D1 Japon",
+    "date_str": "Ven. 21/08 à 12h00",
+    "scores": {
+      "o25": 77,
+      "o15": 74,
+      "btts": 54,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
