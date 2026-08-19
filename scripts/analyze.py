@@ -2,9 +2,33 @@
 # ANALYZE.PY V13 — AFFICHAGE OBLIGATOIRE DES 10 DERNIERS SCORES REELS (DOM & EXT)
 # ==============================================================================
 
-import sys, os, requests, json, unicodedata, re
+import sys, os, requests, json, unicodedata, re, time as _time
 from difflib import SequenceMatcher
 from concurrent.futures import ThreadPoolExecutor
+
+# ── Cache Sofascore module-level (partagé entre tous les appels parallèles) ──
+_CACHE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pen_cache.json")
+_CACHE_TTL  = 86400  # 24h
+
+def _load_pen_cache():
+    try:
+        if os.path.exists(_CACHE_FILE):
+            with open(_CACHE_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return {}
+
+def save_pen_cache():
+    """Appelé depuis auto_premium_unibet.py après l'enrichissement complet."""
+    try:
+        with open(_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(_SF_CACHE, f, ensure_ascii=False)
+    except Exception:
+        pass
+
+_SF_CACHE = _load_pen_cache()
+
 
 BASE = "https://www.adamchoi.co.uk"
 BASE_WIDGET = "https://api.choistats.com/api/widget"
@@ -793,34 +817,13 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             pass
 
     # ── COMPÉTENCE PENO : Sofascore Token 0 (curl_cffi) + Cache JSON 24h ──
-    # ponytail: cache = une seule requête par équipe par journée, résultats déterministes
-    import os as _os, time as _time, json as _json
-    _CACHE_FILE = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "pen_cache.json")
-    _CACHE_TTL  = 86400  # 24h
-
-    def _load_cache():
-        try:
-            if _os.path.exists(_CACHE_FILE):
-                with open(_CACHE_FILE, "r", encoding="utf-8") as f:
-                    return _json.load(f)
-        except Exception:
-            pass
-        return {}
-
-    def _save_cache(cache):
-        try:
-            with open(_CACHE_FILE, "w", encoding="utf-8") as f:
-                _json.dump(cache, f, ensure_ascii=False)
-        except Exception:
-            pass
-
-    _sf_cache = _load_cache()
+    # Cache module-level _SF_CACHE partagé — pas de re-fetch si déjà en mémoire
 
     def fetch_sofascore_penalties(t_name):
         """Retourne (total, obtenus, concedes) sur les 10 derniers matchs — avec cache 24h."""
         if not t_name: return None, None, None
         now = _time.time()
-        entry = _sf_cache.get(t_name)
+        entry = _SF_CACHE.get(t_name)
         if entry and now - entry.get("ts", 0) < _CACHE_TTL:
             return entry["tot"], entry["obt"], entry["cnc"]
         try:
@@ -838,6 +841,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                         events = sorted(r_ev.json().get("events", []), key=lambda x: x.get("startTimestamp", 0), reverse=True)
                         def _chk_inc(ev):
                             tot = obt = cnc = 0
+
                             try:
                                 ev_id = ev.get("id")
                                 if not ev_id: return 0, 0, 0
@@ -865,7 +869,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                             tot = sum(r[0] for r in res_list)
                             obt = sum(r[1] for r in res_list)
                             cnc = sum(r[2] for r in res_list)
-                            _sf_cache[t_name] = {"ts": now, "tot": tot, "obt": obt, "cnc": cnc}
+                            _SF_CACHE[t_name] = {"ts": now, "tot": tot, "obt": obt, "cnc": cnc}
                             return tot, obt, cnc
         except Exception:
             pass
@@ -873,7 +877,8 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
 
     p_dom_sf_tot, p_dom_sf_obt, p_dom_sf_cnc = fetch_sofascore_penalties(team_a)
     p_ext_sf_tot, p_ext_sf_obt, p_ext_sf_cnc = fetch_sofascore_penalties(team_b)
-    _save_cache(_sf_cache)  # persist après les deux fetches
+    # ponytail: save_pen_cache() appelé une seule fois après tout l'enrichissement (auto_premium_unibet.py)
+
 
 
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)

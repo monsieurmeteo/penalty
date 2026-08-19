@@ -448,6 +448,13 @@ def main():
         print(f"📊 Enrichissement AdamChoi Score /100 pour les {len(scanned_results)} matchs scannés Unibet...")
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
+        try:
+            from analyze import save_pen_cache
+            save_pen_cache()
+            print("✅ Cache Sofascore sauvegardé.")
+        except Exception:
+            pass
+
 
     # ── Sélection 100% Score AdamChoi >= 75/100 (méthode d'hier) ──
     # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
