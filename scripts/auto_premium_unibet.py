@@ -422,6 +422,24 @@ def main():
                     m["p_dom_10m"] = res.get("p_dom_10m", 0)
                     m["p_ext_10m"] = res.get("p_ext_10m", 0)
                     m["p_tot_10m"] = res.get("p_tot_10m", 0)
+                    # V3
+                    m["score_penalty_v3"] = res.get("score_penalty_v3", 0)
+                    m["eligible_v3"] = res.get("eligible_v3", False)
+                    m["v3_p1_ref"] = res.get("v3_p1_ref", 0)
+                    m["v3_p2_peno"] = res.get("v3_p2_peno", 0)
+                    m["v3_p3_surface"] = res.get("v3_p3_surface", 0)
+                    m["v3_p4_intensity"] = res.get("v3_p4_intensity", 0)
+                    m["v3_p5_tension"] = res.get("v3_p5_tension", 0)
+                    m["v3_p6_league"] = res.get("v3_p6_league", 0)
+                    m["ratio_corr_v3"] = res.get("ratio_corr_v3", 0.0)
+                    m["v3_peno_status"] = res.get("v3_peno_status", "")
+                    m["obt_dom"] = res.get("obt_dom", 0)
+                    m["cnc_dom"] = res.get("cnc_dom", 0)
+                    m["obt_ext"] = res.get("obt_ext", 0)
+                    m["cnc_ext"] = res.get("cnc_ext", 0)
+                    m["signal_dom"] = res.get("signal_dom", 0)
+                    m["signal_ext"] = res.get("signal_ext", 0)
+
             except Exception:
                 pass
         return m
@@ -950,16 +968,17 @@ def main():
         sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
         peno_b = m.get("peno_badge") or ""
         peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
-        pts_r = m.get("pts_pen_ref", 0)
-        pts_s = m.get("pts_pen_sot", 0)
-        pts_c = m.get("pts_pen_cards", 0)
-        pts_g = m.get("pts_pen_goals", 0)
+        pts_r = m.get("pts_pen_ref", 0)    # Arbitre /50
+        pts_t = m.get("pts_pen_sot", 0)    # Pénaltys équipes /50 (réutilise le champ sot)
         pen_rate = m.get("pen_per_match", 0.0)
+        p_dom_10 = m.get("p_dom_10m", 0)
+        p_ext_10 = m.get("p_ext_10m", 0)
         pen_audit_html = f'''
             <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:5px 8px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
-              <b>📊 DÉCOMPOSITION DU SCORE ({sp}/100) :</b><br>
-              1. Arbitre ({pen_rate:.2f} pen/m) : <b>{pts_r}/35</b> &nbsp;|&nbsp; 2. Tirs Cadrés ({sot_c:.1f}/m) : <b>{pts_s}/25</b> &nbsp;|&nbsp; 3. Cartons ({avg_b:.0f} pts) : <b>{pts_c}/20</b> &nbsp;|&nbsp; 4. Attaque + Bonus : <b>{pts_g}/20</b>
+              <b>📊 SCORE {sp}/100 :</b><br>
+              🟣 Arbitre ({pen_rate:.2f} pen/m) : <b>{pts_r}/50</b> &nbsp;|&nbsp; ⚽ Équipes ({p_dom_10}-{p_ext_10} sur 10m) : <b>{pts_t}/50</b>
             </div>'''
+
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">

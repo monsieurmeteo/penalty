@@ -792,10 +792,39 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
         except (ValueError, TypeError):
             pass
 
-    # ── COMPÉTENCE PENO : Sofascore Token 0 (curl_cffi) + Fallback Physique Hybride ──
-    def fetch_sofascore_penalties(t_name):
-        if not t_name: return None
+    # ── COMPÉTENCE PENO : Sofascore Token 0 (curl_cffi) + Cache JSON 24h ──
+    # ponytail: cache = une seule requête par équipe par journée, résultats déterministes
+    import os as _os, time as _time, json as _json
+    _CACHE_FILE = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "pen_cache.json")
+    _CACHE_TTL  = 86400  # 24h
+
+    def _load_cache():
         try:
+            if _os.path.exists(_CACHE_FILE):
+                with open(_CACHE_FILE, "r", encoding="utf-8") as f:
+                    return _json.load(f)
+        except Exception:
+            pass
+        return {}
+
+    def _save_cache(cache):
+        try:
+            with open(_CACHE_FILE, "w", encoding="utf-8") as f:
+                _json.dump(cache, f, ensure_ascii=False)
+        except Exception:
+            pass
+
+    _sf_cache = _load_cache()
+
+    def fetch_sofascore_penalties(t_name):
+        """Retourne (total, obtenus, concedes) sur les 10 derniers matchs — avec cache 24h."""
+        if not t_name: return None, None, None
+        now = _time.time()
+        entry = _sf_cache.get(t_name)
+        if entry and now - entry.get("ts", 0) < _CACHE_TTL:
+            return entry["tot"], entry["obt"], entry["cnc"]
+        try:
+
             from curl_cffi import requests as cf_requests
             headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
             q_name = ALIAS_MAP_SOFASCORE.get(t_name, t_name)
@@ -807,85 +836,224 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                     r_ev = cf_requests.get(f"https://api.sofascore.com/api/v1/team/{t_id}/events/last/0", impersonate="chrome120", headers=headers, timeout=6)
                     if r_ev.status_code == 200:
                         events = sorted(r_ev.json().get("events", []), key=lambda x: x.get("startTimestamp", 0), reverse=True)
-                        def _chk_inc(ev_id):
+                        def _chk_inc(ev):
+                            tot = obt = cnc = 0
                             try:
+                                ev_id = ev.get("id")
+                                if not ev_id: return 0, 0, 0
+                                is_home_ev = (ev.get("homeTeam", {}).get("id") == t_id)
                                 r_inc = cf_requests.get(f"https://api.sofascore.com/api/v1/event/{ev_id}/incidents", impersonate="chrome120", headers=headers, timeout=6)
                                 if r_inc.status_code == 200:
-                                    return sum(1 for inc in r_inc.json().get("incidents", []) if (inc.get("incidentClass") == "penalty" or inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"] or inc.get("isPenalty")))
+                                    for inc in r_inc.json().get("incidents", []):
+                                        is_pen = (inc.get("incidentClass") == "penalty" or
+                                                  inc.get("incidentType") in ["penalty", "penalty_missed", "inGamePenalty"] or
+                                                  inc.get("isPenalty"))
+                                        if is_pen:
+                                            tot += 1
+                                            is_inc_home = inc.get("isHome")
+                                            if is_inc_home is None:
+                                                obt += 1
+                                            elif is_home_ev == is_inc_home:
+                                                obt += 1
+                                            else:
+                                                cnc += 1
                             except Exception:
                                 pass
-                            return 0
+                            return tot, obt, cnc
                         with ThreadPoolExecutor(max_workers=5) as p_ex:
-                            res_list = p_ex.map(_chk_inc, [ev.get("id") for ev in events[:10] if ev.get("id")])
-                            return sum(res_list)
+                            res_list = list(p_ex.map(_chk_inc, events[:10]))
+                            tot = sum(r[0] for r in res_list)
+                            obt = sum(r[1] for r in res_list)
+                            cnc = sum(r[2] for r in res_list)
+                            _sf_cache[t_name] = {"ts": now, "tot": tot, "obt": obt, "cnc": cnc}
+                            return tot, obt, cnc
         except Exception:
             pass
-        return None
+        return None, None, None
 
-    p_dom_sf = fetch_sofascore_penalties(team_a)
-    p_ext_sf = fetch_sofascore_penalties(team_b)
+    p_dom_sf_tot, p_dom_sf_obt, p_dom_sf_cnc = fetch_sofascore_penalties(team_a)
+    p_ext_sf_tot, p_ext_sf_obt, p_ext_sf_cnc = fetch_sofascore_penalties(team_b)
+    _save_cache(_sf_cache)  # persist après les deux fetches
+
 
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
     bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
 
-    if p_dom_sf is not None:
-        p_dom_10m = p_dom_sf
+    if p_dom_sf_tot is not None:
+        p_dom_10m = p_dom_sf_tot
     else:
         p_dom_10m = min(4, max(2, round(gf_a + (sot_a / 3.0)))) if (gf_a >= 1.2 or sot_a >= 4.0) else 1
 
-    if p_ext_sf is not None:
-        p_ext_10m = p_ext_sf
+    if p_ext_sf_tot is not None:
+        p_ext_10m = p_ext_sf_tot
     else:
         p_ext_10m = min(4, max(2, round(gf_b + (sot_b / 3.0)))) if (gf_b >= 1.2 or sot_b >= 4.0) else 1
 
+    # Obtenus/Concédés (fallback si Sofascore muet)
+    obt_dom = p_dom_sf_obt if p_dom_sf_obt is not None else max(0, p_dom_10m - 1)
+    cnc_dom = p_dom_sf_cnc if p_dom_sf_cnc is not None else max(0, p_dom_10m - obt_dom)
+    obt_ext = p_ext_sf_obt if p_ext_sf_obt is not None else max(0, p_ext_10m - 1)
+    cnc_ext = p_ext_sf_cnc if p_ext_sf_cnc is not None else max(0, p_ext_10m - obt_ext)
+
     p_tot_10m = p_dom_10m + p_ext_10m
+    p_min_10m = min(p_dom_10m, p_ext_10m)
 
-    rf_peno_penalty = 0
-    peno_double_signal_bonus = 0  # bonus appliqué après calcul de p_pen_goals
-    if p_dom_10m >= 3 and p_ext_10m >= 3 and p_tot_10m >= 6:
-        peno_badge = f"🔥 DOUBLE SIGNAL PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-        peno_status = "DOUBLE_SIGNAL"
-        peno_double_signal_bonus = 5  # appliqué après définition de p_pen_goals
-    elif p_dom_10m >= 2 and p_ext_10m >= 2 and p_tot_10m >= 4:
-        peno_badge = f"🟢 VALIDE PENO ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-        peno_status = "VALIDE"
-    else:
-        peno_badge = f"🛑 REJET PENO (<2 pen/équipe sur 10m : dom {p_dom_10m}, ext {p_ext_10m})"
-        peno_status = "REJET"
-        rf_peno_penalty = 25
+    # ── BARÈME V2c — 50/50 Arbitre + Pénaltys équipes ──────────────────────
+    # Pilier 1 : Arbitre /50 (ratio corrigé bayésien, calculé plus bas avec V3)
+    # Pilier 2 : Pénaltys équipes /50 (min des 2 équipes, REJET si < 3)
 
+    # Pilier 2 : Pénaltys équipes — calculé maintenant (données disponibles)
+    if p_min_10m < 3:
+        pts_pen_teams = 0
+        peno_status   = "REJET"
+        peno_badge    = f"🛑 REJET PENO (<3 sur les 2 équipes : dom {p_dom_10m}, ext {p_ext_10m})"
+    elif p_min_10m >= 4 and p_tot_10m >= 9:
+        pts_pen_teams = 50; peno_status = "DOUBLE_SIGNAL"
+        peno_badge = f"🔥 DS FORT ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+    elif p_min_10m >= 4 and p_tot_10m >= 7:
+        pts_pen_teams = 44; peno_status = "DOUBLE_SIGNAL"
+        peno_badge = f"🔥 DOUBLE SIGNAL ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+    elif p_min_10m >= 3 and p_tot_10m >= 8:
+        pts_pen_teams = 42; peno_status = "DOUBLE_SIGNAL"
+        peno_badge = f"🔥 DOUBLE SIGNAL ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+    elif p_min_10m >= 3 and p_tot_10m >= 7:
+        pts_pen_teams = 38; peno_status = "DOUBLE_SIGNAL"
+        peno_badge = f"🟢 VALIDE ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+    else:  # min >= 3, total == 6
+        pts_pen_teams = 36; peno_status = "VALIDE"
+        peno_badge = f"🟢 VALIDE ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+
+    # Pilier 1 : Arbitre /50 — on utilise pen_per_match (ratio brut AdamChoi)
+    # La régularisation bayésienne est appliquée dans le bloc V3 plus bas ;
+    # ici on utilise le ratio brut pour le barème V2c (cohérent avec l'affichage)
+    if not ref_is_known:
+        pts_pen_arb = 0
+    elif pen_per_match >= 0.50: pts_pen_arb = 50
+    elif pen_per_match >= 0.40: pts_pen_arb = 44
+    elif pen_per_match >= 0.35: pts_pen_arb = 38
+    elif pen_per_match >= 0.30: pts_pen_arb = 30
+    elif pen_per_match >= 0.25: pts_pen_arb = 18
+    elif pen_per_match >= 0.20: pts_pen_arb = 8
+    else:                       pts_pen_arb = 0
+
+    score_penalty = max(0, min(100, pts_pen_arb + pts_pen_teams))
+
+    # Rétro-compat : conserver les anciens noms utilisés dans auto_premium_unibet
+    p_pen_ref   = pts_pen_arb
+    pts_pen_ref = pts_pen_arb
+    pts_pen_sot = pts_pen_teams   # réutilisé pour l'email (affiché comme Pen/50)
+    pts_pen_cards = 0
+    pts_pen_goals = 0
+    total_goals_brut = tot_goals_avg  # toujours calculé pour Over 2.5
+    avg_booking = 40.0  # conservé pour Over 2.5
+
+    # Recalcul avg_booking réel (utilisé par Over 2.5)
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
     bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
     team_avg_booking = bp_dom + bp_ext
-
     if h2h_booking:
         avg_booking = sum(h2h_booking) / len(h2h_booking)
     elif team_avg_booking > 0:
         avg_booking = team_avg_booking
+
+
+    # ══════════════════════════════════════════════════════════════
+    # BARÈME V3 PENALTY /100 — Régularisation bayésienne + Interaction Obt/Conc
+    # ══════════════════════════════════════════════════════════════
+    LEAGUE_PEN_RATES_V3 = {
+        "copa libertadores": 0.33, "copa sudamericana": 0.30,
+        "premier league": 0.32,    "ligue 1": 0.29,
+        "bundesliga": 0.27,        "serie a": 0.31,
+        "la liga": 0.29,           "laliga": 0.29,
+        "champions league": 0.27,  "championsleague": 0.27,
+        "superliga": 0.31,         "brasileirao": 0.32,
+        "liga betplay": 0.29,      "primeira liga": 0.30,
+    }
+
+    mu_league = 0.245  # moyenne globale par défaut
+    # ponytail: unibet_league contient le vrai nom ("copa libertadores", "bundesliga"…)
+    # AdamChoi renvoie des codes internes (CLI1, UCL1…) inutilisables ici
+    league_lc = (unibet_league or league or "").lower()
+    for _k, _v in LEAGUE_PEN_RATES_V3.items():
+        if _k in league_lc:
+            mu_league = _v
+            break
+
+    # V3 Pilier 1 : Arbitre régularisé bayésien /25 (k=6 matchs de prior)
+    if ref_is_known and total_games >= 0:
+        k_prior = 6
+        ratio_corr_v3 = (pen_per_match * total_games + k_prior * mu_league) / (total_games + k_prior) if (total_games + k_prior) > 0 else mu_league
+        if ratio_corr_v3 >= 0.50: v3_p1 = 25
+        elif ratio_corr_v3 >= 0.40: v3_p1 = 22
+        elif ratio_corr_v3 >= 0.35: v3_p1 = 19
+        elif ratio_corr_v3 >= 0.30: v3_p1 = 16
+        elif ratio_corr_v3 >= 0.25: v3_p1 = 11
+        elif ratio_corr_v3 >= 0.20: v3_p1 = 6
+        else: v3_p1 = max(0, round(ratio_corr_v3 / 0.20 * 3))
     else:
-        avg_booking = 40.0
+        ratio_corr_v3 = 0.0
+        v3_p1 = 0
 
-    if avg_booking >= 70: p_pen_cards = 20
-    elif avg_booking >= 55: p_pen_cards = 16
-    elif avg_booking >= 40: p_pen_cards = 12
-    elif avg_booking >= 30: p_pen_cards = 8
-    else: p_pen_cards = 3
+    # V3 Pilier 2 : Interaction Obtenus × Concédés /30
+    signal_dom = obt_dom + cnc_ext
+    signal_ext = obt_ext + cnc_dom
+    def _v3_signal_pts(s):
+        if s >= 7: return 15
+        elif s >= 5: return 12
+        elif s >= 4: return 9
+        elif s >= 3: return 6
+        elif s >= 2: return 3
+        elif s >= 1: return 1
+        return 0
+    v3_p2_base = _v3_signal_pts(signal_dom) + _v3_signal_pts(signal_ext)
+    v3_bonus_ds = 6 if (signal_dom >= 2 and signal_ext >= 2) else (3 if (signal_dom >= 3 or signal_ext >= 3) else 0)
+    v3_p2 = min(30, v3_p2_base + v3_bonus_ds)
+    v3_peno_status = "DOUBLE_SIGNAL" if (signal_dom >= 2 and signal_ext >= 2) else (
+        "VALIDE" if (signal_dom >= 1 or signal_ext >= 1) else "FAIBLE")
 
-    # 4. Activité Offensive Globale (20 pts max)
-    total_goals_brut = tot_goals_avg
-    if total_goals_brut >= 5.5 or ipo_comb >= 3.5: p_pen_goals = 20
-    elif total_goals_brut >= 4.5 or ipo_comb >= 3.0: p_pen_goals = 16
-    elif total_goals_brut >= 3.8 or ipo_comb >= 2.5: p_pen_goals = 12
-    elif total_goals_brut >= 3.0: p_pen_goals = 8
-    else: p_pen_goals = 3
-    p_pen_goals = min(25, p_pen_goals + peno_double_signal_bonus)  # bonus DOUBLE SIGNAL appliqué ici
+    # V3 Pilier 3 : Danger Surface /25 (SOT 12 + IPO 8 + Fouls proxy 5)
+    if sot_comb >= 13.0: v3_p3_sot = 12
+    elif sot_comb >= 11.0: v3_p3_sot = 10
+    elif sot_comb >= 9.0: v3_p3_sot = 8
+    elif sot_comb >= 7.0: v3_p3_sot = 5
+    elif sot_comb >= 5.0: v3_p3_sot = 3
+    else: v3_p3_sot = 1
+    if ipo_comb >= 3.5: v3_p3_ipo = 8
+    elif ipo_comb >= 3.0: v3_p3_ipo = 6
+    elif ipo_comb >= 2.5: v3_p3_ipo = 4
+    elif ipo_comb >= 1.5: v3_p3_ipo = 2
+    else: v3_p3_ipo = 1
+    if avg_booking >= 60: v3_p3_fouls = 5
+    elif avg_booking >= 45: v3_p3_fouls = 3
+    elif avg_booking >= 30: v3_p3_fouls = 2
+    else: v3_p3_fouls = 1
+    v3_p3 = min(25, v3_p3_sot + v3_p3_ipo + v3_p3_fouls)
 
-    if ref_is_known:
-        score_penalty = max(0, min(100, p_pen_ref + p_pen_sot + p_pen_cards + p_pen_goals - rf_peno_penalty))
-    else:
-        raw_avail = p_pen_sot + p_pen_cards + p_pen_goals
-        norm_score = (raw_avail / 65.0) * 100.0
-        score_penalty = max(0, min(100, round(norm_score * 0.90) - rf_peno_penalty))
+    # V3 Pilier 4 : Intensité xG /10 (décorrélé du Pilier 3)
+    xg_proxy = xg_total if xg_total > 0 else tot_goals_avg
+    if xg_proxy >= 5.0: v3_p4 = 10
+    elif xg_proxy >= 4.0: v3_p4 = 8
+    elif xg_proxy >= 3.0: v3_p4 = 6
+    elif xg_proxy >= 2.0: v3_p4 = 4
+    else: v3_p4 = 2
+
+    # V3 Pilier 5 : Tension Cartons Récents /5
+    if avg_booking >= 65: v3_p5 = 5
+    elif avg_booking >= 50: v3_p5 = 4
+    elif avg_booking >= 35: v3_p5 = 3
+    elif avg_booking >= 20: v3_p5 = 2
+    else: v3_p5 = 1
+
+    # V3 Pilier 6 : Ligue & VAR & Contexte /5
+    LEAGUE_VAR_V3 = {"premier league","ligue 1","bundesliga","serie a","la liga","laliga",
+                     "champions league","championsleague","copa libertadores","copa sudamericana",
+                     "brasileirao","superliga","premier liga"}
+    v3_p6_ligue = 3 if mu_league >= 0.30 else (2 if mu_league >= 0.26 else 1)
+    v3_p6_var   = 2 if any(_k in league_lc for _k in LEAGUE_VAR_V3) else 0
+    v3_p6 = min(5, v3_p6_ligue + v3_p6_var)
+
+    score_penalty_v3 = max(0, min(100, v3_p1 + v3_p2 + v3_p3 + v3_p4 + v3_p5 + v3_p6))
+    eligible_v3 = ref_is_known and ratio_corr_v3 >= 0.30 and score_penalty_v3 >= 80
     pts_ipo = o25_b1
     pts_goals = o25_b2
     pts_freq = o25_b3
@@ -932,7 +1100,22 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "p_dom_10m": p_dom_10m,
             "p_ext_10m": p_ext_10m,
             "p_tot_10m": p_tot_10m,
+            # ── Champs V3 ──
+            "score_penalty_v3": score_penalty_v3,
+            "eligible_v3": eligible_v3,
+            "v3_p1_ref": v3_p1,
+            "v3_p2_peno": v3_p2,
+            "v3_p3_surface": v3_p3,
+            "v3_p4_intensity": v3_p4,
+            "v3_p5_tension": v3_p5,
+            "v3_p6_league": v3_p6,
+            "ratio_corr_v3": round(ratio_corr_v3, 3),
+            "v3_peno_status": v3_peno_status,
+            "obt_dom": obt_dom, "cnc_dom": cnc_dom,
+            "obt_ext": obt_ext, "cnc_ext": cnc_ext,
+            "signal_dom": signal_dom, "signal_ext": signal_ext,
         }
+
 
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
