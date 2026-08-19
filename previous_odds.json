@@ -32,14 +32,6 @@
       "double": true,
       "ac_score": 90
     },
-    "3360670": {
-      "match": "Atl. Madrid - Malaga",
-      "league": "Espagne • Laliga",
-      "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 89
-    },
     "3352400": {
       "match": "Salt Lake - Dallas FC",
       "league": "Etats Unis • Mls",
@@ -128,14 +120,6 @@
       "double": true,
       "ac_score": 85
     },
-    "3370864": {
-      "match": "Slo.Bratislava - NK Celje",
-      "league": "Coupes D Europe • Championsleague",
-      "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.72,
-      "double": true,
-      "ac_score": 82
-    },
     "3352384": {
       "match": "FC Cincinnati - NY City FC",
       "league": "Etats Unis • Mls",
@@ -172,7 +156,7 @@
       "match": "Flamengo - Cruzeiro",
       "league": "Amerique • Copa Libertadores",
       "date_str": "Jeu. 20/08 à 02h30",
-      "val_o25": 1.85,
+      "val_o25": 1.8,
       "double": true,
       "ac_score": 80
     },
