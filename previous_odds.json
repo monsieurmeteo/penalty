@@ -76,7 +76,7 @@
       "match": "DC United - New England",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.65,
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 88
     },
@@ -116,7 +116,7 @@
       "match": "Shanghai Port - Dalian Yingbo",
       "league": "Chine • D1 Chine",
       "date_str": "Mer. 19/08 à 13h35",
-      "val_o25": 1.38,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 85
     },
@@ -252,7 +252,7 @@
       "match": "Cerro Porteno - Palmeiras",
       "league": "Amerique • Copa Libertadores",
       "date_str": "Jeu. 20/08 à 00h00",
-      "val_o25": 2.15,
+      "val_o25": 2.25,
       "double": true,
       "ac_score": 76
     },
