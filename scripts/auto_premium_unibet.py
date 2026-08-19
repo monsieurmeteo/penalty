@@ -980,11 +980,34 @@ def main():
         pen_rate = m.get("pen_per_match", 0.0)
         p_dom_10 = m.get("p_dom_10m", 0)
         p_ext_10 = m.get("p_ext_10m", 0)
+
+        def _fmt_scores(mlist, is_home=True):
+            items = []
+            for item in (mlist or [])[:5]:
+                hg = item.get("homeGoals", item.get("homeGoalsFt", "?"))
+                ag = item.get("awayGoals", item.get("awayGoalsFt", "?"))
+                opp = item.get("awayTeam") if is_home else item.get("homeTeam")
+                if isinstance(opp, dict):
+                    opp_n = opp.get("name") or opp.get("slug") or "Adv"
+                else:
+                    opp_n = str(opp or item.get("opponent") or "Adv")
+                items.append(f"{str(opp_n)[:15]} ({hg}-{ag})")
+            return ", ".join(items) if items else "Historique compétition en cours"
+
+        dom_scores_str = _fmt_scores(m.get("recent_h_dom", []), is_home=True)
+        ext_scores_str = _fmt_scores(m.get("recent_a_ext", []), is_home=False)
+
         pen_audit_html = f'''
-            <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:5px 8px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
+            <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:6px 9px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
               <b>📊 SCORE {sp}/100 :</b><br>
               🟣 Arbitre ({pen_rate:.2f} pen/m) : <b>{pts_r}/50</b> &nbsp;|&nbsp; ⚽ Équipes ({p_dom_10}-{p_ext_10} sur 10m) : <b>{pts_t}/50</b>
+              <div style="margin-top:5px; padding-top:5px; border-top:1px dashed #c4b5fd; color:#475569; font-size:10.5px;">
+                <b>📋 Matchs analysés (Derniers scores) :</b><br>
+                🏠 <b>{m["dom"]}</b> (Dom) : {dom_scores_str}<br>
+                ✈️ <b>{m["ext"]}</b> (Ext) : {ext_scores_str}
+              </div>
             </div>'''
+
 
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
