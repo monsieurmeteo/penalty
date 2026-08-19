@@ -1011,16 +1011,23 @@ def main():
         ext_scores_str = _fmt_scores(m.get("recent_a_ext", []), is_home=False)
 
 
+        obt_d = m.get("obt_dom", 0)
+        cnc_d = m.get("cnc_dom", 0)
+        obt_e = m.get("obt_ext", 0)
+        cnc_e = m.get("cnc_ext", 0)
+
         pen_audit_html = f'''
             <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:6px 9px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
               <b>📊 SCORE {sp}/100 :</b><br>
-              🟣 Arbitre ({pen_rate:.2f} pen/m) : <b>{pts_r}/50</b> &nbsp;|&nbsp; ⚽ Équipes ({p_dom_10}-{p_ext_10} sur 10m) : <b>{pts_t}/50</b>
+              🟣 <b>Arbitre</b> ({pen_rate:.2f} pen/m) : <b>{pts_r}/50</b><br>
+              ⚽ <b>Pénaltys Réels (10m)</b> : Dom (<b>{obt_d}</b> obt / <b>{cnc_d}</b> conc) &nbsp;|&nbsp; Ext (<b>{obt_e}</b> obt / <b>{cnc_e}</b> conc) : <b>{pts_t}/50</b>
               <div style="margin-top:5px; padding-top:5px; border-top:1px dashed #c4b5fd; color:#475569; font-size:10.5px;">
                 <b>📋 Matchs analysés (Derniers scores) :</b><br>
                 🏠 <b>{m["dom"]}</b> (Dom) : {dom_scores_str}<br>
                 ✈️ <b>{m["ext"]}</b> (Ext) : {ext_scores_str}
               </div>
             </div>'''
+
 
 
         pen_simples_html += f'''

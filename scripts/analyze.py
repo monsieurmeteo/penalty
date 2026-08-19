@@ -884,24 +884,26 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     bp_dom = h_dom_w.get("bookingPointsTotal", 0.0) or (h_dom_w.get("cardsTotal", 0.0) * 10.0)
     bp_ext = a_ext_w.get("bookingPointsTotal", 0.0) or (a_ext_w.get("cardsTotal", 0.0) * 10.0)
 
+    # ── Données Pénaltys 100% Réelles (Sofascore) — Aucun calcul estimatif ──
     if p_dom_sf_tot is not None:
         p_dom_10m = p_dom_sf_tot
     else:
-        p_dom_10m = min(4, max(3, round(gf_a + (sot_a / 3.0)))) if (gf_a >= 1.2 or sot_a >= 4.0) else 1
+        p_dom_10m = 0
 
     if p_ext_sf_tot is not None:
         p_ext_10m = p_ext_sf_tot
     else:
-        p_ext_10m = min(4, max(3, round(gf_b + (sot_b / 3.0)))) if (gf_b >= 1.2 or sot_b >= 4.0) else 1
+        p_ext_10m = 0
 
-    # Obtenus/Concédés (fallback si Sofascore muet)
-    obt_dom = p_dom_sf_obt if p_dom_sf_obt is not None else max(0, p_dom_10m - 1)
-    cnc_dom = p_dom_sf_cnc if p_dom_sf_cnc is not None else max(0, p_dom_10m - obt_dom)
-    obt_ext = p_ext_sf_obt if p_ext_sf_obt is not None else max(0, p_ext_10m - 1)
-    cnc_ext = p_ext_sf_cnc if p_ext_sf_cnc is not None else max(0, p_ext_10m - obt_ext)
+    # Obtenus / Concédés réels stricts
+    obt_dom = p_dom_sf_obt if p_dom_sf_obt is not None else 0
+    cnc_dom = p_dom_sf_cnc if p_dom_sf_cnc is not None else 0
+    obt_ext = p_ext_sf_obt if p_ext_sf_obt is not None else 0
+    cnc_ext = p_ext_sf_cnc if p_ext_sf_cnc is not None else 0
 
     p_tot_10m = p_dom_10m + p_ext_10m
     p_min_10m = min(p_dom_10m, p_ext_10m)
+
 
     # ── BARÈME V2c — 50/50 Arbitre + Pénaltys équipes ──────────────────────
     # Pilier 1 : Arbitre /50 (ratio corrigé bayésien, calculé plus bas avec V3)
