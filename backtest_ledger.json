@@ -15752,5 +15752,151 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371612",
+    "timestamp_utc": "2026-08-19T04:04:11.327188+00:00",
+    "match": "Kairat Almaty vs Anderlecht",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 20/08 à 17h00",
+    "scores": {
+      "o25": 88,
+      "o15": 88,
+      "btts": 78,
+      "penalty": 34
+    },
+    "referee": {
+      "name": "Chris Kavanagh",
+      "status": "👨‍⚖️ Arbitre Chris Kavanagh (29 m, 0.17 pen/m)",
+      "pen_per_match": 0.172
+    },
+    "odds": {
+      "o25": 1.88,
+      "o15": 1.28
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372123",
+    "timestamp_utc": "2026-08-19T04:04:11.327188+00:00",
+    "match": "Lincoln FC vs FC Larne",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 18h00",
+    "scores": {
+      "o25": 74,
+      "o15": 80,
+      "btts": 55,
+      "penalty": 52
+    },
+    "referee": {
+      "name": "Kristo Tohver",
+      "status": "👨‍⚖️ Arbitre Kristo Tohver (26 m, 0.38 pen/m)",
+      "pen_per_match": 0.385
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.25
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371626",
+    "timestamp_utc": "2026-08-19T04:04:11.327188+00:00",
+    "match": "Inter Turku vs FC Copenhague",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 18h00",
+    "scores": {
+      "o25": 92,
+      "o15": 99,
+      "btts": 92,
+      "penalty": 79
+    },
+    "referee": {
+      "name": "Goga Kikacheishvili",
+      "status": "👨‍⚖️ Arbitre Goga Kikacheishvili (1 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371389",
+    "timestamp_utc": "2026-08-19T04:04:11.327188+00:00",
+    "match": "Mjällby vs Salzbourg",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 20/08 à 18h00",
+    "scores": {
+      "o25": 62,
+      "o15": 71,
+      "btts": 38,
+      "penalty": 63
+    },
+    "referee": {
+      "name": "Nikolai Balakin",
+      "status": "👨‍⚖️ Arbitre Nikolai Balakin (8 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371617",
+    "timestamp_utc": "2026-08-19T04:04:11.327188+00:00",
+    "match": "Jagiellonia vs Iberia 1999",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 20/08 à 18h00",
+    "scores": {
+      "o25": 64,
+      "o15": 81,
+      "btts": 79,
+      "penalty": 62
+    },
+    "referee": {
+      "name": "Ricardo De Burgos Bengoetxea",
+      "status": "👨‍⚖️ Arbitre Ricardo De Burgos Bengoetxea (21 m, 0.48 pen/m)",
+      "pen_per_match": 0.476
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.2
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

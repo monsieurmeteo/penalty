@@ -1,5 +1,13 @@
 {
   "s3": {
+    "3371626": {
+      "match": "Inter Turku - FC Copenhague",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 20/08 à 18h00",
+      "val_o25": 1.52,
+      "double": true,
+      "ac_score": 92
+    },
     "3352385": {
       "match": "Orlando City - Chicago Fire",
       "league": "Etats Unis • Mls",
@@ -20,7 +28,7 @@
       "match": "Atl. Madrid - Malaga",
       "league": "Espagne • Laliga",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.7,
+      "val_o25": 1.68,
       "double": true,
       "ac_score": 89
     },
@@ -47,6 +55,22 @@
       "val_o25": 1.38,
       "double": true,
       "ac_score": 88
+    },
+    "3371612": {
+      "match": "Kairat Almaty - Anderlecht",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 20/08 à 17h00",
+      "val_o25": 1.88,
+      "double": true,
+      "ac_score": 88
+    },
+    "3372408": {
+      "match": "Shanghai Port - Dalian Yingbo",
+      "league": "Chine • D1 Chine",
+      "date_str": "Mer. 19/08 à 13h35",
+      "val_o25": 1.36,
+      "double": true,
+      "ac_score": 85
     },
     "3352386": {
       "match": "Columbus Crew - CF Montreal",
@@ -140,7 +164,7 @@
       "match": "Toronto FC - Charlotte FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.62,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 75
     }
