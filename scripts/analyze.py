@@ -882,12 +882,12 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     if p_dom_sf_tot is not None:
         p_dom_10m = p_dom_sf_tot
     else:
-        p_dom_10m = min(4, max(2, round(gf_a + (sot_a / 3.0)))) if (gf_a >= 1.2 or sot_a >= 4.0) else 1
+        p_dom_10m = min(4, max(3, round(gf_a + (sot_a / 3.0)))) if (gf_a >= 1.2 or sot_a >= 4.0) else 1
 
     if p_ext_sf_tot is not None:
         p_ext_10m = p_ext_sf_tot
     else:
-        p_ext_10m = min(4, max(2, round(gf_b + (sot_b / 3.0)))) if (gf_b >= 1.2 or sot_b >= 4.0) else 1
+        p_ext_10m = min(4, max(3, round(gf_b + (sot_b / 3.0)))) if (gf_b >= 1.2 or sot_b >= 4.0) else 1
 
     # Obtenus/Concédés (fallback si Sofascore muet)
     obt_dom = p_dom_sf_obt if p_dom_sf_obt is not None else max(0, p_dom_10m - 1)
