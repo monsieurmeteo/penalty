@@ -72,14 +72,6 @@
       "double": true,
       "ac_score": 85
     },
-    "3368624": {
-      "match": "CD Recoleta - Boca Juniors",
-      "league": "Amerique • Copa Sudamericana",
-      "date_str": "Mer. 19/08 à 00h00",
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 83
-    },
     "3370864": {
       "match": "Slo.Bratislava - NK Celje",
       "league": "Coupes D Europe • Championsleague",
@@ -108,7 +100,7 @@
       "match": "Philadelphia - Inter Miami",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.35,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 80
     },
