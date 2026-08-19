@@ -36,7 +36,7 @@
       "match": "Mamelodi - Marumo Gallants",
       "league": "Afrique Du Sud • D1 Afrique Du Sud",
       "date_str": "Mer. 19/08 à 19h30",
-      "val_o25": 1.55,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 89
     },
@@ -44,7 +44,7 @@
       "match": "Atl. Madrid - Malaga",
       "league": "Espagne • Laliga",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.57,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 89
     },
@@ -76,7 +76,7 @@
       "match": "DC United - New England",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.62,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 88
     },
@@ -84,7 +84,7 @@
       "match": "LA Galaxy - San Jose",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 04h30",
-      "val_o25": 1.38,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 88
     },
@@ -124,7 +124,7 @@
       "match": "Seattle - Austin FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.48,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 85
     },
@@ -140,7 +140,7 @@
       "match": "Slo.Bratislava - NK Celje",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.68,
+      "val_o25": 1.7,
       "double": true,
       "ac_score": 82
     },
@@ -148,7 +148,7 @@
       "match": "FC Cincinnati - NY City FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 01h30",
-      "val_o25": 1.38,
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 82
     },
@@ -260,7 +260,7 @@
       "match": "Braga - Austria Vienne",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.52,
+      "val_o25": 1.55,
       "double": true,
       "ac_score": 75
     }
