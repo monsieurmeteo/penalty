@@ -991,11 +991,25 @@ def main():
                     opp_n = opp.get("name") or opp.get("slug") or "Adv"
                 else:
                     opp_n = str(opp or item.get("opponent") or "Adv")
-                items.append(f"{str(opp_n)[:15]} ({hg}-{ag})")
+                # Extraction de la date
+                raw_d = item.get("date") or item.get("matchDate") or item.get("datetimestamp") or item.get("date_str")
+                d_str = ""
+                if raw_d:
+                    if isinstance(raw_d, (int, float)) or (isinstance(raw_d, str) and raw_d.isdigit()):
+                        try:
+                            val_f = float(raw_d)
+                            if val_f > 1e11: val_f /= 1000.0
+                            d_str = datetime.fromtimestamp(val_f).strftime("%d/%m") + " "
+                        except Exception: pass
+                    elif isinstance(raw_d, str) and len(raw_d) >= 10 and "-" in raw_d:
+                        try: d_str = datetime.strptime(raw_d[:10], "%Y-%m-%d").strftime("%d/%m") + " "
+                        except Exception: pass
+                items.append(f"{d_str}vs {str(opp_n)[:14]} ({hg}-{ag})")
             return ", ".join(items) if items else "Historique compétition en cours"
 
         dom_scores_str = _fmt_scores(m.get("recent_h_dom", []), is_home=True)
         ext_scores_str = _fmt_scores(m.get("recent_a_ext", []), is_home=False)
+
 
         pen_audit_html = f'''
             <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:6px 9px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
