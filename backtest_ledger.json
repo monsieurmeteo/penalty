@@ -16425,5 +16425,438 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3372252",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Sion vs Ajax",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h15",
+    "scores": {
+      "o25": 98,
+      "o15": 99,
+      "btts": 98,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Mohammed Al Hakim",
+      "status": "👨‍⚖️ Arbitre Mohammed Al Hakim (38 m, 0.08 pen/m)",
+      "pen_per_match": 0.079
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371202",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Atalanta vs Hap.Tel Aviv",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h30",
+    "scores": {
+      "o25": 55,
+      "o15": 65,
+      "btts": 33,
+      "penalty": 88
+    },
+    "referee": {
+      "name": "Javier Alberola Rojas",
+      "status": "👨‍⚖️ Arbitre Javier Alberola Rojas (21 m, 0.52 pen/m)",
+      "pen_per_match": 0.524
+    },
+    "odds": {
+      "o25": 1.35,
+      "o15": 1.09
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372258",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "FC Lugano vs Mac.Tel Aviv",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h30",
+    "scores": {
+      "o25": 64,
+      "o15": 71,
+      "btts": 40,
+      "penalty": 60
+    },
+    "referee": {
+      "name": "Miloš Milanović",
+      "status": "👨‍⚖️ Arbitre Miloš Milanović (16 m, 0.19 pen/m)",
+      "pen_per_match": 0.188
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371458",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Panathinaïkos vs Hradec Kralové",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h30",
+    "scores": {
+      "o25": 62,
+      "o15": 71,
+      "btts": 38,
+      "penalty": 52
+    },
+    "referee": {
+      "name": "Jérôme Brisard",
+      "status": "👨‍⚖️ Arbitre Jérôme Brisard (16 m, 0.12 pen/m)",
+      "pen_per_match": 0.125
+    },
+    "odds": {
+      "o25": 1.82,
+      "o15": 1.25
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371621",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Motherwell vs Fribourg",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h30",
+    "scores": {
+      "o25": 58,
+      "o15": 69,
+      "btts": 36,
+      "penalty": 47
+    },
+    "referee": {
+      "name": "Radu Petrescu",
+      "status": "👨‍⚖️ Arbitre Radu Petrescu (15 m, 0.13 pen/m)",
+      "pen_per_match": 0.133
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371624",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "La Gantoise vs Hibernian",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h30",
+    "scores": {
+      "o25": 53,
+      "o15": 70,
+      "btts": 27,
+      "penalty": 71
+    },
+    "referee": {
+      "name": "Paweł Raczkowski",
+      "status": "👨‍⚖️ Arbitre Paweł Raczkowski (24 m, 0.29 pen/m)",
+      "pen_per_match": 0.292
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372259",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Hearts vs Rapid Vienne",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h45",
+    "scores": {
+      "o25": 77,
+      "o15": 99,
+      "btts": 62,
+      "penalty": 63
+    },
+    "referee": {
+      "name": "Manfredas Lukjančukas",
+      "status": "👨‍⚖️ Arbitre Manfredas Lukjančukas (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.18
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371520",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Rangers vs FK Jablonec",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 20h45",
+    "scores": {
+      "o25": 55,
+      "o15": 65,
+      "btts": 33,
+      "penalty": 71
+    },
+    "referee": {
+      "name": "Marian Alexandru Barbu",
+      "status": "👨‍⚖️ Arbitre Marian Alexandru Barbu (21 m, 0.29 pen/m)",
+      "pen_per_match": 0.286
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372130",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Shamrock vs Kups",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 85,
+      "o15": 85,
+      "btts": 84,
+      "penalty": 80
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.25
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360708",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Rayo Vallecano vs Alaves",
+    "league": "Espagne • Laliga",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 66,
+      "o15": 87,
+      "btts": 72,
+      "penalty": 66
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.5,
+      "o15": 1.48
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371627",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Braga vs Austria Vienne",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 75,
+      "o15": 79,
+      "btts": 44,
+      "penalty": 72
+    },
+    "referee": {
+      "name": "Ishmael Barbara",
+      "status": "👨‍⚖️ Arbitre Ishmael Barbara (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371622",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Dinamo Tirana vs Pafos FC",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 70,
+      "o15": 78,
+      "btts": 49,
+      "penalty": 69
+    },
+    "referee": {
+      "name": "Lawrence Visser",
+      "status": "👨‍⚖️ Arbitre Lawrence Visser (27 m, 0.33 pen/m)",
+      "pen_per_match": 0.333
+    },
+    "odds": {
+      "o25": 1.85,
+      "o15": 1.28
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371371",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Getafe vs Parti.Belgrade",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 53,
+      "o15": 65,
+      "btts": 33,
+      "penalty": 59
+    },
+    "referee": {
+      "name": "Andris Treimanis",
+      "status": "👨‍⚖️ Arbitre Andris Treimanis (4 m, 0.25 pen/m)",
+      "pen_per_match": 0.25
+    },
+    "odds": {
+      "o25": 1.82,
+      "o15": 1.25
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371609",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Benfica vs Aarhus GF",
+    "league": "Coupes D Europe • Europa League",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 86,
+      "o15": 90,
+      "btts": 70,
+      "penalty": 91
+    },
+    "referee": {
+      "name": "Marco Guida",
+      "status": "👨‍⚖️ Arbitre Marco Guida (18 m, 0.44 pen/m)",
+      "pen_per_match": 0.444
+    },
+    "odds": {
+      "o25": 1.3,
+      "o15": 1.08
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371647",
+    "timestamp_utc": "2026-08-19T08:04:07.131282+00:00",
+    "match": "Hajduk Split vs RKS Rakow",
+    "league": "Coupes D Europe • Europa Conference",
+    "date_str": "Jeu. 20/08 à 21h00",
+    "scores": {
+      "o25": 74,
+      "o15": 74,
+      "btts": 46,
+      "penalty": 100
+    },
+    "referee": {
+      "name": "Michal Očenáš",
+      "status": "👨‍⚖️ Arbitre Michal Očenáš (15 m, 0.60 pen/m)",
+      "pen_per_match": 0.6
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
