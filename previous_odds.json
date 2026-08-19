@@ -8,6 +8,14 @@
       "double": true,
       "ac_score": 92
     },
+    "3371610": {
+      "match": "Uni.Craiova - Ararat Armenia",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 20/08 à 19h00",
+      "val_o25": 1.65,
+      "double": true,
+      "ac_score": 92
+    },
     "3352385": {
       "match": "Orlando City - Chicago Fire",
       "league": "Etats Unis • Mls",
@@ -28,7 +36,7 @@
       "match": "Atl. Madrid - Malaga",
       "league": "Espagne • Laliga",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.68,
+      "val_o25": 1.6,
       "double": true,
       "ac_score": 89
     },
@@ -37,6 +45,22 @@
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 03h30",
       "val_o25": 1.42,
+      "double": true,
+      "ac_score": 89
+    },
+    "3371625": {
+      "match": "Nordsjaelland - Saint Gall",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 20/08 à 19h00",
+      "val_o25": 1.38,
+      "double": true,
+      "ac_score": 89
+    },
+    "3371644": {
+      "match": "KF Drita - Inter Escaldes",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 20/08 à 20h00",
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 89
     },
@@ -64,11 +88,19 @@
       "double": true,
       "ac_score": 88
     },
+    "3371883": {
+      "match": "Lech Poznan - FC Thun",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 20/08 à 19h00",
+      "val_o25": 1.57,
+      "double": true,
+      "ac_score": 88
+    },
     "3372408": {
       "match": "Shanghai Port - Dalian Yingbo",
       "league": "Chine • D1 Chine",
       "date_str": "Mer. 19/08 à 13h35",
-      "val_o25": 1.36,
+      "val_o25": 1.38,
       "double": true,
       "ac_score": 85
     },
@@ -92,7 +124,7 @@
       "match": "Slo.Bratislava - NK Celje",
       "league": "Coupes D Europe • Championsleague",
       "date_str": "Mer. 19/08 à 21h00",
-      "val_o25": 1.7,
+      "val_o25": 1.65,
       "double": true,
       "ac_score": 82
     },
@@ -109,6 +141,14 @@
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 03h30",
       "val_o25": 1.6,
+      "double": true,
+      "ac_score": 82
+    },
+    "3366983": {
+      "match": "Al Feiha - Al Hilal",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Jeu. 20/08 à 20h00",
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 82
     },
@@ -136,11 +176,27 @@
       "double": true,
       "ac_score": 80
     },
+    "3372126": {
+      "match": "Vikingur Reyk. - BoracBanjaLuka",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 20/08 à 20h00",
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 80
+    },
     "3352410": {
       "match": "Portland - San Diego FC",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 20/08 à 04h30",
       "val_o25": 1.32,
+      "double": true,
+      "ac_score": 79
+    },
+    "3371889": {
+      "match": "Trabzonspor - Ferencvaros",
+      "league": "Coupes D Europe • Europa League",
+      "date_str": "Jeu. 20/08 à 19h00",
+      "val_o25": 1.62,
       "double": true,
       "ac_score": 79
     },
@@ -151,6 +207,14 @@
       "val_o25": 1.62,
       "double": true,
       "ac_score": 78
+    },
+    "3372127": {
+      "match": "KI Klaksvik - Riga FC",
+      "league": "Coupes D Europe • Europa Conference",
+      "date_str": "Jeu. 20/08 à 19h30",
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 77
     },
     "3352459": {
       "match": "Cerro Porteno - Palmeiras",
