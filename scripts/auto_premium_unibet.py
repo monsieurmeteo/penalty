@@ -773,25 +773,25 @@ def main():
             break
 
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
-    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
+    # ── 4. SÉLECTION PENALTY OUI — 100% ARBITRE OFFICIEL DÉSIGNÉ (Score ≥ 65/100) ──
+    # Filtrage strict : arbitre officiel désigné connu ET ratio >= 0.30 pen/match
     pen_candidates = [
         m for m in scanned_results
-        if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 80
-        and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]  # arbitre obligatoirement connu
-        and m.get("pen_per_match", 0.0) >= 0.30  # arbitre au sifflet facile (>=0.30 pen/m)
+        if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
+        and m.get("pen_per_match", 0.0) >= 0.30
+        and m.get("score_penalty", 0) >= 65
     ]
-    pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
+    pen_candidates.sort(key=lambda x: (x.get("score_penalty", 0), x.get("pen_per_match", 0.0)), reverse=True)
     pen_simples = pen_candidates
 
-    # Matchs éliminés spécifiquement par la compétence PENO (< 2 pen/10m) pour information transparente
+    # Matchs avec arbitre connu mais ratio < 0.30 pen/m (éliminés)
     pen_rejected = [
         m for m in scanned_results
-        if m.get("score_penalty", 0) >= 55
-        and m.get("peno_status") == "REJET"
+        if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
+        and m.get("pen_per_match", 0.0) < 0.30
     ]
-    pen_rejected.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+    pen_rejected.sort(key=lambda x: x.get("pen_per_match", 0.0), reverse=True)
+
 
 
 
@@ -1017,24 +1017,21 @@ def main():
         cnc_e = m.get("cnc_ext", 0)
 
         pen_audit_html = f'''
-            <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:6px 9px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
-              <b>📊 SCORE {sp}/100 :</b><br>
-              🟣 <b>Arbitre</b> ({pen_rate:.2f} pen/m) : <b>{pts_r}/50</b><br>
-              ⚽ <b>Pénaltys Réels (10m)</b> : Dom (<b>{obt_d}</b> obt / <b>{cnc_d}</b> conc) &nbsp;|&nbsp; Ext (<b>{obt_e}</b> obt / <b>{cnc_e}</b> conc) : <b>{pts_t}/50</b>
-              <div style="margin-top:5px; padding-top:5px; border-top:1px dashed #c4b5fd; color:#475569; font-size:10.5px;">
-                <b>📋 Matchs analysés (Derniers scores) :</b><br>
+            <div style="background:#f5f3ff; border:1px solid #ddd6fe; border-radius:6px; padding:7px 10px; margin:6px 0; font-size:11px; color:#5b21b6; line-height:1.5;">
+              <b>👨‍⚖️ ARBITRE OFFICIEL : {ref}</b><br>
+              ⚡ <b>Ratio Pénaltys :</b> <span style="font-size:12px; font-weight:800; color:#7c3aed;">{pen_rate:.2f} pen / match</span> &nbsp;|&nbsp; 🎯 <b>Score Arbitre : {sp}/100</b>
+              <div style="margin-top:6px; padding-top:6px; border-top:1px dashed #c4b5fd; color:#475569; font-size:10.5px;">
+                <b>📋 Historique réel des équipes (Derniers scores pour vérification) :</b><br>
                 🏠 <b>{m["dom"]}</b> (Dom) : {dom_scores_str}<br>
                 ✈️ <b>{m["ext"]}</b> (Ext) : {ext_scores_str}
               </div>
             </div>'''
 
-
-
         pen_simples_html += f'''
         <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
+            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Arbitre Score: {sp}/100</span>
           </div>
           <div style="font-size:12px; color:#334155; line-height:1.8;">
             🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
@@ -1042,10 +1039,11 @@ def main():
             {peno_badge_html}
             {pen_audit_html}
           </div>
-          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
-            🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
+          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:6px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
+            🎯 PARI SIMPLE — Vérifier les pénaltys d'équipes et jouer <b>Penalty Accordé OUI</b> sur Unibet
           </div>
         </div>'''
+
     if not pen_simples_html:
         pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
 

@@ -905,52 +905,37 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     p_min_10m = min(p_dom_10m, p_ext_10m)
 
 
-    # ── BARÈME V2c — 50/50 Arbitre + Pénaltys équipes ──────────────────────
-    # Pilier 1 : Arbitre /50 (ratio corrigé bayésien, calculé plus bas avec V3)
-    # Pilier 2 : Pénaltys équipes /50 (min des 2 équipes, REJET si < 3)
-
-    # Pilier 2 : Pénaltys équipes — calculé maintenant (données disponibles)
-    if p_min_10m < 3:
-        pts_pen_teams = 0
+    # ── BARÈME PENALTY 100% ARBITRE OFFICIEL /100 ──────────────────────────
+    # Seul critère officiel certifié : le ratio de pénaltys de l'arbitre désigné
+    if not ref_is_known or pen_per_match < 0.30:
+        score_penalty = 0
         peno_status   = "REJET"
-        peno_badge    = f"🛑 REJET PENO (<3 sur les 2 équipes : dom {p_dom_10m}, ext {p_ext_10m})"
-    elif p_min_10m >= 4 and p_tot_10m >= 9:
-        pts_pen_teams = 50; peno_status = "DOUBLE_SIGNAL"
-        peno_badge = f"🔥 DS FORT ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-    elif p_min_10m >= 4 and p_tot_10m >= 7:
-        pts_pen_teams = 44; peno_status = "DOUBLE_SIGNAL"
-        peno_badge = f"🔥 DOUBLE SIGNAL ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-    elif p_min_10m >= 3 and p_tot_10m >= 8:
-        pts_pen_teams = 42; peno_status = "DOUBLE_SIGNAL"
-        peno_badge = f"🔥 DOUBLE SIGNAL ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-    elif p_min_10m >= 3 and p_tot_10m >= 7:
-        pts_pen_teams = 38; peno_status = "DOUBLE_SIGNAL"
-        peno_badge = f"🟢 VALIDE ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
-    else:  # min >= 3, total == 6
-        pts_pen_teams = 36; peno_status = "VALIDE"
-        peno_badge = f"🟢 VALIDE ({p_dom_10m} dom / {p_ext_10m} ext — total {p_tot_10m})"
+        peno_badge    = f"🛑 ARBITRE NON ÉLIGIBLE ({ref_name} — {pen_per_match:.2f} pen/m)"
+    elif pen_per_match >= 0.50:
+        score_penalty = 100
+        peno_status   = "DOUBLE_SIGNAL"
+        peno_badge    = f"🔥 TOP ARBITRE SIFFLEUR ({ref_name} — {pen_per_match:.2f} pen/m)"
+    elif pen_per_match >= 0.40:
+        score_penalty = 85
+        peno_status   = "DOUBLE_SIGNAL"
+        peno_badge    = f"🔥 ARBITRE TRÈS SÉVÈRE ({ref_name} — {pen_per_match:.2f} pen/m)"
+    elif pen_per_match >= 0.35:
+        score_penalty = 75
+        peno_status   = "VALIDE"
+        peno_badge    = f"🟢 ARBITRE FAVORABLE ({ref_name} — {pen_per_match:.2f} pen/m)"
+    else:  # >= 0.30
+        score_penalty = 65
+        peno_status   = "VALIDE"
+        peno_badge    = f"🟡 ARBITRE STANDARD ({ref_name} — {pen_per_match:.2f} pen/m)"
 
-    # Pilier 1 : Arbitre /50 — on utilise pen_per_match (ratio brut AdamChoi)
-    # La régularisation bayésienne est appliquée dans le bloc V3 plus bas ;
-    # ici on utilise le ratio brut pour le barème V2c (cohérent avec l'affichage)
-    if not ref_is_known:
-        pts_pen_arb = 0
-    elif pen_per_match >= 0.50: pts_pen_arb = 50
-    elif pen_per_match >= 0.40: pts_pen_arb = 44
-    elif pen_per_match >= 0.35: pts_pen_arb = 38
-    elif pen_per_match >= 0.30: pts_pen_arb = 30
-    elif pen_per_match >= 0.25: pts_pen_arb = 18
-    elif pen_per_match >= 0.20: pts_pen_arb = 8
-    else:                       pts_pen_arb = 0
-
-    score_penalty = max(0, min(100, pts_pen_arb + pts_pen_teams))
-
-    # Rétro-compat : conserver les anciens noms utilisés dans auto_premium_unibet
-    p_pen_ref   = pts_pen_arb
-    pts_pen_ref = pts_pen_arb
-    pts_pen_sot = pts_pen_teams   # réutilisé pour l'email (affiché comme Pen/50)
+    pts_pen_arb   = score_penalty
+    pts_pen_teams = 0
+    p_pen_ref     = score_penalty
+    pts_pen_ref   = score_penalty
+    pts_pen_sot   = 0
     pts_pen_cards = 0
     pts_pen_goals = 0
+
     total_goals_brut = tot_goals_avg  # toujours calculé pour Over 2.5
     avg_booking = 40.0  # conservé pour Over 2.5
 
