@@ -906,27 +906,24 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
 
 
     # ── BARÈME PENALTY 100% ARBITRE OFFICIEL /100 ──────────────────────────
-    # Seul critère officiel certifié : le ratio de pénaltys de l'arbitre désigné
-    if not ref_is_known or pen_per_match < 0.30:
+    # Seul critère officiel certifié : le ratio de pénaltys de l'arbitre désigné (>= 0.45 min)
+    if not ref_is_known or pen_per_match < 0.45:
         score_penalty = 0
         peno_status   = "REJET"
-        peno_badge    = f"🛑 ARBITRE NON ÉLIGIBLE ({ref_name} — {pen_per_match:.2f} pen/m)"
-    elif pen_per_match >= 0.50:
+        peno_badge    = f"🛑 ARBITRE NON ÉLIGIBLE ({ref_name} — {pen_per_match:.2f} pen/m < 0.45)"
+    elif pen_per_match >= 0.60:
         score_penalty = 100
         peno_status   = "DOUBLE_SIGNAL"
         peno_badge    = f"🔥 TOP ARBITRE SIFFLEUR ({ref_name} — {pen_per_match:.2f} pen/m)"
-    elif pen_per_match >= 0.40:
-        score_penalty = 85
+    elif pen_per_match >= 0.50:
+        score_penalty = 90
         peno_status   = "DOUBLE_SIGNAL"
         peno_badge    = f"🔥 ARBITRE TRÈS SÉVÈRE ({ref_name} — {pen_per_match:.2f} pen/m)"
-    elif pen_per_match >= 0.35:
-        score_penalty = 75
+    else:  # >= 0.45
+        score_penalty = 80
         peno_status   = "VALIDE"
         peno_badge    = f"🟢 ARBITRE FAVORABLE ({ref_name} — {pen_per_match:.2f} pen/m)"
-    else:  # >= 0.30
-        score_penalty = 65
-        peno_status   = "VALIDE"
-        peno_badge    = f"🟡 ARBITRE STANDARD ({ref_name} — {pen_per_match:.2f} pen/m)"
+
 
     pts_pen_arb   = score_penalty
     pts_pen_teams = 0

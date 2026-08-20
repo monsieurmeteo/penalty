@@ -456,8 +456,8 @@ def main():
             pass
 
 
-    # ── Sélection 100% Score AdamChoi >= 75/100 (méthode d'hier) ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
+    # ── Sélection 100% Score AdamChoi >= 85/100 ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 85/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -465,13 +465,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 75:
+        if ac_score >= 85:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 85)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -482,8 +482,9 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 85/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
+
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
 
@@ -580,16 +581,16 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Over 2.5 si Score >= 80
+        # 1. Over 2.5 si Score >= 85
         o25 = m.get("over25")
-        if m.get("ac_score", 0) >= 80 and o25:
+        if m.get("ac_score", 0) >= 85 and o25:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟥 Over 2.5", "odds": o25,
                 "score": m.get("ac_score", 0)
             })
-        # 2. Over 1.5 si Score >= 80 (BTTS supprimé)
-        elif m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
+        # 2. Over 1.5 si Score >= 85
+        elif m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": m["over15"],
@@ -597,11 +598,12 @@ def main():
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 80 and m.get("over25"))
-    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
-    n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 80 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"] and m.get("pen_per_match", 0.0) >= 0.30)
-    print(f"📊 Sélections brutes : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre connu)={n_pen}")
+    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25"))
+    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
+    print(f"📊 Sélections brutes (Score >= 85 / Arbitre >= 0.45) : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
     print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
+
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
@@ -662,13 +664,12 @@ def main():
                 })
                 break
 
-    # ── 3b. ORPHELINS — Doublés + Triplés (Score ≥ 80, cotes réelles uniquement) ──
+    # ── 3b. ORPHELINS — Doublés + Triplés (Score ≥ 85, cotes réelles uniquement) ──
     # IDs des matchs déjà utilisés en penalty (ne pas les dupliquer dans les orphelins)
     pen_ids = {m["id"] for m in scanned_results
-               if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-               and m.get("score_penalty", 0) >= 80
-               and m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
-               and m.get("pen_per_match", 0.0) >= 0.30}
+               if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
+               and m.get("pen_per_match", 0.0) >= 0.45
+               and m.get("score_penalty", 0) >= 80}
     all_used = used_match_ids | pen_ids
 
     orphan_o25 = [s for s in mixed_selections if s["id"] not in all_used and "Over 2.5" in s["market"]]
@@ -773,24 +774,25 @@ def main():
             break
 
 
-    # ── 4. SÉLECTION PENALTY OUI — 100% ARBITRE OFFICIEL DÉSIGNÉ (Score ≥ 65/100) ──
-    # Filtrage strict : arbitre officiel désigné connu ET ratio >= 0.30 pen/match
+    # ── 4. SÉLECTION PENALTY OUI — 100% ARBITRE OFFICIEL DÉSIGNÉ (Ratio ≥ 0.45 pen/m) ──
+    # Filtrage strict : arbitre officiel désigné connu ET ratio >= 0.45 pen/match
     pen_candidates = [
         m for m in scanned_results
         if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
-        and m.get("pen_per_match", 0.0) >= 0.30
-        and m.get("score_penalty", 0) >= 65
+        and m.get("pen_per_match", 0.0) >= 0.45
+        and m.get("score_penalty", 0) >= 80
     ]
     pen_candidates.sort(key=lambda x: (x.get("score_penalty", 0), x.get("pen_per_match", 0.0)), reverse=True)
     pen_simples = pen_candidates
 
-    # Matchs avec arbitre connu mais ratio < 0.30 pen/m (éliminés)
+    # Matchs avec arbitre connu mais ratio < 0.45 pen/m (éliminés)
     pen_rejected = [
         m for m in scanned_results
         if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
-        and m.get("pen_per_match", 0.0) < 0.30
+        and m.get("pen_per_match", 0.0) < 0.45
     ]
     pen_rejected.sort(key=lambda x: x.get("pen_per_match", 0.0), reverse=True)
+
 
 
 
@@ -1149,13 +1151,13 @@ def main():
         o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
         score_v = m.get("ac_score", 0)
         o15_v = m.get("score_o15", 0)
-        o15_bg = "#dcfce7" if o15_v >= 75 else ("#fef3c7" if o15_v >= 50 else "#f1f5f9")
-        o15_cl = "#15803d" if o15_v >= 75 else ("#92400e" if o15_v >= 50 else "#94a3b8")
+        o15_bg = "#dcfce7" if o15_v >= 85 else ("#fef3c7" if o15_v >= 65 else "#f1f5f9")
+        o15_cl = "#15803d" if o15_v >= 85 else ("#92400e" if o15_v >= 65 else "#94a3b8")
         o15_badge = f'<span style="background:{o15_bg}; color:{o15_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{o15_v}/100</span>' if o15_v > 0 else '<span style="color:#94a3b8;">—</span>'
 
         # Badges scores
-        score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
-        score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
+        score_bg = "#dcfce7" if score_v >= 85 else ("#fef3c7" if score_v >= 65 else "#fee2e2")
+        score_cl = "#15803d" if score_v >= 85 else ("#92400e" if score_v >= 65 else "#dc2626")
         score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
 
         ref_n = m.get("ref_name", "Inconnu")
@@ -1178,28 +1180,28 @@ def main():
     if combos_orphans:
         orphan_items_html = ""
         for idx_o, cb in enumerate(combos_orphans, 1):
-            combo_type = cb.get("type", "Doublé")
-            label = "Triplé" if len(cb["items"]) == 3 else "Doublé"
-            rows_html = ""
-            for k, s in enumerate(cb["items"]):
-                mk, odds, sc = s["market"], s["odds"], s["score"]
-                m = s["m"]
-                sc_color = "#dc2626" if sc >= 90 else "#ea580c" if sc >= 85 else "#f59e0b" if sc >= 80 else "#10b981"
-                border = "border-bottom:1px solid #f0f9ff;" if k < len(cb["items"]) - 1 else ""
-                rows_html += f"""
-                <div style="padding:4px 0; {border}">
-                  🔹 <b>{mk}</b> &bull; <span style="color:#0284c7; font-weight:700;">{m.get('date_str','')}</span> &bull; <b>{m.get('dom','')} vs {m.get('ext','')}</b> &bull; Cote: <b>@{odds:.2f}</b>
-                  <span style="color:#64748b; font-size:10px;"> ({m.get('league','')})</span>
-                  <span style="background:{sc_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:8px; margin-left:6px;">⭐ {sc}/100</span>
+            sc_list = [it["m"].get("ac_score", 0) for it in cb["items"]]
+            avg_sc = int(sum(sc_list) / len(sc_list)) if sc_list else 0
+            label = cb.get("type", "Combiné Orphelin")
+            
+            sub_matches_html = ""
+            for it in cb["items"]:
+                m = it["m"]
+                sc = it.get("score", 0)
+                sc_color = "#dc2626" if sc >= 90 else "#ea580c" if sc >= 85 else "#f59e0b" if sc >= 80 else "#15803d"
+                sub_matches_html += f"""
+                <div style="font-size:11.5px; color:#334155; margin-bottom:4px; padding-left:4px; border-left:2px solid #38bdf8;">
+                  <b>{m['dom']} vs {m['ext']}</b> ({m.get('league','')}) — <span style="font-weight:700; color:#0369a1;">{it['market']} @{it['odds']:.2f}</span>
+                  <span style="background:{sc_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:4px; margin-left:4px;">{sc}/100</span>
                 </div>"""
+
             orphan_items_html += f"""
-            <div style="background:#fff; border:1px solid #e0f2fe; border-left:4px solid #0ea5e9; border-radius:8px; padding:10px 12px; margin-bottom:10px;">
+            <div style="background:#ffffff; border:1px solid #bae6fd; border-radius:8px; padding:10px 12px; margin-bottom:8px;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <span style="font-weight:800; color:#0369a1; font-size:12px;">🎟️ {label} #{idx_o} <span style="font-size:10px; color:#64748b;">({combo_type})</span> — Cote Totale: <b>@{cb['comb_odds']:.2f}</b></span>
-                <span style="font-size:11px; color:#15803d; font-weight:700; background:#dcfce7; padding:2px 8px; border-radius:5px;">Mise 4€ ➔ Gain: {cb['gain']:.2f}€</span>
+                <span style="font-weight:800; color:#0369a1; font-size:12px;">🎟️ {label} #{idx_o} <span style="font-size:10px; color:#64748b; font-weight:600;">(Score moy. {avg_sc}/100)</span></span>
+                <span style="font-size:11px; color:#15803d; font-weight:700; background:#dcfce7; padding:2px 8px; border-radius:4px;">Cote Totale @{cb['comb_odds']:.2f}</span>
               </div>
-              <div style="font-size:12px; color:#334155;">{rows_html}
-              </div>
+              {sub_matches_html}
             </div>"""
 
 
