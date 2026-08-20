@@ -1,9 +1,7 @@
 name: Premium Football (Penalty & Over 1.5) Automation
 
 on:
-  schedule:
-    - cron: '0 */2 * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Déclenché exclusivement par cronjob-mcp
 
 concurrency:
   group: penalty-scan
