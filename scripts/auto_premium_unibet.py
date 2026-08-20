@@ -574,7 +574,7 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR UNIFIÉ COMBINÉS 4× OVER 1.5 (Score ≥ 85/100) ──
+    # ── MOTEUR UNIFIÉ COMBINÉS OVER 1.5 (Cote Totale Min: 2.10 STRICT) ──
     o15_selections = []
     
     for m in scanned_results:
@@ -582,8 +582,8 @@ def main():
         block_key = get_betting_session_key(m_dt)
         o15_odds = m.get("over15")
         
-        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote réelle disponible
-        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds:
+        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote >= 1.18
+        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.18:
             o15_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": o15_odds,
@@ -596,7 +596,7 @@ def main():
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o15 = len(o15_selections)
     n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
-    print(f"📊 Sélections brutes (Score >= 85 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
+    print(f"📊 Sélections brutes (Score >= 85 / Cote >= 1.18 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
 
     # Regroupement par Bloc [Journée + Nuit Suivante]
     blocks_o15 = {}
@@ -606,39 +606,42 @@ def main():
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc [Journée + Nuit], constitution de packs de 4 matchs (sans doublon d'équipe)
-    for b_key in sorted(blocks_o15.keys()):
-        block_items = sorted(blocks_o15[b_key], key=lambda x: x["dt"])
-        for i, s1 in enumerate(block_items):
+    def _build_combo_pack(candidates, session_tag):
+        for i, s1 in enumerate(candidates):
             if s1["id"] in used_match_ids:
                 continue
 
             combo_items = [s1]
             combo_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+            comb_odds = s1["odds"]
 
-            for s_candidate in block_items[i+1:]:
-                if len(combo_items) == 4:
+            for s_cand in candidates[i+1:]:
+                if len(combo_items) >= 5:  # Maximum 5 matchs par sécurité
                     break
-                if s_candidate["id"] in used_match_ids:
+                if s_cand["id"] in used_match_ids:
                     continue
-                c_teams = {s_candidate["m"].get("dom","").lower(), s_candidate["m"].get("ext","").lower()}
+                c_teams = {s_cand["m"].get("dom","").lower(), s_cand["m"].get("ext","").lower()}
                 if combo_teams & c_teams:
                     continue  # Doublon d'équipe
 
-                combo_items.append(s_candidate)
+                combo_items.append(s_cand)
                 combo_teams.update(c_teams)
+                comb_odds *= s_cand["odds"]
 
-            if len(combo_items) == 4:
-                comb_odds = 1.0
-                for item in combo_items:
-                    comb_odds *= item["odds"]
-                comb_odds = round(comb_odds, 2)
+                # Dès qu'on a au moins 3 matchs et que la cote dépasse 2.10 (idéal à 4 matchs)
+                if len(combo_items) >= 4 and comb_odds >= 2.10:
+                    break
+
+            comb_odds = round(comb_odds, 2)
+            # RÈGLE STRICTE : Cote Totale >= 2.10 et au moins 3 matchs
+            if len(combo_items) >= 3 and comb_odds >= 2.10:
                 for item in combo_items:
                     used_match_ids.add(item["id"])
-
+                
+                label = f"Pack {len(combo_items)}× Over 1.5"
                 combos_mixed.append({
-                    "session": b_key,
-                    "type": "Pack 4× Over 1.5",
+                    "session": session_tag,
+                    "type": label,
                     "items": combo_items,
                     "comb_odds": comb_odds,
                     "stake": 4.0,
@@ -646,62 +649,20 @@ def main():
                     "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # Fallback pour sélections restantes non couplées dans leur bloc
+    # 1. Constitution des combinés par bloc de session
+    for b_key in sorted(blocks_o15.keys()):
+        block_items = sorted(blocks_o15[b_key], key=lambda x: x["dt"])
+        _build_combo_pack(block_items, b_key)
+
+    # 2. Fallback pour sélections restantes non couplées dans leur bloc
     unpaired_selections = [s for s in o15_selections if s["id"] not in used_match_ids]
     unpaired_selections.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired_selections):
-        if s1["id"] in used_match_ids:
-            continue
-
-        combo_items = [s1]
-        combo_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
-
-        for s_candidate in unpaired_selections[i+1:]:
-            if len(combo_items) == 4:
-                break
-            if s_candidate["id"] in used_match_ids:
-                continue
-            c_teams = {s_candidate["m"].get("dom","").lower(), s_candidate["m"].get("ext","").lower()}
-            if combo_teams & c_teams:
-                continue
-
-            combo_items.append(s_candidate)
-            combo_teams.update(c_teams)
-
-        if len(combo_items) == 4:
-            comb_odds = 1.0
-            for item in combo_items:
-                comb_odds *= item["odds"]
-            comb_odds = round(comb_odds, 2)
-            for item in combo_items:
-                used_match_ids.add(item["id"])
-
-            combos_mixed.append({
-                "session": f"{s1['session']}-mixte",
-                "type": "Pack 4× Over 1.5",
-                "items": combo_items,
-                "comb_odds": comb_odds,
-                "stake": 4.0,
-                "gain": round(4.0 * comb_odds, 2),
-                "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
-        elif len(combo_items) == 3:
-            comb_odds = round(combo_items[0]["odds"] * combo_items[1]["odds"] * combo_items[2]["odds"], 2)
-            if comb_odds >= 2.10:
-                for item in combo_items:
-                    used_match_ids.add(item["id"])
-                combos_mixed.append({
-                    "session": f"{s1['session']}-mixte",
-                    "type": "Pack 3× Over 1.5 (Secours)",
-                    "items": combo_items,
-                    "comb_odds": comb_odds,
-                    "stake": 4.0,
-                    "gain": round(4.0 * comb_odds, 2),
-                    "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
+    if unpaired_selections:
+        _build_combo_pack(unpaired_selections, f"{unpaired_selections[0]['session']}-mixte")
 
     combos_orphans = []
-    print(f"📊 Total combinés 4× Over 1.5 générés : {len(combos_mixed)}")
+    print(f"📊 Total combinés Over 1.5 (Cote >= 2.10) générés : {len(combos_mixed)}")
+
 
 
 
