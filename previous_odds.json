@@ -4,7 +4,7 @@
       "match": "Sion - Ajax",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 20h15",
-      "val_o25": 1.5,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 98
     },
@@ -24,26 +24,10 @@
       "double": true,
       "ac_score": 96
     },
-    "3371610": {
-      "match": "Uni.Craiova - Ararat Armenia",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 92
-    },
     "3357647": {
       "match": "Arsenal - Coventry",
       "league": "Angleterre • Premier League",
       "date_str": "Ven. 21/08 à 21h00",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 92
-    },
-    "3366002": {
-      "match": "FC Leon - Monterrey",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Sam. 22/08 à 03h00",
       "val_o25": 1.5,
       "double": true,
       "ac_score": 92
@@ -55,22 +39,6 @@
       "val_o25": 1.52,
       "double": true,
       "ac_score": 90
-    },
-    "3371625": {
-      "match": "Nordsjaelland - Saint Gall",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 89
-    },
-    "3371644": {
-      "match": "KF Drita - Inter Escaldes",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 20h00",
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 89
     },
     "3368630": {
       "match": "CSD Macara - Santos",
@@ -92,7 +60,7 @@
       "match": "Al Qadisiya - Al Ittihad FC",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 1.38,
+      "val_o25": 1.36,
       "double": true,
       "ac_score": 89
     },
@@ -103,14 +71,6 @@
       "val_o25": 1.48,
       "double": true,
       "ac_score": 89
-    },
-    "3371883": {
-      "match": "Lech Poznan - FC Thun",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 88
     },
     "3371609": {
       "match": "Benfica - Aarhus GF",
@@ -133,6 +93,14 @@
       "league": "Suede • D1 Suede",
       "date_str": "Ven. 21/08 à 19h00",
       "val_o25": 1.35,
+      "double": true,
+      "ac_score": 85
+    },
+    "3366002": {
+      "match": "FC Leon - Monterrey",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Sam. 22/08 à 03h00",
+      "val_o25": 1.45,
       "double": true,
       "ac_score": 85
     }

@@ -18530,5 +18530,89 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369986",
+    "timestamp_utc": "2026-08-20T18:03:52.732298+00:00",
+    "match": "FC Meshakhte vs Dinamo Batumi",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Ven. 21/08 à 15h00",
+    "scores": {
+      "o25": 60,
+      "o15": 76,
+      "btts": 39,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369933",
+    "timestamp_utc": "2026-08-20T18:03:52.732298+00:00",
+    "match": "Aluminij vs Grosuplje",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Ven. 21/08 à 17h30",
+    "scores": {
+      "o25": 25,
+      "o15": 70,
+      "btts": 56,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Anže Jerič",
+      "status": "👨‍⚖️ Arbitre Anže Jerič (6 m, 0.00 pen/m)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.8,
+      "o15": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3370145",
+    "timestamp_utc": "2026-08-20T18:03:52.732298+00:00",
+    "match": "Floriana FC vs Sliema FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Ven. 21/08 à 18h30",
+    "scores": {
+      "o25": 77,
+      "o15": 94,
+      "btts": 71,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
