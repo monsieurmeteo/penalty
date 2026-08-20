@@ -16886,5 +16886,35 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369681",
+    "timestamp_utc": "2026-08-20T00:04:40.421370+00:00",
+    "match": "FC Tokyo vs JEF Utd Chiba",
+    "league": "Japon • D1 Japon",
+    "date_str": "Ven. 21/08 à 12h30",
+    "scores": {
+      "o25": 94,
+      "o15": 99,
+      "btts": 66,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
