@@ -1189,11 +1189,13 @@ def main():
                 m = it["m"]
                 sc = it.get("score", 0)
                 sc_color = "#dc2626" if sc >= 90 else "#ea580c" if sc >= 85 else "#f59e0b" if sc >= 80 else "#15803d"
+                date_str = m.get("date_str", "")
                 sub_matches_html += f"""
                 <div style="font-size:11.5px; color:#334155; margin-bottom:4px; padding-left:4px; border-left:2px solid #38bdf8;">
-                  <b>{m['dom']} vs {m['ext']}</b> ({m.get('league','')}) — <span style="font-weight:700; color:#0369a1;">{it['market']} @{it['odds']:.2f}</span>
+                  <span style="color:#0284c7; font-weight:700;">🕒 {date_str}</span> &bull; <b>{m['dom']} vs {m['ext']}</b> ({m.get('league','')}) — <span style="font-weight:700; color:#0369a1;">{it['market']} @{it['odds']:.2f}</span>
                   <span style="background:{sc_color}; color:#fff; font-weight:800; font-size:10px; padding:1px 6px; border-radius:4px; margin-left:4px;">{sc}/100</span>
                 </div>"""
+
 
             orphan_items_html += f"""
             <div style="background:#ffffff; border:1px solid #bae6fd; border-radius:8px; padding:10px 12px; margin-bottom:8px;">
