@@ -830,33 +830,39 @@ def main():
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
             items_html = ""
-            for item in cb["items"]:
+            for k, item in enumerate(cb["items"]):
                 m = item["m"]
-                mk = item["market"]
                 o = item["odds"]
                 sc = item["score"]
-                proof = render_match_proof_html(m, sel_score=sc)
+                sc_bg = '#dc2626' if sc >= 90 else '#ea580c' if sc >= 85 else '#f59e0b' if sc >= 80 else '#10b981'
+                border = "border-bottom:1px solid #f1f5f9;" if k < len(cb["items"]) - 1 else ""
                 items_html += f'''
-                <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                        <span>🔹 <b>{mk}</b> &nbsp;&bull;&nbsp; <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']})</span></span>
-                        <span style="background:{'#dc2626' if sc >= 90 else '#ea580c' if sc >= 85 else '#f59e0b' if sc >= 80 else '#10b981'}; color:#fff; font-weight:800; font-size:11px; padding:2px 9px; border-radius:10px; white-space:nowrap; margin-left:8px;">⭐ {sc}/100</span>
+                <div style="padding:6px 0; {border} display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <span style="color:#0284c7; font-weight:700; font-size:11px;">🕒 {m.get('date_str','')}</span>
+                        &nbsp;&bull;&nbsp;
+                        <b style="font-size:12px; color:#0f172a;">{m['dom']} vs {m['ext']}</b>
+                        <span style="color:#64748b; font-size:10.5px;">({m.get('league','')})</span>
                     </div>
-                    {proof}
+                    <div style="text-align:right; white-space:nowrap; margin-left:8px;">
+                        <span style="font-weight:800; color:#0369a1; font-size:11.5px; background:#e0f2fe; padding:2px 7px; border-radius:4px;">Over 1.5 @{o:.2f}</span>
+                        <span style="background:{sc_bg}; color:#fff; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;">{sc}/100</span>
+                    </div>
                 </div>'''
             
             combos_mixed_html += f'''
-            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Ticket Multi-Marchés #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 9px; border-radius:5px; margin-bottom:8px; border:1px solid {theme['border_card']};">
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:12.5px;">🎟️ Ticket #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:1px 6px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:11.5px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 4 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
-              <div style="font-size:12px; color:#334155; line-height:1.5;">
+              <div style="font-size:11.5px; color:#334155;">
                 {items_html}
               </div>
             </div>'''
     else:
-        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné multi-marchés disponible (moins de 2 sélections éligibles).</div>'
+        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Over 1.5 disponible (moins de 3 sélections éligibles à cote &ge; 2.10).</div>'
+
 
     # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
     pen_simples_html = ""
