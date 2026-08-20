@@ -1,7 +1,9 @@
-name: Premium Football (Penalty & Over 2.5) Automation
+name: Premium Football (Penalty & Over 1.5) Automation
 
 on:
-  workflow_dispatch: # Permet le déclenchement via API (cronjob-mcp) ou UI manuelle
+  schedule:
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
 
 concurrency:
   group: penalty-scan
@@ -34,20 +36,21 @@ jobs:
           SMTP_PORT: ${{ secrets.SMTP_PORT }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
-          EMAIL_TO: "gregory.langlet@sfr.fr, langlet.gregory@gmail.com"
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
         run: |
           python scripts/auto_premium_unibet.py
 
       - name: 📄 Upload Premium Report Artifact
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: premium-football-report
           path: report.md
 
       - name: 💾 Commit and Push Odds History & Backtest Ledger
+        if: always()
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add previous_odds.json backtest_ledger.json scripts/pen_cache.json || true
-          git commit -m "Auto-update odds history, backtest ledger & Sofascore cache [skip ci]" || true
-          git push || true
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/ || true
+          git diff --staged --quiet || (git commit -m "Auto-update odds & backtest ledger [skip ci]" && git pull --rebase origin master && git push origin master)
