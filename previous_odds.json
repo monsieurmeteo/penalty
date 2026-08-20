@@ -36,7 +36,7 @@
       "match": "SC Pr Münster - Karlsruhe",
       "league": "Allemagne • Cpe Allemagne",
       "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.52,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 90
     },
@@ -64,19 +64,19 @@
       "double": true,
       "ac_score": 89
     },
-    "3362712": {
-      "match": "Marseille - Strasbourg",
-      "league": "France • Ligue 1 Mcdonalds",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 89
-    },
     "3363936": {
       "match": "Cardiff - The New Saints",
       "league": "Pays De Galles • D1 P Degalles",
       "date_str": "Ven. 21/08 à 20h45",
       "val_o25": 1.52,
+      "double": true,
+      "ac_score": 89
+    },
+    "3362712": {
+      "match": "Marseille - Strasbourg",
+      "league": "France • Ligue 1 Mcdonalds",
+      "date_str": "Ven. 21/08 à 20h45",
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 89
     },
