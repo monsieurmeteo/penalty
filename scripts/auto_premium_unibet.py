@@ -1042,21 +1042,17 @@ def main():
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: x.get("ac_score", 0), reverse=True):
-        retained = m in s3_matches
+    for m in sorted(scanned_results, key=lambda x: (x.get("score_o15", 0), x.get("ac_score", 0)), reverse=True):
+        is_combo = m["id"] in used_match_ids
+        is_pen = any(m["id"] == p["id"] for p in pen_simples)
+        retained = is_combo or is_pen
         bg_row = "#f0fdf4" if retained else "#fff"
-        badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
-        o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
-        score_v = m.get("ac_score", 0)
+        badge = '<span style="color:#15803d; font-weight:700;">✅ COMBINÉ</span>' if is_combo else ('<span style="color:#7c3aed; font-weight:700;">⚡ PENALTY</span>' if is_pen else '<span style="color:#94a3b8;">—</span>')
+        o15_str = f"@{m['over15']:.2f}" if m.get("over15") else "N/A"
         o15_v = m.get("score_o15", 0)
         o15_bg = "#dcfce7" if o15_v >= 85 else ("#fef3c7" if o15_v >= 65 else "#f1f5f9")
         o15_cl = "#15803d" if o15_v >= 85 else ("#92400e" if o15_v >= 65 else "#94a3b8")
         o15_badge = f'<span style="background:{o15_bg}; color:{o15_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{o15_v}/100</span>' if o15_v > 0 else '<span style="color:#94a3b8;">—</span>'
-
-        # Badges scores
-        score_bg = "#dcfce7" if score_v >= 85 else ("#fef3c7" if score_v >= 65 else "#fee2e2")
-        score_cl = "#15803d" if score_v >= 85 else ("#92400e" if score_v >= 65 else "#dc2626")
-        score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
 
         ref_n = m.get("ref_name", "Inconnu")
         ref_badge = f'<span style="font-size:10px; color:#475569; font-weight:600;">👨‍⚖️ {ref_n}</span>' if ref_n != "Inconnu" else '<span style="color:#94a3b8; font-size:10px;">—</span>'
@@ -1066,13 +1062,13 @@ def main():
             f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
             f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{score_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{o15_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; color:#0369a1; border-bottom:1px solid #f1f5f9;">{o15_str}</td>'
             f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{ref_badge}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
+
 
     # ── Section Duo Mixte Orphelins ──────────────────────────────────────────
     if combos_orphans:
@@ -1220,12 +1216,12 @@ def main():
                 <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
                   <th style="padding:7px 8px; text-align:left;">Heure</th>
                   <th style="padding:7px 8px; text-align:left;">Match</th>
-                  <th style="padding:7px 6px; text-align:center;">Score Over 2.5</th>
                   <th style="padding:7px 6px; text-align:center;">Score O1.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Cote O2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Cote O1.5</th>
                   <th style="padding:7px 6px; text-align:center;">Arbitre</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
+
                 <tbody>{scan_rows_html}</tbody>
               </table>
             </div>
