@@ -36,7 +36,7 @@
       "match": "SC Pr Münster - Karlsruhe",
       "league": "Allemagne • Cpe Allemagne",
       "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.48,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 90
     },
@@ -44,7 +44,7 @@
       "match": "Nordsjaelland - Saint Gall",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.36,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 89
     },
@@ -64,11 +64,27 @@
       "double": true,
       "ac_score": 89
     },
+    "3371361": {
+      "match": "Al Nasr (EAU) - Al Wahda",
+      "league": "Emirats Arabes Unis • D1 Emirats Au",
+      "date_str": "Ven. 21/08 à 18h35",
+      "val_o25": 1.55,
+      "double": true,
+      "ac_score": 89
+    },
+    "3366994": {
+      "match": "Al Qadisiya - Al Ittihad FC",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Ven. 21/08 à 20h00",
+      "val_o25": 1.35,
+      "double": true,
+      "ac_score": 89
+    },
     "3371612": {
       "match": "Kairat Almaty - Anderlecht",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 17h00",
-      "val_o25": 1.88,
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 88
     },
@@ -92,7 +108,15 @@
       "match": "Shamrock - Kups",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.8,
+      "val_o25": 1.82,
+      "double": true,
+      "ac_score": 85
+    },
+    "3363943": {
+      "match": "IK Sirius FK - Häcken",
+      "league": "Suede • D1 Suede",
+      "date_str": "Ven. 21/08 à 19h00",
+      "val_o25": 1.35,
       "double": true,
       "ac_score": 85
     },
@@ -100,9 +124,17 @@
       "match": "Al Feiha - Al Hilal",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Jeu. 20/08 à 20h00",
-      "val_o25": 1.4,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 82
+    },
+    "3369462": {
+      "match": "Pau - Nancy",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 21/08 à 20h00",
+      "val_o25": 1.78,
+      "double": true,
+      "ac_score": 81
     },
     "3372126": {
       "match": "Vikingur Reyk. - BoracBanjaLuka",
@@ -124,7 +156,15 @@
       "match": "Al Riyadh - Al Nassr",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.22,
+      "val_o25": 1.25,
+      "double": true,
+      "ac_score": 80
+    },
+    "3369464": {
+      "match": "Sochaux - Guingamp",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 21/08 à 20h00",
+      "val_o25": 2.0,
       "double": true,
       "ac_score": 80
     },
@@ -133,6 +173,14 @@
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 19h00",
       "val_o25": 1.65,
+      "double": true,
+      "ac_score": 79
+    },
+    "3363976": {
+      "match": "SV Ried - Grazer AK 1902",
+      "league": "Autriche • D1 Autriche",
+      "date_str": "Ven. 21/08 à 19h30",
+      "val_o25": 1.75,
       "double": true,
       "ac_score": 79
     },
