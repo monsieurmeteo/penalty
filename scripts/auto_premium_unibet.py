@@ -574,204 +574,135 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Bloc Journée + Nuit — Cote Min 2.00) ──
-    mixed_selections = []
+    # ── MOTEUR UNIFIÉ COMBINÉS 4× OVER 1.5 (Score ≥ 85/100) ──
+    o15_selections = []
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
+        o15_odds = m.get("over15")
         
-        # 1. Over 2.5 si Score >= 85
-        o25 = m.get("over25")
-        if m.get("ac_score", 0) >= 85 and o25:
-            mixed_selections.append({
+        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote réelle disponible
+        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds:
+            o15_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟥 Over 2.5", "odds": o25,
-                "score": m.get("ac_score", 0)
-            })
-        # 2. Over 1.5 si Score >= 85
-        elif m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟦 Over 1.5", "odds": m["over15"],
+                "market": "🟦 Over 1.5", "odds": o15_odds,
                 "score": m.get("score_o15", 0)
             })
 
+    # Tri chronologique des sélections
+    o15_selections.sort(key=lambda x: x["dt"])
+
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25"))
-    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_o15 = len(o15_selections)
     n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
-    print(f"📊 Sélections brutes (Score >= 85 / Arbitre >= 0.45) : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
-    print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
+    print(f"📊 Sélections brutes (Score >= 85 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
 
-
-    # Regroupement strict par Bloc [Journée + Nuit Suivante]
-    blocks_mixed = {}
-    for s in mixed_selections:
-        blocks_mixed.setdefault(s["session"], []).append(s)
+    # Regroupement par Bloc [Journée + Nuit Suivante]
+    blocks_o15 = {}
+    for s in o15_selections:
+        blocks_o15.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs (Cote Min: 2.00 STRICT)
-    for b_key in sorted(blocks_mixed.keys()):
-        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
+    # Pour chaque Bloc [Journée + Nuit], constitution de packs de 4 matchs (sans doublon d'équipe)
+    for b_key in sorted(blocks_o15.keys()):
+        block_items = sorted(blocks_o15[b_key], key=lambda x: x["dt"])
         for i, s1 in enumerate(block_items):
-            if s1["id"] in used_match_ids: continue
+            if s1["id"] in used_match_ids:
+                continue
 
-            best_partner = None
-            best_diff = 999.0
+            combo_items = [s1]
+            combo_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
 
-            for s2 in block_items[i+1:]:
-                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+            for s_candidate in block_items[i+1:]:
+                if len(combo_items) == 4:
+                    break
+                if s_candidate["id"] in used_match_ids:
+                    continue
+                c_teams = {s_candidate["m"].get("dom","").lower(), s_candidate["m"].get("ext","").lower()}
+                if combo_teams & c_teams:
+                    continue  # Doublon d'équipe
 
-                comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.15:
-                    diff = abs(comb2 - 2.10)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = s2
+                combo_items.append(s_candidate)
+                combo_teams.update(c_teams)
 
-            if best_partner:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(best_partner["id"])
-                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            if len(combo_items) == 4:
+                comb_odds = 1.0
+                for item in combo_items:
+                    comb_odds *= item["odds"]
+                comb_odds = round(comb_odds, 2)
+                for item in combo_items:
+                    used_match_ids.add(item["id"])
+
                 combos_mixed.append({
                     "session": b_key,
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, best_partner],
+                    "type": "Pack 4× Over 1.5",
+                    "items": combo_items,
                     "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                    "stake": 4.0,
+                    "gain": round(4.0 * comb_odds, 2),
+                    "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # Fallback pour sélections isolées non couplées dans leur bloc (Cote Min: 2.00 STRICT)
-    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
+    # Fallback pour sélections restantes non couplées dans leur bloc
+    unpaired_selections = [s for s in o15_selections if s["id"] not in used_match_ids]
     unpaired_selections.sort(key=lambda x: x["dt"])
     for i, s1 in enumerate(unpaired_selections):
-        if s1["id"] in used_match_ids: continue
-        for s2 in unpaired_selections[i+1:]:
-            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.15:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(s2["id"])
+        if s1["id"] in used_match_ids:
+            continue
+
+        combo_items = [s1]
+        combo_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+
+        for s_candidate in unpaired_selections[i+1:]:
+            if len(combo_items) == 4:
+                break
+            if s_candidate["id"] in used_match_ids:
+                continue
+            c_teams = {s_candidate["m"].get("dom","").lower(), s_candidate["m"].get("ext","").lower()}
+            if combo_teams & c_teams:
+                continue
+
+            combo_items.append(s_candidate)
+            combo_teams.update(c_teams)
+
+        if len(combo_items) == 4:
+            comb_odds = 1.0
+            for item in combo_items:
+                comb_odds *= item["odds"]
+            comb_odds = round(comb_odds, 2)
+            for item in combo_items:
+                used_match_ids.add(item["id"])
+
+            combos_mixed.append({
+                "session": f"{s1['session']}-mixte",
+                "type": "Pack 4× Over 1.5",
+                "items": combo_items,
+                "comb_odds": comb_odds,
+                "stake": 4.0,
+                "gain": round(4.0 * comb_odds, 2),
+                "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
+        elif len(combo_items) == 3:
+            comb_odds = round(combo_items[0]["odds"] * combo_items[1]["odds"] * combo_items[2]["odds"], 2)
+            if comb_odds >= 2.10:
+                for item in combo_items:
+                    used_match_ids.add(item["id"])
                 combos_mixed.append({
                     "session": f"{s1['session']}-mixte",
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, s2],
+                    "type": "Pack 3× Over 1.5 (Secours)",
+                    "items": combo_items,
                     "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                    "stake": 4.0,
+                    "gain": round(4.0 * comb_odds, 2),
+                    "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
-                break
-
-    # ── 3b. ORPHELINS — Doublés + Triplés (Score ≥ 85, cotes réelles uniquement) ──
-    # IDs des matchs déjà utilisés en penalty (ne pas les dupliquer dans les orphelins)
-    pen_ids = {m["id"] for m in scanned_results
-               if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None]
-               and m.get("pen_per_match", 0.0) >= 0.45
-               and m.get("score_penalty", 0) >= 80}
-    all_used = used_match_ids | pen_ids
-
-    orphan_o25 = [s for s in mixed_selections if s["id"] not in all_used and "Over 2.5" in s["market"]]
-    # Over 1.5 : uniquement cotes réelles Unibet (pas d'estimations)
-    orphan_o15 = [s for s in mixed_selections if s["id"] not in all_used and "Over 1.5" in s["market"] and s["m"].get("over15_real", False)]
-    orphan_o25.sort(key=lambda x: x["dt"])
-    orphan_o15.sort(key=lambda x: x["dt"])
 
     combos_orphans = []
-    used_orphan_ids = set()
+    print(f"📊 Total combinés 4× Over 1.5 générés : {len(combos_mixed)}")
 
-    # Tier 1 — TRIPLÉS EN PRIORITÉ : 2× Over 2.5 + 1× Over 1.5 (cote maximisée)
-    used_orphan_ids = set()
-    for i, s1 in enumerate(orphan_o25):
-        if s1["id"] in used_orphan_ids: continue
-        for j, s2 in enumerate(orphan_o25):
-            if j <= i or s2["id"] in used_orphan_ids: continue
-            teams_12 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower(),
-                        s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
-            if len(teams_12) < 4: continue  # doublon d'équipe
-            for s3 in orphan_o15:
-                if s3["id"] in used_orphan_ids: continue
-                teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
-                if teams_12 & teams_3: continue
-                comb_odds = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
-                combos_orphans.append({"type": "Triplé 2×O2.5+O1.5", "items": [s1, s2, s3], "comb_odds": comb_odds,
-                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
-                used_orphan_ids.update([s1["id"], s2["id"], s3["id"]])
-                break
-            if s1["id"] in used_orphan_ids: break
-
-    # Tier 1b — Triplé 1×O2.5 + 2×O1.5 (quand 1 seul O2.5 orphelin)
-    for s_o25 in orphan_o25:
-        if s_o25["id"] in used_orphan_ids: continue
-        teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
-        for i, s_o15a in enumerate(orphan_o15):
-            if s_o15a["id"] in used_orphan_ids: continue
-            teams_a = {s_o15a["m"].get("dom","").lower(), s_o15a["m"].get("ext","").lower()}
-            if teams_o25 & teams_a: continue
-            for s_o15b in orphan_o15[i+1:]:
-                if s_o15b["id"] in used_orphan_ids or s_o15b["id"] == s_o15a["id"]: continue
-                teams_b = {s_o15b["m"].get("dom","").lower(), s_o15b["m"].get("ext","").lower()}
-                if (teams_o25 | teams_a) & teams_b: continue
-                comb_odds = round(s_o25["odds"] * s_o15a["odds"] * s_o15b["odds"], 2)
-                combos_orphans.append({"type": "Triplé O2.5+2×O1.5", "items": [s_o25, s_o15a, s_o15b], "comb_odds": comb_odds,
-                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
-                used_orphan_ids.update([s_o25["id"], s_o15a["id"], s_o15b["id"]])
-                break
-            if s_o25["id"] in used_orphan_ids: break
-
-    # Tier 2 — Doublé Mixte de secours pour O2.5 vraiment isolé (pas de 2 O1.5 compatibles)
-    for s_o25 in orphan_o25:
-        if s_o25["id"] in used_orphan_ids: continue
-        teams_o25 = {s_o25["m"].get("dom","").lower(), s_o25["m"].get("ext","").lower()}
-        for s_o15 in orphan_o15:
-            if s_o15["id"] in used_orphan_ids or s_o15["id"] == s_o25["id"]: continue
-            teams_o15 = {s_o15["m"].get("dom","").lower(), s_o15["m"].get("ext","").lower()}
-            if teams_o25 & teams_o15: continue
-            comb_odds = round(s_o25["odds"] * s_o15["odds"], 2)
-            combos_orphans.append({"type": "Doublé Mixte", "items": [s_o25, s_o15], "comb_odds": comb_odds,
-                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
-            used_orphan_ids.add(s_o25["id"])
-            used_orphan_ids.add(s_o15["id"])
-            break
-
-    # Tier 3 — Triplés purs 3× Over 1.5 EN PRIORITÉ (meilleure cote)
-    solo_o15 = [s for s in orphan_o15 if s["id"] not in used_orphan_ids]
-    solo_o15.sort(key=lambda x: x["dt"])
-    used_solo_ids = set()
-    for i, s1 in enumerate(solo_o15):
-        if s1["id"] in used_solo_ids: continue
-        teams_1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
-        for j, s2 in enumerate(solo_o15):
-            if j <= i or s2["id"] in used_solo_ids: continue
-            teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
-            if teams_1 & teams_2: continue
-            for s3 in solo_o15[j+1:]:
-                if s3["id"] in used_solo_ids: continue
-                teams_3 = {s3["m"].get("dom","").lower(), s3["m"].get("ext","").lower()}
-                if (teams_1 | teams_2) & teams_3: continue
-                comb_odds = round(s1["odds"] * s2["odds"] * s3["odds"], 2)
-                combos_orphans.append({"type": "Triplé 3×O1.5", "items": [s1, s2, s3], "comb_odds": comb_odds,
-                    "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
-                used_solo_ids.update([s1["id"], s2["id"], s3["id"]])
-                break
-            if s1["id"] in used_solo_ids: break
-
-    # Tier 4 — Doublés O1.5 purs pour les restants impairs
-    remaining_solo = [s for s in solo_o15 if s["id"] not in used_solo_ids]
-    for i, s1 in enumerate(remaining_solo):
-        if s1["id"] in used_solo_ids: continue
-        teams_1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
-        for s2 in remaining_solo[i+1:]:
-            if s2["id"] in used_solo_ids: continue
-            teams_2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
-            if teams_1 & teams_2: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
-            combos_orphans.append({"type": "Doublé O1.5", "items": [s1, s2], "comb_odds": comb_odds,
-                "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)})
-            used_solo_ids.add(s1["id"])
-            used_solo_ids.add(s2["id"])
-            break
 
 
     # ── 4. SÉLECTION PENALTY OUI — 100% ARBITRE OFFICIEL DÉSIGNÉ (Ratio ≥ 0.45 pen/m) ──
@@ -1277,10 +1208,10 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
+          <!-- SECTION 2 : COMBINÉS 4× OVER 1.5 -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 80/100)</span></span>
+              <span>🚀 1. COMBINÉS 4× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 85/100 · Cote cible 2.20 - 2.60)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1293,7 +1224,7 @@ def main():
               <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
             <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire
+              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire (≥ 0.45 pen/m)
             </div>
             {pen_simples_html}
           </div>
@@ -1304,14 +1235,15 @@ def main():
           <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
           <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
             <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO</span>
-              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} neutralisé(s)</span>
+              <span>🛡️ MATCHS AVEC ARBITRE ÉCARTÉ (&lt; 0.45 pen/m)</span>
+              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} écarté(s)</span>
             </div>
             <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              💡 <b>Information transparente</b> : Ces matchs avaient un bon score AdamChoi (≥ 55/100) et un arbitre nommé, mais la compétence PENO vous évite de parier car au moins une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
+              💡 <b>Information transparente</b> : Ces matchs ont un arbitre officiel désigné mais son ratio est &lt; 0.45 pénalty par match.
             </div>
             {pen_rejected_html}
           </div>
+
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
