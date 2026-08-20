@@ -1,13 +1,5 @@
 {
   "s3": {
-    "3372252": {
-      "match": "Sion - Ajax",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 20h15",
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 98
-    },
     "3363898": {
       "match": "Hansa Rostock - Stuttgart",
       "league": "Allemagne • Cpe Allemagne",
@@ -21,6 +13,14 @@
       "league": "Hongrie • D1 Hongrie",
       "date_str": "Ven. 21/08 à 17h30",
       "val_o25": 1.36,
+      "double": true,
+      "ac_score": 96
+    },
+    "3372994": {
+      "match": "Colwyn Bay - Airbus FC",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 21/08 à 20h45",
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 96
     },
@@ -60,7 +60,15 @@
       "match": "Al Qadisiya - Al Ittihad FC",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 1.36,
+      "val_o25": 1.35,
+      "double": true,
+      "ac_score": 89
+    },
+    "3363936": {
+      "match": "Cardiff - The New Saints",
+      "league": "Pays De Galles • D1 P Degalles",
+      "date_str": "Ven. 21/08 à 20h45",
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 89
     },
@@ -71,22 +79,6 @@
       "val_o25": 1.48,
       "double": true,
       "ac_score": 89
-    },
-    "3371609": {
-      "match": "Benfica - Aarhus GF",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.32,
-      "double": true,
-      "ac_score": 86
-    },
-    "3372130": {
-      "match": "Shamrock - Kups",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 85
     },
     "3363943": {
       "match": "IK Sirius FK - Häcken",

@@ -18614,5 +18614,151 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363348",
+    "timestamp_utc": "2026-08-20T20:04:09.928879+00:00",
+    "match": "FK Sarajevo vs BSK Banja Luka",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Ven. 21/08 à 20h00",
+    "scores": {
+      "o25": 80,
+      "o15": 90,
+      "btts": 60,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Enea Jorgji",
+      "status": "👨‍⚖️ Arbitre Enea Jorgji (désigné — début de saison)",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.7,
+      "o15": 1.2
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3369927",
+    "timestamp_utc": "2026-08-20T20:04:09.928879+00:00",
+    "match": "O.Ljubljana vs Nafta Lendava",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Ven. 21/08 à 20h15",
+    "scores": {
+      "o25": 65,
+      "o15": 88,
+      "btts": 44,
+      "penalty": 100
+    },
+    "referee": {
+      "name": "Mihael Antič",
+      "status": "👨‍⚖️ Arbitre Mihael Antič (9 m, 0.67 pen/m)",
+      "pen_per_match": 0.667
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371921",
+    "timestamp_utc": "2026-08-20T20:04:09.928879+00:00",
+    "match": "Ballymena Utd vs Glentoran",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 76,
+      "o15": 91,
+      "btts": 67,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.72,
+      "o15": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363936",
+    "timestamp_utc": "2026-08-20T20:04:09.928879+00:00",
+    "match": "Cardiff vs The New Saints",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 89,
+      "o15": 93,
+      "btts": 89,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Cristián Garay",
+      "status": "👨‍⚖️ Arbitre Cristián Garay (26 m, 0.35 pen/m)",
+      "pen_per_match": 0.346
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3372994",
+    "timestamp_utc": "2026-08-20T20:04:09.928879+00:00",
+    "match": "Colwyn Bay vs Airbus FC",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 96,
+      "o15": 99,
+      "btts": 96,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
