@@ -18474,5 +18474,61 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3366001",
+    "timestamp_utc": "2026-08-20T16:03:58.227137+00:00",
+    "match": "FC Juarez vs Club America",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Sam. 22/08 à 05h00",
+    "scores": {
+      "o25": 63,
+      "o15": 71,
+      "btts": 58,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3365992",
+    "timestamp_utc": "2026-08-20T16:03:58.227137+00:00",
+    "match": "Queretaro FC vs Dep. Toluca",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Sam. 22/08 à 05h10",
+    "scores": {
+      "o25": 68,
+      "o15": 83,
+      "btts": 58,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.12
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

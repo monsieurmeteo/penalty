@@ -24,14 +24,6 @@
       "double": true,
       "ac_score": 96
     },
-    "3371626": {
-      "match": "Inter Turku - FC Copenhague",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 18h00",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 92
-    },
     "3371610": {
       "match": "Uni.Craiova - Ararat Armenia",
       "league": "Coupes D Europe • Europa League",
@@ -112,19 +104,11 @@
       "double": true,
       "ac_score": 89
     },
-    "3371612": {
-      "match": "Kairat Almaty - Anderlecht",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 20/08 à 17h00",
-      "val_o25": 2.05,
-      "double": true,
-      "ac_score": 88
-    },
     "3371883": {
       "match": "Lech Poznan - FC Thun",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.45,
+      "val_o25": 1.4,
       "double": true,
       "ac_score": 88
     },
