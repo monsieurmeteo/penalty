@@ -16,14 +16,6 @@
       "double": true,
       "ac_score": 94
     },
-    "3352400": {
-      "match": "Salt Lake - Dallas FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.42,
-      "double": true,
-      "ac_score": 92
-    },
     "3371626": {
       "match": "Inter Turku - FC Copenhague",
       "league": "Coupes D Europe • Europa Conference",
@@ -53,6 +45,14 @@
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 20h00",
       "val_o25": 1.65,
+      "double": true,
+      "ac_score": 89
+    },
+    "3368630": {
+      "match": "CSD Macara - Santos",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Ven. 21/08 à 00h00",
+      "val_o25": 1.95,
       "double": true,
       "ac_score": 89
     },
@@ -112,14 +112,6 @@
       "double": true,
       "ac_score": 82
     },
-    "3352456": {
-      "match": "Flamengo - Cruzeiro",
-      "league": "Amerique • Copa Libertadores",
-      "date_str": "Jeu. 20/08 à 02h30",
-      "val_o25": 1.78,
-      "double": true,
-      "ac_score": 80
-    },
     "3352412": {
       "match": "LA Galaxy - San Jose",
       "league": "Etats Unis • Mls",
@@ -136,6 +128,14 @@
       "double": true,
       "ac_score": 80
     },
+    "3371359": {
+      "match": "Ittihad Kalba - Al Wasl",
+      "league": "Emirats Arabes Unis • D1 Emirats Au",
+      "date_str": "Ven. 21/08 à 16h00",
+      "val_o25": 1.4,
+      "double": true,
+      "ac_score": 80
+    },
     "3371889": {
       "match": "Trabzonspor - Ferencvaros",
       "league": "Coupes D Europe • Europa League",
@@ -143,6 +143,14 @@
       "val_o25": 1.65,
       "double": true,
       "ac_score": 79
+    },
+    "3368627": {
+      "match": "Olimp.Asuncion - Vasco De Gama",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Ven. 21/08 à 00h00",
+      "val_o25": 2.05,
+      "double": true,
+      "ac_score": 78
     },
     "3372127": {
       "match": "KI Klaksvik - Riga FC",
@@ -159,22 +167,6 @@
       "val_o25": 1.62,
       "double": true,
       "ac_score": 77
-    },
-    "3352399": {
-      "match": "Colorado - Los Angeles FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 76
-    },
-    "3352398": {
-      "match": "Seattle - Austin FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 20/08 à 03h30",
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 75
     },
     "3366983": {
       "match": "Al Feiha - Al Hilal",
