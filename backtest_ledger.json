@@ -18192,5 +18192,61 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3363900",
+    "timestamp_utc": "2026-08-20T09:19:31.197833+00:00",
+    "match": "SC St. Tonis vs Ein.Francfort",
+    "league": "Allemagne • Cpe Allemagne",
+    "date_str": "Ven. 21/08 à 18h00",
+    "scores": {
+      "o25": 60,
+      "o15": 69,
+      "btts": 36,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Davina Lutz",
+      "status": "👨‍⚖️ Arbitre Davina Lutz (11 m, 0.27 pen/m)",
+      "pen_per_match": 0.273
+    },
+    "odds": {
+      "o25": null,
+      "o15": 1.25
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371751",
+    "timestamp_utc": "2026-08-20T09:19:31.197833+00:00",
+    "match": "Jaguares vs Boyaca Chico",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Ven. 21/08 à 23h05",
+    "scores": {
+      "o25": 30,
+      "o15": 72,
+      "btts": 32,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.1,
+      "o15": 1.36
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]

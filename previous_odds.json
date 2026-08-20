@@ -44,7 +44,7 @@
       "match": "Arsenal - Coventry",
       "league": "Angleterre • Premier League",
       "date_str": "Ven. 21/08 à 21h00",
-      "val_o25": 1.52,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 92
     },
@@ -100,7 +100,7 @@
       "match": "Kairat Almaty - Anderlecht",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 17h00",
-      "val_o25": 1.95,
+      "val_o25": 2.0,
       "double": true,
       "ac_score": 88
     },
@@ -108,7 +108,7 @@
       "match": "Lech Poznan - FC Thun",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.55,
+      "val_o25": 1.52,
       "double": true,
       "ac_score": 88
     },
@@ -116,7 +116,7 @@
       "match": "Benfica - Aarhus GF",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.25,
+      "val_o25": 1.32,
       "double": true,
       "ac_score": 86
     },
@@ -124,7 +124,7 @@
       "match": "Shamrock - Kups",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.85,
+      "val_o25": 1.82,
       "double": true,
       "ac_score": 85
     },
@@ -135,166 +135,6 @@
       "val_o25": 1.35,
       "double": true,
       "ac_score": 85
-    },
-    "3363759": {
-      "match": "Erzurum BB - Galatasaray",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Ven. 21/08 à 20h30",
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 84
-    },
-    "3368343": {
-      "match": "KS Cracovia - Wieczysta",
-      "league": "Pologne • D1 Pologne",
-      "date_str": "Ven. 21/08 à 20h30",
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 84
-    },
-    "3366983": {
-      "match": "Al Feiha - Al Hilal",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Jeu. 20/08 à 20h00",
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 82
-    },
-    "3369462": {
-      "match": "Pau - Nancy",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 1.78,
-      "double": true,
-      "ac_score": 81
-    },
-    "3372126": {
-      "match": "Vikingur Reyk. - BoracBanjaLuka",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 20h00",
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 80
-    },
-    "3371359": {
-      "match": "Ittihad Kalba - Al Wasl",
-      "league": "Emirats Arabes Unis • D1 Emirats Au",
-      "date_str": "Ven. 21/08 à 16h00",
-      "val_o25": 1.4,
-      "double": true,
-      "ac_score": 80
-    },
-    "3366982": {
-      "match": "Al Riyadh - Al Nassr",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.25,
-      "double": true,
-      "ac_score": 80
-    },
-    "3369464": {
-      "match": "Sochaux - Guingamp",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 2.0,
-      "double": true,
-      "ac_score": 80
-    },
-    "3363918": {
-      "match": "Dundalk - Galway",
-      "league": "Irlande • D1 Irlande",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 80
-    },
-    "3360696": {
-      "match": "Betis Séville - Real Sociedad",
-      "league": "Espagne • Laliga",
-      "date_str": "Ven. 21/08 à 21h00",
-      "val_o25": 1.88,
-      "double": true,
-      "ac_score": 80
-    },
-    "3371889": {
-      "match": "Trabzonspor - Ferencvaros",
-      "league": "Coupes D Europe • Europa League",
-      "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.65,
-      "double": true,
-      "ac_score": 79
-    },
-    "3363976": {
-      "match": "SV Ried - Grazer AK 1902",
-      "league": "Autriche • D1 Autriche",
-      "date_str": "Ven. 21/08 à 19h30",
-      "val_o25": 1.75,
-      "double": true,
-      "ac_score": 79
-    },
-    "3369681": {
-      "match": "FC Tokyo - JEF Utd Chiba",
-      "league": "Japon • D1 Japon",
-      "date_str": "Ven. 21/08 à 12h30",
-      "val_o25": 1.78,
-      "double": true,
-      "ac_score": 78
-    },
-    "3371343": {
-      "match": "Cherno More - Dunav Rousse",
-      "league": "Bulgarie • D1 Bulgarie",
-      "date_str": "Ven. 21/08 à 20h15",
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 78
-    },
-    "3363941": {
-      "match": "Standard Liège - La Louviere",
-      "league": "Belgique • D1 Belgique",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.9,
-      "double": true,
-      "ac_score": 78
-    },
-    "3372127": {
-      "match": "KI Klaksvik - Riga FC",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 19h30",
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 77
-    },
-    "3372259": {
-      "match": "Hearts - Rapid Vienne",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 20h45",
-      "val_o25": 1.62,
-      "double": true,
-      "ac_score": 77
-    },
-    "3369679": {
-      "match": "Kashiwa Reysol - VV Nagasaki",
-      "league": "Japon • D1 Japon",
-      "date_str": "Ven. 21/08 à 12h00",
-      "val_o25": 1.7,
-      "double": true,
-      "ac_score": 77
-    },
-    "3371627": {
-      "match": "Braga - Austria Vienne",
-      "league": "Coupes D Europe • Europa Conference",
-      "date_str": "Jeu. 20/08 à 21h00",
-      "val_o25": 1.6,
-      "double": true,
-      "ac_score": 75
-    },
-    "3369944": {
-      "match": "FC Levadia - FC Narva",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.3,
-      "double": true,
-      "ac_score": 75
     }
   }
 }
