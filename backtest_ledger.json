@@ -17751,5 +17751,446 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3371343",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Cherno More vs Dunav Rousse",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Ven. 21/08 à 20h15",
+    "scores": {
+      "o25": 78,
+      "o15": 91,
+      "btts": 53,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Denislav Stalev",
+      "status": "👨‍⚖️ Arbitre Denislav Stalev (6 m, 0.17 pen/m)",
+      "pen_per_match": 0.167
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363759",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Erzurum BB vs Galatasaray",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Ven. 21/08 à 20h30",
+    "scores": {
+      "o25": 84,
+      "o15": 97,
+      "btts": 77,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.62,
+      "o15": 1.2
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3368343",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "KS Cracovia vs Wieczysta",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Ven. 21/08 à 20h30",
+    "scores": {
+      "o25": 84,
+      "o15": 93,
+      "btts": 90,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.65,
+      "o15": 1.2
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366484",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Vicenza vs US Catanzaro",
+    "league": "Italie • Serie B",
+    "date_str": "Ven. 21/08 à 20h30",
+    "scores": {
+      "o25": 70,
+      "o15": 93,
+      "btts": 65,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Federico La Penna",
+      "status": "👨‍⚖️ Arbitre Federico La Penna (22 m, 0.18 pen/m)",
+      "pen_per_match": 0.182
+    },
+    "odds": {
+      "o25": 1.95,
+      "o15": 1.3
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363941",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Standard Liège vs La Louviere",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 78,
+      "o15": 91,
+      "btts": 74,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Nathan Verboomen",
+      "status": "👨‍⚖️ Arbitre Nathan Verboomen (26 m, 0.23 pen/m)",
+      "pen_per_match": 0.231
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3366643",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Drogheda vs St Patricks",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 57,
+      "o15": 76,
+      "btts": 52,
+      "penalty": 65
+    },
+    "referee": {
+      "name": "Marc Lynch",
+      "status": "👨‍⚖️ Arbitre Marc Lynch (19 m, 0.32 pen/m)",
+      "pen_per_match": 0.316
+    },
+    "odds": {
+      "o25": 1.78,
+      "o15": 1.25
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363917",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Bohemians vs Derry City",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 64,
+      "o15": 90,
+      "btts": 94,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Robert Harvey",
+      "status": "👨‍⚖️ Arbitre Robert Harvey (36 m, 0.36 pen/m)",
+      "pen_per_match": 0.361
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.28
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363898",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Hansa Rostock vs Stuttgart",
+    "league": "Allemagne • Cpe Allemagne",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 98,
+      "o15": 99,
+      "btts": 96,
+      "penalty": 75
+    },
+    "referee": {
+      "name": "Sascha Stegemann",
+      "status": "👨‍⚖️ Arbitre Sascha Stegemann (18 m, 0.39 pen/m)",
+      "pen_per_match": 0.389
+    },
+    "odds": {
+      "o25": 1.38,
+      "o15": 1.11
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3362712",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Marseille vs Strasbourg",
+    "league": "France • Ligue 1 Mcdonalds",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 89,
+      "o15": 95,
+      "btts": 96,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Ruddy Buquet",
+      "status": "👨‍⚖️ Arbitre Ruddy Buquet (19 m, 0.16 pen/m)",
+      "pen_per_match": 0.158
+    },
+    "odds": {
+      "o25": 1.48,
+      "o15": 1.14
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3363918",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Dundalk vs Galway",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 21/08 à 20h45",
+    "scores": {
+      "o25": 80,
+      "o15": 93,
+      "btts": 91,
+      "penalty": 85
+    },
+    "referee": {
+      "name": "Mark Houlihan",
+      "status": "👨‍⚖️ Arbitre Mark Houlihan (5 m, 0.40 pen/m)",
+      "pen_per_match": 0.4
+    },
+    "odds": {
+      "o25": 1.5,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25",
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360626",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Cordoba vs Gérone",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Ven. 21/08 à 21h00",
+    "scores": {
+      "o25": 74,
+      "o15": 83,
+      "btts": 71,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.75,
+      "o15": 1.22
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3357647",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Arsenal vs Coventry",
+    "league": "Angleterre • Premier League",
+    "date_str": "Ven. 21/08 à 21h00",
+    "scores": {
+      "o25": 92,
+      "o15": 90,
+      "btts": 54,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Thomas Bramall",
+      "status": "👨‍⚖️ Arbitre Thomas Bramall (25 m, 0.28 pen/m)",
+      "pen_per_match": 0.28
+    },
+    "odds": {
+      "o25": 1.52,
+      "o15": 1.15
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3360696",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Betis Séville vs Real Sociedad",
+    "league": "Espagne • Laliga",
+    "date_str": "Ven. 21/08 à 21h00",
+    "scores": {
+      "o25": 80,
+      "o15": 97,
+      "btts": 96,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 1.88,
+      "o15": 1.28
+    },
+    "selected_markets": [
+      "O25"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3364158",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "Sligo vs Waterford",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 21/08 à 21h00",
+    "scores": {
+      "o25": 54,
+      "o15": 78,
+      "btts": 73,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Neil Doyle",
+      "status": "👨‍⚖️ Arbitre Neil Doyle (26 m, 0.15 pen/m)",
+      "pen_per_match": 0.154
+    },
+    "odds": {
+      "o25": 1.6,
+      "o15": 1.18
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
+  },
+  {
+    "match_id": "3371095",
+    "timestamp_utc": "2026-08-20T08:03:18.541710+00:00",
+    "match": "CD Tondela vs Academica",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Ven. 21/08 à 21h15",
+    "scores": {
+      "o25": 64,
+      "o15": 73,
+      "btts": 59,
+      "penalty": 65
+    },
+    "referee": {
+      "name": "Luis Claudio Pereira dos Santos",
+      "status": "👨‍⚖️ Arbitre Luis Claudio Pereira dos Santos (22 m, 0.32 pen/m)",
+      "pen_per_match": 0.318
+    },
+    "odds": {
+      "o25": 1.9,
+      "o15": 1.3
+    },
+    "selected_markets": [
+      "PENALTY"
+    ],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
