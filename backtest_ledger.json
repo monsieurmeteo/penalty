@@ -18760,5 +18760,33 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3369680",
+    "timestamp_utc": "2026-08-20T21:04:48.335745+00:00",
+    "match": "Kashima vs Avispa Fukuoka",
+    "league": "Japon • D1 Japon",
+    "date_str": "Sam. 22/08 à 11h00",
+    "scores": {
+      "o25": 60,
+      "o15": 83,
+      "btts": 53,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.2,
+      "o15": 1.38
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
