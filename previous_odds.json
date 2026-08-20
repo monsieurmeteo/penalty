@@ -4,7 +4,7 @@
       "match": "Sion - Ajax",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 20h15",
-      "val_o25": 1.5,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 98
     },
@@ -28,7 +28,7 @@
       "match": "Inter Turku - FC Copenhague",
       "league": "Coupes D Europe • Europa Conference",
       "date_str": "Jeu. 20/08 à 18h00",
-      "val_o25": 1.52,
+      "val_o25": 1.5,
       "double": true,
       "ac_score": 92
     },
@@ -84,7 +84,7 @@
       "match": "Al Qadisiya - Al Ittihad FC",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 1.36,
+      "val_o25": 1.38,
       "double": true,
       "ac_score": 89
     },
@@ -100,7 +100,7 @@
       "match": "Kairat Almaty - Anderlecht",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 17h00",
-      "val_o25": 2.0,
+      "val_o25": 2.05,
       "double": true,
       "ac_score": 88
     },
@@ -108,7 +108,7 @@
       "match": "Lech Poznan - FC Thun",
       "league": "Coupes D Europe • Europa League",
       "date_str": "Jeu. 20/08 à 19h00",
-      "val_o25": 1.5,
+      "val_o25": 1.48,
       "double": true,
       "ac_score": 88
     },
