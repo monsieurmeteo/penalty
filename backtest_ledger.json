@@ -18248,5 +18248,33 @@
     "won_o15": null,
     "won_btts": null,
     "won_penalty": null
+  },
+  {
+    "match_id": "3372602",
+    "timestamp_utc": "2026-08-20T10:03:30.168135+00:00",
+    "match": "Rubio Nu vs CS Trinidense",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Ven. 21/08 à 23h30",
+    "scores": {
+      "o25": 56,
+      "o15": 82,
+      "btts": 69,
+      "penalty": 0
+    },
+    "referee": {
+      "name": "Inconnu",
+      "status": "Arbitre non désigné — confiance réduite",
+      "pen_per_match": 0.0
+    },
+    "odds": {
+      "o25": 2.0,
+      "o15": 1.32
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_o25": null,
+    "won_o15": null,
+    "won_btts": null,
+    "won_penalty": null
   }
 ]
