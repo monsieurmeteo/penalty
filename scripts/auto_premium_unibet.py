@@ -584,91 +584,108 @@ def main():
         return f"{betting_date}-jour"
 
 
-    # ── MOTEUR UNIFIÉ COMBINÉS OVER 1.5 (Cote Totale Min: 2.10 STRICT) ──
-    o15_selections = []
+    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Over 2.5 + Over 1.5 — Cote Min 2.00, Cible ~2.20) ──
+    mixed_selections = []
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        o15_odds = m.get("over15")
         
-        # Filtre strict Over 1.5 : Score >= 90, Fréquence >= 65%, Cote >= 1.13
-        if m.get("score_o15", 0) >= 90 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.13:
-            o15_selections.append({
+        # 1. Over 2.5 si Score >= 80
+        o25 = m.get("over25")
+        if m.get("ac_score", 0) >= 80 and o25:
+            mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟦 Over 1.5", "odds": o15_odds,
+                "market": "🟥 Over 2.5", "odds": o25,
+                "score": m.get("ac_score", 0)
+            })
+        # 2. Over 1.5 si Score >= 80
+        elif m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
+            mixed_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "market": "🟦 Over 1.5", "odds": m["over15"],
                 "score": m.get("score_o15", 0)
             })
 
     # Tri chronologique des sélections
-    o15_selections.sort(key=lambda x: x["dt"])
+    mixed_selections.sort(key=lambda x: x["dt"])
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o15 = len(o15_selections)
-    n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
-    print(f"📊 Sélections brutes (Score >= 90 / Cote >= 1.13 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
-
+    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 80 and m.get("over25"))
+    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45 and m.get("score_penalty", 0) >= 80)
+    print(f"📊 Sélections brutes (Score >= 80) : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
+    print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
 
     # Regroupement par Bloc Journée
-    blocks_o15 = {}
-    for s in o15_selections:
-        blocks_o15.setdefault(s["session"], []).append(s)
+    blocks_mixed = {}
+    for s in mixed_selections:
+        blocks_mixed.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    def _build_combo_pack(candidates, session_tag):
-        for i, s1 in enumerate(candidates):
-            if s1["id"] in used_match_ids:
-                continue
+    # Pour chaque Bloc Journée, appariement chronologique des matchs (Cote Min: 2.00 STRICT, Cible ~2.20)
+    for b_key in sorted(blocks_mixed.keys()):
+        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
+        for i, s1 in enumerate(block_items):
+            if s1["id"] in used_match_ids: continue
 
-            combo_items = [s1]
-            combo_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
-            comb_odds = s1["odds"]
+            best_partner = None
+            best_diff = 999.0
 
-            for s_cand in candidates[i+1:]:
-                if len(combo_items) >= 4:  # STRICTEMENT 4 MATCHS PAR COMBINÉ
-                    break
-                if s_cand["id"] in used_match_ids:
-                    continue
-                c_teams = {s_cand["m"].get("dom","").lower(), s_cand["m"].get("ext","").lower()}
-                if combo_teams & c_teams:
-                    continue  # Doublon d'équipe
+            for s2 in block_items[i+1:]:
+                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+                teams1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+                teams2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
+                if teams1 & teams2: continue
 
-                combo_items.append(s_cand)
-                combo_teams.update(c_teams)
-                comb_odds *= s_cand["odds"]
+                comb2 = round(s1["odds"] * s2["odds"], 2)
+                if comb2 >= 2.00:
+                    diff = abs(comb2 - 2.20)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_partner = s2
 
-            comb_odds = round(comb_odds, 2)
-            # RÈGLE : Combinés de 4 matchs
-            if len(combo_items) == 4:
-                for item in combo_items:
-                    used_match_ids.add(item["id"])
-                
-                label = "Pack 4× Over 1.5"
+            if best_partner:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(best_partner["id"])
+                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
                 combos_mixed.append({
-                    "session": session_tag,
-                    "type": label,
-                    "items": combo_items,
+                    "session": b_key,
+                    "type": "Doublé 2 Matchs",
+                    "items": [s1, best_partner],
                     "comb_odds": comb_odds,
-                    "stake": 4.0,
-                    "gain": round(4.0 * comb_odds, 2),
-                    "profit": round(4.0 * comb_odds - 4.0, 2)
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # 1. Constitution des combinés par bloc de session
-    for b_key in sorted(blocks_o15.keys()):
-        block_items = sorted(blocks_o15[b_key], key=lambda x: x["dt"])
-        _build_combo_pack(block_items, b_key)
-
-    # 2. Fallback pour sélections restantes non couplées dans leur bloc
-    unpaired_selections = [s for s in o15_selections if s["id"] not in used_match_ids]
+    # Fallback pour sélections restantes non couplées dans leur bloc (Cote Min: 2.00 STRICT)
+    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
     unpaired_selections.sort(key=lambda x: x["dt"])
-    if unpaired_selections:
-        _build_combo_pack(unpaired_selections, f"{unpaired_selections[0]['session']}-mixte")
+    for i, s1 in enumerate(unpaired_selections):
+        if s1["id"] in used_match_ids: continue
+        for s2 in unpaired_selections[i+1:]:
+            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+            teams1 = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+            teams2 = {s2["m"].get("dom","").lower(), s2["m"].get("ext","").lower()}
+            if teams1 & teams2: continue
+
+            comb_odds = round(s1["odds"] * s2["odds"], 2)
+            if comb_odds >= 2.00:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(s2["id"])
+                combos_mixed.append({
+                    "session": f"{s1['session']}-mixte",
+                    "type": "Doublé 2 Matchs",
+                    "items": [s1, s2],
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+                break
 
     combos_orphans = []
-    print(f"📊 Total combinés Over 1.5 (Cote >= 2.10) générés : {len(combos_mixed)}")
+    print(f"📊 Total combinés Multi-Marchés (Cote >= 2.00) générés : {len(combos_mixed)}")
+
 
     # ── MOTEUR DUO 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote Cible ~4.20) ──
     h2_selections = []
@@ -1200,7 +1217,26 @@ def main():
                 })
                 seen_plan.add(key)
 
+    # Penalty simples
+    for m in pen_simples:
+        key = (m["id"], "PENALTY")
+        if key not in seen_plan:
+            plan_rows.append({
+                "dt": m.get("dt_obj", now_utc),
+                "date_str": m.get("date_str", ""),
+                "match": f"{m['dom']} vs {m['ext']}",
+                "league": m.get("league", ""),
+                "market": "⚡ Penalty OUI",
+                "cote": "SIMPLE",
+                "score_label": f"{m.get('score_penalty', 0)}/100",
+                "score_val": m.get("score_penalty", 0),
+                "type_label": "PARI SIMPLE",
+                "bg_market": "#ede9fe", "cl_market": "#5b21b6",
+            })
+            seen_plan.add(key)
+
     plan_rows.sort(key=lambda x: x["dt"])
+
 
 
     # Génération HTML des lignes du planning
@@ -1330,9 +1366,9 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">4× OVER 1.5</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 90</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#cffafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:10px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:10px; color:#0891b2;">≥ 3/5 Dom &amp; Ext</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Matchs du Jour</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00 (Cible ~2.20)</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Matchs du Jour</div></div></td>
               </tr>
             </table>
           </div>
@@ -1362,25 +1398,39 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 1 : COMBINÉS 4× OVER 1.5 -->
+          <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS 4× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 90/100 · 4 sélections)</span></span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 80/100 · Cote ~2.20)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
           </div>
 
-
-          <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
-          <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
-            <div style="font-size:14px; font-weight:800; color:#0e7490; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(5 Derniers Matchs Dom/Ext · ≥ 3/5 victoires MT2)</span></span>
-
-              <span style="font-size:11px; background:#cffafe; color:#0e7490; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_h2)} ticket(s)</span>
+          <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
+          <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>⚡ 2. PENALTY OUI — PARIS SIMPLES</span>
+              <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
-            {combos_h2_html}
+            <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
+              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire (≥ 0.45 pen/m)
+            </div>
+            {pen_simples_html}
           </div>
+
+          <!-- SECTION 4 : MATCHS AVEC ARBITRE ÉCARTÉ -->
+          <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
+            <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🛡️ MATCHS AVEC ARBITRE ÉCARTÉ (&lt; 0.45 pen/m)</span>
+              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} écarté(s)</span>
+            </div>
+            <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
+              💡 <b>Information transparente</b> : Ces matchs ont un arbitre officiel désigné mais son ratio est &lt; 0.45 pénalty par match.
+            </div>
+            {pen_rejected_html}
+          </div>
+
 
 
 
@@ -1465,7 +1515,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combinés 4× Over 1.5 · {len(combos_h2)} Duos 2ème MT"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.00) · {len(pen_simples)} Penalty OUI"
 
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
