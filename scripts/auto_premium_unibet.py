@@ -189,6 +189,14 @@ def scan_unibet_match_details(game):
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
+                    # Mi-temps avec le plus de buts (2ème mi-temps)
+                    if any(kw in m_desc for kw in ["plus de but", "plus de buts", "prolifique"]) and "mi-temps" in m_desc:
+                        for o in outcomes:
+                            o_desc = (o.get("description") or "").lower()
+                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            if any(w in o_desc for w in ["2ème", "2e", "seconde", "2nd"]):
+                                cote_mt2 = p_val
+
 
             # Buteur le plus proche de la moyenne des cotes
             buteur_name = None
@@ -245,10 +253,12 @@ def scan_unibet_match_details(game):
                 "over15_real": over15 is not None,  # True = cote Unibet réelle, False = estimée
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
+                "cote_mt2": cote_mt2 or 2.05,
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
             }
+
     except Exception as e:
         print(f"❌ ERROR scanning {game.get('url')}: {e}")
         return None
@@ -582,8 +592,8 @@ def main():
         block_key = get_betting_session_key(m_dt)
         o15_odds = m.get("over15")
         
-        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote >= 1.18
-        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.18:
+        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote >= 1.13
+        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.13:
             o15_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": o15_odds,
@@ -596,7 +606,8 @@ def main():
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o15 = len(o15_selections)
     n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
-    print(f"📊 Sélections brutes (Score >= 85 / Cote >= 1.18 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
+    print(f"📊 Sélections brutes (Score >= 85 / Cote >= 1.13 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
+
 
     # Regroupement par Bloc [Journée + Nuit Suivante]
     blocks_o15 = {}
@@ -663,10 +674,138 @@ def main():
     combos_orphans = []
     print(f"📊 Total combinés Over 1.5 (Cote >= 2.10) générés : {len(combos_mixed)}")
 
+    # ── MOTEUR DUO 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote Cible ~4.20) ──
+    h2_selections = []
+    
+    for m in scanned_results:
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        block_key = get_betting_session_key(m_dt)
+        recent_h = m.get("recent_h_dom", [])[:10]
+        recent_a = m.get("recent_a_ext", [])[:10]
 
+        def _calc_h_trends(mlist, is_home=True):
+            s1, s2, h2_w, tot = 0, 0, 0, 0
+            for item in mlist:
+                hg = item.get("homeGoals", item.get("homeGoalsFt"))
+                ag = item.get("awayGoals", item.get("awayGoalsFt"))
+                ht_h = item.get("htHomeGoals", item.get("homeGoalsHt", item.get("ht_h", item.get("homeGoals1stHalf"))))
+                ht_a = item.get("htAwayGoals", item.get("awayGoalsHt", item.get("ht_a", item.get("awayGoals1stHalf"))))
+                ht_score = item.get("htScore", item.get("halfTimeScore", item.get("score1stHalf", "")))
+                if (ht_h is None or ht_a is None) and ht_score and "-" in str(ht_score):
+                    try:
+                        parts = str(ht_score).split("-")
+                        ht_h, ht_a = int(parts[0].strip()), int(parts[1].strip())
+                    except: pass
+                if hg is not None and ag is not None:
+                    try:
+                        hg, ag = int(hg), int(ag)
+                        if ht_h is not None and ht_a is not None:
+                            ht_h, ht_a = int(ht_h), int(ht_a)
+                            g1 = ht_h + ht_a
+                            g2 = (hg + ag) - g1
+                            if is_home:
+                                s1 += ht_h
+                                s2 += (hg - ht_h)
+                            else:
+                                s1 += ht_a
+                                s2 += (ag - ht_a)
+                            if g2 > g1: h2_w += 1
+                            tot += 1
+                    except: pass
+            return tot, h2_w, s1, s2
 
+        tot_d, h2_d, d1, d2 = _calc_h_trends(recent_h, is_home=True)
+        tot_e, h2_e, e1, e2 = _calc_h_trends(recent_a, is_home=False)
+        tot_m = tot_d + tot_e
+
+        if tot_m >= 6:
+            h2_rate = (h2_d + h2_e) / tot_m
+            pct_d_h2 = (d2 / (d1 + d2) * 100) if (d1 + d2) > 0 else 50.0
+            pct_e_h2 = (e2 / (e1 + e2) * 100) if (e1 + e2) > 0 else 50.0
+            m["h2_rate"] = h2_rate
+            m["h2_cnt"] = h2_d + h2_e
+            m["h2_tot"] = tot_m
+            m["pct_dom_h2"] = pct_d_h2
+            m["pct_ext_h2"] = pct_e_h2
+
+            # Critères d'éligibilité : h2_rate >= 0.60, moyenne des buts en MT2 >= 55%, score_o15 >= 75
+            cote_mt2 = m.get("cote_mt2", 2.05)
+            if h2_rate >= 0.60 and ((pct_d_h2 + pct_e_h2) / 2.0) >= 55.0 and m.get("score_o15", 0) >= 75:
+                h2_selections.append({
+                    "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                    "market": "⏱️ 2ème MT (+) de buts", "odds": cote_mt2,
+                    "h2_rate": h2_rate, "h2_cnt": h2_d + h2_e, "h2_tot": tot_m,
+                    "pct_dom_h2": pct_d_h2, "pct_ext_h2": pct_e_h2,
+                    "score": int(h2_rate * 100)
+                })
+
+    h2_selections.sort(key=lambda x: (x["h2_rate"], x["pct_dom_h2"] + x["pct_ext_h2"]), reverse=True)
+
+    # Constitution des Duos 2× 2ème MT
+    blocks_h2 = {}
+    for s in h2_selections:
+        blocks_h2.setdefault(s["session"], []).append(s)
+
+    used_h2_ids = set()
+    combos_h2 = []
+
+    for b_key in sorted(blocks_h2.keys()):
+        b_items = sorted(blocks_h2[b_key], key=lambda x: x["dt"])
+        for i, s1 in enumerate(b_items):
+            if s1["id"] in used_h2_ids: continue
+            c_items = [s1]
+            c_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+            for s_cand in b_items[i+1:]:
+                if len(c_items) == 2: break
+                if s_cand["id"] in used_h2_ids: continue
+                ct = {s_cand["m"].get("dom","").lower(), s_cand["m"].get("ext","").lower()}
+                if c_teams & ct: continue
+                c_items.append(s_cand)
+                c_teams.update(ct)
+            if len(c_items) == 2:
+                for it in c_items: used_h2_ids.add(it["id"])
+                c_odds = round(c_items[0]["odds"] * c_items[1]["odds"], 2)
+                combos_h2.append({
+                    "session": b_key,
+                    "type": "Duo 2× 2ème Mi-Temps",
+                    "items": c_items,
+                    "comb_odds": c_odds,
+                    "stake": 4.0,
+                    "gain": round(4.0 * c_odds, 2),
+                    "profit": round(4.0 * c_odds - 4.0, 2)
+                })
+
+    # Fallback pour sélections restantes non couplées
+    unpaired_h2 = [s for s in h2_selections if s["id"] not in used_h2_ids]
+    unpaired_h2.sort(key=lambda x: x["dt"])
+    for i, s1 in enumerate(unpaired_h2):
+        if s1["id"] in used_h2_ids: continue
+        c_items = [s1]
+        c_teams = {s1["m"].get("dom","").lower(), s1["m"].get("ext","").lower()}
+        for s_cand in unpaired_h2[i+1:]:
+            if len(c_items) == 2: break
+            if s_cand["id"] in used_h2_ids: continue
+            ct = {s_cand["m"].get("dom","").lower(), s_cand["m"].get("ext","").lower()}
+            if c_teams & ct: continue
+            c_items.append(s_cand)
+            c_teams.update(ct)
+        if len(c_items) == 2:
+            for it in c_items: used_h2_ids.add(it["id"])
+            c_odds = round(c_items[0]["odds"] * c_items[1]["odds"], 2)
+            combos_h2.append({
+                "session": f"{s1['session']}-mixte",
+                "type": "Duo 2× 2ème Mi-Temps",
+                "items": c_items,
+                "comb_odds": c_odds,
+                "stake": 4.0,
+                "gain": round(4.0 * c_odds, 2),
+                "profit": round(4.0 * c_odds - 4.0, 2)
+            })
+
+    print(f"📊 Total Duos 2× 2ème Mi-Temps générés : {len(combos_h2)}")
 
     # ── 4. SÉLECTION PENALTY OUI — 100% ARBITRE OFFICIEL DÉSIGNÉ (Ratio ≥ 0.45 pen/m) ──
+
     # Filtrage strict : arbitre officiel désigné connu ET ratio >= 0.45 pen/match
     pen_candidates = [
         m for m in scanned_results
@@ -864,6 +1003,50 @@ def main():
         combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Over 1.5 disponible (moins de 3 sélections éligibles à cote &ge; 2.10).</div>'
 
 
+    # ── HTML Duos 2× 2ème Mi-Temps ───────────────────────────────────────────
+    combos_h2_html = ""
+    if combos_h2:
+        H2_THEMES = [
+            {"border_left": "#0891b2", "border_card": "#cffafe", "bg_header": "#ecfeff", "title_color": "#0e7490"},
+            {"border_left": "#7c3aed", "border_card": "#ede9fe", "bg_header": "#f5f3ff", "title_color": "#5b21b6"},
+        ]
+        for idx, cb in enumerate(combos_h2, 1):
+            theme = H2_THEMES[(idx - 1) % len(H2_THEMES)]
+            items_html = ""
+            for k, item in enumerate(cb["items"]):
+                m = item["m"]
+                o = item["odds"]
+                h2_r = int(item.get("h2_rate", 0.6) * 100)
+                cnt = item.get("h2_cnt", 12)
+                tot = item.get("h2_tot", 20)
+                border = "border-bottom:1px solid #f1f5f9;" if k < len(cb["items"]) - 1 else ""
+                items_html += f'''
+                <div style="padding:6px 0; {border} display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <span style="color:#0891b2; font-weight:700; font-size:11px;">🕒 {m.get('date_str','')}</span>
+                        &nbsp;&bull;&nbsp;
+                        <b style="font-size:12px; color:#0f172a;">{m['dom']} vs {m['ext']}</b>
+                        <span style="color:#64748b; font-size:10.5px;">({m.get('league','')})</span>
+                    </div>
+                    <div style="text-align:right; white-space:nowrap; margin-left:8px;">
+                        <span style="font-weight:800; color:#0e7490; font-size:11.5px; background:#cffafe; padding:2px 7px; border-radius:4px;">2ème MT @{o:.2f}</span>
+                        <span style="background:#0891b2; color:#fff; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;">{h2_r}% MT2 ({cnt}/{tot})</span>
+                    </div>
+                </div>'''
+            
+            combos_h2_html += f'''
+            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 9px; border-radius:5px; margin-bottom:8px; border:1px solid {theme['border_card']};">
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:12.5px;">⏱️ Ticket Duo #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:1px 6px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:11.5px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 4 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+              </div>
+              <div style="font-size:11.5px; color:#334155;">
+                {items_html}
+              </div>
+            </div>'''
+    else:
+        combos_h2_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun duo 2ème mi-temps disponible (moins de 2 sélections éligibles à 60%+ MT2).</div>'
+
     # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
     pen_simples_html = ""
     for idx_ps, m in enumerate(pen_simples, 1):
@@ -891,7 +1074,6 @@ def main():
                     opp_n = opp.get("name") or opp.get("slug") or "Adv"
                 else:
                     opp_n = str(opp or item.get("opponent") or "Adv")
-                # Extraction de la date
                 raw_d = item.get("date") or item.get("matchDate") or item.get("datetimestamp") or item.get("date_str")
                 d_str = ""
                 if raw_d:
@@ -909,7 +1091,6 @@ def main():
 
         dom_scores_str = _fmt_scores(m.get("recent_h_dom", []), is_home=True)
         ext_scores_str = _fmt_scores(m.get("recent_a_ext", []), is_home=False)
-
 
         obt_d = m.get("obt_dom", 0)
         cnc_d = m.get("cnc_dom", 0)
@@ -973,9 +1154,8 @@ def main():
     plan_rows = []
     seen_plan = set()
 
-    # Combinés multi-marchés
+    # Combinés 4x Over 1.5
     for idx_cb, cb in enumerate(combos_mixed, 1):
-        c_type = cb["type"]
         for item in cb["items"]:
             m = item["m"]
             key = (m["id"], item["market"])
@@ -990,8 +1170,27 @@ def main():
                     "score_label": f"{item['score']}/100",
                     "score_val": item["score"],
                     "type_label": f"COMBINÉ #{idx_cb}",
-                    "bg_market": "#dbeafe" if "Over 2.5" in item["market"] else ("#fef3c7" if "BTTS" in item["market"] else "#d1fae5"),
-                    "cl_market": "#1e40af" if "Over 2.5" in item["market"] else ("#92400e" if "BTTS" in item["market"] else "#065f46"),
+                    "bg_market": "#dbeafe", "cl_market": "#1e40af",
+                })
+                seen_plan.add(key)
+
+    # Duos 2x 2ème Mi-Temps
+    for idx_cb, cb in enumerate(combos_h2, 1):
+        for item in cb["items"]:
+            m = item["m"]
+            key = (m["id"], "DUO_MT2")
+            if key not in seen_plan:
+                plan_rows.append({
+                    "dt": item["dt"],
+                    "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}",
+                    "league": m.get("league", ""),
+                    "market": "⏱️ 2ème MT (+)",
+                    "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}% MT2",
+                    "score_val": item["score"],
+                    "type_label": f"DUO MT2 #{idx_cb}",
+                    "bg_market": "#cffafe", "cl_market": "#0e7490",
                 })
                 seen_plan.add(key)
 
@@ -1043,11 +1242,12 @@ def main():
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
     for m in sorted(scanned_results, key=lambda x: (x.get("score_o15", 0), x.get("ac_score", 0)), reverse=True):
-        is_combo = m["id"] in used_match_ids
+        is_combo_o15 = m["id"] in used_match_ids
+        is_combo_h2 = m["id"] in used_h2_ids
         is_pen = any(m["id"] == p["id"] for p in pen_simples)
-        retained = is_combo or is_pen
+        retained = is_combo_o15 or is_combo_h2 or is_pen
         bg_row = "#f0fdf4" if retained else "#fff"
-        badge = '<span style="color:#15803d; font-weight:700;">✅ COMBINÉ</span>' if is_combo else ('<span style="color:#7c3aed; font-weight:700;">⚡ PENALTY</span>' if is_pen else '<span style="color:#94a3b8;">—</span>')
+        badge = '<span style="color:#15803d; font-weight:700;">✅ OVER 1.5</span>' if is_combo_o15 else ('<span style="color:#0891b2; font-weight:700;">⏱️ DUO MT2</span>' if is_combo_h2 else ('<span style="color:#7c3aed; font-weight:700;">⚡ PENALTY</span>' if is_pen else '<span style="color:#94a3b8;">—</span>'))
         o15_str = f"@{m['over15']:.2f}" if m.get("over15") else "N/A"
         o15_v = m.get("score_o15", 0)
         o15_bg = "#dcfce7" if o15_v >= 85 else ("#fef3c7" if o15_v >= 65 else "#f1f5f9")
@@ -1068,6 +1268,7 @@ def main():
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
+
 
 
     # ── Section Duo Mixte Orphelins ──────────────────────────────────────────
@@ -1140,9 +1341,10 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Jour + Nuit</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9.5px; font-weight:700; color:#1d4ed8;">4× OVER 1.5</div><div style="font-size:9.5px; color:#3b82f6;">Cote ≥ 2.10</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#cffafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:9.5px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:9.5px; color:#0891b2;">Cote ~4.20</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:9.5px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:9.5px; color:#7c3aed;">Paris simples</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#f0fdf4; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:9.5px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:9.5px; color:#16a34a;">Jour + Nuit</div></div></td>
               </tr>
             </table>
           </div>
@@ -1171,7 +1373,7 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS 4× OVER 1.5 -->
+          <!-- SECTION 1 : COMBINÉS 4× OVER 1.5 -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
               <span>🚀 1. COMBINÉS 4× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 85/100 · Cote cible 2.20 - 2.60)</span></span>
@@ -1180,10 +1382,19 @@ def main():
             {combos_mixed_html}
           </div>
 
+          <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
+          <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
+            <div style="font-size:14px; font-weight:800; color:#0e7490; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(Dominance MT2 ≥ 60% · Cote cible 4.00 - 4.45)</span></span>
+              <span style="font-size:11px; background:#cffafe; color:#0e7490; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_h2)} ticket(s)</span>
+            </div>
+            {combos_h2_html}
+          </div>
+
           <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
           <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 2. PENALTY OUI — PARIS SIMPLES</span>
+              <span>⚡ 3. PENALTY OUI — PARIS SIMPLES</span>
               <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
             <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
@@ -1191,6 +1402,7 @@ def main():
             </div>
             {pen_simples_html}
           </div>
+
 
           <!-- SECTION 3b : DUO MIXTE ORPHELINS (Score >= 80, pas de cote minimum) -->
           {orphans_section_html}
