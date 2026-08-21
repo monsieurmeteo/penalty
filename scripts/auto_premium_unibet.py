@@ -151,12 +151,19 @@ def scan_unibet_match_details(game):
             for g in event.get("groupedMarkets", []):
                 for m in g.get("markets", []):
                     m_desc = (m.get("description") or "").lower()
+                    outcomes = m.get("outcomes", [])
 
-                    # Ignorer mi-temps
+                    # Mi-temps avec le plus de buts (2ème mi-temps) - Extraction avant exclusion
+                    if any(kw in m_desc for kw in ["plus de but", "plus de buts", "prolifique"]) and "mi-temps" in m_desc and not any(t in m_desc for t in ["equipe", "équipe"]) and cote_mt2 is None:
+                        for o in outcomes:
+                            o_desc = (o.get("description") or "").lower()
+                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                            if any(w in o_desc for w in ["2nde", "2ème", "2e", "seconde", "2nd"]):
+                                cote_mt2 = p_val
+
+                    # Ignorer les autres marchés de mi-temps / quarts / périodes
                     if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
                         continue
-
-                    outcomes = m.get("outcomes", [])
 
                     # 1N2
                     if m_desc in ["1 n 2", "1n2", "résultat du match"] and c1 is None:
@@ -191,13 +198,6 @@ def scan_unibet_match_details(game):
                             p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                             if o_desc in ["2 - 2", "2-2"]: s22 = p_val
 
-                    # Mi-temps avec le plus de buts (2ème mi-temps)
-                    if any(kw in m_desc for kw in ["plus de but", "plus de buts", "prolifique"]) and "mi-temps" in m_desc:
-                        for o in outcomes:
-                            o_desc = (o.get("description") or "").lower()
-                            p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                            if any(w in o_desc for w in ["2ème", "2e", "seconde", "2nd"]):
-                                cote_mt2 = p_val
 
 
             # Buteur le plus proche de la moyenne des cotes
