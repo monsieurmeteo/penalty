@@ -676,8 +676,9 @@ def main():
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        recent_h = m.get("recent_h_dom", [])[:5]
-        recent_a = m.get("recent_a_ext", [])[:5]
+        recent_h = sorted(m.get("recent_h_dom", []), key=lambda x: x.get("timestamp", 0), reverse=True)[:5]
+        recent_a = sorted(m.get("recent_a_ext", []), key=lambda x: x.get("timestamp", 0), reverse=True)[:5]
+
 
         def _calc_h_trends(mlist, is_home=True):
             s1, s2, h2_w, tot = 0, 0, 0, 0
