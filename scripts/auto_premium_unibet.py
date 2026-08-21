@@ -627,7 +627,7 @@ def main():
             comb_odds = s1["odds"]
 
             for s_cand in candidates[i+1:]:
-                if len(combo_items) >= 3:  # STRICTEMENT 3 MATCHS PAR COMBINÉ
+                if len(combo_items) >= 4:  # STRICTEMENT 4 MATCHS PAR COMBINÉ
                     break
                 if s_cand["id"] in used_match_ids:
                     continue
@@ -640,12 +640,12 @@ def main():
                 comb_odds *= s_cand["odds"]
 
             comb_odds = round(comb_odds, 2)
-            # RÈGLE : Combinés de 3 matchs
-            if len(combo_items) == 3:
+            # RÈGLE : Combinés de 4 matchs
+            if len(combo_items) == 4:
                 for item in combo_items:
                     used_match_ids.add(item["id"])
                 
-                label = "Trio 3× Over 1.5"
+                label = "Pack 4× Over 1.5"
                 combos_mixed.append({
                     "session": session_tag,
                     "type": label,
@@ -1329,7 +1329,7 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">3× OVER 1.5</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 90</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">4× OVER 1.5</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 90</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#cffafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:10px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:10px; color:#0891b2;">≥ 3/5 Dom &amp; Ext</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Matchs du Jour</div></div></td>
               </tr>
@@ -1361,14 +1361,15 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 1 : COMBINÉS 3× OVER 1.5 -->
+          <!-- SECTION 1 : COMBINÉS 4× OVER 1.5 -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS 3× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 90/100 · 3 sélections)</span></span>
+              <span>🚀 1. COMBINÉS 4× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 90/100 · 4 sélections)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
           </div>
+
 
           <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
@@ -1463,7 +1464,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Trios Over 1.5 · {len(combos_h2)} Duos 2ème MT"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combinés 4× Over 1.5 · {len(combos_h2)} Duos 2ème MT"
 
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
