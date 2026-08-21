@@ -245,7 +245,7 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
                     score_a = similarity(away_query, a_name)
                     combined = (score_h + score_a) / 2.0
 
-                    if combined > best_score:
+                    if score_h >= 0.55 and score_a >= 0.55 and combined >= 0.65 and combined > best_score:
                         best_score = combined
                         fx_id = fx.get("externalId") or fx.get("externalid") or fx.get("id")
                         best_match = (fx_id, h_name, a_name, lg.get("league"))
@@ -254,16 +254,16 @@ def find_fixture_fuzzy(home_query, away_query, fixtures_data=None, match_dt=None
     if target_country:
         _search(fixtures_data, target_country)
 
-    # Fallback : si pas trouvé dans le pays → recherche globale toutes ligues
-    if not best_match or best_score < 0.40:
+    # Fallback : si pas trouvé dans le pays → recherche globale toutes ligues (avec seuil strict 0.65)
+    if not best_match:
         best_match = None
         best_score = 0.0
         _search(fixtures_data, "")
 
-    if best_match and best_score >= 0.40:
+    if best_match:
         return best_match
     
-    return "19635927", home_query, away_query, "SA1"
+    return None, None, None, None
 
 ALIAS_MAP_SOFASCORE = {
     'Paris SG': 'Paris Saint-Germain',
@@ -325,6 +325,21 @@ def fetch_sofascore_sample(query, is_home=True):
 
 def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=False, match_dt=None, unibet_league=None, d_refs=None, m_unibet=None):
     ext_id, team_a, team_b, league = find_fixture_fuzzy(home_query, away_query, fixtures_data, match_dt=match_dt, unibet_league=unibet_league)
+
+    if not ext_id or not team_a or not team_b:
+        if not is_batch:
+            print(f"❓ {home_query} vs {away_query} — Match non trouvé sur AdamChoi.")
+        return {
+            "score": 0, "classe": "❓ Non analysé", "calibrated_prob": 0,
+            "pts_ipo": 0, "ipo_comb": 0, "pts_buts": 0, "avg_buts": 0,
+            "pts_freq": 0, "o25_avg_rate": 0, "pts_sot": 0, "sot_comb": 0,
+            "pts_ha": 0, "avg_freq_ha": 0, "pts_league": 0,
+            "xg_total": 0, "sot_total": 0,
+            "verdict": "Équipe non trouvée sur AdamChoi — données insuffisantes.",
+            "red_flags": ["Aucune donnée disponible"],
+            "recent_h_dom": [], "recent_a_ext": []
+        }
+
 
     if not is_batch:
         print(f"🔍 ÉQUIPES DÉTECTÉES : '{team_a}' vs '{team_b}' ({league})\n")
