@@ -289,7 +289,7 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Journée + Nuit suivante (36 Heures max)
+    # Filtre Fenêtre : Matchs de Journée Uniquement (08h00 - 23h59) — Exclusion stricte des matchs de nuit (00h00 - 07h59)
     now_utc = datetime.now(timezone.utc)
     limit_36h = now_utc + timedelta(hours=36)
 
@@ -299,6 +299,10 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
+                local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
+                # Exclusion stricte des matchs de la nuit (entre 00h00 et 07h59 heure française)
+                if local_dt.hour < 8:
+                    continue
                 if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
@@ -306,6 +310,7 @@ def main():
                 scanned_results.append(m)
         else:
             scanned_results.append(m)
+
 
     # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
     if len(scanned_results) == 0 and scanned_all:
@@ -570,21 +575,14 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
+    # ── Génération des Combinés : MATCHS DU JOUR PAR JOURNÉE
     def get_betting_session_key(m_dt, slot_only=False):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        # Si le match a lieu entre 00h00 et 05h59, il appartient à la nuit de la journée précédente
-        if local_dt.hour < 6:
-            betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
-        else:
-            betting_date = local_dt.strftime("%Y-%m-%d")
-        slot = "nuit" if local_dt.hour < 6 else "jour"
+        betting_date = local_dt.strftime("%Y-%m-%d")
         if slot_only:
-            return slot
-        return f"{betting_date}-block"
+            return "jour"
+        return f"{betting_date}-jour"
 
-    def upgrade_sessions_to_day(sessions_dict):
-        return sessions_dict
 
     # ── MOTEUR UNIFIÉ COMBINÉS OVER 1.5 (Cote Totale Min: 2.10 STRICT) ──
     o15_selections = []
@@ -1337,7 +1335,7 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Fenêtre Journées + Nuits</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Matchs du Jour (08h - 23h59)</p>
           </div>
 
           <!-- COMPTEURS -->
@@ -1347,10 +1345,11 @@ def main():
                 <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9.5px; font-weight:700; color:#1d4ed8;">4× OVER 1.5</div><div style="font-size:9.5px; color:#3b82f6;">Cote ≥ 2.10</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#cffafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:9.5px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:9.5px; color:#0891b2;">Cote ~4.20</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:9.5px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:9.5px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#f0fdf4; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:9.5px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:9.5px; color:#16a34a;">Jour + Nuit</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#f0fdf4; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:9.5px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:9.5px; color:#16a34a;">Matchs du Jour</div></div></td>
               </tr>
             </table>
           </div>
+
 
           <!-- SECTION 1 : PLANNING HEURE PAR HEURE -->
           <div style="padding:16px 16px 8px 16px;">
@@ -1456,7 +1455,8 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & OVER 1.5 — JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION OVER 2.5 & OVER 1.5 — MATCHS DU JOUR (08H-23H59)",
+
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
