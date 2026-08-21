@@ -714,26 +714,31 @@ def main():
         tot_e, h2_e, e1, e2 = _calc_h_trends(recent_a, is_home=False)
         tot_m = tot_d + tot_e
 
-        if tot_m >= 4:
+        # RÈGLE A STRICTE : Minimum 3 victoires 2ème MT sur 5 matchs Dom ET minimum 3 victoires 2ème MT sur 5 matchs Ext
+        if tot_d >= 3 and tot_e >= 3 and h2_d >= 3 and h2_e >= 3:
             h2_rate = (h2_d + h2_e) / tot_m
             pct_d_h2 = (d2 / (d1 + d2) * 100) if (d1 + d2) > 0 else 50.0
             pct_e_h2 = (e2 / (e1 + e2) * 100) if (e1 + e2) > 0 else 50.0
             m["h2_rate"] = h2_rate
             m["h2_cnt"] = h2_d + h2_e
             m["h2_tot"] = tot_m
+            m["h2_d"] = h2_d
+            m["tot_d"] = tot_d
+            m["h2_e"] = h2_e
+            m["tot_e"] = tot_e
             m["pct_dom_h2"] = pct_d_h2
             m["pct_ext_h2"] = pct_e_h2
 
-            # Critères d'éligibilité : 5 derniers matchs Dom/Ext, h2_rate >= 0.50, moyenne buts MT2 >= 50%, score_o15 >= 70
             cote_mt2 = m.get("cote_mt2", 2.05)
-            if h2_rate >= 0.50 and ((pct_d_h2 + pct_e_h2) / 2.0) >= 50.0 and m.get("score_o15", 0) >= 70:
-                h2_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                    "market": "⏱️ 2ème MT (+) de buts", "odds": cote_mt2,
-                    "h2_rate": h2_rate, "h2_cnt": h2_d + h2_e, "h2_tot": tot_m,
-                    "pct_dom_h2": pct_d_h2, "pct_ext_h2": pct_e_h2,
-                    "score": int(h2_rate * 100)
-                })
+            h2_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "market": "⏱️ 2ème MT (+) de buts", "odds": cote_mt2,
+                "h2_rate": h2_rate, "h2_cnt": h2_d + h2_e, "h2_tot": tot_m,
+                "h2_d": h2_d, "tot_d": tot_d, "h2_e": h2_e, "tot_e": tot_e,
+                "pct_dom_h2": pct_d_h2, "pct_ext_h2": pct_e_h2,
+                "score": int(h2_rate * 100)
+            })
+
 
 
     h2_selections.sort(key=lambda x: (x["h2_rate"], x["pct_dom_h2"] + x["pct_ext_h2"]), reverse=True)
@@ -1013,10 +1018,12 @@ def main():
             for k, item in enumerate(cb["items"]):
                 m = item["m"]
                 o = item["odds"]
-                h2_r = int(item.get("h2_rate", 0.6) * 100)
-                cnt = item.get("h2_cnt", 12)
-                tot = item.get("h2_tot", 20)
+                h2_d_val = item.get("h2_d", m.get("h2_d", 3))
+                tot_d_val = item.get("tot_d", m.get("tot_d", 5))
+                h2_e_val = item.get("h2_e", m.get("h2_e", 3))
+                tot_e_val = item.get("tot_e", m.get("tot_e", 5))
                 border = "border-bottom:1px solid #f1f5f9;" if k < len(cb["items"]) - 1 else ""
+
                 items_html += f'''
                 <div style="padding:6px 0; {border} display:flex; justify-content:space-between; align-items:center;">
                     <div>
@@ -1027,9 +1034,10 @@ def main():
                     </div>
                     <div style="text-align:right; white-space:nowrap; margin-left:8px;">
                         <span style="font-weight:800; color:#0e7490; font-size:11.5px; background:#cffafe; padding:2px 7px; border-radius:4px;">2ème MT @{o:.2f}</span>
-                        <span style="background:#0891b2; color:#fff; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;">{h2_r}% MT2 ({cnt}/{tot})</span>
+                        <span style="background:#0891b2; color:#fff; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; margin-left:4px;">Dom {h2_d_val}/{tot_d_val} &bull; Ext {h2_e_val}/{tot_e_val}</span>
                     </div>
                 </div>'''
+
             
             combos_h2_html += f'''
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
