@@ -1199,25 +1199,8 @@ def main():
                 })
                 seen_plan.add(key)
 
-    # Penalty simples
-    for m in pen_simples:
-        key = (m["id"], "PENALTY")
-        if key not in seen_plan:
-            plan_rows.append({
-                "dt": m.get("dt_obj", now_utc),
-                "date_str": m.get("date_str", ""),
-                "match": f"{m['dom']} vs {m['ext']}",
-                "league": m.get("league", ""),
-                "market": "⚡ Penalty OUI",
-                "cote": "SIMPLE",
-                "score_label": f"{m.get('score_penalty', 0)}/100",
-                "score_val": m.get("score_penalty", 0),
-                "type_label": "PARI SIMPLE",
-                "bg_market": "#ede9fe", "cl_market": "#5b21b6",
-            })
-            seen_plan.add(key)
-
     plan_rows.sort(key=lambda x: x["dt"])
+
 
     # Génération HTML des lignes du planning
     plan_rows_html = ""
@@ -1346,10 +1329,9 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9.5px; font-weight:700; color:#1d4ed8;">3× OVER 1.5</div><div style="font-size:9.5px; color:#3b82f6;">Score ≥ 90</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#cffafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:9.5px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:9.5px; color:#0891b2;">5 m. Dom/Ext</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:9.5px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:9.5px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#f0fdf4; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:9.5px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:9.5px; color:#16a34a;">Matchs du Jour</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">3× OVER 1.5</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 90</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#cffafe; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:10px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:10px; color:#0891b2;">≥ 3/5 Dom &amp; Ext</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px 6px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Matchs du Jour</div></div></td>
               </tr>
             </table>
           </div>
@@ -1391,41 +1373,13 @@ def main():
           <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
             <div style="font-size:14px; font-weight:800; color:#0e7490; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(5 Derniers Matchs Dom/Ext · Dominance MT2 ≥ 50%)</span></span>
+              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(5 Derniers Matchs Dom/Ext · ≥ 3/5 victoires MT2)</span></span>
 
               <span style="font-size:11px; background:#cffafe; color:#0e7490; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_h2)} ticket(s)</span>
             </div>
             {combos_h2_html}
           </div>
 
-
-          <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
-          <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 3. PENALTY OUI — PARIS SIMPLES</span>
-              <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
-            </div>
-            <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire (≥ 0.45 pen/m)
-            </div>
-            {pen_simples_html}
-          </div>
-
-
-          <!-- SECTION 3b : DUO MIXTE ORPHELINS (Score >= 80, pas de cote minimum) -->
-          {orphans_section_html}
-
-          <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
-          <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
-            <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ MATCHS AVEC ARBITRE ÉCARTÉ (&lt; 0.45 pen/m)</span>
-              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} écarté(s)</span>
-            </div>
-            <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              💡 <b>Information transparente</b> : Ces matchs ont un arbitre officiel désigné mais son ratio est &lt; 0.45 pénalty par match.
-            </div>
-            {pen_rejected_html}
-          </div>
 
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
@@ -1438,7 +1392,6 @@ def main():
                   <th style="padding:7px 8px; text-align:left;">Match</th>
                   <th style="padding:7px 6px; text-align:center;">Score O1.5</th>
                   <th style="padding:7px 6px; text-align:center;">Cote O1.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Arbitre</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
 
@@ -1510,7 +1463,8 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.00) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Trios Over 1.5 · {len(combos_h2)} Duos 2ème MT"
+
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
