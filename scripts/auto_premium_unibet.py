@@ -730,9 +730,9 @@ def main():
             m["pct_dom_h2"] = pct_d_h2
             m["pct_ext_h2"] = pct_e_h2
 
-            # Critères d'éligibilité : h2_rate >= 0.60, moyenne des buts en MT2 >= 55%, score_o15 >= 75
+            # Critères d'éligibilité (Option 2 Équilibrée) : h2_rate >= 0.50, moyenne des buts en MT2 >= 50%, score_o15 >= 70
             cote_mt2 = m.get("cote_mt2", 2.05)
-            if h2_rate >= 0.60 and ((pct_d_h2 + pct_e_h2) / 2.0) >= 55.0 and m.get("score_o15", 0) >= 75:
+            if h2_rate >= 0.50 and ((pct_d_h2 + pct_e_h2) / 2.0) >= 50.0 and m.get("score_o15", 0) >= 70:
                 h2_selections.append({
                     "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                     "market": "⏱️ 2ème MT (+) de buts", "odds": cote_mt2,
@@ -740,6 +740,7 @@ def main():
                     "pct_dom_h2": pct_d_h2, "pct_ext_h2": pct_e_h2,
                     "score": int(h2_rate * 100)
                 })
+
 
     h2_selections.sort(key=lambda x: (x["h2_rate"], x["pct_dom_h2"] + x["pct_ext_h2"]), reverse=True)
 
@@ -1387,7 +1388,8 @@ def main():
           <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
             <div style="font-size:14px; font-weight:800; color:#0e7490; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(Dominance MT2 ≥ 60% · Cote cible 4.00 - 4.45)</span></span>
+              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(Dominance MT2 ≥ 50% · Cote cible 4.00 - 4.45)</span></span>
+
               <span style="font-size:11px; background:#cffafe; color:#0e7490; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_h2)} ticket(s)</span>
             </div>
             {combos_h2_html}
