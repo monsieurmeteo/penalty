@@ -130,7 +130,9 @@ def scan_unibet_match_details(game):
         c1, cx, c2 = None, None, None
         over15, over25, under25 = None, None, None
         s22 = None
+        cote_mt2 = None
         start_iso = ""
+
 
         for js in json_scripts:
             content = js.string or ""
