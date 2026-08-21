@@ -592,8 +592,8 @@ def main():
         block_key = get_betting_session_key(m_dt)
         o15_odds = m.get("over15")
         
-        # Filtre strict Over 1.5 : Score >= 85, Fréquence >= 65%, Cote >= 1.13
-        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.13:
+        # Filtre strict Over 1.5 : Score >= 90, Fréquence >= 65%, Cote >= 1.13
+        if m.get("score_o15", 0) >= 90 and m.get("freq_o15", 0.0) >= 0.65 and o15_odds and o15_odds >= 1.13:
             o15_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": o15_odds,
@@ -606,10 +606,10 @@ def main():
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o15 = len(o15_selections)
     n_pen = sum(1 for m in scanned_results if m.get("ref_name", "Inconnu") not in ["", "Inconnu", None] and m.get("pen_per_match", 0.0) >= 0.45)
-    print(f"📊 Sélections brutes (Score >= 85 / Cote >= 1.13 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
+    print(f"📊 Sélections brutes (Score >= 90 / Cote >= 1.13 / Arbitre >= 0.45) : Over1.5={n_o15} | Penalty(arbitre >= 0.45)={n_pen}")
 
 
-    # Regroupement par Bloc [Journée + Nuit Suivante]
+    # Regroupement par Bloc Journée
     blocks_o15 = {}
     for s in o15_selections:
         blocks_o15.setdefault(s["session"], []).append(s)
@@ -627,7 +627,7 @@ def main():
             comb_odds = s1["odds"]
 
             for s_cand in candidates[i+1:]:
-                if len(combo_items) >= 5:  # Maximum 5 matchs par sécurité
+                if len(combo_items) >= 3:  # STRICTEMENT 3 MATCHS PAR COMBINÉ
                     break
                 if s_cand["id"] in used_match_ids:
                     continue
@@ -639,17 +639,13 @@ def main():
                 combo_teams.update(c_teams)
                 comb_odds *= s_cand["odds"]
 
-                # Dès qu'on a au moins 3 matchs et que la cote dépasse 2.10 (idéal à 4 matchs)
-                if len(combo_items) >= 4 and comb_odds >= 2.10:
-                    break
-
             comb_odds = round(comb_odds, 2)
-            # RÈGLE STRICTE : Cote Totale >= 2.10 et au moins 3 matchs
-            if len(combo_items) >= 3 and comb_odds >= 2.10:
+            # RÈGLE : Combinés de 3 matchs
+            if len(combo_items) == 3:
                 for item in combo_items:
                     used_match_ids.add(item["id"])
                 
-                label = f"Pack {len(combo_items)}× Over 1.5"
+                label = "Trio 3× Over 1.5"
                 combos_mixed.append({
                     "session": session_tag,
                     "type": label,
@@ -680,8 +676,8 @@ def main():
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        recent_h = m.get("recent_h_dom", [])[:10]
-        recent_a = m.get("recent_a_ext", [])[:10]
+        recent_h = m.get("recent_h_dom", [])[:5]
+        recent_a = m.get("recent_a_ext", [])[:5]
 
         def _calc_h_trends(mlist, is_home=True):
             s1, s2, h2_w, tot = 0, 0, 0, 0
@@ -718,7 +714,7 @@ def main():
         tot_e, h2_e, e1, e2 = _calc_h_trends(recent_a, is_home=False)
         tot_m = tot_d + tot_e
 
-        if tot_m >= 6:
+        if tot_m >= 4:
             h2_rate = (h2_d + h2_e) / tot_m
             pct_d_h2 = (d2 / (d1 + d2) * 100) if (d1 + d2) > 0 else 50.0
             pct_e_h2 = (e2 / (e1 + e2) * 100) if (e1 + e2) > 0 else 50.0
@@ -728,7 +724,7 @@ def main():
             m["pct_dom_h2"] = pct_d_h2
             m["pct_ext_h2"] = pct_e_h2
 
-            # Critères d'éligibilité (Option 2 Équilibrée) : h2_rate >= 0.50, moyenne des buts en MT2 >= 50%, score_o15 >= 70
+            # Critères d'éligibilité : 5 derniers matchs Dom/Ext, h2_rate >= 0.50, moyenne buts MT2 >= 50%, score_o15 >= 70
             cote_mt2 = m.get("cote_mt2", 2.05)
             if h2_rate >= 0.50 and ((pct_d_h2 + pct_e_h2) / 2.0) >= 50.0 and m.get("score_o15", 0) >= 70:
                 h2_selections.append({
@@ -1342,8 +1338,8 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9.5px; font-weight:700; color:#1d4ed8;">4× OVER 1.5</div><div style="font-size:9.5px; color:#3b82f6;">Cote ≥ 2.10</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#cffafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:9.5px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:9.5px; color:#0891b2;">Cote ~4.20</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9.5px; font-weight:700; color:#1d4ed8;">3× OVER 1.5</div><div style="font-size:9.5px; color:#3b82f6;">Score ≥ 90</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#cffafe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#0e7490;">{len(combos_h2)}</div><div style="font-size:9.5px; font-weight:700; color:#0e7490;">DUOS 2E MT</div><div style="font-size:9.5px; color:#0891b2;">5 m. Dom/Ext</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:9.5px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:9.5px; color:#7c3aed;">Paris simples</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#f0fdf4; border-radius:8px; padding:8px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:9.5px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:9.5px; color:#16a34a;">Matchs du Jour</div></div></td>
               </tr>
@@ -1375,10 +1371,10 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 1 : COMBINÉS 4× OVER 1.5 -->
+          <!-- SECTION 1 : COMBINÉS 3× OVER 1.5 -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS 4× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 85/100 · Cote cible 2.20 - 2.60)</span></span>
+              <span>🚀 1. COMBINÉS 3× OVER 1.5 BUTS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score ≥ 90/100 · 3 sélections)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1387,12 +1383,13 @@ def main():
           <!-- SECTION 2 : DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#ecfeff; border-top:2px solid #a5f3fc;">
             <div style="font-size:14px; font-weight:800; color:#0e7490; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(Dominance MT2 ≥ 50% · Cote cible 4.00 - 4.45)</span></span>
+              <span>⏱️ 2. DUOS 2× 2ÈME MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#0891b2;">(5 Derniers Matchs Dom/Ext · Dominance MT2 ≥ 50%)</span></span>
 
               <span style="font-size:11px; background:#cffafe; color:#0e7490; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_h2)} ticket(s)</span>
             </div>
             {combos_h2_html}
           </div>
+
 
           <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
           <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
