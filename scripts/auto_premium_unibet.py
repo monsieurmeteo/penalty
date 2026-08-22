@@ -359,12 +359,13 @@ def main():
     # Étape 2 : Préchargement fixtures AdamChoi (optionnel — fallback auto si échoue)
     d_fx = None
     d_refs = {}
-    d_wincomp = {}
+    d_wincomp = []
     try:
-        from wincomparator import fetch_wincomparator_predictions, clean_team_name
+        from wincomparator import fetch_wincomparator_predictions, find_wincomp_match, clean_team_name
         d_wincomp = fetch_wincomparator_predictions(scanned_results)
     except Exception as e_wc:
         print(f"⚠️ Wincomparator non chargé ({e_wc})")
+
 
 
     if analyze_pure_stats_20:
@@ -754,22 +755,19 @@ def main():
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── Enrichissement Wincomparator (+2.5 buts & probabilité IA) ──
+    # ── Enrichissement Wincomparator (+2.5 buts & probabilité IA avec Fuzzy Matching) ──
     if scanned_results and d_wincomp:
-        print(f"📊 Enrichissement Wincomparator IA pour les {len(scanned_results)} matchs scannés...")
+        print(f"📊 Enrichissement Wincomparator IA (Fuzzy Matching) pour les {len(scanned_results)} matchs scannés...")
+        matched_wc = 0
         for m in scanned_results:
-            c_dom = clean_team_name(m.get("dom", ""))
-            c_ext = clean_team_name(m.get("ext", ""))
-            wc_info = d_wincomp.get((c_dom, c_ext))
-            if not wc_info:
-                for (w_d, w_e), v in d_wincomp.items():
-                    if (c_dom and w_d and (c_dom in w_d or w_d in c_dom)) and (c_ext and w_e and (c_ext in w_e or w_e in c_ext)):
-                        wc_info = v
-                        break
+            wc_info = find_wincomp_match(m.get("dom", ""), m.get("ext", ""), d_wincomp)
             if wc_info:
                 m["wincomp_market"] = wc_info.get("market")
                 m["wincomp_prob"] = wc_info.get("prob", 0.0)
                 m["wincomp_url"] = wc_info.get("url")
+                matched_wc += 1
+        print(f"✅ {matched_wc} matchs Unibet associés avec Wincomparator !")
+
 
     # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 [WINCOMPARATOR ≥ 50% OU ÉCART ≤ 0.20] — COTE CIBLE ≥ 2.20) ──
     # Match 1 : Over 1.5 (Matchs offensifs P_pure >= 52%)
