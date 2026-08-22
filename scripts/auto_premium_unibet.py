@@ -942,8 +942,17 @@ def main():
         plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu sur le créneau à venir.</td></tr>'
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
+    def _sort_scan(x):
+        o25 = x.get("over25")
+        u25 = x.get("under25")
+        o15 = x.get("over15")
+        is_fav = 1 if (o25 is not None and u25 is not None and o25 < u25) else 0
+        o15_val = o15 if o15 is not None else 0.0
+        return (is_fav, -o15_val)
+
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: (x.get("over25", 99.0) < x.get("under25", 0.0), -x.get("over15", 0.0)), reverse=True):
+    for m in sorted(scanned_results, key=_sort_scan, reverse=True):
+
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
