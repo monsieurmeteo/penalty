@@ -362,9 +362,10 @@ def main():
     d_wincomp = {}
     try:
         from wincomparator import fetch_wincomparator_predictions, clean_team_name
-        d_wincomp = fetch_wincomparator_predictions()
+        d_wincomp = fetch_wincomparator_predictions(scanned_results)
     except Exception as e_wc:
         print(f"⚠️ Wincomparator non chargé ({e_wc})")
+
 
     if analyze_pure_stats_20:
         try:
