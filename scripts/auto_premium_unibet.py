@@ -746,54 +746,58 @@ def main():
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── MOTEUR DOUBLÉS HYBRIDES (Appariement par Proximité Horaire ≤ 3h) ──
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (2 MATCHS : 1 OVER 1.5 + 1 OVER 2.5 — COTE CIBLE ~1.95 - 2.15) ──
     combos_hybrids = []
-    used_hyb_o = set()
-    used_hyb_u = set()
-    
-    # Étape 1 : Appariement par même tranche horaire
-    blocks_u25 = {}
-    for s in under25_selections:
-        blocks_u25.setdefault(s["session"], []).append(s)
+    used_doub_ids = set()
 
-    for b_key in sorted(blocks_u25.keys()):
-        u_list = blocks_u25[b_key]
-        o_list = [s for s in blocks_mixed.get(b_key, []) if s["id"] not in used_hyb_o]
+    for b_key in sorted(blocks_mixed.keys()):
+        b_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
+        avail = [s for s in b_items if s["id"] not in used_doub_ids]
         
-        m_count = min(len(u_list), len(o_list))
-        for k in range(m_count):
-            it_u = u_list[k]
-            it_o = o_list[k]
-            used_hyb_u.add(it_u["id"])
-            used_hyb_o.add(it_o["id"])
-            c_odds = round(it_o["odds"] * it_u["odds"], 2)
+        while len(avail) >= 2:
+            # Match 1 : Over 1.5 (base de sécurité)
+            m1 = avail[0]
+            # Match 2 : Over 2.5 (le match le plus ouvert de la tranche)
+            m2 = avail[1]
+            o25_cote = m2["m"].get("over25", 1.60)
+            
+            used_doub_ids.add(m1["id"])
+            used_doub_ids.add(m2["id"])
+            
+            c_odds = round(m1["odds"] * o25_cote, 2)
+            item1 = {**m1, "market": "⚡ Over 1.5", "odds": m1["odds"]}
+            item2 = {**m2, "market": "🎯 Over 2.5", "odds": o25_cote}
+            
             combos_hybrids.append({
                 "session": b_key,
-                "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
-                "items": [it_o, it_u],
+                "type": "Doublé 100% Attaque (1 Over 1.5 + 1 Over 2.5)",
+                "items": [item1, item2],
                 "comb_odds": c_odds,
                 "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
             })
+            avail = [s for s in b_items if s["id"] not in used_doub_ids]
 
-    # Étape 2 : Appariement chronologique des Under 2.5 restants avec Over 1.5 les plus proches
-    rem_u = [s for s in under25_selections if s["id"] not in used_hyb_u]
-    rem_o = [s for s in mixed_selections if s["id"] not in used_hyb_o]
-
-    for it_u in rem_u:
-        if not rem_o:
-            break
-        # Trouver l'Over 1.5 le plus proche temporellement
-        closest_o = min(rem_o, key=lambda x: abs((x["dt"] - it_u["dt"]).total_seconds()))
-        rem_o.remove(closest_o)
-        used_hyb_u.add(it_u["id"])
-        c_odds = round(closest_o["odds"] * it_u["odds"], 2)
+    # Fallback Doublés pour matchs restants inter-tranches
+    rem_avail = [s for s in mixed_selections if s["id"] not in used_doub_ids]
+    rem_avail.sort(key=lambda x: x["dt"])
+    while len(rem_avail) >= 2:
+        m1 = rem_avail[0]
+        m2 = rem_avail[1]
+        o25_cote = m2["m"].get("over25", 1.60)
+        used_doub_ids.add(m1["id"])
+        used_doub_ids.add(m2["id"])
+        c_odds = round(m1["odds"] * o25_cote, 2)
+        item1 = {**m1, "market": "⚡ Over 1.5", "odds": m1["odds"]}
+        item2 = {**m2, "market": "🎯 Over 2.5", "odds": o25_cote}
         combos_hybrids.append({
-            "session": it_u["session"],
-            "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
-            "items": [closest_o, it_u],
+            "session": m1["session"],
+            "type": "Doublé 100% Attaque (1 Over 1.5 + 1 Over 2.5)",
+            "items": [item1, item2],
             "comb_odds": c_odds,
             "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
         })
+        rem_avail = [s for s in mixed_selections if s["id"] not in used_doub_ids]
+
 
     TICKET_THEMES = [
         {"bg_header": "#eff6ff", "border_card": "#bfdbfe", "border_left": "#2563eb", "title_color": "#1e40af"},
@@ -848,7 +852,7 @@ def main():
     else:
         combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Quintuplé disponible.</div>'
 
-    # Génération HTML Doublés Hybrides (1 Over 1.5 + 1 Under 2.5)
+    # Génération HTML Doublés 100% Attaque (1 Over 1.5 + 1 Over 2.5)
     combos_hybrids_html = ""
     if combos_hybrids:
         for idx_h, cb in enumerate(combos_hybrids, 1):
@@ -860,9 +864,10 @@ def main():
                 mk = item["market"]
                 o25 = m.get("over25", "N/A")
                 u25 = m.get("under25", "N/A")
-                bg_m = "#dcfce7" if "Over" in mk else "#fef3c7"
-                cl_m = "#166534" if "Over" in mk else "#92400e"
-                lbl_signal = f"O2.5 @{o25} vs U2.5 @{u25}"
+                p_pure = m.get("prob_pure_o25", 55.0)
+                bg_m = "#dcfce7" if "1.5" in mk else "#dbeafe"
+                cl_m = "#166534" if "1.5" in mk else "#1e40af"
+                lbl_signal = f"O2.5 @{o25} < U2.5 @{u25}"
                 
                 items_rows += f'''
                 <tr style="border-bottom:1px solid #f1f5f9;">
@@ -870,13 +875,13 @@ def main():
                     <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
                     <td style="padding:6px 8px; text-align:center;"><span style="background:{bg_m}; color:{cl_m}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">{mk} (@{o:.2f})</span></td>
                     <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">{lbl_signal}</td>
-                    <td style="padding:6px 8px; text-align:center;"><span style="background:#f1f5f9; color:#475569; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">Éligible</span></td>
+                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">{p_pure}% pure</span></td>
                 </tr>'''
 
             combos_hybrids_html += f'''
             <div style="background:#ffffff; border:1px solid {theme['border_card']}; border-left:4px solid {theme['border_left']}; border-radius:8px; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:7px 10px; border-bottom:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🛡️ Doublé Hybride #{idx_h} &bull; Cote Totale : <b style="background:#ffffff; color:{theme['title_color']}; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']}; font-size:13px;">@{cb['comb_odds']:.2f}</b></span>
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎯 Doublé Attaque #{idx_h} &bull; Cote Totale : <b style="background:#ffffff; color:{theme['title_color']}; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']}; font-size:13px;">@{cb['comb_odds']:.2f}</b></span>
                 <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 7px; border-radius:4px;">Mise {cb['stake']:.2f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <table style="width:100%; border-collapse:collapse; font-size:11px;">
@@ -884,7 +889,7 @@ def main():
               </table>
             </div>'''
     else:
-        combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé Hybride disponible.</div>'
+        combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé Attaque disponible.</div>'
 
     # Planning table construction
     plan_rows = []
@@ -915,6 +920,7 @@ def main():
             m = item["m"]
             key = (m["id"], item["market"])
             if key not in seen_plan:
+                p_pure = m.get("prob_pure_o25", 55.0)
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -922,15 +928,16 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": "Écart <= 0.20" if "Under" in item["market"] else "Over Favori",
+                    "score_label": f"{p_pure}% pure",
                     "score_val": 80,
                     "type_label": f"DOUBLÉ #{idx_h}",
-                    "bg_market": "#fef3c7" if "Under" in item["market"] else "#dcfce7",
-                    "cl_market": "#92400e" if "Under" in item["market"] else "#166534",
+                    "bg_market": "#dcfce7" if "1.5" in item["market"] else "#dbeafe",
+                    "cl_market": "#166534" if "1.5" in item["market"] else "#1e40af",
                 })
                 seen_plan.add(key)
 
     plan_rows.sort(key=lambda x: x["dt"])
+
 
     # Génération HTML des lignes du planning
     plan_rows_html = ""
@@ -1018,9 +1025,9 @@ def main():
 
           <!-- HEADER COMPACT -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:16px 18px; text-align:center;">
-            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUINTUPLÉS OVER 1.5 & DOUBLÉS HYBRIDES</div>
+            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUINTUPLÉS OVER 1.5 & DOUBLÉS 100% ATTAQUE</div>
             <h1 style="margin:0; font-size:18px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quintuplés 100% Over 1.5 &bull; Doublés (Over 1.5 + Under 2.5 Écart &le; 0.20) &bull; 24H</p>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quintuplés 100% Over 1.5 &bull; Doublés (1 Over 1.5 + 1 Over 2.5) &bull; Journée (08h-23h59)</p>
           </div>
 
           <!-- COMPTEURS COMPACTS -->
@@ -1028,9 +1035,9 @@ def main():
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
                 <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUINTUPLÉS</div><div style="font-size:9px; color:#3b82f6;">5 Over 1.5</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#fef3c7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#92400e;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#92400e;">DOUBLÉS</div><div style="font-size:9px; color:#b45309;">Over + Under</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#15803d;">OVER RETENUS</div><div style="font-size:9px; color:#16a34a;">P(Pure) ≥ 52%</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">24H</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#15803d;">DOUBLÉS ATTAQUE</div><div style="font-size:9px; color:#16a34a;">Over 1.5 + Over 2.5</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">P(Pure) ≥ 52%</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">Journée</div></div></td>
               </tr>
             </table>
           </div>
@@ -1068,14 +1075,15 @@ def main():
             {combos_mixed_html}
           </div>
 
-          <!-- SECTION 3 : DOUBLÉS HYBRIDES (OVER 1.5 + UNDER 2.5) -->
+          <!-- SECTION 3 : DOUBLÉS 100% ATTAQUE (OVER 1.5 + OVER 2.5) -->
           <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
-            <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Écart &le; 0.20 · Cote Cible ~2.10 - 2.60 · Mise 4,00 €)</span></span>
-              <span style="font-size:10px; background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
+            <div style="font-size:13px; font-weight:800; color:#15803d; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🎯 2. DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Cote Cible ~1.95 - 2.15 · Mise 4,00 €)</span></span>
+              <span style="font-size:10px; background:#dcfce7; color:#15803d; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
             </div>
             {combos_hybrids_html}
           </div>
+
 
           <!-- SECTION 4 : TOUS LES MATCHS ANALYSÉS -->
           <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
@@ -1165,9 +1173,10 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Quintuplés Over 1.5 & {len(combos_hybrids)} Doublés Hybrides"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Quintuplés Over 1.5 & {len(combos_hybrids)} Doublés Attaque"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
+
 
 
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
