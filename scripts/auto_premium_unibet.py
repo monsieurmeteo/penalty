@@ -484,33 +484,33 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 75/100 ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
-    # Les Red Flags sont informatifs uniquement — ne rejettent pas.
+    # ── Sélection Méthode Cadenas (Score >= 70/100, Under 2.5 <= 1.95 ou Under 3.5 <= 1.40) ──
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        ac_score = r.get("ac_score", 0)
+        sc_u25 = r.get("score_u25", 0)
+        sc_u35 = r.get("score_u35", 0)
+        u25 = r.get("under25")
+        u35 = r.get("under35")
+        is_val_u25 = (sc_u25 >= 70 and u25 and u25 <= 1.95)
+        is_val_u35 = (sc_u35 >= 70 and u35 and u35 <= 1.40 and r.get("freq_u35", 0.0) >= 65.0)
 
-        if ac_score >= 75:
+        if is_val_u25 or is_val_u35:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
+            if max(sc_u25, sc_u35) > 0:
+                r["rejection_reason"] = f"Scores Under insuffisants (U2.5: {sc_u25}/100, U3.5: {sc_u35}/100)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    s3_matches.sort(key=lambda x: max(x.get("score_u25", 0), x.get("score_u35", 0)), reverse=True)
 
-    hybrid_option_b_matches = s3_matches
-    nb_triple = len(s3_matches)
-    nb_double = 0
-    nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Cadenas (Under 2.5 ou Under 3.5) : {len(s3_matches)} / {len(scanned_results)}")
+
 
 
 
@@ -627,29 +627,34 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Under 2.5 si Score Verrou >= 75 ET Cote Under 2.5 < Cote Over 2.5 (ou Under 2.5 <= 1.85)
+        # 1. Under 2.5 si Score Verrou >= 70 ET Cote Under 2.5 <= 1.95 (ou Under < Over)
         u25 = m.get("under25")
         o25 = m.get("over25")
-        if m.get("score_u25", 0) >= 75 and u25 and o25 and (u25 < o25):
+        sc_u25 = m.get("score_u25", 0)
+        sc_u35 = m.get("score_u35", 0)
+        u35 = m.get("under35")
+
+        if sc_u25 >= 70 and u25 and (u25 <= 1.95 or (o25 and u25 < o25)):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🔒 Under 2.5", "odds": u25,
-                "score": m.get("score_u25", 0)
+                "score": sc_u25
             })
-        # 2. Under 3.5 si Score Banque >= 75 ET Cote Under 3.5 <= 1.35
-        elif m.get("score_u35", 0) >= 75 and m.get("under35") and (m.get("under35") <= 1.35) and m.get("freq_u35", 0.0) >= 70.0:
+        # 2. Under 3.5 si Score Banque >= 70 ET Cote Under 3.5 <= 1.40
+        elif sc_u35 >= 70 and u35 and (u35 <= 1.40) and m.get("freq_u35", 0.0) >= 65.0:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🛡️ Under 3.5", "odds": m["under35"],
-                "score": m.get("score_u35", 0)
+                "market": "🛡️ Under 3.5", "odds": u35,
+                "score": sc_u35
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_u25 = sum(1 for m in scanned_results if m.get("score_u25", 0) >= 75 and m.get("under25") and m.get("over25") and (m.get("under25") < m.get("over25")))
-    n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 75 and m.get("under35") and (m.get("under35") <= 1.35) and m.get("freq_u35", 0.0) >= 70.0)
+    n_u25 = sum(1 for m in scanned_results if m.get("score_u25", 0) >= 70 and m.get("under25") and (m.get("under25") <= 1.95 or (m.get("over25") and m.get("under25") < m.get("over25"))))
+    n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 70 and m.get("under35") and (m.get("under35") <= 1.40) and m.get("freq_u35", 0.0) >= 65.0)
 
     print(f"📊 Sélections brutes : Under 2.5={n_u25} | Under 3.5={n_u35}")
     print(f"📊 Total sélections dans les combinés Cadenas : {len(mixed_selections)}")
+
 
 
     # Regroupement strict par Bloc [Journée (8h-23h59)]
@@ -985,10 +990,11 @@ def main():
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: x.get("score_u25", 0), reverse=True):
-        retained = (m.get("score_u25", 0) >= 75 and m.get("under25") and m.get("over25") and (m.get("under25") < m.get("over25")))
+    for m in sorted(scanned_results, key=lambda x: max(x.get("score_u25", 0), x.get("score_u35", 0)), reverse=True):
+        retained = (m.get("score_u25", 0) >= 70 and m.get("under25") and (m.get("under25") <= 1.95 or (m.get("over25") and m.get("under25") < m.get("over25")))) or (m.get("score_u35", 0) >= 70 and m.get("under35") and m.get("under35") <= 1.40 and m.get("freq_u35", 0.0) >= 65.0)
         bg_row = "#f0fdf4" if retained else "#fff"
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
+
         u25 = f"@{m['under25']:.2f}" if m.get("under25") else "N/A"
         u35 = f"@{m['under35']:.2f}" if m.get("under35") else "N/A"
         sc_u25 = m.get("score_u25", 0)
