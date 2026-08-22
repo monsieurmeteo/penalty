@@ -256,8 +256,14 @@ def scan_unibet_match_details(game):
                 buteur_cote = closest[1]
                 buteur_avg = round(avg_p, 2)
 
-            margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
-            over25_fair = round(over25 * margin_o25, 2) if over25 else None
+            margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.10
+            margin_pct = round((margin_o25 - 1.0) * 100, 1) if margin_o25 else 10.0
+            
+            # Probabilités réelles pures SANS la marge du bookmaker ARJEL
+            prob_pure_o25 = round(((1.0 / over25) / margin_o25) * 100, 1) if (over25 and margin_o25 > 0) else None
+            prob_pure_u25 = round(((1.0 / under25) / margin_o25) * 100, 1) if (under25 and margin_o25 > 0) else None
+            over25_fair = round(100.0 / prob_pure_o25, 2) if prob_pure_o25 else None
+            under25_fair = round(100.0 / prob_pure_u25, 2) if prob_pure_u25 else None
 
             # Fallback estimation Under 3.5 si non listé explicitement
             if under35 is None and under25 is not None:
@@ -273,7 +279,12 @@ def scan_unibet_match_details(game):
                 "date_str": format_french_date(start_iso),
                 "c1": c1, "cx": cx, "c2": c2,
                 "over15": over15 or (round(1.0 + (over25 - 1.0) * 0.45, 2) if over25 else 1.25),
-                "over25": over25, "under25": under25, "over25_fair": over25_fair,
+                "over25": over25, "under25": under25,
+                "margin_pct": margin_pct,
+                "prob_pure_o25": prob_pure_o25,
+                "prob_pure_u25": prob_pure_u25,
+                "over25_fair": over25_fair,
+                "under25_fair": under25_fair,
                 "over35": over35, "under35": under35,
                 "s22": s22,
                 "btts_oui": btts_oui,
@@ -282,6 +293,7 @@ def scan_unibet_match_details(game):
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
             }
+
 
     except Exception as e:
         print(f"❌ ERROR scanning {game.get('url')}: {e}")
@@ -480,7 +492,7 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Quadruplés Over 1.5 (Condition Bookmaker : Over 2.5 < Under 2.5) ──
+    # ── Sélection 100% Quadruplés Over 1.5 (Condition Dé-margée : Over 2.5 < Under 2.5 & P(Pure) >= 52%) ──
     s3_matches = []
     rejected_matches = []
 
@@ -488,7 +500,8 @@ def main():
         o25 = r.get("over25")
         u25 = r.get("under25")
         o15 = r.get("over15")
-        is_val = (o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50)
+        prob_pure_o25 = r.get("prob_pure_o25") or 0.0
+        is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.50)
 
         if is_val:
             r["double_confirm"] = True
@@ -497,6 +510,8 @@ def main():
         else:
             if o25 and u25 and o25 >= u25:
                 r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
+            elif prob_pure_o25 < 52.0 and o25 and u25:
+                r["rejection_reason"] = f"Probabilité pure sans marge trop faible ({prob_pure_o25}% < 52%)"
             elif not o25 or not u25:
                 r["rejection_reason"] = "Cotes Over/Under 2.5 non disponibles sur Unibet"
             else:
@@ -505,7 +520,8 @@ def main():
 
     s3_matches.sort(key=lambda x: x.get("over15", 99.0))
 
-    print(f"⭐ Matchs validés 100% Over 1.5 (Over 2.5 < Under 2.5) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés 100% Over 1.5 Dé-margés (P_pure >= 52%) : {len(s3_matches)} / {len(scanned_results)}")
+
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -624,19 +640,18 @@ def main():
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
+        prob_pure_o25 = m.get("prob_pure_o25") or 0.0
 
-        if o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50:
-            # Score de confiance Bookmaker : % d'avantage Over 2.5 vs Under 2.5
-            sc_conf = int(round((1.0 - (o25 / (o25 + u25))) * 100)) if (o25 + u25) > 0 else 75
+        if o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.50:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "⚡ Over 1.5", "odds": o15,
-                "score": sc_conf
+                "score": int(round(prob_pure_o25))
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o15 = len(mixed_selections)
-    print(f"📊 Sélections 100% Over 1.5 (Over 2.5 < Under 2.5) retenues : {n_o15}")
+    print(f"📊 Sélections 100% Over 1.5 Dé-margées (P_pure >= 52%) retenues : {n_o15}")
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
@@ -717,28 +732,28 @@ def main():
         o15 = m.get("over15", 1.25)
         o25 = m.get("over25", "N/A")
         u25 = m.get("under25", "N/A")
+        margin_pct = m.get("margin_pct", 8.5)
+        prob_pure_o25 = m.get("prob_pure_o25", 55.0)
+        over25_fair = m.get("over25_fair", "N/A")
         c1 = m.get("c1", "N/A")
         cx = m.get("cx", "N/A")
         c2 = m.get("c2", "N/A")
         b_oui = m.get("btts_oui")
 
-        # Calcul probabilité implicite Over 2.5
-        prob_imp = round((1.0 / o25) * 100, 1) if (isinstance(o25, (int, float)) and o25 > 0) else 55.0
-
         return f'''
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">⚡ SIGNAL BOOKMAKER OVER 1.5</span>
+                <span style="font-weight:800; font-size:12px; color:#0f172a;">⚡ SIGNAL BOOKMAKER DÉ-MARGÉ (OVER 1.5)</span>
                 <span style="background:#16a34a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    Over 2.5 Favori (@{o25} &lt; @{u25})
+                    Probabilité Pure Over 2.5 : {prob_pure_o25}%
                 </span>
             </div>
 
             <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; line-height:1.6;">
                 <b>Pari joué</b> : <b style="color:#16a34a; font-size:12px;">Over 1.5 Buts (@{o15:.2f})</b> &nbsp;|&nbsp; 
-                <b>Cote Over 2.5</b> : @{o25} &nbsp;|&nbsp; 
-                <b>Cote Under 2.5</b> : @{u25} &nbsp;|&nbsp; 
-                <b>Prob. Implicite Over</b> : {prob_imp}%
+                <b>Cote Pure Sans Marge</b> : <b style="color:#0f172a;">@{over25_fair}</b> &nbsp;|&nbsp; 
+                <b>Marge ARJEL Neutralisée</b> : <span style="color:#d97706; font-weight:700;">{margin_pct}%</span><br>
+                <b>Cotes Affichées Unibet</b> : Over 2.5 @{o25} &bull; Under 2.5 @{u25}
             </div>
 
             <div style="margin-top:6px; font-size:11px; color:#64748b;">
@@ -746,6 +761,7 @@ def main():
             </div>
         </div>
         '''
+
 
 
 
