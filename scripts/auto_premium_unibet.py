@@ -614,25 +614,26 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
-    def get_betting_session_key(m_dt, slot_only=False):
+    # ── Génération des Tranches Horaires Rapprochées (Midi, Après-Midi, Soirée) ──
+    def get_betting_session_key(m_dt):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        if local_dt.hour < 6:
-            betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+        betting_date = local_dt.strftime("%Y-%m-%d")
+        h = local_dt.hour
+        if h < 14:
+            tranche = "Matin / Midi (11h-14h)"
+        elif h < 17:
+            tranche = "Après-Midi (14h-17h)"
+        elif h < 20:
+            tranche = "Début de Soirée (17h-20h)"
         else:
-            betting_date = local_dt.strftime("%Y-%m-%d")
-        slot = "nuit" if local_dt.hour < 6 else "jour"
-        if slot_only:
-            return slot
-        return f"{betting_date}-block"
+            tranche = "Soirée (20h-23h59)"
+        return f"{betting_date} · {tranche}"
 
-    # ── MOTEUR UNIFIÉ QUADRUPLÉS 100% OVER 1.5 (Bloc 24h Journée + Nuit) ──
+    # ── MOTEUR UNIFIÉ OVER 1.5 ──
     mixed_selections = []
-    
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
@@ -645,11 +646,25 @@ def main():
                 "score": int(round(prob_pure_o25))
             })
 
-    # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o15 = len(mixed_selections)
-    print(f"📊 Sélections 100% Over 1.5 Dé-margées (P_pure >= 52%) retenues : {n_o15}")
+    # ── MOTEUR 2 : UNDER 2.5 (ÉCART <= 0.20) ──
+    under25_selections = []
+    for m in scanned_results:
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        block_key = get_betting_session_key(m_dt)
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        if o25 and u25 and abs(u25 - o25) <= 0.20 and 1.50 <= u25 <= 2.30:
+            diff = round(abs(u25 - o25), 2)
+            under25_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "market": "🛡️ Under 2.5", "odds": u25,
+                "diff": diff, "score": int(round((1.0 - diff/0.20) * 100))
+            })
 
-    # Regroupement strict par Bloc [Journée + Nuit Suivante]
+    print(f"📊 Sélections Over 1.5 retenues : {len(mixed_selections)}")
+    print(f"📊 Sélections Under 2.5 (Écart <= 0.20) retenues : {len(under25_selections)}")
+
+    # Regroupement strict par Tranche Horaire
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
@@ -657,6 +672,7 @@ def main():
     # ── MOTEUR UNIFIÉ QUINTUPLÉS OVER 1.5 (5 Matchs Chronologiques — Cote Cible ~2.40 - 3.50) ──
     used_match_ids = set()
     combos_mixed = []
+
 
     # Pour chaque Bloc, appariement chronologique des matchs 5 par 5
     for b_key in sorted(blocks_mixed.keys()):
