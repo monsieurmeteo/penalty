@@ -654,67 +654,67 @@ def main():
     n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 60 and m.get("under35") and (m.get("under35") <= 1.45) and m.get("freq_u35", 0.0) >= 60.0)
 
     print(f"📊 Sélections brutes : Under 2.5={n_u25} | Under 3.5={n_u35}")
-    print(f"📊 Total sélections dans les combinés Cadenas : {len(mixed_selections)}")
-
-
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
+    # ── MOTEUR UNIFIÉ TRIPLÉS CADENAS (3 Matchs Chronologiques — Cote Cible ~2.40 - 3.20) ──
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc, appariement chronologique des matchs (Cote Min: 1.85, Cible: ~2.05)
+
+    # Pour chaque Bloc, appariement chronologique des matchs 3 par 3
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
-        for i, s1 in enumerate(block_items):
-            if s1["id"] in used_match_ids: continue
+        
+        # Triplés par 3 matchs
+        available = [s for s in block_items if s["id"] not in used_match_ids]
+        while len(available) >= 3:
+            trip = available[:3]
+            comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
+            for s in trip:
+                used_match_ids.add(s["id"])
+            combos_mixed.append({
+                "session": b_key,
+                "type": "Triplé Cadenas (3 Matchs)",
+                "items": trip,
+                "comb_odds": comb_odds,
+                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+            })
+            available = [s for s in block_items if s["id"] not in used_match_ids]
 
-            best_partner = None
-            best_diff = 999.0
+    # Fallback pour sélections restantes inter-blocs (3 par 3)
+    unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
+    unpaired.sort(key=lambda x: x["dt"])
+    while len(unpaired) >= 3:
+        trip = unpaired[:3]
+        comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
+        for s in trip:
+            used_match_ids.add(s["id"])
+        combos_mixed.append({
+            "session": "inter-blocs",
+            "type": "Triplé Cadenas (3 Matchs)",
+            "items": trip,
+            "comb_odds": comb_odds,
+            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+        })
+        unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
 
-            for s2 in block_items[i+1:]:
-                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+    # S'il reste 2 matchs orphelins à la fin, on forme un doublé de clôture
+    if len(unpaired) == 2:
+        doub = unpaired[:2]
+        comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
+        for s in doub:
+            used_match_ids.add(s["id"])
+        combos_mixed.append({
+            "session": "cloture-mixte",
+            "type": "Doublé Cadenas (2 Matchs)",
+            "items": doub,
+            "comb_odds": comb_odds,
+            "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+        })
 
-                comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 1.85:
-                    diff = abs(comb2 - 2.05)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = s2
-
-            if best_partner:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(best_partner["id"])
-                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
-                combos_mixed.append({
-                    "session": b_key,
-                    "type": "Doublé Cadenas",
-                    "items": [s1, best_partner],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-
-    # Fallback pour sélections isolées non couplées dans leur bloc
-    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
-    unpaired_selections.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired_selections):
-        if s1["id"] in used_match_ids: continue
-        for s2 in unpaired_selections[i+1:]:
-            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 1.85:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(s2["id"])
-                combos_mixed.append({
-                    "session": f"{s1['session']}-mixte",
-                    "type": "Doublé Cadenas",
-                    "items": [s1, s2],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-                break
 
 
     pen_simples = []
@@ -1040,18 +1040,18 @@ def main():
 
           <!-- HEADER -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
-            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · MÉTHODE CADENAS (UNDER 2.5 & UNDER 3.5)</div>
+            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · TRIPLÉS CADENAS (UNDER 2.5 & UNDER 3.5)</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Matchs en Journée (8h - 23h59)</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Triplés 3 Matchs Chronologiques · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{n_u25}</div><div style="font-size:10px; font-weight:700; color:#15803d;">UNDER 2.5</div><div style="font-size:10px; color:#16a34a;">Score ≥ 75</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:10px; color:#64748b;">Journée</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">TRIPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.50-3.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{n_u35}</div><div style="font-size:10px; font-weight:700; color:#15803d;">UNDER 3.5</div><div style="font-size:10px; color:#16a34a;">Score ≥ 60</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:10px; color:#64748b;">24H</div></div></td>
               </tr>
             </table>
           </div>
@@ -1080,10 +1080,10 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS CADENAS -->
+          <!-- SECTION 2 : TRIPLÉS CADENAS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS CADENAS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Under 2.5 [Under &lt; Over] • Under 3.5 [Cote ≤ 1.35] — Score ≥ 75/100)</span></span>
+              <span>🚀 1. TRIPLÉS CADENAS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(3 Matchs · Cote Cible ~2.40 - 3.20 · Mise 3,00 €)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1110,7 +1110,7 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
-            🔒 Paris sportifs · Méthode Cadenas (Under 2.5 & Under 3.5) · Analyse AdamChoi & Sofascore · Unibet France · {now_str}
+            🔒 Paris sportifs · Méthode Triplés Cadenas (Under 2.5 & Under 3.5) · Analyse AdamChoi & Sofascore · Unibet France · {now_str}
           </div>
 
         </div>
@@ -1122,25 +1122,25 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & BTTS — JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION TRIPLÉS CADENAS — 24H JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
+        f"**Critères** : Under 2.5 (Score >= 70) • Under 3.5 (Score >= 60)\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.00 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Triplés Cadenas Recommandés (Cote Cible ~2.40 - 3.20 — Mise 3,00 € / ticket)\n",
     ]
 
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise {cb.get('stake', 3.0):.2f} € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
             report.append("")
     else:
-        report.append("Aucun combiné multi-marchés disponible.\n")
+        report.append("Aucun combiné disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
     report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
@@ -1179,7 +1179,8 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Cadenas (Under 2.5 • Under 3.5)"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Triplés Cadenas (Under 2.5 • Under 3.5)"
+
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
 
