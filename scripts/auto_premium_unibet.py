@@ -292,7 +292,7 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Journée + Nuit suivante (36 Heures max)
+    # Filtre Fenêtre : Matchs en Journée uniquement (08h00 à 23h59) — Exclut TOUS les matchs de la nuit
     now_utc = datetime.now(timezone.utc)
     limit_36h = now_utc + timedelta(hours=36)
 
@@ -302,6 +302,11 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
+                # Heure locale de Paris (UTC+2)
+                local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
+                # Exclure TOUS les matchs de la nuit (00h00 à 07h59)
+                if local_dt.hour < 8:
+                    continue
                 if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
@@ -312,11 +317,12 @@ def main():
 
     # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
     if len(scanned_results) == 0 and scanned_all:
-        print("⚠️ Aucun match dans la fenêtre 36h — Utilisation des prochains matchs disponibles...")
-        scanned_results = scanned_all
+        print("⚠️ Aucun match dans la fenêtre — Utilisation des prochains matchs disponibles...")
+        scanned_results = [m for m in scanned_all if (datetime.fromisoformat(m['start_iso'].replace('Z', '+00:00')).astimezone(timezone(timedelta(hours=2))).hour >= 8) if m.get('start_iso')] or scanned_all
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs dans la fenêtre Journée + Nuit Suivante (36h) : {len(scanned_results)}")
+    print(f"Matchs de Journée retenus (08h-23h59) : {len(scanned_results)}")
+
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
@@ -591,9 +597,10 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Over 2.5 si Score >= 80
+        # 1. Over 2.5 si Score >= 80 ET Cote Over 2.5 < Cote Under 2.5
         o25 = m.get("over25")
-        if m.get("ac_score", 0) >= 80 and o25:
+        u25 = m.get("under25")
+        if m.get("ac_score", 0) >= 80 and o25 and u25 and (o25 < u25):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟥 Over 2.5", "odds": o25,
@@ -608,9 +615,10 @@ def main():
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 80 and m.get("over25"))
+    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 80 and m.get("over25") and m.get("under25") and (m.get("over25") < m.get("under25")))
     n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 80 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
     n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 80 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"])
+
 
 
     print(f"📊 Sélections brutes : Over2.5={n_o25} | Over1.5={n_o15} | Penalty(arbitre connu)={n_pen}")
@@ -1039,7 +1047,7 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Fenêtre Journées + Nuits</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Matchs en Journée (8h - 23h59)</p>
           </div>
 
           <!-- COMPTEURS -->
@@ -1048,10 +1056,11 @@ def main():
               <tr>
                 <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Jour + Nuit</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Journée</div></div></td>
               </tr>
             </table>
           </div>
+
 
           <!-- SECTION 1 : PLANNING HEURE PAR HEURE -->
           <div style="padding:16px 16px 8px 16px;">
