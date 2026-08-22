@@ -2,9 +2,10 @@
 # ANALYZE.PY V13 — AFFICHAGE OBLIGATOIRE DES 10 DERNIERS SCORES REELS (DOM & EXT)
 # ==============================================================================
 
-import sys, os, requests, json, unicodedata, re
+import sys, os, requests, json, unicodedata, re, math, statistics
 from difflib import SequenceMatcher
 from concurrent.futures import ThreadPoolExecutor
+
 
 BASE = "https://www.adamchoi.co.uk"
 BASE_WIDGET = "https://api.choistats.com/api/widget"
@@ -458,6 +459,42 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
                     except Exception: pass
         return cnt
 
+    def count_u25(matches_list):
+        cnt = 0
+        if isinstance(matches_list, list):
+            for m in matches_list:
+                if isinstance(m, dict):
+                    gh = m.get("homeGoals", m.get("homeGoalsFt", 0))
+                    ga = m.get("awayGoals", m.get("awayGoalsFt", 0))
+                    try:
+                        if (int(gh) + int(ga)) <= 2: cnt += 1
+                    except Exception: pass
+        return cnt
+
+    def count_u35(matches_list):
+        cnt = 0
+        if isinstance(matches_list, list):
+            for m in matches_list:
+                if isinstance(m, dict):
+                    gh = m.get("homeGoals", m.get("homeGoalsFt", 0))
+                    ga = m.get("awayGoals", m.get("awayGoalsFt", 0))
+                    try:
+                        if (int(gh) + int(ga)) <= 3: cnt += 1
+                    except Exception: pass
+        return cnt
+
+    def count_4plus(matches_list):
+        cnt = 0
+        if isinstance(matches_list, list):
+            for m in matches_list:
+                if isinstance(m, dict):
+                    gh = m.get("homeGoals", m.get("homeGoalsFt", 0))
+                    ga = m.get("awayGoals", m.get("awayGoalsFt", 0))
+                    try:
+                        if (int(gh) + int(ga)) >= 4: cnt += 1
+                    except Exception: pass
+        return cnt
+
     o25_h_cnt = count_o25(recent_h_all[:20])
     o25_a_cnt = count_o25(recent_a_all[:20])
     o25_avg_rate = (((o25_h_cnt / max(1, len(recent_h_all[:20]))) + (o25_a_cnt / max(1, len(recent_a_all[:20])))) / 2.0) * 100
@@ -475,6 +512,26 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     freq_btts_dom = (btts_h_cnt / max(1, len(recent_h_dom[:10]))) * 100
     freq_btts_ext = (btts_a_cnt / max(1, len(recent_a_ext[:10]))) * 100
     freq_btts = round((freq_btts_dom + freq_btts_ext) / 2.0, 1)
+
+    # ── Moteur Probabiliste Poisson Under 2.5 & Under 3.5 ──
+    l_dom = max(0.4, (gf_a * 0.6) + (ga_b * 0.4))
+    l_ext = max(0.4, (gf_b * 0.6) + (ga_a * 0.4))
+    
+    p_u25_sum = 0.0
+    p_u35_sum = 0.0
+    for x in range(7):
+        px = (math.exp(-l_dom) * (l_dom**x)) / math.factorial(x)
+        for y in range(7):
+            py = (math.exp(-l_ext) * (l_ext**y)) / math.factorial(y)
+            pxy = px * py
+            if x + y <= 2:
+                p_u25_sum += pxy
+            if x + y <= 3:
+                p_u35_sum += pxy
+    
+    prob_u25 = round(p_u25_sum * 100.0, 1)
+    prob_u35 = round(p_u35_sum * 100.0, 1)
+
 
     xg_total = xg_a + ga_b*0.5 + xg_b + ga_a*0.5
     sot_total = sot_a + sot_b
@@ -738,6 +795,149 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     score_btts = max(0, min(100, btts_b1 + btts_b2 + btts_b3 + btts_b4 + btts_b5 + btts_b6 - rf_pen_btts))
 
     # ══════════════════════════════════════════════════════════════
+    # 🔒 MODULE UNDER 2.5 BUTS (/100) — Score Verrou Défensif
+    # ══════════════════════════════════════════════════════════════
+    # Pilier 1 — Fréquence réelle Dom/Ext <= 2 buts (20 pts max)
+    u25_h_dom_cnt = count_u25(recent_h_dom[:10])
+    u25_a_ext_cnt = count_u25(recent_a_ext[:10])
+    pct_u25_h = (u25_h_dom_cnt / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_u25_a = (u25_a_ext_cnt / max(1, len(recent_a_ext[:10]))) * 100.0
+    freq_u25 = round((pct_u25_h + pct_u25_a) / 2.0, 1)
+
+    if freq_u25 >= 75.0: u25_b1 = 20
+    elif freq_u25 >= 70.0: u25_b1 = 18
+    elif freq_u25 >= 65.0: u25_b1 = 16
+    elif freq_u25 >= 60.0: u25_b1 = 14
+    elif freq_u25 >= 55.0: u25_b1 = 10
+    elif freq_u25 >= 50.0: u25_b1 = 7
+    else: u25_b1 = 3
+
+    if min(pct_u25_h, pct_u25_a) < 30.0: u25_b1 = min(6, u25_b1)
+    elif min(pct_u25_h, pct_u25_a) < 40.0: u25_b1 = min(10, u25_b1)
+
+    # Pilier 2 — Expected Goals & Lambda total attendu (20 pts max)
+    tot_lambda = l_dom + l_ext
+    if tot_lambda <= 1.90: u25_b2 = 20
+    elif tot_lambda <= 2.15: u25_b2 = 18
+    elif tot_lambda <= 2.40: u25_b2 = 15
+    elif tot_lambda <= 2.65: u25_b2 = 11
+    elif tot_lambda <= 2.90: u25_b2 = 7
+    else: u25_b2 = 3
+
+    # Pilier 3 — Buts réels marqués + encaissés (15 pts max)
+    tot_goals_u = gf_a + ga_a + gf_b + ga_b
+    if tot_goals_u <= 2.10: u25_b3 = 15
+    elif tot_goals_u <= 2.35: u25_b3 = 13
+    elif tot_goals_u <= 2.60: u25_b3 = 10
+    elif tot_goals_u <= 2.85: u25_b3 = 7
+    elif tot_goals_u <= 3.10: u25_b3 = 4
+    else: u25_b3 = 1
+
+    # Pilier 4 — Volume offensif & Tirs cadrés (15 pts max)
+    if sot_comb <= 6.5: u25_b4 = 15
+    elif sot_comb <= 7.5: u25_b4 = 13
+    elif sot_comb <= 8.5: u25_b4 = 10
+    elif sot_comb <= 9.5: u25_b4 = 7
+    elif sot_comb <= 10.5: u25_b4 = 4
+    else: u25_b4 = 1
+
+    # Pilier 5 — Solidité défensive & Clean Sheets (10 pts max)
+    cs_h = sum(1 for m in recent_h_dom[:10] if int(m.get("awayGoals", m.get("awayGoalsFt", 0))) == 0)
+    cs_a = sum(1 for m in recent_a_ext[:10] if int(m.get("homeGoals", m.get("homeGoalsFt", 0))) == 0)
+    pct_cs = round(((cs_h + cs_a) / max(1, len(recent_h_dom[:10]) + len(recent_a_ext[:10]))) * 100.0, 1)
+    if pct_cs >= 40.0: u25_b5 = 10
+    elif pct_cs >= 30.0: u25_b5 = 8
+    elif pct_cs >= 20.0: u25_b5 = 5
+    else: u25_b5 = 2
+
+    # Pilier 6 — Rythme 1ère mi-temps (10 pts max)
+    ht_00_cnt = sum(1 for m in (recent_h_dom[:10] + recent_a_ext[:10]) if (m.get("homeGoalsHt", 0) == 0 and m.get("awayGoalsHt", 0) == 0))
+    pct_ht00 = (ht_00_cnt / max(1, len(recent_h_dom[:10]) + len(recent_a_ext[:10]))) * 100.0
+    if pct_ht00 >= 40.0: u25_b6 = 10
+    elif pct_ht00 >= 30.0: u25_b6 = 8
+    elif pct_ht00 >= 20.0: u25_b6 = 5
+    else: u25_b6 = 2
+
+    # Pilier 7 — Contexte & Marché (10 pts max)
+    u25_b7 = 8
+    unibet_u25 = m_unibet.get("under25") if isinstance(m_unibet, dict) else None
+    unibet_o25 = m_unibet.get("over25") if isinstance(m_unibet, dict) else None
+    if unibet_u25 and unibet_o25 and unibet_u25 < unibet_o25:
+        u25_b7 = 10
+
+    # Malus Red Flags Under 2.5
+    rf_pen_u25 = 0
+    if max(gf_a, gf_b) >= 2.2: rf_pen_u25 += 10
+    if max(ga_a, ga_b) >= 2.0: rf_pen_u25 += 10
+    p4_tot = count_4plus(recent_h_dom[:10]) + count_4plus(recent_a_ext[:10])
+    if p4_tot >= 4: rf_pen_u25 += 15
+
+    score_u25 = max(0, min(100, u25_b1 + u25_b2 + u25_b3 + u25_b4 + u25_b5 + u25_b6 + u25_b7 - rf_pen_u25))
+
+    # ══════════════════════════════════════════════════════════════
+    # 🛡️ MODULE UNDER 3.5 BUTS (/100) — Score Banque Défensive
+    # ══════════════════════════════════════════════════════════════
+    # Pilier 1 — Fréquence <= 3 buts (25 pts max)
+    u35_h_cnt = count_u35(recent_h_dom[:10])
+    u35_a_cnt = count_u35(recent_a_ext[:10])
+    pct_u35_h = (u35_h_cnt / max(1, len(recent_h_dom[:10]))) * 100.0
+    pct_u35_a = (u35_a_cnt / max(1, len(recent_a_ext[:10]))) * 100.0
+    freq_u35 = round((pct_u35_h + pct_u35_a) / 2.0, 1)
+
+    if freq_u35 >= 90.0: u35_b1 = 25
+    elif freq_u35 >= 80.0: u35_b1 = 22
+    elif freq_u35 >= 70.0: u35_b1 = 17
+    elif freq_u35 >= 60.0: u35_b1 = 12
+    else: u35_b1 = 5
+
+    # Pilier 2 — Risque réel de 4+ buts (20 pts max)
+    p4_h = count_4plus(recent_h_dom[:10])
+    p4_a = count_4plus(recent_a_ext[:10])
+    risk_4plus = round((((p4_h / max(1, len(recent_h_dom[:10]))) + (p4_a / max(1, len(recent_a_ext[:10])))) / 2.0) * 100.0, 1)
+
+    if risk_4plus <= 10.0: u35_b2 = 20
+    elif risk_4plus <= 15.0: u35_b2 = 17
+    elif risk_4plus <= 20.0: u35_b2 = 13
+    elif risk_4plus <= 25.0: u35_b2 = 8
+    else: u35_b2 = 2
+
+    # Pilier 3 — xG et Lambda attendu (20 pts max)
+    if tot_lambda <= 2.30: u35_b3 = 20
+    elif tot_lambda <= 2.60: u35_b3 = 17
+    elif tot_lambda <= 2.90: u35_b3 = 13
+    elif tot_lambda <= 3.20: u35_b3 = 8
+    else: u35_b3 = 2
+
+    # Pilier 4 — Défense & Résistance aux gros scores (15 pts max)
+    heavy_conceded = sum(1 for m in recent_h_dom[:10] if int(m.get("awayGoals", 0)) >= 3) + sum(1 for m in recent_a_ext[:10] if int(m.get("homeGoals", 0)) >= 3)
+    if heavy_conceded == 0: u35_b4 = 15
+    elif heavy_conceded == 1: u35_b4 = 11
+    elif heavy_conceded == 2: u35_b4 = 7
+    else: u35_b4 = 2
+
+    # Pilier 5 — Volatilité & Écart-type des scores (10 pts max)
+    import statistics
+    all_goals = []
+    for m in (recent_h_dom[:10] + recent_a_ext[:10]):
+        try:
+            gh = int(m.get("homeGoals", m.get("homeGoalsFt", 0)))
+            ga = int(m.get("awayGoals", m.get("awayGoalsFt", 0)))
+            all_goals.append(gh + ga)
+        except Exception: pass
+    stdev_goals = round(statistics.stdev(all_goals), 2) if len(all_goals) > 1 else 1.2
+
+    if stdev_goals <= 1.10: u35_b5 = 10
+    elif stdev_goals <= 1.35: u35_b5 = 8
+    elif stdev_goals <= 1.60: u35_b5 = 5
+    else: u35_b5 = 2
+
+    # Pilier 6 — Contexte (10 pts max)
+    u35_b6 = 9
+
+    score_u35 = max(0, min(100, u35_b1 + u35_b2 + u35_b3 + u35_b4 + u35_b5 + u35_b6))
+
+
+    # ══════════════════════════════════════════════════════════════
     # BARÈME V2.1 PENALTY /100 — Refonte prioritaire (Total exact 100 pts)
     # ══════════════════════════════════════════════════════════════
 
@@ -925,6 +1125,15 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "freq_btts": freq_btts,
             "score_o15": score_o15,
             "score_btts": score_btts,
+            "score_u25": score_u25,
+            "score_u35": score_u35,
+            "prob_u25": prob_u25,
+            "prob_u35": prob_u35,
+            "freq_u25": freq_u25,
+            "freq_u35": freq_u35,
+            "risk_4plus": risk_4plus,
+            "stdev_goals": stdev_goals,
+            "pct_cs": pct_cs,
             "score_penalty": score_penalty,
             "ref_name": ref_name,
             "ref_status": ref_status,
@@ -936,6 +1145,7 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "p_ext_10m": p_ext_10m,
             "p_tot_10m": p_tot_10m,
         }
+
 
 
     print(f"⚽ {team_a.upper()} — {team_b.upper()}")
