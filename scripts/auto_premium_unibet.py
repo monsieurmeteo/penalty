@@ -359,6 +359,13 @@ def main():
     # Étape 2 : Préchargement fixtures AdamChoi (optionnel — fallback auto si échoue)
     d_fx = None
     d_refs = {}
+    d_wincomp = {}
+    try:
+        from wincomparator import fetch_wincomparator_predictions, clean_team_name
+        d_wincomp = fetch_wincomparator_predictions()
+    except Exception as e_wc:
+        print(f"⚠️ Wincomparator non chargé ({e_wc})")
+
     if analyze_pure_stats_20:
         try:
             r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
@@ -746,21 +753,46 @@ def main():
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 [ÉCART OVER/UNDER <= 0.20]) ──
+    # ── Enrichissement Wincomparator (+2.5 buts & probabilité IA) ──
+    if scanned_results and d_wincomp:
+        print(f"📊 Enrichissement Wincomparator IA pour les {len(scanned_results)} matchs scannés...")
+        for m in scanned_results:
+            c_dom = clean_team_name(m.get("dom", ""))
+            c_ext = clean_team_name(m.get("ext", ""))
+            wc_info = d_wincomp.get((c_dom, c_ext))
+            if not wc_info:
+                for (w_d, w_e), v in d_wincomp.items():
+                    if (c_dom and w_d and (c_dom in w_d or w_d in c_dom)) and (c_ext and w_e and (c_ext in w_e or w_e in c_ext)):
+                        wc_info = v
+                        break
+            if wc_info:
+                m["wincomp_market"] = wc_info.get("market")
+                m["wincomp_prob"] = wc_info.get("prob", 0.0)
+                m["wincomp_url"] = wc_info.get("url")
+
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 [WINCOMPARATOR ≥ 50% OU ÉCART ≤ 0.20] — COTE CIBLE ≥ 2.20) ──
     # Match 1 : Over 1.5 (Matchs offensifs P_pure >= 52%)
-    # Match 2 : Over 2.5 (Matchs à cotes équilibrées/proches : |Under 2.5 - Over 2.5| <= 0.20)
+    # Match 2 : Over 2.5 (Validé par Wincomparator >= 50% OU Cotes serrées |U2.5 - O2.5| <= 0.20 avec cote O2.5 >= 1.70)
     over25_serr_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         o25 = m.get("over25")
         u25 = m.get("under25")
-        if o25 and u25 and abs(u25 - o25) <= 0.20 and 1.60 <= o25 <= 2.10:
-            diff = round(abs(u25 - o25), 2)
+        wc_m = m.get("wincomp_market")
+        wc_p = m.get("wincomp_prob", 0.0)
+        
+        is_tight = bool(o25 and u25 and abs(u25 - o25) <= 0.20)
+        is_wc_o25 = bool(wc_m == "+2.5" and wc_p >= 50.0)
+        
+        # Filtre de cote Over 2.5 (>= 1.70) pour garantir une cote combinée >= @2.20 avec l'Over 1.5
+        if o25 and (is_tight or is_wc_o25) and 1.68 <= o25 <= 2.30:
+            diff = round(abs(u25 - o25), 2) if (u25 and o25) else 0.10
+            lbl_crit = f"Wincomp {wc_p}%" if is_wc_o25 else f"Écart {diff:.2f} ≤ 0.20"
             over25_serr_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🎯 Over 2.5", "odds": o25,
-                "diff": diff, "score": int(round((1.0 - diff/0.20) * 100))
+                "diff": diff, "crit": lbl_crit, "score": int(wc_p) if is_wc_o25 else int(round((1.0 - diff/0.20) * 100))
             })
 
     blocks_o25_serr = {}
@@ -779,19 +811,20 @@ def main():
         for k in range(m_count):
             it_o25 = o25_list[k]
             it_o15 = o15_list[k]
-            # Éviter le même match dans le même combiné
             if it_o25["id"] == it_o15["id"]:
                 continue
-            used_doub_o25.add(it_o25["id"])
-            used_doub_o15.add(it_o15["id"])
             c_odds = round(it_o15["odds"] * it_o25["odds"], 2)
-            combos_hybrids.append({
-                "session": b_key,
-                "type": "Doublé Attaque (1 Over 1.5 + 1 Over 2.5 [Écart ≤ 0.20])",
-                "items": [it_o15, it_o25],
-                "comb_odds": c_odds,
-                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-            })
+            # Ne retenir que les combinés à cote cible >= 2.10 (idéalement >= 2.20)
+            if c_odds >= 2.05:
+                used_doub_o25.add(it_o25["id"])
+                used_doub_o15.add(it_o15["id"])
+                combos_hybrids.append({
+                    "session": b_key,
+                    "type": f"Doublé Attaque ({it_o25.get('crit', 'Over 2.5')})",
+                    "items": [it_o15, it_o25],
+                    "comb_odds": c_odds,
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                })
 
     # Fallback pour Over 2.5 restants
     rem_o25 = [s for s in over25_serr_selections if s["id"] not in used_doub_o25]
@@ -802,17 +835,19 @@ def main():
         if not avail_o15:
             break
         closest_o15 = min(avail_o15, key=lambda x: abs((x["dt"] - it_o25["dt"]).total_seconds()))
-        rem_o15.remove(closest_o15)
-        used_doub_o25.add(it_o25["id"])
-        used_doub_o15.add(closest_o15["id"])
         c_odds = round(closest_o15["odds"] * it_o25["odds"], 2)
-        combos_hybrids.append({
-            "session": it_o25["session"],
-            "type": "Doublé Attaque (1 Over 1.5 + 1 Over 2.5 [Écart ≤ 0.20])",
-            "items": [closest_o15, it_o25],
-            "comb_odds": c_odds,
-            "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-        })
+        if c_odds >= 2.05:
+            rem_o15.remove(closest_o15)
+            used_doub_o25.add(it_o25["id"])
+            used_doub_o15.add(closest_o15["id"])
+            combos_hybrids.append({
+                "session": it_o25["session"],
+                "type": f"Doublé Attaque ({it_o25.get('crit', 'Over 2.5')})",
+                "items": [closest_o15, it_o25],
+                "comb_odds": c_odds,
+                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+            })
+
 
 
 
@@ -881,7 +916,8 @@ def main():
                 mk = item["market"]
                 o25 = m.get("over25", "N/A")
                 u25 = m.get("under25", "N/A")
-                p_pure = m.get("prob_pure_o25", 55.0)
+                wc_p = m.get("wincomp_prob")
+                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure}% pure"
                 bg_m = "#dcfce7" if "1.5" in mk else "#dbeafe"
                 cl_m = "#166534" if "1.5" in mk else "#1e40af"
                 lbl_signal = f"O2.5 @{o25} < U2.5 @{u25}"
@@ -892,7 +928,7 @@ def main():
                     <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
                     <td style="padding:6px 8px; text-align:center;"><span style="background:{bg_m}; color:{cl_m}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">{mk} (@{o:.2f})</span></td>
                     <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">{lbl_signal}</td>
-                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">{p_pure}% pure</span></td>
+                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">{lbl_badge}</span></td>
                 </tr>'''
 
             combos_hybrids_html += f'''
@@ -938,6 +974,8 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
+                wc_p = m.get("wincomp_prob")
+                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure}% pure"
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -945,13 +983,14 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{p_pure}% pure",
+                    "score_label": lbl_badge,
                     "score_val": 80,
                     "type_label": f"DOUBLÉ #{idx_h}",
                     "bg_market": "#dcfce7" if "1.5" in item["market"] else "#dbeafe",
                     "cl_market": "#166534" if "1.5" in item["market"] else "#1e40af",
                 })
                 seen_plan.add(key)
+
 
     plan_rows.sort(key=lambda x: x["dt"])
 
@@ -1007,12 +1046,17 @@ def main():
         o25_txt = f"@{o25:.2f}" if o25 else "N/A"
         u25_txt = f"@{u25:.2f}" if u25 else "N/A"
         
+        wc_m = m.get("wincomp_market")
+        wc_p = m.get("wincomp_prob")
+        wc_tag = f" &bull; <b style='color:#0284c7;'>WC {wc_p:.0f}%</b>" if (wc_m == "+2.5" and wc_p and wc_p >= 50.0) else ""
+        
         if o25 and u25 and abs(u25 - o25) <= 0.20:
-            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20</span>'
+            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{wc_tag}</span>'
         elif o25 and u25 and o25 < u25:
-            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%)</span>'
+            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){wc_tag}</span>'
         else:
-            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20</span>'
+            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{wc_tag}</span>'
+
 
         scan_rows_html += (
             f'<tr style="background:{bg_row}; border-bottom:1px solid #f1f5f9;">'
