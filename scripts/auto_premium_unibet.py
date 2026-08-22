@@ -480,33 +480,30 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection Méthode Cadenas (Score >= 70/100, Under 2.5 <= 1.95 ou Under 3.5 <= 1.40) ──
+    # ── Sélection 100% Triplés Under 3.5 (Score >= 60/100, Under 3.5 <= 1.45, Freq >= 60%) ──
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        sc_u25 = r.get("score_u25", 0)
         sc_u35 = r.get("score_u35", 0)
-        u25 = r.get("under25")
         u35 = r.get("under35")
-        is_val_u25 = (sc_u25 >= 70 and u25 and u25 <= 1.95)
         is_val_u35 = (sc_u35 >= 60 and u35 and u35 <= 1.45 and r.get("freq_u35", 0.0) >= 60.0)
 
-        if is_val_u25 or is_val_u35:
+        if is_val_u35:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if max(sc_u25, sc_u35) > 0:
-                r["rejection_reason"] = f"Scores Under insuffisants (U2.5: {sc_u25}/100, U3.5: {sc_u35}/100)"
+            if sc_u35 > 0:
+                r["rejection_reason"] = f"Score Under 3.5 insuffisant ({sc_u35}/100 < 60 ou cote non éligible)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
 
+    s3_matches.sort(key=lambda x: x.get("score_u35", 0), reverse=True)
 
-    s3_matches.sort(key=lambda x: max(x.get("score_u25", 0), x.get("score_u35", 0)), reverse=True)
+    print(f"⭐ Matchs validés 100% Under 3.5 : {len(s3_matches)} / {len(scanned_results)}")
 
-    print(f"⭐ Matchs validés Cadenas (Under 2.5 ou Under 3.5) : {len(s3_matches)} / {len(scanned_results)}")
 
 
 
@@ -611,7 +608,6 @@ def main():
     # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
     def get_betting_session_key(m_dt, slot_only=False):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        # Si le match a lieu entre 00h00 et 05h59, il appartient à la nuit de la journée précédente
         if local_dt.hour < 6:
             betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
         else:
@@ -621,28 +617,18 @@ def main():
             return slot
         return f"{betting_date}-block"
 
-    # ── MOTEUR UNIFIÉ COMBINÉS CADENAS (Bloc 24h Journée + Nuit — Cote Min 1.85) ──
+    # ── MOTEUR UNIFIÉ TRIPLÉS 100% UNDER 3.5 (Bloc 24h Journée + Nuit) ──
     mixed_selections = []
+
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Under 2.5 si Score Verrou >= 70 ET Cote Under 2.5 <= 1.95 (ou Under < Over)
-        u25 = m.get("under25")
-        o25 = m.get("over25")
-        sc_u25 = m.get("score_u25", 0)
         sc_u35 = m.get("score_u35", 0)
         u35 = m.get("under35")
 
-        if sc_u25 >= 70 and u25 and (u25 <= 1.95 or (o25 and u25 < o25)):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🔒 Under 2.5", "odds": u25,
-                "score": sc_u25
-            })
-        # 2. Under 3.5 si Score Banque >= 60 ET Cote Under 3.5 <= 1.45 (avec base stats réelles)
-        elif sc_u35 >= 60 and u35 and (u35 <= 1.45) and m.get("freq_u35", 0.0) >= 60.0:
+        if sc_u35 >= 60 and u35 and (u35 <= 1.45) and m.get("freq_u35", 0.0) >= 60.0:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🛡️ Under 3.5", "odds": u35,
@@ -650,10 +636,9 @@ def main():
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_u25 = sum(1 for m in scanned_results if m.get("score_u25", 0) >= 70 and m.get("under25") and (m.get("under25") <= 1.95 or (m.get("over25") and m.get("under25") < m.get("over25"))))
-    n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 60 and m.get("under35") and (m.get("under35") <= 1.45) and m.get("freq_u35", 0.0) >= 60.0)
+    n_u35 = len(mixed_selections)
+    print(f"📊 Sélections 100% Under 3.5 retenues : {n_u35}")
 
-    print(f"📊 Sélections brutes : Under 2.5={n_u25} | Under 3.5={n_u35}")
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
     for s in mixed_selections:
@@ -663,12 +648,10 @@ def main():
     used_match_ids = set()
     combos_mixed = []
 
-
     # Pour chaque Bloc, appariement chronologique des matchs 3 par 3
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
         
-        # Triplés par 3 matchs
         available = [s for s in block_items if s["id"] not in used_match_ids]
         while len(available) >= 3:
             trip = available[:3]
@@ -677,7 +660,7 @@ def main():
                 used_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": b_key,
-                "type": "Triplé Cadenas (3 Matchs)",
+                "type": "Triplé 100% Under 3.5",
                 "items": trip,
                 "comb_odds": comb_odds,
                 "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
@@ -694,7 +677,7 @@ def main():
             used_match_ids.add(s["id"])
         combos_mixed.append({
             "session": "inter-blocs",
-            "type": "Triplé Cadenas (3 Matchs)",
+            "type": "Triplé 100% Under 3.5",
             "items": trip,
             "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
@@ -709,35 +692,29 @@ def main():
             used_match_ids.add(s["id"])
         combos_mixed.append({
             "session": "cloture-mixte",
-            "type": "Doublé Cadenas (2 Matchs)",
+            "type": "Doublé 100% Under 3.5",
             "items": doub,
             "comb_odds": comb_odds,
             "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
         })
 
-
-
     pen_simples = []
     pen_rejected = []
 
     def render_match_proof_html(m, sel_score=None):
-        score_u25 = m.get("score_u25", 0)
         score_u35 = m.get("score_u35", 0)
-        prob_u25 = m.get("prob_u25", 50.0)
         prob_u35 = m.get("prob_u35", 75.0)
-        freq_u25 = m.get("freq_u25", 0.0)
         freq_u35 = m.get("freq_u35", 0.0)
         risk_4p = m.get("risk_4plus", 0.0)
         pct_cs = m.get("pct_cs", 0.0)
         sot_val = m.get("sot_comb", 0.0)
-        edge_u25 = m.get("edge_u25", 0.0)
-        ev_u25 = m.get("ev_u25", 0.0)
+        ev_u35 = m.get("ev_u35", 0.0)
 
-        score = sel_score if sel_score is not None else score_u25
+        score = sel_score if sel_score is not None else score_u35
         if not score:
             return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
 
-        score_style = "background:#10b981; color:#ffffff;" if score >= 80 else "background:#3b82f6; color:#ffffff;"
+        score_style = "background:#10b981; color:#ffffff;" if score >= 75 else "background:#3b82f6; color:#ffffff;"
 
         rec_h = m.get("recent_h_dom", [])
         h_pills = []
@@ -745,12 +722,10 @@ def main():
             hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
             ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
             tot = int(hg) + int(ag)
-            if tot <= 2:
-                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔒</span>')
-            elif tot >= 4:
-                h_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
+            if tot <= 3:
+                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🛡️</span>')
             else:
-                h_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+                h_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
         h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
 
         rec_a = m.get("recent_a_ext", [])
@@ -759,31 +734,27 @@ def main():
             hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
             ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
             tot = int(hg) + int(ag)
-            if tot <= 2:
-                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔒</span>')
-            elif tot >= 4:
-                a_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
+            if tot <= 3:
+                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🛡️</span>')
             else:
-                a_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+                a_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
         a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
 
         return f'''
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE & POISSON</span>
+                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE & POISSON UNDER 3.5</span>
                 <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    Score Verrou : {score_u25}/100 &bull; Banque : {score_u35}/100
+                    Score Banque : {score_u35}/100
                 </span>
             </div>
 
             <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
-                <b>Poisson P(U2.5)</b>: {prob_u25}% &nbsp;|&nbsp; 
                 <b>Poisson P(U3.5)</b>: {prob_u35}% &nbsp;|&nbsp; 
-                <b>Freq &le;2b</b>: {freq_u25}% &nbsp;|&nbsp; 
                 <b>Freq &le;3b</b>: {freq_u35}% &nbsp;|&nbsp; 
                 <b>Risque &ge;4b</b>: {risk_4p}% &nbsp;|&nbsp; 
                 <b>Clean Sheets</b>: {pct_cs}% &nbsp;|&nbsp; 
-                <b>EV(U2.5)</b>: <b style="color:{'#166534' if ev_u25 > 0 else '#991b1b'};">{ev_u25:+.1f}%</b>
+                <b>EV(U3.5)</b>: <b style="color:{'#166534' if ev_u35 > 0 else '#991b1b'};">{ev_u35:+.1f}%</b>
             </div>
 
             <div style="font-size:11px; color:#334155; line-height:1.6;">
@@ -796,6 +767,7 @@ def main():
             </div>
         </div>
         '''
+
 
 
     # Thèmes de couleurs alternées pour les tickets combinés
@@ -1040,16 +1012,16 @@ def main():
 
           <!-- HEADER -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
-            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · TRIPLÉS CADENAS (UNDER 2.5 & UNDER 3.5)</div>
+            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · TRIPLÉS 100% UNDER 3.5</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Triplés 3 Matchs Chronologiques · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Triplés 3 Matchs Chronologiques 100% Under 3.5 · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">TRIPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.50-3.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">TRIPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.40-3.10</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{n_u35}</div><div style="font-size:10px; font-weight:700; color:#15803d;">UNDER 3.5</div><div style="font-size:10px; color:#16a34a;">Score ≥ 60</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:10px; color:#64748b;">24H</div></div></td>
               </tr>
@@ -1083,7 +1055,7 @@ def main():
           <!-- SECTION 2 : TRIPLÉS CADENAS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. TRIPLÉS CADENAS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(3 Matchs · Cote Cible ~2.40 - 3.20 · Mise 3,00 €)</span></span>
+              <span>🚀 1. TRIPLÉS 100% UNDER 3.5 CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(3 Matchs · Cote Cible ~2.40 - 3.10 · Mise 3,00 €)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1110,7 +1082,7 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
-            🔒 Paris sportifs · Méthode Triplés Cadenas (Under 2.5 & Under 3.5) · Analyse AdamChoi & Sofascore · Unibet France · {now_str}
+            🔒 Paris sportifs · Méthode Triplés 100% Under 3.5 · Analyse AdamChoi & Sofascore · Unibet France · {now_str}
           </div>
 
         </div>
@@ -1122,14 +1094,14 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION TRIPLÉS CADENAS — 24H JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION TRIPLÉS 100% UNDER 3.5 — 24H JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Under 2.5 (Score >= 70) • Under 3.5 (Score >= 60)\n",
+        f"**Critères** : Under 3.5 (Score >= 60/100, Cote <= 1.45, Freq >= 60%)\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Triplés Cadenas Recommandés (Cote Cible ~2.40 - 3.20 — Mise 3,00 € / ticket)\n",
+        f"## 🎯 Triplés 100% Under 3.5 Recommandés (Cote Cible ~2.40 - 3.10 — Mise 3,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1179,7 +1151,8 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Triplés Cadenas (Under 2.5 • Under 3.5)"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Triplés 100% Under 3.5 (Cote ~2.40 - 3.10)"
+
 
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
