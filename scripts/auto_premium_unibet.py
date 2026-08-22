@@ -311,7 +311,7 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Matchs en Journée uniquement (08h00 à 23h59) — Exclut TOUS les matchs de la nuit
+    # Filtre Fenêtre : Matchs des prochaines 36h (Journées et Nuits Suivantes incluses)
     now_utc = datetime.now(timezone.utc)
     limit_36h = now_utc + timedelta(hours=36)
 
@@ -321,11 +321,6 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                # Heure locale de Paris (UTC+2)
-                local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-                # Exclure TOUS les matchs de la nuit (00h00 à 07h59)
-                if local_dt.hour < 8:
-                    continue
                 if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
@@ -337,7 +332,8 @@ def main():
     # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
     if len(scanned_results) == 0 and scanned_all:
         print("⚠️ Aucun match dans la fenêtre — Utilisation des prochains matchs disponibles...")
-        scanned_results = [m for m in scanned_all if (datetime.fromisoformat(m['start_iso'].replace('Z', '+00:00')).astimezone(timezone(timedelta(hours=2))).hour >= 8) if m.get('start_iso')] or scanned_all
+        scanned_results = scanned_all
+
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs de Journée retenus (08h-23h59) : {len(scanned_results)}")
@@ -611,16 +607,20 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : JOURNÉE = 1 BLOC
+    # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
     def get_betting_session_key(m_dt, slot_only=False):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        betting_date = local_dt.strftime("%Y-%m-%d")
-        slot = "jour"
+        # Si le match a lieu entre 00h00 et 05h59, il appartient à la nuit de la journée précédente
+        if local_dt.hour < 6:
+            betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
+        else:
+            betting_date = local_dt.strftime("%Y-%m-%d")
+        slot = "nuit" if local_dt.hour < 6 else "jour"
         if slot_only:
             return slot
         return f"{betting_date}-block"
 
-    # ── MOTEUR UNIFIÉ COMBINÉS CADENAS (Bloc Journée — Cote Min 2.00) ──
+    # ── MOTEUR UNIFIÉ COMBINÉS CADENAS (Bloc 24h Journée + Nuit — Cote Min 1.85) ──
     mixed_selections = []
     
     for m in scanned_results:
@@ -640,8 +640,8 @@ def main():
                 "market": "🔒 Under 2.5", "odds": u25,
                 "score": sc_u25
             })
-        # 2. Under 3.5 si Score Banque >= 70 ET Cote Under 3.5 <= 1.40
-        elif sc_u35 >= 70 and u35 and (u35 <= 1.40) and m.get("freq_u35", 0.0) >= 65.0:
+        # 2. Under 3.5 si Score Banque >= 70 ET Cote Under 3.5 <= 1.45 (avec base stats réelles)
+        elif sc_u35 >= 70 and u35 and (u35 <= 1.45) and m.get("freq_u35", 0.0) >= 65.0:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🛡️ Under 3.5", "odds": u35,
@@ -650,14 +650,12 @@ def main():
 
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_u25 = sum(1 for m in scanned_results if m.get("score_u25", 0) >= 70 and m.get("under25") and (m.get("under25") <= 1.95 or (m.get("over25") and m.get("under25") < m.get("over25"))))
-    n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 70 and m.get("under35") and (m.get("under35") <= 1.40) and m.get("freq_u35", 0.0) >= 65.0)
+    n_u35 = sum(1 for m in scanned_results if m.get("score_u35", 0) >= 70 and m.get("under35") and (m.get("under35") <= 1.45) and m.get("freq_u35", 0.0) >= 65.0)
 
     print(f"📊 Sélections brutes : Under 2.5={n_u25} | Under 3.5={n_u35}")
     print(f"📊 Total sélections dans les combinés Cadenas : {len(mixed_selections)}")
 
-
-
-    # Regroupement strict par Bloc [Journée (8h-23h59)]
+    # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
@@ -665,7 +663,7 @@ def main():
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc, appariement chronologique des matchs (Cote Min: 2.00 STRICT)
+    # Pour chaque Bloc, appariement chronologique des matchs (Cote Min: 1.85, Cible: ~2.05)
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
         for i, s1 in enumerate(block_items):
@@ -678,8 +676,8 @@ def main():
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
 
                 comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.00:
-                    diff = abs(comb2 - 2.15)
+                if comb2 >= 1.85:
+                    diff = abs(comb2 - 2.05)
                     if diff < best_diff:
                         best_diff = diff
                         best_partner = s2
@@ -704,7 +702,7 @@ def main():
         for s2 in unpaired_selections[i+1:]:
             if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
             comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.00:
+            if comb_odds >= 1.85:
                 used_match_ids.add(s1["id"])
                 used_match_ids.add(s2["id"])
                 combos_mixed.append({
@@ -715,6 +713,7 @@ def main():
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
                 break
+
 
     pen_simples = []
     pen_rejected = []
