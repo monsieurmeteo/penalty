@@ -658,48 +658,61 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR UNIFIÉ QUADRUPLÉS OVER 1.5 (4 Matchs Chronologiques — Cote Cible ~2.20 - 3.20) ──
+    # ── MOTEUR UNIFIÉ QUINTUPLÉS OVER 1.5 (5 Matchs Chronologiques — Cote Cible ~2.40 - 3.50) ──
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc, appariement chronologique des matchs 4 par 4
+    # Pour chaque Bloc, appariement chronologique des matchs 5 par 5
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
         
         available = [s for s in block_items if s["id"] not in used_match_ids]
-        while len(available) >= 4:
-            quad = available[:4]
-            comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
-            for s in quad:
+        while len(available) >= 5:
+            quint = available[:5]
+            comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
+            for s in quint:
                 used_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": b_key,
-                "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
-                "items": quad,
+                "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
+                "items": quint,
                 "comb_odds": comb_odds,
                 "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
             })
             available = [s for s in block_items if s["id"] not in used_match_ids]
 
-    # Fallback pour sélections restantes inter-blocs (4 par 4)
+    # Fallback pour sélections restantes inter-blocs (5 par 5)
     unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
     unpaired.sort(key=lambda x: x["dt"])
-    while len(unpaired) >= 4:
-        quad = unpaired[:4]
-        comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
-        for s in quad:
+    while len(unpaired) >= 5:
+        quint = unpaired[:5]
+        comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
+        for s in quint:
             used_match_ids.add(s["id"])
         combos_mixed.append({
             "session": "inter-blocs",
-            "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
-            "items": quad,
+            "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
+            "items": quint,
             "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
         unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
 
-    # S'il reste 3 matchs orphelins à la fin, on forme un Triplé propre
-    if len(unpaired) == 3:
+    # S'il reste 4 matchs orphelins à la fin, on forme un Quadruplé
+    if len(unpaired) == 4:
+        quad = unpaired[:4]
+        comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
+        for s in quad:
+            used_match_ids.add(s["id"])
+        combos_mixed.append({
+            "session": "cloture-mixte",
+            "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+            "items": quad,
+            "comb_odds": comb_odds,
+            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+        })
+    # S'il reste 3 matchs orphelins à la fin, on forme un Triplé
+    elif len(unpaired) == 3:
         trip = unpaired[:3]
         comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
         for s in trip:
@@ -711,7 +724,7 @@ def main():
             "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
-    # S'il reste 2 matchs orphelins à la fin, on forme un Doublé propre
+    # S'il reste 2 matchs orphelins à la fin, on forme un Doublé
     elif len(unpaired) == 2:
         doub = unpaired[:2]
         comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
@@ -722,87 +735,19 @@ def main():
             "type": "Doublé 100% Over 1.5 (2 Matchs)",
             "items": doub,
             "comb_odds": comb_odds,
-            "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
     pen_simples = []
     pen_rejected = []
 
-    def render_match_proof_html(m, sel_score=None):
-        o15 = m.get("over15", 1.25)
-        o25 = m.get("over25", "N/A")
-        u25 = m.get("under25", "N/A")
-        margin_pct = m.get("margin_pct", 8.5)
-        prob_pure_o25 = m.get("prob_pure_o25", 55.0)
-        over25_fair = m.get("over25_fair", "N/A")
-        c1 = m.get("c1", "N/A")
-        cx = m.get("cx", "N/A")
-        c2 = m.get("c2", "N/A")
-        b_oui = m.get("btts_oui")
-
-        return f'''
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">⚡ SIGNAL BOOKMAKER DÉ-MARGÉ (OVER 1.5)</span>
-                <span style="background:#16a34a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    Probabilité Pure Over 2.5 : {prob_pure_o25}%
-                </span>
-            </div>
-
-            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; line-height:1.6;">
-                <b>Pari joué</b> : <b style="color:#16a34a; font-size:12px;">Over 1.5 Buts (@{o15:.2f})</b> &nbsp;|&nbsp; 
-                <b>Cote Pure Sans Marge</b> : <b style="color:#0f172a;">@{over25_fair}</b> &nbsp;|&nbsp; 
-                <b>Marge ARJEL Neutralisée</b> : <span style="color:#d97706; font-weight:700;">{margin_pct}%</span><br>
-                <b>Cotes Affichées Unibet</b> : Over 2.5 @{o25} &bull; Under 2.5 @{u25}
-            </div>
-
-            <div style="margin-top:6px; font-size:11px; color:#64748b;">
-                ⚔️ <b>Cotes 1N2</b> : 1: @{c1} &bull; N: @{cx} &bull; 2: @{c2} &nbsp;|&nbsp; <b>BTTS Oui</b> : @{b_oui if b_oui else 'N/A'}
-            </div>
-        </div>
-        '''
-
-
-
-
-
     # Thèmes de couleurs alternées pour les tickets combinés
     TICKET_THEMES = [
-        # Thème 1: Bleu Océan
-        {
-            "bg_header": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
-            "border_card": "#93c5fd",
-            "border_left": "#2563eb",
-            "title_color": "#1e40af",
-        },
-        # Thème 2: Ambre Doré
-        {
-            "bg_header": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)",
-            "border_card": "#fde68a",
-            "border_left": "#d97706",
-            "title_color": "#92400e",
-        },
-        # Thème 3: Émeraude Menthe
-        {
-            "bg_header": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)",
-            "border_card": "#a7f3d0",
-            "border_left": "#059669",
-            "title_color": "#065f46",
-        },
-        # Thème 4: Violet Indigo
-        {
-            "bg_header": "linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)",
-            "border_card": "#ddd6fe",
-            "border_left": "#7c3aed",
-            "title_color": "#5b21b6",
-        },
-        # Thème 5: Rose Ruby
-        {
-            "bg_header": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)",
-            "border_card": "#fecdd3",
-            "border_left": "#e11d48",
-            "title_color": "#9f1239",
-        },
+        {"bg_header": "#eff6ff", "border_card": "#bfdbfe", "border_left": "#2563eb", "title_color": "#1e40af"},
+        {"bg_header": "#fffbeb", "border_card": "#fde68a", "border_left": "#d97706", "title_color": "#92400e"},
+        {"bg_header": "#ecfdf5", "border_card": "#a7f3d0", "border_left": "#059669", "title_color": "#065f46"},
+        {"bg_header": "#f5f3ff", "border_card": "#ddd6fe", "border_left": "#7c3aed", "title_color": "#5b21b6"},
+        {"bg_header": "#fff1f2", "border_card": "#fecdd3", "border_left": "#e11d48", "title_color": "#9f1239"},
     ]
 
     combos_mixed_html = ""
@@ -816,97 +761,41 @@ def main():
                     dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
                 except Exception:
                     dt_sess = sess_label
-                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:18px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 CRENEAU [JOURNÉE DU {dt_sess} + NUIT SUIVANTE]</div>'
+                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:12px; margin:14px 0 6px 0; padding-bottom:3px; border-bottom:2px solid #3b82f6;">📅 CRÉNEAU [{dt_sess}]</div>'
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
-            items_html = ""
+            items_rows = ""
             for item in cb["items"]:
                 m = item["m"]
-                mk = item["market"]
                 o = item["odds"]
-                sc = item["score"]
-                proof = render_match_proof_html(m, sel_score=sc)
-                items_html += f'''
-                <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-                        <span>🔹 <b>{mk}</b> &nbsp;&bull;&nbsp; <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']})</span></span>
-                        <span style="background:{'#dc2626' if sc >= 90 else '#ea580c' if sc >= 85 else '#f59e0b' if sc >= 80 else '#10b981'}; color:#fff; font-weight:800; font-size:11px; padding:2px 9px; border-radius:10px; white-space:nowrap; margin-left:8px;">⭐ {sc}/100</span>
-                    </div>
-                    {proof}
-                </div>'''
+                o25 = m.get("over25", "N/A")
+                u25 = m.get("under25", "N/A")
+                p_pure = m.get("prob_pure_o25", 55.0)
+                m_pct = m.get("margin_pct", 8.5)
+                
+                items_rows += f'''
+                <tr style="border-bottom:1px solid #f1f5f9;">
+                    <td style="padding:6px 8px; font-weight:700; font-size:11px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
+                    <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
+                    <td style="padding:6px 8px; text-align:center;"><span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">Over 1.5 (@{o:.2f})</span></td>
+                    <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">O2.5: <b>@{o25}</b> &lt; U2.5: @{u25}</td>
+                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px; white-space:nowrap;">{p_pure}% pure</span></td>
+                </tr>'''
             
             combos_mixed_html += f'''
-            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Ticket Multi-Marchés #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+            <div style="background:#ffffff; border:1px solid {theme['border_card']}; border-left:4px solid {theme['border_left']}; border-radius:8px; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:7px 10px; border-bottom:1px solid {theme['border_card']};">
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Ticket #{idx} ({cb['type']}) &bull; Cote Totale : <b style="background:#ffffff; color:{theme['title_color']}; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']}; font-size:13px;">@{cb['comb_odds']:.2f}</b></span>
+                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 7px; border-radius:4px;">Mise 3,00 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
-              <div style="font-size:12px; color:#334155; line-height:1.5;">
-                {items_html}
-              </div>
+              <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                <tbody>{items_rows}</tbody>
+              </table>
             </div>'''
     else:
-        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné multi-marchés disponible (moins de 2 sélections éligibles).</div>'
+        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné disponible.</div>'
 
-    # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
-    pen_simples_html = ""
-    for idx_ps, m in enumerate(pen_simples, 1):
-        ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
-        sp  = m.get("score_penalty", 0)
-        avg_b = m.get("avg_booking", 0.0)
-        sot_c = m.get("sot_comb", 0.0)
-        sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
-        peno_b = m.get("peno_badge") or ""
-        peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
-        pen_simples_html += f'''
-        <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
-          </div>
-          <div style="font-size:12px; color:#334155; line-height:1.9;">
-            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
-            {ref_status_str}<br>
-            {peno_badge_html}
-            <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
-          </div>
-          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
-            🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
-          </div>
-        </div>'''
-    if not pen_simples_html:
-        pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
-
-    # ── HTML Matchs Éliminés par la Compétence PENO ─────────────────────────────
-    pen_rejected_html = ""
-    for idx_pr, m in enumerate(pen_rejected, 1):
-        ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
-        sp  = m.get("score_penalty", 0)
-        p_dom = m.get("p_dom_10m", 0)
-        p_ext = m.get("p_ext_10m", 0)
-        pen_rejected_html += f'''
-        <div style="background:#fff1f2; border:1px solid #fecdd3; border-left:4px solid #e11d48; border-radius:8px; padding:10px 12px; margin-bottom:8px; opacity:0.95;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <span style="font-weight:800; color:#881337; font-size:12px;">🚫 #{idx_pr} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:#ffe4e6; color:#9f1239; font-weight:700; font-size:11px; padding:2px 7px; border-radius:5px;">Score Brut: {sp}/100</span>
-          </div>
-          <div style="font-size:11px; color:#4c0519; line-height:1.7;">
-            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b;">{m["league"]}</span> &nbsp;•&nbsp; {ref_status_str}<br>
-            <span style="color:#e11d48; font-weight:800;">🛑 ÉLIMINÉ PAR LA COMPÉTENCE PENO</span> : Moins de 2 pénaltys/10m (Dom: <b>{p_dom}</b> / Ext: <b>{p_ext}</b>)
-          </div>
-        </div>'''
-    if not pen_rejected_html:
-        pen_rejected_html = '<div style="color:#94a3b8; font-style:italic; text-align:center; padding:6px; font-size:11px;">Aucun match éliminé par la compétence PENO sur ce scan.</div>'
-
-    # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
-    plan_rows = []
-    seen_plan = set()
-
-    # Combinés multi-marchés
-    for idx_cb, cb in enumerate(combos_mixed, 1):
-        c_type = cb["type"]
+    # Planning table construction
     plan_rows = []
     seen_plan = set()
     for idx_cb, cb in enumerate(combos_mixed, 1):
@@ -914,6 +803,7 @@ def main():
             m = item["m"]
             key = (m["id"], item["market"])
             if key not in seen_plan:
+                p_pure = m.get("prob_pure_o25", 55.0)
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -921,8 +811,8 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": "Over 2.5 < Under",
-                    "score_val": 85,
+                    "score_label": f"{p_pure}% pure",
+                    "score_val": int(p_pure),
                     "type_label": f"TICKET #{idx_cb}",
                     "bg_market": "#dcfce7",
                     "cl_market": "#166534",
@@ -931,66 +821,56 @@ def main():
 
     plan_rows.sort(key=lambda x: x["dt"])
 
-
     # Génération HTML des lignes du planning
     plan_rows_html = ""
     for pr in plan_rows:
-        sv = pr["score_val"]
-        sc_bg = "#10b981" if sv >= 80 else "#3b82f6"
         plan_rows_html += (
             f'<tr>'
-            f'<td style="padding:9px 8px; white-space:nowrap; font-weight:700; font-size:12px; color:#0f172a; border-bottom:1px solid #f1f5f9;">'
-            f'{pr["date_str"]}</td>'
-            f'<td style="padding:9px 8px; border-bottom:1px solid #f1f5f9;">'
-            f'<b style="font-size:12px; color:#0f172a;">{pr["match"]}</b><br>'
-            f'<span style="font-size:10px; color:#94a3b8;">{pr["league"]}</span></td>'
-            f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
-            f'<span style="background:{pr["bg_market"]}; color:{pr["cl_market"]}; font-weight:700; font-size:11px; padding:3px 7px; border-radius:5px; white-space:nowrap;">'
-            f'{pr["market"]}</span></td>'
-            f'<td style="padding:9px 6px; text-align:center; font-weight:900; font-size:13px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{pr["cote"]}</td>'
-            f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
-            f'<span style="background:{sc_bg}; color:#fff; font-weight:800; font-size:11px; padding:3px 7px; border-radius:5px;">'
-            f'{pr["score_label"]}</span></td>'
-            f'<td style="padding:9px 6px; text-align:center; font-size:11px; font-weight:700; color:#475569; border-bottom:1px solid #f1f5f9;">{pr["type_label"]}</td>'
+            f'<td style="padding:6px 8px; white-space:nowrap; font-weight:700; font-size:11px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{pr["date_str"]}</td>'
+            f'<td style="padding:6px 8px; border-bottom:1px solid #f1f5f9;"><b style="font-size:12px; color:#0f172a;">{pr["match"]}</b> <span style="font-size:10px; color:#94a3b8;">({pr["league"]})</span></td>'
+            f'<td style="padding:6px 6px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:{pr["bg_market"]}; color:{pr["cl_market"]}; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; white-space:nowrap;">{pr["market"]}</span></td>'
+            f'<td style="padding:6px 6px; text-align:center; font-weight:900; font-size:12px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{pr["cote"]}</td>'
+            f'<td style="padding:6px 6px; text-align:center; border-bottom:1px solid #f1f5f9;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">{pr["score_label"]}</span></td>'
+            f'<td style="padding:6px 6px; text-align:center; font-size:11px; font-weight:700; color:#475569; border-bottom:1px solid #f1f5f9;">{pr["type_label"]}</td>'
             f'</tr>'
         )
     if not plan_rows_html:
-        plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu sur le créneau à venir.</td></tr>'
+        plan_rows_html = '<tr><td colspan="6" style="padding:15px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu sur le créneau à venir.</td></tr>'
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     def _sort_scan(x):
         o25 = x.get("over25")
         u25 = x.get("under25")
         o15 = x.get("over15")
-        is_fav = 1 if (o25 is not None and u25 is not None and o25 < u25) else 0
+        p_pure = x.get("prob_pure_o25") or 0.0
+        is_fav = 1 if (o25 is not None and u25 is not None and o25 < u25 and p_pure >= 52.0) else 0
         o15_val = o15 if o15 is not None else 0.0
         return (is_fav, -o15_val)
 
     scan_rows_html = ""
     for m in sorted(scanned_results, key=_sort_scan, reverse=True):
-
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
-        retained = bool(o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50)
+        p_pure = m.get("prob_pure_o25") or 0.0
+        retained = bool(o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.50)
         bg_row = "#f0fdf4" if retained else "#fff"
-        badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
+        badge = '<span style="color:#15803d; font-weight:700; font-size:10px;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8; font-size:10px;">—</span>'
 
         o15_txt = f"@{o15:.2f}" if o15 else "N/A"
         o25_txt = f"@{o25:.2f}" if o25 else "N/A"
         u25_txt = f"@{u25:.2f}" if u25 else "N/A"
-        signal_txt = f'<span style="color:#16a34a; font-weight:800;">Over 2.5 &lt; Under 2.5</span>' if (o25 and u25 and o25 < u25) else f'<span style="color:#94a3b8;">Under 2.5 &le; Over 2.5</span>'
+        signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%)</span>' if (o25 and u25 and o25 < u25) else f'<span style="color:#94a3b8; font-size:10px;">Under 2.5 &le; Over</span>'
 
         scan_rows_html += (
-            f'<tr style="background:{bg_row};">'
-            f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
-            f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
-            f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; color:#16a34a; border-bottom:1px solid #f1f5f9;">{o15_txt}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:700; font-size:11px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{o25_txt}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:700; font-size:11px; color:#64748b; border-bottom:1px solid #f1f5f9;">{u25_txt}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{signal_txt}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
+            f'<tr style="background:{bg_row}; border-bottom:1px solid #f1f5f9;">'
+            f'<td style="padding:5px 6px; font-size:10px; color:#475569;">{m.get("date_str", "")}</td>'
+            f'<td style="padding:5px 6px; font-size:11px; font-weight:700; color:#0f172a;">{m.get("dom", "")} vs {m.get("ext", "")} <span style="font-size:9px; color:#94a3b8; font-weight:400;">({m.get("league", "")})</span></td>'
+            f'<td style="padding:5px 6px; text-align:center; font-weight:800; font-size:11px; color:#16a34a;">{o15_txt}</td>'
+            f'<td style="padding:5px 6px; text-align:center; font-size:10px; color:#0f172a;">{o25_txt}</td>'
+            f'<td style="padding:5px 6px; text-align:center; font-size:10px; color:#64748b;">{u25_txt}</td>'
+            f'<td style="padding:5px 6px; text-align:center;">{signal_txt}</td>'
+            f'<td style="padding:5px 6px; text-align:center;">{badge}</td>'
             f'</tr>'
         )
 
@@ -1004,42 +884,42 @@ def main():
     <!DOCTYPE html>
     <html>
       <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-      <body style="font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif; background:#f1f5f9; margin:0; padding:12px; color:#1e293b;">
-        <div style="max-width:700px; margin:0 auto; background:#ffffff; border-radius:14px; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+      <body style="font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif; background:#f8fafc; margin:0; padding:10px; color:#1e293b;">
+        <div style="max-width:680px; margin:0 auto; background:#ffffff; border-radius:10px; overflow:hidden; border:1px solid #e2e8f0; box-shadow:0 2px 10px rgba(0,0,0,0.04);">
 
-          <!-- HEADER -->
-          <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
-            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS 100% OVER 1.5 (OVER 2.5 &lt; UNDER 2.5)</div>
-            <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Pure Cotes Bookmakers · 4 Matchs Chronologiques · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
+          <!-- HEADER COMPACT -->
+          <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:16px 18px; text-align:center;">
+            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUINTUPLÉS 100% OVER 1.5 (5 MATCHS)</div>
+            <h1 style="margin:0; font-size:18px; font-weight:900; color:#ffffff;">{date_header}</h1>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Dé-margeage ARJEL &bull; Cotes Cibles ~2.40 - 3.50 &bull; 24H (Journées & Nuits)</p>
           </div>
 
-          <!-- COMPTEURS -->
-          <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
+          <!-- COMPTEURS COMPACTS -->
+          <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:8px 12px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">QUADRUPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.20-3.20</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(s3_matches)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">RETENUS</div><div style="font-size:10px; color:#16a34a;">Over 2.5 &lt; Under 2.5</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:10px; color:#64748b;">24H</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUINTUPLÉS</div><div style="font-size:9px; color:#3b82f6;">Cote ~2.40-3.50</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#15803d;">RETENUS</div><div style="font-size:9px; color:#16a34a;">P(Pure) ≥ 52%</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">24H</div></div></td>
               </tr>
             </table>
           </div>
 
           <!-- SECTION 1 : PLANNING HEURE PAR HEURE -->
-          <div style="padding:16px 16px 8px 16px;">
-            <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="padding:12px 14px 6px 14px;">
+            <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
               <span>📅 CE QUE VOUS DEVEZ JOUER — HEURE PAR HEURE</span>
-              <span style="font-size:11px; background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:6px;">{len(plan_rows)} pari(s)</span>
+              <span style="font-size:10px; background:#f1f5f9; color:#64748b; padding:2px 6px; border-radius:4px;">{len(plan_rows)} pari(s)</span>
             </div>
-            <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
-              <table style="width:100%; border-collapse:collapse; font-size:12px;">
-                <thead><tr style="background:#0f172a; color:#ffffff; font-size:10px; text-transform:uppercase; font-weight:700;">
-                  <th style="padding:9px 8px; text-align:left; white-space:nowrap;">Heure</th>
-                  <th style="padding:9px 8px; text-align:left;">Match</th>
-                  <th style="padding:9px 6px; text-align:center; min-width:100px;">Marché</th>
-                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Cote</th>
-                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Confiance</th>
-                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Type</th>
+            <div style="border-radius:6px; overflow:hidden; border:1px solid #e2e8f0;">
+              <table style="width:100%; border-collapse:collapse; font-size:11px;">
+                <thead><tr style="background:#0f172a; color:#ffffff; font-size:9px; text-transform:uppercase; font-weight:700;">
+                  <th style="padding:6px 8px; text-align:left;">Heure</th>
+                  <th style="padding:6px 8px; text-align:left;">Match</th>
+                  <th style="padding:6px 6px; text-align:center;">Pari</th>
+                  <th style="padding:6px 6px; text-align:center;">Cote</th>
+                  <th style="padding:6px 6px; text-align:center;">Marché Pure</th>
+                  <th style="padding:6px 6px; text-align:center;">Ticket</th>
                 </tr></thead>
                 <tbody>{plan_rows_html}</tbody>
               </table>
@@ -1047,30 +927,30 @@ def main():
           </div>
 
           <!-- EVOLUTIONS -->
-          <div style="padding:0 16px 8px 16px;">{evo_html}</div>
+          <div style="padding:0 14px 4px 14px;">{evo_html}</div>
 
-          <!-- SECTION 2 : QUADRUPLÉS OVER 1.5 -->
-          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. QUADRUPLÉS 100% OVER 1.5 CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(4 Matchs · Cote Cible ~2.20 - 3.20 · Mise 3,00 €)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
+          <!-- SECTION 2 : QUINTUPLÉS OVER 1.5 -->
+          <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
+            <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🚀 1. QUINTUPLÉS 100% OVER 1.5 CHRONOLOGIQUES &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(5 Matchs · Cote Cible ~2.40 - 3.50 · Mise 3,00 €)</span></span>
+              <span style="font-size:10px; background:#dbeafe; color:#1e40af; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
           </div>
 
           <!-- SECTION 3 : TOUS LES MATCHS ANALYSÉS -->
-          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
-            <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px;">📊 TOUS LES MATCHS ANALYSÉS ({len(scanned_results)} scannés)</div>
-            <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
-              <table style="width:100%; border-collapse:collapse; font-size:11px;">
-                <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
-                  <th style="padding:7px 8px; text-align:left;">Heure</th>
-                  <th style="padding:7px 8px; text-align:left;">Match</th>
-                  <th style="padding:7px 6px; text-align:center;">Over 1.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Over 2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Under 2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Signal Bookmaker</th>
-                  <th style="padding:7px 6px; text-align:center;">Statut</th>
+          <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
+            <div style="font-size:12px; font-weight:800; color:#475569; margin-bottom:6px;">📊 AUDIT DE TOUS LES MATCHS ({len(scanned_results)} scannés)</div>
+            <div style="border-radius:6px; overflow:hidden; border:1px solid #e2e8f0;">
+              <table style="width:100%; border-collapse:collapse; font-size:10px;">
+                <thead><tr style="background:#f1f5f9; color:#64748b; font-size:9px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
+                  <th style="padding:5px 6px; text-align:left;">Heure</th>
+                  <th style="padding:5px 6px; text-align:left;">Match</th>
+                  <th style="padding:5px 6px; text-align:center;">Over 1.5</th>
+                  <th style="padding:5px 6px; text-align:center;">Over 2.5</th>
+                  <th style="padding:5px 6px; text-align:center;">Under 2.5</th>
+                  <th style="padding:5px 6px; text-align:center;">Signal Dé-margé</th>
+                  <th style="padding:5px 6px; text-align:center;">Statut</th>
                 </tr></thead>
                 <tbody>{scan_rows_html}</tbody>
               </table>
@@ -1078,8 +958,8 @@ def main():
           </div>
 
           <!-- FOOTER -->
-          <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
-            ⚽ Paris sportifs · Méthode Quadruplés 100% Over 1.5 (Over 2.5 &lt; Under 2.5) · Unibet France · {now_str}
+          <div style="padding:10px 16px; background:#0f172a; font-size:9px; color:#64748b; text-align:center;">
+            ⚽ Paris sportifs · Méthode Quintuplés 100% Over 1.5 (Dé-margeage ARJEL) · Unibet France · {now_str}
           </div>
 
         </div>
@@ -1091,14 +971,14 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION QUADRUPLÉS 100% OVER 1.5 — 24H JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION QUINTUPLÉS 100% OVER 1.5 — 24H JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Over 2.5 < Under 2.5 (Bookmaker favori Over) • Cote Over 1.5 éligible\n",
+        f"**Critères** : Over 2.5 < Under 2.5 & P(Pure) >= 52% (Dé-margeage ARJEL)\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Quadruplés 100% Over 1.5 Recommandés (Cote Cible ~2.20 - 3.20 — Mise 3,00 € / ticket)\n",
+        f"## 🎯 Quintuplés 100% Over 1.5 Recommandés (Cote Cible ~2.40 - 3.50 — Mise 3,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1112,13 +992,14 @@ def main():
         report.append("Aucun combiné disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
-    report.append("| Date | Ligue | Match | Over 1.5 | Over 2.5 | Under 2.5 | Signal |")
+    report.append("| Date | Ligue | Match | Over 1.5 | Over 2.5 | Under 2.5 | P(Pure) |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :---: | :--- |")
     for m in s3_matches:
         o15_v = f"@{m['over15']:.2f}" if m.get("over15") else "N/A"
         o25_v = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
         u25_v = f"@{m['under25']:.2f}" if m.get("under25") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{o15_v}** | {o25_v} | {u25_v} | Over 2.5 &lt; Under 2.5 |")
+        p_pure = m.get("prob_pure_o25", 55.0)
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{o15_v}** | {o25_v} | {u25_v} | {p_pure}% |")
 
     report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
     report.append("| Date | Ligue | Match | Over 1.5 | Over 2.5 | Under 2.5 | Raison du Rejet |")
@@ -1145,10 +1026,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Quadruplés 100% Over 1.5 (Over 2.5 < Under 2.5)"
-
-
-
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Quintuplés 100% Over 1.5 (Cote ~2.50 - 3.50)"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
 
