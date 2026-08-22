@@ -779,8 +779,8 @@ def main():
         o25 = m.get("over25")
         u25 = m.get("under25")
         wc_m = m.get("wincomp_market")
-        wc_p = m.get("wincomp_prob", 0.0)
-        p_pure_o25 = m.get("prob_pure_o25", 50.0)
+        wc_p = m.get("wincomp_prob") or 0.0
+        p_pure_o25 = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         p_pure_u25 = round(100.0 - p_pure_o25, 1)
         
         # Option A : Over 2.5 éligible (Moyenne/Wincomp >= 50% ou cotes serrées)
@@ -802,6 +802,7 @@ def main():
                 "market": "🛡️ Under 2.5", "odds": u25,
                 "diff": diff, "crit": lbl_crit, "score": int(wc_p) if (wc_m == "-2.5" and wc_p >= 50.0) else int(p_pure_u25)
             })
+
 
     blocks_second = {}
     for s in second_match_selections:
@@ -924,11 +925,13 @@ def main():
                 mk = item["market"]
                 o25 = m.get("over25", "N/A")
                 u25 = m.get("under25", "N/A")
+                p_pure_val = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 55.0
                 wc_p = m.get("wincomp_prob")
-                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure}% pure"
+                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure_val}% pure"
                 bg_m = "#dcfce7" if "1.5" in mk else ("#dbeafe" if "Over" in mk else "#fef3c7")
                 cl_m = "#166534" if "1.5" in mk else ("#1e40af" if "Over" in mk else "#92400e")
                 lbl_signal = f"O2.5 @{o25} vs U2.5 @{u25}"
+
                 
                 items_rows += f'''
                 <tr style="border-bottom:1px solid #f1f5f9;">
