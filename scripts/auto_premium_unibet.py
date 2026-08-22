@@ -323,7 +323,7 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Matchs des prochaines 36h (Journées et Nuits Suivantes incluses)
+    # Filtre Fenêtre : Matchs de Journée uniquement (08h00 - 23h59, exclusion stricte de la nuit)
     now_utc = datetime.now(timezone.utc)
     limit_36h = now_utc + timedelta(hours=36)
 
@@ -333,22 +333,18 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
-                    m["dt_obj"] = m_dt
-                    scanned_results.append(m)
+                m_local = m_dt.astimezone(timezone(timedelta(hours=2)))
+                # Exclusion stricte de la nuit (00h00 à 07h59) -> Uniquement 08h00 à 23h59
+                if 8 <= m_local.hour <= 23:
+                    if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
+                        m["dt_obj"] = m_dt
+                        scanned_results.append(m)
             except Exception:
-                scanned_results.append(m)
-        else:
-            scanned_results.append(m)
-
-    # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
-    if len(scanned_results) == 0 and scanned_all:
-        print("⚠️ Aucun match dans la fenêtre — Utilisation des prochains matchs disponibles...")
-        scanned_results = scanned_all
-
+                pass
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs de Journée retenus (08h-23h59) : {len(scanned_results)}")
+    print(f"Matchs de Journée retenus (08h00 - 23h59) : {len(scanned_results)}")
+
 
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
@@ -715,84 +711,74 @@ def main():
     elif len(unpaired) == 3:
         trip = unpaired[:3]
         comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
-        for s in trip:
-            used_match_ids.add(s["id"])
+        for s in trip: used_match_ids.add(s["id"])
         combos_mixed.append({
-            "session": "cloture-mixte",
+            "session": trip[0]["session"],
             "type": "Triplé 100% Over 1.5 (3 Matchs)",
-            "items": trip,
-            "comb_odds": comb_odds,
+            "items": trip, "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
-    # S'il reste 2 matchs orphelins à la fin, on forme un Doublé
+
     elif len(unpaired) == 2:
         doub = unpaired[:2]
         comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
-        for s in doub:
-            used_match_ids.add(s["id"])
+        for s in doub: used_match_ids.add(s["id"])
         combos_mixed.append({
-            "session": "cloture-mixte",
+            "session": doub[0]["session"],
             "type": "Doublé 100% Over 1.5 (2 Matchs)",
-            "items": doub,
-            "comb_odds": comb_odds,
+            "items": doub, "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── MOTEUR 2 : DOUBLÉS HYBRIDES (2 MATCHS : 1 OVER 1.5 + 1 UNDER 2.5 [ÉCART <= 0.20]) ──
-    under25_selections = []
-    for m in scanned_results:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        block_key = get_betting_session_key(m_dt)
-        o25 = m.get("over25")
-        u25 = m.get("under25")
-        if o25 and u25 and abs(u25 - o25) <= 0.20 and 1.50 <= u25 <= 2.30:
-            diff = round(abs(u25 - o25), 2)
-            under25_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🛡️ Under 2.5", "odds": u25,
-                "diff": diff, "score": int(round((1.0 - diff/0.20) * 100))
+    # ── MOTEUR DOUBLÉS HYBRIDES (Appariement par Proximité Horaire ≤ 3h) ──
+    combos_hybrids = []
+    used_hyb_o = set()
+    used_hyb_u = set()
+    
+    # Étape 1 : Appariement par même tranche horaire
+    blocks_u25 = {}
+    for s in under25_selections:
+        blocks_u25.setdefault(s["session"], []).append(s)
+
+    for b_key in sorted(blocks_u25.keys()):
+        u_list = blocks_u25[b_key]
+        o_list = [s for s in blocks_mixed.get(b_key, []) if s["id"] not in used_hyb_o]
+        
+        m_count = min(len(u_list), len(o_list))
+        for k in range(m_count):
+            it_u = u_list[k]
+            it_o = o_list[k]
+            used_hyb_u.add(it_u["id"])
+            used_hyb_o.add(it_o["id"])
+            c_odds = round(it_o["odds"] * it_u["odds"], 2)
+            combos_hybrids.append({
+                "session": b_key,
+                "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
+                "items": [it_o, it_u],
+                "comb_odds": c_odds,
+                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
             })
 
-    under25_selections.sort(key=lambda x: x["dt"])
-    print(f"📊 Sélections Under 2.5 (Écart <= 0.20) retenues : {len(under25_selections)}")
+    # Étape 2 : Appariement chronologique des Under 2.5 restants avec Over 1.5 les plus proches
+    rem_u = [s for s in under25_selections if s["id"] not in used_hyb_u]
+    rem_o = [s for s in mixed_selections if s["id"] not in used_hyb_o]
 
-    # Appariement des Doublés Hybrides (1 Over 1.5 + 1 Under 2.5 chronologiques)
-    combos_hybrids = []
-    pool_o15 = sorted(mixed_selections, key=lambda x: x["dt"])
-    pool_u25 = sorted(under25_selections, key=lambda x: x["dt"])
-    min_len = min(len(pool_o15), len(pool_u25))
-
-    for i in range(min_len):
-        it_o = pool_o15[i]
-        it_u = pool_u25[i]
-        c_odds = round(it_o["odds"] * it_u["odds"], 2)
+    for it_u in rem_u:
+        if not rem_o:
+            break
+        # Trouver l'Over 1.5 le plus proche temporellement
+        closest_o = min(rem_o, key=lambda x: abs((x["dt"] - it_u["dt"]).total_seconds()))
+        rem_o.remove(closest_o)
+        used_hyb_u.add(it_u["id"])
+        c_odds = round(closest_o["odds"] * it_u["odds"], 2)
         combos_hybrids.append({
             "session": it_u["session"],
             "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
-            "items": [it_o, it_u],
+            "items": [closest_o, it_u],
             "comb_odds": c_odds,
             "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
         })
 
-    # Si Under 2.5 restants, création de Doublés 100% Under 2.5
-    if len(pool_u25) > min_len:
-        rem_u = pool_u25[min_len:]
-        for j in range(0, len(rem_u) - 1, 2):
-            u1 = rem_u[j]
-            u2 = rem_u[j+1]
-            c_odds = round(u1["odds"] * u2["odds"], 2)
-            combos_hybrids.append({
-                "session": u1["session"],
-                "type": "Doublé 100% Under 2.5 (Matchs Serrés)",
-                "items": [u1, u2],
-                "comb_odds": c_odds,
-                "stake": 3.0, "gain": round(3.0 * c_odds, 2), "profit": round(3.0 * c_odds - 3.0, 2)
-            })
-
-    pen_simples = []
-    pen_rejected = []
-
-    # Thèmes de couleurs alternées pour les tickets combinés
     TICKET_THEMES = [
         {"bg_header": "#eff6ff", "border_card": "#bfdbfe", "border_left": "#2563eb", "title_color": "#1e40af"},
         {"bg_header": "#fffbeb", "border_card": "#fde68a", "border_left": "#d97706", "title_color": "#92400e"},
