@@ -480,34 +480,32 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Triplés Under 3.5 (Score >= 60/100, Under 3.5 <= 1.45, Freq >= 60%) ──
+    # ── Sélection 100% Quadruplés Over 1.5 (Condition Bookmaker : Over 2.5 < Under 2.5) ──
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        sc_u35 = r.get("score_u35", 0)
-        u35 = r.get("under35")
-        is_val_u35 = (sc_u35 >= 60 and u35 and u35 <= 1.45 and r.get("freq_u35", 0.0) >= 60.0)
+        o25 = r.get("over25")
+        u25 = r.get("under25")
+        o15 = r.get("over15")
+        is_val = (o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50)
 
-        if is_val_u35:
+        if is_val:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if sc_u35 > 0:
-                r["rejection_reason"] = f"Score Under 3.5 insuffisant ({sc_u35}/100 < 60 ou cote non éligible)"
+            if o25 and u25 and o25 >= u25:
+                r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
+            elif not o25 or not u25:
+                r["rejection_reason"] = "Cotes Over/Under 2.5 non disponibles sur Unibet"
             else:
-                r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
+                r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: x.get("score_u35", 0), reverse=True)
+    s3_matches.sort(key=lambda x: x.get("over15", 99.0))
 
-    print(f"⭐ Matchs validés 100% Under 3.5 : {len(s3_matches)} / {len(scanned_results)}")
-
-
-
-
-
+    print(f"⭐ Matchs validés 100% Over 1.5 (Over 2.5 < Under 2.5) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -543,8 +541,8 @@ def main():
                 "date_str": m["date_str"],
                 "val_btts": m.get("btts_oui"),
                 "val_o25": m.get("over25"),
+                "val_o15": m.get("over15"),
                 "double": m.get("double_confirm", True),
-                "ac_score": m.get("ac_score", 0),
             }
             for m in s3_matches
         }
@@ -556,10 +554,10 @@ def main():
     var_s3   = []
     for k, v in curr_state["s3"].items():
         if k in prev_s3:
-            old_btts = prev_s3[k].get("val_btts")
-            if old_btts and old_btts != v["val_btts"]:
-                diff = round(v["val_btts"] - old_btts, 2)
-                var_s3.append({**v, "old_btts": old_btts, "diff": diff})
+            old_o25 = prev_s3[k].get("val_o25")
+            if old_o25 and old_o25 != v["val_o25"]:
+                diff = round(v["val_o25"] - old_o25, 2)
+                var_s3.append({**v, "old_o25": old_o25, "diff": diff})
 
     try:
         with open(history_file, "w", encoding="utf-8") as f:
@@ -576,19 +574,18 @@ def main():
         evo_html += '<h3 style="color:#92400e; margin-top:0; border-bottom:1px solid #fde68a; padding-bottom:5px;">📊 ÉVOLUTIONS DEPUIS LE DERNIER RUN (~2h)</h3>'
 
         if new_s3:
-            evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            evo_html += '<p style="color:#15803d; font-weight:bold; margin-bottom:5px;">🆕 Nouveaux matchs détectés (Over 2.5 < Under 2.5) :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
             for item in new_s3[:6]:
-                badge = " ⭐⭐ DOUBLE" if item.get("double") else ""
-                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — BTTS Oui: <b>{item['val_btts']}</b>{badge}</li>"
+                evo_html += f"<li><b>{item['date_str']}</b> | {item['league']} : <b>{item['match']}</b> — Over 1.5: <b>@{item.get('val_o15')}</b> (Over 2.5: @{item.get('val_o25')})</li>"
             if len(new_s3) > 6:
                 evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(new_s3) - 6} autres nouveaux matchs</li>"
             evo_html += '</ul>'
 
         if var_s3:
-            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote BTTS Oui :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
+            evo_html += '<p style="color:#1d4ed8; font-weight:bold; margin-bottom:5px;">📈 Variations de cote Over 2.5 :</p><ul style="margin:0 0 10px 0; font-size:13px;">'
             for item in var_s3[:6]:
                 arrow = "🔺" if item["diff"] > 0 else "🔻"
-                evo_html += f"<li><b>{item['match']}</b> : BTTS Oui {item['old_btts']} &rarr; <b>{item['val_btts']}</b> ({arrow} {item['diff']:+0.2f})</li>"
+                evo_html += f"<li><b>{item['match']}</b> : Over 2.5 @{item['old_o25']} &rarr; <b>@{item['val_o25']}</b> ({arrow} {item['diff']:+0.2f})</li>"
             if len(var_s3) > 6:
                 evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(var_s3) - 6} autres variations</li>"
             evo_html += '</ul>'
@@ -598,7 +595,7 @@ def main():
             for item in drop_s3[:6]:
                 evo_html += f"<li><b>{item['match']}</b> ({item['league']})</li>"
             if len(drop_s3) > 6:
-                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(drop_s3) - 6} autres matchs expirés ou écartés</li>"
+                evo_html += f"<li style='color:#94a3b8; font-style:italic;'>... et {len(drop_s3) - 6} autres matchs sortis</li>"
             evo_html += '</ul>'
 
         evo_html += '</div>'
@@ -617,82 +614,97 @@ def main():
             return slot
         return f"{betting_date}-block"
 
-    # ── MOTEUR UNIFIÉ TRIPLÉS 100% UNDER 3.5 (Bloc 24h Journée + Nuit) ──
+    # ── MOTEUR UNIFIÉ QUADRUPLÉS 100% OVER 1.5 (Bloc 24h Journée + Nuit) ──
     mixed_selections = []
-
     
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        sc_u35 = m.get("score_u35", 0)
-        u35 = m.get("under35")
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        o15 = m.get("over15")
 
-        if sc_u35 >= 60 and u35 and (u35 <= 1.45) and m.get("freq_u35", 0.0) >= 60.0:
+        if o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50:
+            # Score de confiance Bookmaker : % d'avantage Over 2.5 vs Under 2.5
+            sc_conf = int(round((1.0 - (o25 / (o25 + u25))) * 100)) if (o25 + u25) > 0 else 75
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🛡️ Under 3.5", "odds": u35,
-                "score": sc_u35
+                "market": "⚡ Over 1.5", "odds": o15,
+                "score": sc_conf
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_u35 = len(mixed_selections)
-    print(f"📊 Sélections 100% Under 3.5 retenues : {n_u35}")
+    n_o15 = len(mixed_selections)
+    print(f"📊 Sélections 100% Over 1.5 (Over 2.5 < Under 2.5) retenues : {n_o15}")
 
     # Regroupement strict par Bloc [Journée + Nuit Suivante]
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR UNIFIÉ TRIPLÉS CADENAS (3 Matchs Chronologiques — Cote Cible ~2.40 - 3.20) ──
+    # ── MOTEUR UNIFIÉ QUADRUPLÉS OVER 1.5 (4 Matchs Chronologiques — Cote Cible ~2.20 - 3.20) ──
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc, appariement chronologique des matchs 3 par 3
+    # Pour chaque Bloc, appariement chronologique des matchs 4 par 4
     for b_key in sorted(blocks_mixed.keys()):
         block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
         
         available = [s for s in block_items if s["id"] not in used_match_ids]
-        while len(available) >= 3:
-            trip = available[:3]
-            comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
-            for s in trip:
+        while len(available) >= 4:
+            quad = available[:4]
+            comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
+            for s in quad:
                 used_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": b_key,
-                "type": "Triplé 100% Under 3.5",
-                "items": trip,
+                "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+                "items": quad,
                 "comb_odds": comb_odds,
                 "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
             })
             available = [s for s in block_items if s["id"] not in used_match_ids]
 
-    # Fallback pour sélections restantes inter-blocs (3 par 3)
+    # Fallback pour sélections restantes inter-blocs (4 par 4)
     unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
     unpaired.sort(key=lambda x: x["dt"])
-    while len(unpaired) >= 3:
-        trip = unpaired[:3]
-        comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
-        for s in trip:
+    while len(unpaired) >= 4:
+        quad = unpaired[:4]
+        comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
+        for s in quad:
             used_match_ids.add(s["id"])
         combos_mixed.append({
             "session": "inter-blocs",
-            "type": "Triplé 100% Under 3.5",
-            "items": trip,
+            "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+            "items": quad,
             "comb_odds": comb_odds,
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
         unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
 
-    # S'il reste 2 matchs orphelins à la fin, on forme un doublé de clôture
-    if len(unpaired) == 2:
+    # S'il reste 3 matchs orphelins à la fin, on forme un Triplé propre
+    if len(unpaired) == 3:
+        trip = unpaired[:3]
+        comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
+        for s in trip:
+            used_match_ids.add(s["id"])
+        combos_mixed.append({
+            "session": "cloture-mixte",
+            "type": "Triplé 100% Over 1.5 (3 Matchs)",
+            "items": trip,
+            "comb_odds": comb_odds,
+            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+        })
+    # S'il reste 2 matchs orphelins à la fin, on forme un Doublé propre
+    elif len(unpaired) == 2:
         doub = unpaired[:2]
         comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
         for s in doub:
             used_match_ids.add(s["id"])
         combos_mixed.append({
             "session": "cloture-mixte",
-            "type": "Doublé 100% Under 3.5",
+            "type": "Doublé 100% Over 1.5 (2 Matchs)",
             "items": doub,
             "comb_odds": comb_odds,
             "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
@@ -702,71 +714,39 @@ def main():
     pen_rejected = []
 
     def render_match_proof_html(m, sel_score=None):
-        score_u35 = m.get("score_u35", 0)
-        prob_u35 = m.get("prob_u35", 75.0)
-        freq_u35 = m.get("freq_u35", 0.0)
-        risk_4p = m.get("risk_4plus", 0.0)
-        pct_cs = m.get("pct_cs", 0.0)
-        sot_val = m.get("sot_comb", 0.0)
-        ev_u35 = m.get("ev_u35", 0.0)
+        o15 = m.get("over15", 1.25)
+        o25 = m.get("over25", "N/A")
+        u25 = m.get("under25", "N/A")
+        c1 = m.get("c1", "N/A")
+        cx = m.get("cx", "N/A")
+        c2 = m.get("c2", "N/A")
+        b_oui = m.get("btts_oui")
 
-        score = sel_score if sel_score is not None else score_u35
-        if not score:
-            return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
-
-        score_style = "background:#10b981; color:#ffffff;" if score >= 75 else "background:#3b82f6; color:#ffffff;"
-
-        rec_h = m.get("recent_h_dom", [])
-        h_pills = []
-        for rm in rec_h[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot <= 3:
-                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🛡️</span>')
-            else:
-                h_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
-        h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
-
-        rec_a = m.get("recent_a_ext", [])
-        a_pills = []
-        for rm in rec_a[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot <= 3:
-                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🛡️</span>')
-            else:
-                a_pills.append(f'<span style="background:#fee2e2; color:#991b1b; font-weight:700; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #fecaca; display:inline-block; margin:1px;">{hg}-{ag} ⚠️</span>')
-        a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
+        # Calcul probabilité implicite Over 2.5
+        prob_imp = round((1.0 / o25) * 100, 1) if (isinstance(o25, (int, float)) and o25 > 0) else 55.0
 
         return f'''
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE & POISSON UNDER 3.5</span>
-                <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    Score Banque : {score_u35}/100
+                <span style="font-weight:800; font-size:12px; color:#0f172a;">⚡ SIGNAL BOOKMAKER OVER 1.5</span>
+                <span style="background:#16a34a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
+                    Over 2.5 Favori (@{o25} &lt; @{u25})
                 </span>
             </div>
 
-            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
-                <b>Poisson P(U3.5)</b>: {prob_u35}% &nbsp;|&nbsp; 
-                <b>Freq &le;3b</b>: {freq_u35}% &nbsp;|&nbsp; 
-                <b>Risque &ge;4b</b>: {risk_4p}% &nbsp;|&nbsp; 
-                <b>Clean Sheets</b>: {pct_cs}% &nbsp;|&nbsp; 
-                <b>EV(U3.5)</b>: <b style="color:{'#166534' if ev_u35 > 0 else '#991b1b'};">{ev_u35:+.1f}%</b>
+            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; line-height:1.6;">
+                <b>Pari joué</b> : <b style="color:#16a34a; font-size:12px;">Over 1.5 Buts (@{o15:.2f})</b> &nbsp;|&nbsp; 
+                <b>Cote Over 2.5</b> : @{o25} &nbsp;|&nbsp; 
+                <b>Cote Under 2.5</b> : @{u25} &nbsp;|&nbsp; 
+                <b>Prob. Implicite Over</b> : {prob_imp}%
             </div>
 
-            <div style="font-size:11px; color:#334155; line-height:1.6;">
-                <div style="margin-bottom:6px;">
-                    <b>🏠 10m Domicile ({m['dom']})</b> :<br>{h_pills_html}
-                </div>
-                <div>
-                    <b>✈️ 10m Extérieur ({m['ext']})</b> :<br>{a_pills_html}
-                </div>
+            <div style="margin-top:6px; font-size:11px; color:#64748b;">
+                ⚔️ <b>Cotes 1N2</b> : 1: @{c1} &bull; N: @{cx} &bull; 2: @{c2} &nbsp;|&nbsp; <b>BTTS Oui</b> : @{b_oui if b_oui else 'N/A'}
             </div>
         </div>
         '''
+
 
 
 
@@ -911,7 +891,6 @@ def main():
     # Combinés multi-marchés
     for idx_cb, cb in enumerate(combos_mixed, 1):
         c_type = cb["type"]
-    # Planning table construction
     plan_rows = []
     seen_plan = set()
     for idx_cb, cb in enumerate(combos_mixed, 1):
@@ -926,15 +905,16 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}/100",
-                    "score_val": item["score"],
-                    "type_label": f"COMBINÉ #{idx_cb}",
-                    "bg_market": "#dbeafe" if "Under 2.5" in item["market"] else "#dcfce7",
-                    "cl_market": "#1e40af" if "Under 2.5" in item["market"] else "#166534",
+                    "score_label": "Over 2.5 < Under",
+                    "score_val": 85,
+                    "type_label": f"TICKET #{idx_cb}",
+                    "bg_market": "#dcfce7",
+                    "cl_market": "#166534",
                 })
                 seen_plan.add(key)
 
     plan_rows.sort(key=lambda x: x["dt"])
+
 
     # Génération HTML des lignes du planning
     plan_rows_html = ""
@@ -963,36 +943,28 @@ def main():
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: max(x.get("score_u25", 0), x.get("score_u35", 0)), reverse=True):
-        retained = (m.get("score_u25", 0) >= 70 and m.get("under25") and (m.get("under25") <= 1.95 or (m.get("over25") and m.get("under25") < m.get("over25")))) or (m.get("score_u35", 0) >= 60 and m.get("under35") and m.get("under35") <= 1.45 and m.get("freq_u35", 0.0) >= 60.0)
+    for m in sorted(scanned_results, key=lambda x: (x.get("over25", 99.0) < x.get("under25", 0.0), -x.get("over15", 0.0)), reverse=True):
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        o15 = m.get("over15")
+        retained = bool(o25 and u25 and o25 < u25 and o15 and 1.10 <= o15 <= 1.50)
         bg_row = "#f0fdf4" if retained else "#fff"
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
 
-
-        u25 = f"@{m['under25']:.2f}" if m.get("under25") else "N/A"
-        u35 = f"@{m['under35']:.2f}" if m.get("under35") else "N/A"
-        sc_u25 = m.get("score_u25", 0)
-        sc_u35 = m.get("score_u35", 0)
-        p_u25 = m.get("prob_u25", 50.0)
-        
-        # Badges scores
-        u25_bg = "#dcfce7" if sc_u25 >= 75 else ("#fef3c7" if sc_u25 >= 50 else "#fee2e2")
-        u25_cl = "#15803d" if sc_u25 >= 75 else ("#92400e" if sc_u25 >= 50 else "#dc2626")
-        u25_badge = f'<span style="background:{u25_bg}; color:{u25_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{sc_u25}/100</span>' if sc_u25 > 0 else '<span style="color:#94a3b8;">—</span>'
-
-        u35_bg = "#dcfce7" if sc_u35 >= 75 else ("#fef3c7" if sc_u35 >= 50 else "#f1f5f9")
-        u35_cl = "#15803d" if sc_u35 >= 75 else ("#92400e" if sc_u35 >= 50 else "#94a3b8")
-        u35_badge = f'<span style="background:{u35_bg}; color:{u35_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{sc_u35}/100</span>' if sc_u35 > 0 else '<span style="color:#94a3b8;">—</span>'
+        o15_txt = f"@{o15:.2f}" if o15 else "N/A"
+        o25_txt = f"@{o25:.2f}" if o25 else "N/A"
+        u25_txt = f"@{u25:.2f}" if u25 else "N/A"
+        signal_txt = f'<span style="color:#16a34a; font-weight:800;">Over 2.5 &lt; Under 2.5</span>' if (o25 and u25 and o25 < u25) else f'<span style="color:#94a3b8;">Under 2.5 &le; Over 2.5</span>'
 
         scan_rows_html += (
             f'<tr style="background:{bg_row};">'
             f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
             f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{u25_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{u35_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:700; font-size:11px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{p_u25}%</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{u25}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; color:#16a34a; border-bottom:1px solid #f1f5f9;">{o15_txt}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:700; font-size:11px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{o25_txt}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:700; font-size:11px; color:#64748b; border-bottom:1px solid #f1f5f9;">{u25_txt}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{signal_txt}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
@@ -1012,17 +984,17 @@ def main():
 
           <!-- HEADER -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
-            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · TRIPLÉS 100% UNDER 3.5</div>
+            <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS 100% OVER 1.5 (OVER 2.5 &lt; UNDER 2.5)</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Triplés 3 Matchs Chronologiques 100% Under 3.5 · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Pure Cotes Bookmakers · 4 Matchs Chronologiques · Mise à jour : {now_str} · 24H (Journées & Nuits)</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">TRIPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.40-3.10</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{n_u35}</div><div style="font-size:10px; font-weight:700; color:#15803d;">UNDER 3.5</div><div style="font-size:10px; color:#16a34a;">Score ≥ 60</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">QUADRUPLÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ~2.20-3.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(s3_matches)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">RETENUS</div><div style="font-size:10px; color:#16a34a;">Over 2.5 &lt; Under 2.5</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:10px; color:#64748b;">24H</div></div></td>
               </tr>
             </table>
@@ -1041,7 +1013,7 @@ def main():
                   <th style="padding:9px 8px; text-align:left;">Match</th>
                   <th style="padding:9px 6px; text-align:center; min-width:100px;">Marché</th>
                   <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Cote</th>
-                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Score</th>
+                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Confiance</th>
                   <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Type</th>
                 </tr></thead>
                 <tbody>{plan_rows_html}</tbody>
@@ -1052,10 +1024,10 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : TRIPLÉS CADENAS -->
+          <!-- SECTION 2 : QUADRUPLÉS OVER 1.5 -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. TRIPLÉS 100% UNDER 3.5 CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(3 Matchs · Cote Cible ~2.40 - 3.10 · Mise 3,00 €)</span></span>
+              <span>🚀 1. QUADRUPLÉS 100% OVER 1.5 CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(4 Matchs · Cote Cible ~2.20 - 3.20 · Mise 3,00 €)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1069,10 +1041,10 @@ def main():
                 <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
                   <th style="padding:7px 8px; text-align:left;">Heure</th>
                   <th style="padding:7px 8px; text-align:left;">Match</th>
-                  <th style="padding:7px 6px; text-align:center;">Score U2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Score U3.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Poisson U2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Cote U2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Over 1.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Over 2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Under 2.5</th>
+                  <th style="padding:7px 6px; text-align:center;">Signal Bookmaker</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
                 <tbody>{scan_rows_html}</tbody>
@@ -1082,7 +1054,7 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
-            🔒 Paris sportifs · Méthode Triplés 100% Under 3.5 · Analyse AdamChoi & Sofascore · Unibet France · {now_str}
+            ⚽ Paris sportifs · Méthode Quadruplés 100% Over 1.5 (Over 2.5 &lt; Under 2.5) · Unibet France · {now_str}
           </div>
 
         </div>
@@ -1094,14 +1066,14 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION TRIPLÉS 100% UNDER 3.5 — 24H JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION QUADRUPLÉS 100% OVER 1.5 — 24H JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Under 3.5 (Score >= 60/100, Cote <= 1.45, Freq >= 60%)\n",
+        f"**Critères** : Over 2.5 < Under 2.5 (Bookmaker favori Over) • Cote Over 1.5 éligible\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Triplés 100% Under 3.5 Recommandés (Cote Cible ~2.40 - 3.10 — Mise 3,00 € / ticket)\n",
+        f"## 🎯 Quadruplés 100% Over 1.5 Recommandés (Cote Cible ~2.20 - 3.20 — Mise 3,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1115,26 +1087,23 @@ def main():
         report.append("Aucun combiné disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("| Date | Ligue | Match | Over 1.5 | Over 2.5 | Under 2.5 | Signal |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: | :--- |")
     for m in s3_matches:
-        o25 = m.get("over25", "N/A")
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
-        but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{btts_cell}** | **{o25}** | {but} |")
+        o15_v = f"@{m['over15']:.2f}" if m.get("over15") else "N/A"
+        o25_v = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
+        u25_v = f"@{m['under25']:.2f}" if m.get("under25") else "N/A"
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{o15_v}** | {o25_v} | {u25_v} | Over 2.5 &lt; Under 2.5 |")
 
     report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Raison du Rejet |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("| Date | Ligue | Match | Over 1.5 | Over 2.5 | Under 2.5 | Raison du Rejet |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: | :--- |")
     for m in rejected_matches:
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
-        o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else "N/A"
+        o15_v = f"@{m['over15']:.2f}" if m.get("over15") else "N/A"
+        o25_v = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
+        u25_v = f"@{m['under25']:.2f}" if m.get("under25") else "N/A"
         reason = m.get("rejection_reason", "Non éligible")
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {btts_val} | {o25_val} | {reason} |")
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {o15_v} | {o25_v} | {u25_v} | {reason} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -1151,7 +1120,8 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Triplés 100% Under 3.5 (Cote ~2.40 - 3.10)"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Quadruplés 100% Over 1.5 (Over 2.5 < Under 2.5)"
+
 
 
     
