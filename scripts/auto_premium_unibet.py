@@ -607,8 +607,8 @@ def main():
                 "market": "🟥 Over 2.5", "odds": o25,
                 "score": m.get("ac_score", 0)
             })
-        # 2. Over 1.5 si Score >= 75
-        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
+        # 2. Over 1.5 si Score >= 75 ET Cote Over 1.5 <= 1.30
+        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15") and (m.get("over15") <= 1.30):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": m["over15"],
@@ -617,8 +617,9 @@ def main():
 
     # ── DIAGNOSTIC : breakdown des filtres ──
     n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and (m.get("over25") < m.get("under25")))
-    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_o15 = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15") and (m.get("over15") <= 1.30))
     n_pen = sum(1 for m in scanned_results if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"] and m.get("score_penalty", 0) >= 80 and m.get("ref_name", "Inconnu") not in ["", "Inconnu"])
+
 
 
 
@@ -1091,7 +1092,8 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 • Over 1.5 — Score ≥ 75/100)</span></span>
+              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5 [Over &lt; Under] • Over 1.5 [Cote ≤ 1.30] — Score ≥ 75/100)</span></span>
+
 
 
 
