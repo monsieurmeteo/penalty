@@ -347,149 +347,8 @@ def main():
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
-    try:
-        from analyze import analyze_pure_stats_20
-        print("✅ analyze_pure_stats_20 importé avec succès")
-    except Exception as e_import:
-        analyze_pure_stats_20 = None
-        print(f"❌ ERREUR import analyze.py : {type(e_import).__name__}: {e_import}")
-
-    # Étape 2 : Préchargement fixtures AdamChoi (optionnel — fallback auto si échoue)
-    d_fx = None
-    d_refs = {}
-
-
-
-    if analyze_pure_stats_20:
-        try:
-            r_fx = requests.get("https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0", headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
-            d_fx = r_fx.json() if r_fx.status_code == 200 else None
-            print(f"✅ Fixtures AdamChoi chargées : {len(d_fx.get('dates', [])) if d_fx else 0} dates")
-        except Exception as e_fx:
-            d_fx = None  # analyse.py fera un fetch individuel par match
-            print(f"⚠️ Fixtures AdamChoi non préchargées ({type(e_fx).__name__}: {e_fx}) — fallback auto-fetch par match")
-        try:
-            REFS_URL = "https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesWithRefereesSimplified.php"
-            REF_HEADERS = {"Authorization-Client": "ADAMCHOI.CO.UK"}
-            body_str = ""
-            # Tentative 1 : curl_cffi impersonate Chrome (contourne Cloudflare TLS fingerprint)
-            try:
-                from curl_cffi import requests as cf_requests
-                r_cf = cf_requests.get(REFS_URL, impersonate="chrome120", headers=REF_HEADERS, timeout=12)
-                raw = r_cf.content
-                if raw[:3] == b'\xef\xbb\xbf':
-                    raw = raw[3:]
-                body_str = raw.decode('utf-8', errors='replace').strip()
-                if r_cf.status_code == 200 and body_str and body_str[0] in '{[':
-                    print(f"   Arbitres body[0:30]: {repr(body_str[:30])} (curl_cffi Chrome)")
-                else:
-                    print(f"   ⚠️ curl_cffi : réponse invalide ({r_cf.status_code}), fallback requests...")
-                    body_str = ""
-            except Exception as e_cf:
-                print(f"   ⚠️ curl_cffi non disponible ({e_cf}), fallback requests...")
-                body_str = ""
-            # Tentative 2 (fallback) : requests classique avec retries si curl_cffi a échoué
-            if not body_str:
-                for _attempt, delay in enumerate([0, 3, 5, 8]):
-                    if delay:
-                        time.sleep(delay)
-                    try:
-                        r_refs = requests.get(REFS_URL, headers={**REF_HEADERS, "User-Agent": "Mozilla/5.0"}, timeout=12)
-                        raw = r_refs.content
-                        if raw[:3] == b'\xef\xbb\xbf':
-                            raw = raw[3:]
-                        body_str = raw.decode('utf-8', errors='replace').strip()
-                        if r_refs.status_code == 200 and body_str and body_str[0] in '{[':
-                            print(f"   Arbitres body[0:30]: {repr(body_str[:30])} (requests tentative {_attempt+1})")
-                            break
-                        else:
-                            print(f"   ⚠️ Tentative requests {_attempt+1}/4 : HTML/vide, retry...")
-                            body_str = ""
-                    except Exception as e_attempt:
-                        print(f"   ⚠️ Tentative requests {_attempt+1}/4 : {e_attempt}, retry...")
-                        body_str = ""
-            refs_raw = json.loads(body_str) if body_str and body_str[0] in '{[' else {}
-            for date_block in refs_raw.get("dates", []):
-                for lg in date_block.get("leagues", []):
-                    for fx in lg.get("fixtures", []):
-                        eids = [str(k) for k in [fx.get("externalid"), fx.get("externalId"), fx.get("id")] if k]
-                        ref_name = fx.get("refereeName") or fx.get("referee_name")
-                        if ref_name and ref_name != "Inconnu":
-                            ref_entry = {"refereeId": fx.get("refereeId", 0), "refereeName": ref_name}
-                            for e_key in eids:
-                                d_refs[e_key] = ref_entry
-            print(f"✅ Arbitres désignés chargés : {len(d_refs)} entrées correspondantes")
-        except Exception as e_refs:
-            d_refs = {}
-            print(f"⚠️ Arbitres non chargés ({type(e_refs).__name__}: {e_refs})")
-
-
-    def enrich_adamchoi(m):
-        if analyze_pure_stats_20:
-            try:
-                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True, match_dt=m.get("dt_obj"), unibet_league=m.get("league", ""), d_refs=d_refs, m_unibet=m)
-                if res:
-                    m["ac_score"] = res.get("score", 0)
-                    m["ac_classe"] = res.get("classe", "")
-                    m["ac_prob"] = res.get("calibrated_prob", res.get("prob", 0))
-                    m["ac_xg"] = res.get("xg_total", 0.0)
-                    m["ac_sot"] = res.get("sot_total", 0.0)
-                    m["ac_verdict"] = res.get("verdict", "")
-                    m["ac_red_flags"] = res.get("red_flags", [])
-                    m["pts_ipo"] = res.get("pts_ipo", 0)
-                    m["ipo_comb"] = res.get("ipo_comb", 0.0)
-                    m["pts_goals"] = res.get("pts_goals", 0)
-                    m["total_goals_brut"] = res.get("total_goals_brut", 0.0)
-                    m["pts_freq"] = res.get("pts_freq", 0)
-                    m["avg_freq_all"] = res.get("o25_avg_rate", res.get("avg_freq_all", 0.0))
-                    m["pts_sot"] = res.get("pts_sot", 0)
-                    m["sot_comb"] = res.get("sot_comb", 0.0)
-                    m["pts_ha"] = res.get("pts_ha", 0)
-                    m["avg_freq_ha"] = res.get("avg_freq_ha", 0.0)
-                    m["pts_league"] = res.get("pts_league", 0)
-                    m["recent_h_dom"] = res.get("recent_h_dom", [])
-                    m["recent_a_ext"] = res.get("recent_a_ext", [])
-                    m["freq_o15"] = res.get("freq_o15", 0.0)
-                    m["freq_btts"] = res.get("freq_btts", 0.0)
-                    m["score_o15"] = res.get("score_o15", 0)
-                    m["score_u25"] = res.get("score_u25", 0)
-                    m["score_u35"] = res.get("score_u35", 0)
-                    m["prob_u25"] = res.get("prob_u25", 50.0)
-                    m["prob_u35"] = res.get("prob_u35", 75.0)
-                    m["freq_u25"] = res.get("freq_u25", 0.0)
-                    m["freq_u35"] = res.get("freq_u35", 0.0)
-                    m["risk_4plus"] = res.get("risk_4plus", 0.0)
-                    m["stdev_goals"] = res.get("stdev_goals", 1.2)
-                    m["pct_cs"] = res.get("pct_cs", 0.0)
-
-                    # Calcul Edge & EV pour Under 2.5
-                    u25 = m.get("under25")
-                    o25 = m.get("over25")
-                    if u25 and o25 and u25 > 0 and o25 > 0:
-                        p_fair_u25 = (1.0 / u25) / ((1.0 / u25) + (1.0 / o25))
-                        p_mod_u25 = m["prob_u25"] / 100.0
-                        m["edge_u25"] = round((p_mod_u25 - p_fair_u25) * 100.0, 1)
-                        m["ev_u25"] = round(((p_mod_u25 * u25) - 1.0) * 100.0, 1)
-
-                    # Calcul Edge & EV pour Under 3.5
-                    u35 = m.get("under35")
-                    o35 = m.get("over35")
-                    if u35 and o35 and u35 > 0 and o35 > 0:
-                        p_fair_u35 = (1.0 / u35) / ((1.0 / u35) + (1.0 / o35))
-                        p_mod_u35 = m["prob_u35"] / 100.0
-                        m["edge_u35"] = round((p_mod_u35 - p_fair_u35) * 100.0, 1)
-                        m["ev_u35"] = round(((p_mod_u35 * u35) - 1.0) * 100.0, 1)
-            except Exception:
-                pass
-        return m
-
-
-    if scanned_results and analyze_pure_stats_20:
-        print(f"📊 Enrichissement AdamChoi Score /100 pour les {len(scanned_results)} matchs scannés Unibet...")
-        with ThreadPoolExecutor(max_workers=10) as ex:
-            scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
-
-    # ── Sélection Over 1.5 (Marché Bookmaker : Over 2.5 < Under 2.5 & P(Pure) >= 52% ou Score >= 70) ──
+    # ── Sélection 100% Marché Bookmaker Over 1.5 ──
+    # Critère : Over 2.5 < Under 2.5 sur Unibet & P(Pure Over 2.5) >= 52.0% & Cote Over 1.5 entre @1.10 et @1.45
     s3_matches = []
     rejected_matches = []
 
@@ -498,13 +357,8 @@ def main():
         u25 = r.get("under25")
         o15 = r.get("over15")
         prob_pure_o25 = r.get("prob_pure_o25") or 0.0
-        score_o15 = r.get("score_o15") or 0
-        freq_o15 = r.get("freq_o15") or 0.0
-        
-        # Over 1.5 : Over 2.5 < Under 2.5 ET Probabilité Pure >= 52% (ou Score Over 1.5 >= 70)
-        is_fav_o25 = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0)
-        is_score_ok = bool(score_o15 >= 70 and freq_o15 >= 60.0)
-        is_val = bool((is_fav_o25 or is_score_ok) and o15 and 1.10 <= o15 <= 1.45)
+
+        is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.45)
 
         if is_val:
             r["double_confirm"] = True
@@ -513,8 +367,10 @@ def main():
         else:
             if not o15 or o15 < 1.10:
                 r["rejection_reason"] = f"Cote Over 1.5 non disponible ou trop écrasée (@{o15})"
-            elif not is_fav_o25 and not is_score_ok:
-                r["rejection_reason"] = f"Under 2.5 favori ou stats insuffisantes (P(Pure): {prob_pure_o25}%, Score: {score_o15}/100)"
+            elif o25 and u25 and o25 >= u25:
+                r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
+            elif prob_pure_o25 < 52.0:
+                r["rejection_reason"] = f"Probabilité pure sans marge trop faible ({prob_pure_o25}% < 52%)"
             else:
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
             rejected_matches.append(r)
@@ -522,6 +378,7 @@ def main():
     s3_matches.sort(key=lambda x: -x.get("prob_pure_o25", 0))
 
     print(f"⭐ Matchs validés 100% Over 1.5 (Over favori & P(Pure) >= 52%) : {len(s3_matches)} / {len(scanned_results)}")
+
 
 
 
@@ -630,23 +487,22 @@ def main():
 
 
     # ── MOTEUR UNIFIÉ OVER 1.5 (Strictement issu de s3_matches : Score >= 70/100 & Freq >= 60%) ──
+    # ── MOTEUR UNIFIÉ OVER 1.5 (Issu de s3_matches : Over favori & P(Pure) >= 52%) ──
     mixed_selections = []
     for m in s3_matches:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
         o15 = m.get("over15")
-        sc_15 = m.get("score_o15", 0)
+        p_pure = m.get("prob_pure_o25", 55.0)
 
         mixed_selections.append({
             "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
             "market": "⚡ Over 1.5", "odds": o15,
-            "score": sc_15
+            "score": p_pure
         })
 
-    # ── MOTEUR 2 : UNDER 2.5 (Désactivé en 100% Attaque) ──
-    under25_selections = []
+    print(f"📊 Sélections Over 1.5 (P(Pure) >= 52%) retenues : {len(mixed_selections)}")
 
-    print(f"📊 Sélections Over 1.5 (Score >= 70/100) retenues : {len(mixed_selections)}")
 
     # Regroupement strict par Jour
     blocks_mixed = {}
@@ -806,10 +662,10 @@ def main():
                 o25 = m.get("over25", "N/A")
                 u25 = m.get("under25", "N/A")
                 p_pure = m.get("prob_pure_o25", 55.0)
-                sc_o15 = m.get("score_o15") or m.get("ac_score") or 0
-                lbl_q_badge = f"Score {sc_o15}/100" if sc_o15 >= 70 else f"{p_pure}% pure"
+                lbl_q_badge = f"{p_pure}% pure"
                 
                 items_rows += f'''
+
                 <tr style="border-bottom:1px solid #f1f5f9;">
                     <td style="padding:6px 8px; font-weight:700; font-size:11px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
                     <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
@@ -830,94 +686,35 @@ def main():
               </table>
             </div>'''
     else:
-        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Quintuplé disponible.</div>'
+        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Quadruplé disponible.</div>'
 
-    def render_match_proof_html(m, sel_score=None):
-        score = sel_score if sel_score is not None else m.get("ac_score", 0)
-        if not score:
-            return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
-        if score >= 90:   classe = "🔥🔥🔥 Exceptionnel"
-        elif score >= 85: classe = "🔥🔥 Très fort"
-        elif score >= 80: classe = "🔥 Fort"
-        elif score >= 75: classe = "✅ Bon potentiel"
-        elif score >= 70: classe = "🟡 Intéressant"
-        elif score >= 65: classe = "⚠️ Moyen"
-        else:             classe = "⚠️ Fragile"
-        pts_ipo = m.get("pts_ipo", 0)
-        ipo_val = m.get("ipo_comb", 0.0)
-        pts_goals = m.get("pts_goals", 0)
-        goals_val = m.get("total_goals_brut", 0.0)
-        pts_freq = m.get("pts_freq", 0)
-        freq_val = m.get("avg_freq_all", 0.0)
-        pts_sot = m.get("pts_sot", 0)
-        sot_val = m.get("sot_comb", 0.0)
-        pts_ha = m.get("pts_ha", 0)
-        ha_val = m.get("avg_freq_ha", 0.0)
-        pts_league = m.get("pts_league", 0)
-
-        if score >= 90:
-            score_style = "background: linear-gradient(135deg, #dc2626, #ea580c); color: #ffffff;"
-        elif score >= 85:
-            score_style = "background: linear-gradient(135deg, #ea580c, #f59e0b); color: #ffffff;"
-        elif score >= 80:
-            score_style = "background: #f59e0b; color: #ffffff;"
-        else:
-            score_style = "background: #10b981; color: #ffffff;"
-
-        rec_h = m.get("recent_h_dom", [])
-        h_pills = []
-        for rm in rec_h[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot >= 3:
-                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
-            else:
-                h_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
-        h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
-
-        rec_a = m.get("recent_a_ext", [])
-        a_pills = []
-        for rm in rec_a[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot >= 3:
-                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
-            else:
-                a_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
-        a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
+    def render_match_proof_html(m):
+        c1 = f"@{m.get('c1'):.2f}" if m.get('c1') else "N/A"
+        cx = f"@{m.get('cx'):.2f}" if m.get('cx') else "N/A"
+        c2 = f"@{m.get('c2'):.2f}" if m.get('c2') else "N/A"
+        o25 = f"@{m.get('over25'):.2f}" if m.get('over25') else "N/A"
+        u25 = f"@{m.get('under25'):.2f}" if m.get('under25') else "N/A"
+        p_o25 = f"{m.get('prob_pure_o25')}%" if m.get('prob_pure_o25') else "N/A"
+        p_u25 = f"{m.get('prob_pure_u25')}%" if m.get('prob_pure_u25') else "N/A"
+        margin = f"{m.get('margin_pct')}%" if m.get('margin_pct') else "N/A"
+        buteur_txt = f"{m.get('buteur_name')} (@{m.get('buteur_cote')})" if m.get('buteur_name') else "Non disponible"
 
         return f'''
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE (BARÈME V2)</span>
-                <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    {score}/100 &bull; {classe}
-                </span>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; margin-top:6px; font-size:11px; color:#475569; line-height:1.5;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span>🏦 <b>1N2 Unibet</b> : 1: <b>{c1}</b> | N: <b>{cx}</b> | 2: <b>{c2}</b></span>
+                <span>⚖️ <b>Marge ARJEL</b> : <b>{margin}</b></span>
             </div>
-
-            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
-                <b>1. IPO ({ipo_val:.2f})</b>: {pts_ipo}/25 &nbsp;|&nbsp; 
-                <b>2. Buts ({goals_val:.1f}b)</b>: {pts_goals}/15 &nbsp;|&nbsp; 
-                <b>3. Freq ({freq_val:.0f}%)</b>: {pts_freq}/20 &nbsp;|&nbsp; 
-                <b>4. Tirs ({sot_val:.1f}t)</b>: {pts_sot}/10 &nbsp;|&nbsp; 
-                <b>5. H/A ({ha_val:.0f}%)</b>: {pts_ha}/20 &nbsp;|&nbsp; 
-                <b>6. Ligue</b>: {pts_league}/10
+            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span>🎯 <b>Marché 2.5 Buts</b> : Over: <b>{o25}</b> ({p_o25} pure) | Under: <b>{u25}</b> ({p_u25} pure)</span>
             </div>
-
-            <div style="font-size:11px; color:#334155; line-height:1.6;">
-                <div style="margin-bottom:6px;">
-                    <b>🏠 10m Domicile ({m['dom']})</b> :<br>{h_pills_html}
-                </div>
-                <div>
-                    <b>✈️ 10m Extérieur ({m['ext']})</b> :<br>{a_pills_html}
-                </div>
+            <div>
+                <span>⚡ <b>Buteur le plus probable</b> : <b>{buteur_txt}</b></span>
             </div>
         </div>
         '''
 
-    # Génération HTML Doublés 100% Attaque (1 Over 1.5 + 1 Over 2.5) avec fiches complètes du 13 août
+    # Génération HTML Doublés Hybrides
     combos_hybrids_html = ""
     if combos_hybrids:
         current_sess_h = None
@@ -932,20 +729,20 @@ def main():
                     day_title = f"📅 SESSION [{sess_label}]"
                 combos_hybrids_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
 
-
             theme = TICKET_THEMES[(idx_h - 1) % len(TICKET_THEMES)]
             items_html = ""
             for item in cb["items"]:
                 m = item["m"]
                 mk = item["market"]
                 o = item["odds"]
-                sc = item.get("score", m.get("ac_score", 0))
-                proof = render_match_proof_html(m, sel_score=sc)
+                p_pure = m.get("prob_pure_o25", 55.0)
+                lbl_tag = f"{p_pure}% pure" if "Over" in mk else f"Under @{o:.2f}"
+                proof = render_match_proof_html(m)
                 items_html += f'''
                 <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
                         <span>🔹 <b>{mk}</b> &nbsp;&bull;&nbsp; <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']})</span></span>
-                        <span style="background:{'#dc2626' if sc >= 90 else '#ea580c' if sc >= 85 else '#f59e0b' if sc >= 80 else '#10b981'}; color:#fff; font-weight:800; font-size:11px; padding:2px 9px; border-radius:10px; white-space:nowrap; margin-left:8px;">⭐ {sc}/100</span>
+                        <span style="background:{'#dbeafe' if 'Over' in mk else '#fef3c7'}; color:{'#1e40af' if 'Over' in mk else '#92400e'}; font-weight:800; font-size:11px; padding:2px 8px; border-radius:6px; white-space:nowrap; margin-left:8px;">{lbl_tag}</span>
                     </div>
                     {proof}
                 </div>'''
@@ -954,7 +751,6 @@ def main():
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
                 <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Doublé Hybride #{idx_h} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
@@ -965,9 +761,7 @@ def main():
     else:
         combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé disponible.</div>'
 
-
-
-    # Planning table construction
+    # Planning table construction (100% Marché Bookmaker)
     plan_rows = []
     seen_plan = set()
     for idx_cb, cb in enumerate(combos_mixed, 1):
@@ -976,8 +770,6 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
-                sc_o15 = m.get("score_o15") or m.get("ac_score") or 0
-                lbl_q = f"Score {sc_o15}/100" if sc_o15 >= 70 else f"{p_pure}% pure"
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -985,9 +777,9 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": lbl_q,
-                    "score_val": sc_o15 if sc_o15 >= 70 else int(p_pure),
-                    "type_label": f"QUINTUPLÉ #{idx_cb}",
+                    "score_label": f"{p_pure}% pure",
+                    "score_val": int(p_pure),
+                    "type_label": f"QUADRUPLÉ #{idx_cb}",
                     "bg_market": "#dcfce7",
                     "cl_market": "#166534",
                 })
@@ -999,19 +791,9 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
-                ac_sc = m.get("ac_score") or 0
-                
-                if "1.5" in item["market"]:
-                    sc_15 = m.get("score_o15") or ac_sc or 0
-                    lbl_badge = f"Score {sc_15}/100" if sc_15 >= 70 else f"{p_pure}% pure"
-                    score_val = sc_15 if sc_15 >= 70 else int(p_pure)
-                    bg_m = "#dcfce7"
-                    cl_m = "#166534"
-                else:
-                    lbl_badge = f"Score {ac_sc}/100" if ac_sc >= 70 else f"{p_pure}% pure"
-                    score_val = ac_sc if ac_sc >= 70 else int(p_pure)
-                    bg_m = "#dbeafe"
-                    cl_m = "#1e40af"
+                lbl_crit = f"{p_pure}% pure" if "Over" in item["market"] else f"Under @{item['odds']:.2f}"
+                bg_m = "#dcfce7" if "Over" in item["market"] else "#fef3c7"
+                cl_m = "#166534" if "Over" in item["market"] else "#92400e"
 
                 plan_rows.append({
                     "dt": item["dt"],
@@ -1020,13 +802,14 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": lbl_badge,
-                    "score_val": score_val,
+                    "score_label": lbl_crit,
+                    "score_val": int(p_pure),
                     "type_label": f"DOUBLÉ #{idx_h}",
                     "bg_market": bg_m,
                     "cl_market": cl_m,
                 })
                 seen_plan.add(key)
+
 
 
 
@@ -1066,18 +849,16 @@ def main():
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
-        ac_score = m.get("ac_score") or 0
-        score_o15 = m.get("score_o15") or 0
-        freq_o15 = m.get("freq_o15") or 0.0
         p_pure = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
 
-        # Audit : Over 1.5 (Marché/Score) ou Under 2.5 (Cote >= @1.50)
+        # Audit : Over 1.5 (Marché Bookmaker) ou Under 2.5 (Cote >= @1.50)
         retained_o15 = bool(m in s3_matches)
         retained_u25 = bool(u25 and u25 >= 1.50)
         retained = retained_o15 or retained_u25
         bg_row = "#f0fdf4" if retained else "#fff"
+
         
         if retained_o15 and retained_u25:
             badge = '<span style="color:#15803d; font-weight:700; font-size:10px;">✅ O1.5 + U2.5</span>'
@@ -1092,14 +873,13 @@ def main():
         o25_txt = f"@{o25:.2f}" if o25 else "N/A"
         u25_txt = f"@{u25:.2f}" if u25 else "N/A"
         
-        ac_tag = f" &bull; <b style='color:#d97706;'>Score {ac_score}/100</b>" if ac_score >= 70 else ""
-
         if u25 and u25 >= 1.50:
-            signal_txt = f'<span style="color:#b45309; font-weight:700; font-size:10px;">Under 2.5 @{u25:.2f} (&ge; 1.50){ac_tag}</span>'
+            signal_txt = f'<span style="color:#b45309; font-weight:700; font-size:10px;">Under 2.5 @{u25:.2f} (&ge; 1.50)</span>'
         elif o25 and u25 and o25 < u25:
-            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}</span>'
+            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%)</span>'
         else:
-            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Under &lt; @1.50{ac_tag}</span>'
+            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Under &lt; @1.50</span>'
+
 
 
 
