@@ -745,21 +745,8 @@ def main():
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── Enrichissement Wincomparator (+2.5 buts & probabilité IA avec Fuzzy Matching) ──
-    if scanned_results and d_wincomp:
-        print(f"📊 Enrichissement Wincomparator IA (Fuzzy Matching) pour les {len(scanned_results)} matchs scannés...")
-        matched_wc = 0
-        for m in scanned_results:
-            wc_info = find_wincomp_match(m.get("dom", ""), m.get("ext", ""), d_wincomp)
-            if wc_info:
-                m["wincomp_market"] = wc_info.get("market")
-                m["wincomp_prob"] = wc_info.get("prob", 0.0)
-                m["wincomp_url"] = wc_info.get("url")
-                matched_wc += 1
-        print(f"✅ {matched_wc} matchs Unibet associés avec Wincomparator !")
-
-
     # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 80] + 1 OVER 2.5 [Score >= 80]) ──
+
     second_match_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
