@@ -571,9 +571,12 @@ def main():
                 teams_o15 = {_clean_team_key(it_o15["m"].get("dom")), _clean_team_key(it_o15["m"].get("ext"))}
                 teams_u25 = {_clean_team_key(it_sec["m"].get("dom")), _clean_team_key(it_sec["m"].get("ext"))}
                 if teams_o15 & teams_u25: continue
-                diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
-                if diff_time < best_diff:
-                    best_diff = diff_time
+                # Critère : cote combinée la plus proche de @2.20 (floor @1.80)
+                comb = round(it_o15["odds"] * it_sec["odds"], 2)
+                if comb < 1.80: continue
+                diff_cote = abs(comb - 2.20)
+                if diff_cote < best_diff:
+                    best_diff = diff_cote
                     best_o15 = it_o15
             
             if best_o15:
