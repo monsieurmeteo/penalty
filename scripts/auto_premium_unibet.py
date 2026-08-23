@@ -704,7 +704,7 @@ def main():
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
 
-    # ── MOTEUR DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5 [ÉCART <= 0.40] — COTE MIN >= 2.20) ──
+    # ── MOTEUR DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5 [COTE >= @1.50] — COTE MIN >= 2.20) ──
     under25_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -712,14 +712,15 @@ def main():
         o25 = m.get("over25")
         u25 = m.get("under25")
         
-        # Matchs serrés : Écart |Under 2.5 - Over 2.5| <= 0.40 et Cote Under 2.5 entre @1.50 et @2.35
-        if o25 and u25 and abs(u25 - o25) <= 0.40 and 1.50 <= u25 <= 2.35:
-            diff = round(abs(u25 - o25), 2)
+        # Tous les matchs où la cote Under 2.5 est >= 1.50
+        if u25 and u25 >= 1.50:
+            diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.0
             under25_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
                 "market": "🛡️ Under 2.5", "odds": u25,
-                "crit": f"Écart {diff:.2f} ≤ 0.40", "diff": diff
+                "crit": f"Cote Under @{u25:.2f}", "diff": diff
             })
+
 
 
     blocks_under = {}
@@ -1072,9 +1073,9 @@ def main():
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
 
-        # Audit : Over 1.5 (Marché/Score) ou Under 2.5 (Écart <= 0.40)
+        # Audit : Over 1.5 (Marché/Score) ou Under 2.5 (Cote >= @1.50)
         retained_o15 = bool(m in s3_matches)
-        retained_u25 = bool(o25 and u25 and abs(u25 - o25) <= 0.40 and 1.50 <= u25 <= 2.35)
+        retained_u25 = bool(u25 and u25 >= 1.50)
         retained = retained_o15 or retained_u25
         bg_row = "#f0fdf4" if retained else "#fff"
         
@@ -1093,12 +1094,13 @@ def main():
         
         ac_tag = f" &bull; <b style='color:#d97706;'>Score {ac_score}/100</b>" if ac_score >= 70 else ""
 
-        if o25 and u25 and abs(u25 - o25) <= 0.40:
-            signal_txt = f'<span style="color:#b45309; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.40{ac_tag}</span>'
+        if u25 and u25 >= 1.50:
+            signal_txt = f'<span style="color:#b45309; font-weight:700; font-size:10px;">Under 2.5 @{u25:.2f} (&ge; 1.50){ac_tag}</span>'
         elif o25 and u25 and o25 < u25:
             signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}</span>'
         else:
-            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.40{ac_tag}</span>'
+            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Under &lt; @1.50{ac_tag}</span>'
+
 
 
         scan_rows_html += (
@@ -1183,7 +1185,8 @@ def main():
           <!-- SECTION 3 : DOUBLÉS HYBRIDES (OVER 1.5 + UNDER 2.5) -->
           <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Écart &le; 0.40 · Cote Cible ~2.15 - 2.60 · Mise 4,00 €)</span></span>
+              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Under ≥ @1.50 · Cote Cible ~2.15 - 2.80 · Mise 4,00 €)</span></span>
+
 
               <span style="font-size:10px; background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
             </div>
