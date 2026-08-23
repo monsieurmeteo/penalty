@@ -1349,7 +1349,8 @@ def main():
         o25_selected_ids = {m["id"] for cb in combos_mixed for m in [i["m"] for i in cb["items"]]}
         o15_selected_ids = set()
         btts_selected_ids = set()
-        pen_selected_ids = {m["id"] for m in pen_simples}
+        pen_selected_ids = set()
+
 
         new_entries = 0
         for m in scanned_results:
