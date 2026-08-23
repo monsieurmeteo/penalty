@@ -530,23 +530,18 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR DOUBLÉS HYBRIDES & DOUBLÉS UNDER 2.5 (Écart |Under - Over| <= 0.40) — EN PREMIER ──
+    # ── MOTEUR DOUBLÉS HYBRIDES — EN PREMIER ──
     under25_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
-        o25 = m.get("over25")
         u25 = m.get("under25")
-        
-        # Règle : Under 2.5 proche de Over 2.5 (écart <= 0.40)
-        if u25 and o25:
-            diff = round(abs(u25 - o25), 2)
-            if diff <= 0.40:
-                under25_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
-                    "market": "🛡️ Under 2.5", "odds": u25,
-                    "crit": f"Under @{u25:.2f} (Écart: {diff:.2f} &le; 0.40)", "diff": diff
-                })
+        if u25:
+            under25_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
+                "market": "🛡️ Under 2.5", "odds": u25,
+                "crit": f"Under @{u25:.2f}"
+            })
 
     blocks_under = {}
     for s in under25_selections:
