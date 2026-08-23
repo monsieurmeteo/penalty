@@ -906,6 +906,8 @@ def main():
                 o25 = m.get("over25", "N/A")
                 u25 = m.get("under25", "N/A")
                 p_pure = m.get("prob_pure_o25", 55.0)
+                sc_o15 = m.get("score_o15") or m.get("ac_score") or 0
+                lbl_q_badge = f"Score {sc_o15}/100" if sc_o15 >= 70 else f"{p_pure}% pure"
                 
                 items_rows += f'''
                 <tr style="border-bottom:1px solid #f1f5f9;">
@@ -913,8 +915,9 @@ def main():
                     <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
                     <td style="padding:6px 8px; text-align:center;"><span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">Over 1.5 (@{o:.2f})</span></td>
                     <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">O2.5: <b>@{o25}</b> &lt; U2.5: @{u25}</td>
-                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px; white-space:nowrap;">{p_pure}% pure</span></td>
+                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px; white-space:nowrap;">{lbl_q_badge}</span></td>
                 </tr>'''
+
             
             combos_mixed_html += f'''
             <div style="background:#ffffff; border:1px solid {theme['border_card']}; border-left:4px solid {theme['border_left']}; border-radius:8px; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
@@ -990,6 +993,8 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
+                sc_o15 = m.get("score_o15") or m.get("ac_score") or 0
+                lbl_q = f"Score {sc_o15}/100" if sc_o15 >= 70 else f"{p_pure}% pure"
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -997,8 +1002,8 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{p_pure}% pure",
-                    "score_val": int(p_pure),
+                    "score_label": lbl_q,
+                    "score_val": sc_o15 if sc_o15 >= 70 else int(p_pure),
                     "type_label": f"QUINTUPLÉ #{idx_cb}",
                     "bg_market": "#dcfce7",
                     "cl_market": "#166534",
@@ -1012,7 +1017,14 @@ def main():
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
                 wc_p = m.get("wincomp_prob")
-                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure}% pure"
+                ac_sc = m.get("ac_score") or 0
+                if ac_sc >= 75:
+                    lbl_badge = f"Score {ac_sc}/100"
+                elif wc_p and wc_p >= 50.0:
+                    lbl_badge = f"Wincomp {wc_p:.0f}%"
+                else:
+                    lbl_badge = f"{p_pure}% pure"
+
                 plan_rows.append({
                     "dt": item["dt"],
                     "date_str": m.get("date_str", ""),
@@ -1021,12 +1033,13 @@ def main():
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
                     "score_label": lbl_badge,
-                    "score_val": 80,
+                    "score_val": ac_sc if ac_sc >= 75 else (int(wc_p) if wc_p else int(p_pure)),
                     "type_label": f"DOUBLÉ #{idx_h}",
                     "bg_market": "#dcfce7" if "1.5" in item["market"] else "#dbeafe",
                     "cl_market": "#166534" if "1.5" in item["market"] else "#1e40af",
                 })
                 seen_plan.add(key)
+
 
 
     plan_rows.sort(key=lambda x: x["dt"])
