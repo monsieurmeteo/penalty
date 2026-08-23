@@ -540,6 +540,10 @@ def main():
             best_diff = 999.0
             for it_o15 in o15_list:
                 if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
+                # Condition : Over 2.5 doit être favori sur ce match (o25 < u25)
+                m_o25 = it_o15["m"].get("over25")
+                m_u25 = it_o15["m"].get("under25")
+                if not (m_o25 and m_u25 and m_o25 < m_u25): continue
                 diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
                 if diff_time < best_diff:
                     best_diff = diff_time
