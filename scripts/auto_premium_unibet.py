@@ -392,14 +392,14 @@ def main():
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
         print(f"✅ AdamChoi enrichi sur {len(scanned_results)} matchs")
 
-    # ── Sélection Over 1.5 : Cote @1.10 - @1.45 ET Score AdamChoi >= 80/100 ──
+    # ── Sélection Over 1.5 : Cote @1.10 - @1.45 ET Score AdamChoi >= 70/100 ──
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
         o15 = r.get("over15")
         ac = r.get("ac_score", 0)
-        is_val = bool(o15 and 1.10 <= o15 <= 1.45 and ac >= 80)
+        is_val = bool(o15 and 1.10 <= o15 <= 1.45 and ac >= 70)
 
         if is_val:
             r["double_confirm"] = True
@@ -410,15 +410,15 @@ def main():
                 r["rejection_reason"] = f"Cote Over 1.5 non disponible ou trop écrasée (@{o15})"
             elif o15 > 1.45:
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
-            elif ac < 80:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac}/100 < 80)"
+            elif ac < 70:
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac}/100 < 70)"
             else:
                 r["rejection_reason"] = "Critères non satisfaits"
             rejected_matches.append(r)
 
     s3_matches.sort(key=lambda x: -x.get("ac_score", 0))
 
-    print(f"⭐ Matchs validés Over 1.5 (@1.10 - @1.45 & AdamChoi >= 80) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 1.5 (@1.10 - @1.45 & AdamChoi >= 70) : {len(s3_matches)} / {len(scanned_results)}")
 
 
 
@@ -528,7 +528,7 @@ def main():
         return local_dt.strftime("%Y-%m-%d")
 
 
-    # ── MOTEUR UNIFIÉ OVER 1.5 (Issu de s3_matches : Score AdamChoi >= 80) ──
+    # ── MOTEUR UNIFIÉ OVER 1.5 (Issu de s3_matches : Score AdamChoi >= 70) ──
     mixed_selections = []
     for m in s3_matches:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -542,15 +542,14 @@ def main():
             "score": ac
         })
 
-    print(f"📊 Sélections Over 1.5 (AdamChoi >= 80) retenues : {len(mixed_selections)}")
-
+    print(f"📊 Sélections Over 1.5 (AdamChoi >= 70) retenues : {len(mixed_selections)}")
 
     # Regroupement strict par Jour
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR DOUBLÉS HYBRIDES — EN PREMIER ──
+    # ── MOTEUR DOUBLÉS HYBRIDES (Dédoublonnage interne aux Hybrides) ──
     under25_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -569,7 +568,7 @@ def main():
     for s in under25_selections:
         blocks_under.setdefault(s["session"], []).append(s)
 
-    used_global_match_ids = set()
+    used_hybrid_match_ids = set()
     combos_hybrids = []
 
     # Doublés Hybrides : on parcourt chaque jour, on apparie 1 Under 2.5 + 1 Over 1.5
@@ -578,14 +577,14 @@ def main():
         o15_list = sorted(blocks_mixed.get(day_key, []), key=lambda x: x["dt"])
 
         for it_sec in sec_list:
-            if it_sec["id"] in used_global_match_ids: continue
+            if it_sec["id"] in used_hybrid_match_ids: continue
             
             # Meilleur partenaire Over 1.5 non consommé du même jour (cote combinée ~2.20)
             best_o15 = None
             best_diff = 999.0
             for it_o15 in o15_list:
-                if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
-                # Aucune équipe en commun entre les deux matchs
+                if it_o15["id"] in used_hybrid_match_ids or it_o15["id"] == it_sec["id"]: continue
+                # Aucune équipe en commun entre les deux matchs du combiné
                 teams_o15 = {_clean_team_key(it_o15["m"].get("dom")), _clean_team_key(it_o15["m"].get("ext"))}
                 teams_u25 = {_clean_team_key(it_sec["m"].get("dom")), _clean_team_key(it_sec["m"].get("ext"))}
                 if teams_o15 & teams_u25: continue
@@ -598,8 +597,8 @@ def main():
                     best_o15 = it_o15
             
             if best_o15:
-                used_global_match_ids.add(it_sec["id"])
-                used_global_match_ids.add(best_o15["id"])
+                used_hybrid_match_ids.add(it_sec["id"])
+                used_hybrid_match_ids.add(best_o15["id"])
                 comb_odds = round(best_o15["odds"] * it_sec["odds"], 2)
                 pair_items = sorted([best_o15, it_sec], key=lambda x: x["dt"])
                 combos_hybrids.append({
@@ -610,32 +609,32 @@ def main():
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-
     combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
-    # ── MOTEUR QUADRUPLÉS OVER 1.5 (avec les Over 1.5 NON consommés par les Doublés) ──
+    # ── MOTEUR QUADRUPLÉS OVER 1.5 (Dédoublonnage interne aux Quadruplés) ──
+    used_quad_match_ids = set()
     combos_mixed = []
 
     for day_key in sorted(blocks_mixed.keys()):
         day_items = sorted(blocks_mixed[day_key], key=lambda x: x["dt"])
-        available = [s for s in day_items if s["id"] not in used_global_match_ids]
+        available = [s for s in day_items if s["id"] not in used_quad_match_ids]
 
         while len(available) >= 4:
             chunk = available[:4]
             c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"] * chunk[3]["odds"], 2)
-            for s in chunk: used_global_match_ids.add(s["id"])
+            for s in chunk: used_quad_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": day_key,
                 "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
                 "items": chunk, "comb_odds": c_odds,
                 "stake": 3.0, "gain": round(3.0 * c_odds, 2), "profit": round(3.0 * c_odds - 3.0, 2)
             })
-            available = [s for s in day_items if s["id"] not in used_global_match_ids]
+            available = [s for s in day_items if s["id"] not in used_quad_match_ids]
 
         if len(available) == 3:
             chunk = available[:3]
             c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"], 2)
-            for s in chunk: used_global_match_ids.add(s["id"])
+            for s in chunk: used_quad_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": day_key, "type": "Triplé 100% Over 1.5 (3 Matchs)",
                 "items": chunk, "comb_odds": c_odds,
@@ -644,7 +643,7 @@ def main():
         elif len(available) == 2:
             chunk = available[:2]
             c_odds = round(chunk[0]["odds"] * chunk[1]["odds"], 2)
-            for s in chunk: used_global_match_ids.add(s["id"])
+            for s in chunk: used_quad_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": day_key, "type": "Doublé 100% Over 1.5 (2 Matchs)",
                 "items": chunk, "comb_odds": c_odds,
