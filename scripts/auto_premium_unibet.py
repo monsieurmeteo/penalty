@@ -714,7 +714,12 @@ def main():
                 "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
             })
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70] PAR JOUR) ──
+        # Tri chronologique des matchs au sein de chaque ticket Quintuplé
+        for cb in combos_mixed:
+            cb["items"].sort(key=lambda x: x["dt"])
+        combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70] — COTE CIBLE >= 2.20) ──
     second_match_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -738,49 +743,45 @@ def main():
     used_doub_o15 = set()
     used_doub_sec = set()
 
-    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés
+    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés (Cote Min 2.15-2.20)
     for day_key in sorted(set(list(blocks_second.keys()) + list(blocks_mixed.keys()))):
-        sec_list = blocks_second.get(day_key, [])
-        o15_list = [s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15]
+        sec_list = sorted(blocks_second.get(day_key, []), key=lambda x: x["dt"])
+        o15_list = sorted([s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15], key=lambda x: x["dt"])
         
-        m_count = min(len(sec_list), len(o15_list))
-        for k in range(m_count):
-            it_sec = sec_list[k]
-            it_o15 = o15_list[k]
-            if it_sec["id"] == it_o15["id"]:
-                continue
-            c_odds = round(it_o15["odds"] * it_sec["odds"], 2)
-            if c_odds >= 2.05:
+        for it_sec in sec_list:
+            if it_sec["id"] in used_doub_sec: continue
+            
+            # Recherche du meilleur partenaire Over 1.5 du même jour donnant une cote >= 2.15
+            best_o15 = None
+            best_diff = 999.0
+            for it_o15 in o15_list:
+                if it_o15["id"] in used_doub_o15 or it_o15["id"] == it_sec["id"]: continue
+                c_odds = round(it_o15["odds"] * it_sec["odds"], 2)
+                if c_odds >= 2.15:
+                    diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
+                    if diff_time < best_diff:
+                        best_diff = diff_time
+                        best_o15 = it_o15
+            
+            if best_o15:
                 used_doub_sec.add(it_sec["id"])
-                used_doub_o15.add(it_o15["id"])
+                used_doub_o15.add(best_o15["id"])
+                comb_odds = round(best_o15["odds"] * it_sec["odds"], 2)
+                pair_items = [best_o15, it_sec]
+                pair_items.sort(key=lambda x: x["dt"])
                 combos_hybrids.append({
                     "session": day_key,
                     "type": "Doublé 100% Attaque",
-                    "items": [it_o15, it_sec],
-                    "comb_odds": c_odds,
-                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                    "items": pair_items,
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-        # Matchs restants du même jour
-        rem_sec_day = [s for s in sec_list if s["id"] not in used_doub_sec]
-        rem_o15_day = [s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15]
-        for it_sec in rem_sec_day:
-            avail_o15 = [s for s in rem_o15_day if s["id"] != it_sec["id"]]
-            if not avail_o15:
-                break
-            closest_o15 = min(avail_o15, key=lambda x: abs((x["dt"] - it_sec["dt"]).total_seconds()))
-            c_odds = round(closest_o15["odds"] * it_sec["odds"], 2)
-            if c_odds >= 2.05:
-                rem_o15_day.remove(closest_o15)
-                used_doub_sec.add(it_sec["id"])
-                used_doub_o15.add(closest_o15["id"])
-                combos_hybrids.append({
-                    "session": day_key,
-                    "type": "Doublé 100% Attaque",
-                    "items": [closest_o15, it_sec],
-                    "comb_odds": c_odds,
-                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-                })
+    # Tri chronologique des Doublés
+    for cb in combos_hybrids:
+        cb["items"].sort(key=lambda x: x["dt"])
+    combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
 
     TICKET_THEMES = [
         {"bg_header": "#eff6ff", "border_card": "#bfdbfe", "border_left": "#2563eb", "title_color": "#1e40af"},
