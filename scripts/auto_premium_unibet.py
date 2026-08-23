@@ -629,31 +629,22 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Tranches Horaires Rapprochées (Midi, Après-Midi, Soirée) ──
+    # ── Regroupement Strict par Jour (08h00 - 23h59 — Aucun mélange entre les jours) ──
     def get_betting_session_key(m_dt):
         local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        betting_date = local_dt.strftime("%Y-%m-%d")
-        h = local_dt.hour
-        if h < 14:
-            tranche = "Matin / Midi (11h-14h)"
-        elif h < 17:
-            tranche = "Après-Midi (14h-17h)"
-        elif h < 20:
-            tranche = "Début de Soirée (17h-20h)"
-        else:
-            tranche = "Soirée (20h-23h59)"
-        return f"{betting_date} · {tranche}"
+        return local_dt.strftime("%Y-%m-%d")
 
-    # ── MOTEUR UNIFIÉ OVER 1.5 (Strictement issu de s3_matches : Score >= 80/100 & Freq >= 65%) ──
+
+    # ── MOTEUR UNIFIÉ OVER 1.5 (Strictement issu de s3_matches : Score >= 70/100 & Freq >= 60%) ──
     mixed_selections = []
     for m in s3_matches:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        block_key = get_betting_session_key(m_dt)
+        day_key = get_betting_session_key(m_dt)
         o15 = m.get("over15")
         sc_15 = m.get("score_o15", 0)
 
         mixed_selections.append({
-            "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+            "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
             "market": "⚡ Over 1.5", "odds": o15,
             "score": sc_15
         })
@@ -661,114 +652,83 @@ def main():
     # ── MOTEUR 2 : UNDER 2.5 (Désactivé en 100% Attaque) ──
     under25_selections = []
 
-    print(f"📊 Sélections Over 1.5 (Score >= 80/100) retenues : {len(mixed_selections)}")
+    print(f"📊 Sélections Over 1.5 (Score >= 70/100) retenues : {len(mixed_selections)}")
 
-
-    # Regroupement strict par Tranche Horaire
+    # Regroupement strict par Jour
     blocks_mixed = {}
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR UNIFIÉ QUINTUPLÉS OVER 1.5 (5 Matchs Chronologiques — Cote Cible ~2.40 - 3.50) ──
+    # ── MOTEUR UNIFIÉ QUINTUPLÉS OVER 1.5 (5 Matchs Chronologiques par Jour — Cote Cible ~2.40 - 3.50) ──
     used_match_ids = set()
     combos_mixed = []
 
-
-    # Pour chaque Bloc, appariement chronologique des matchs 5 par 5
-    for b_key in sorted(blocks_mixed.keys()):
-        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
+    # Pour chaque Jour, appariement chronologique des matchs 5 par 5 (SANS AUCUN MÉLANGE ENTRE JOURS)
+    for day_key in sorted(blocks_mixed.keys()):
+        day_items = sorted(blocks_mixed[day_key], key=lambda x: x["dt"])
         
-        available = [s for s in block_items if s["id"] not in used_match_ids]
+        available = [s for s in day_items if s["id"] not in used_match_ids]
         while len(available) >= 5:
             quint = available[:5]
             comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
             for s in quint:
                 used_match_ids.add(s["id"])
             combos_mixed.append({
-                "session": b_key,
+                "session": day_key,
                 "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
                 "items": quint,
                 "comb_odds": comb_odds,
                 "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
             })
-            available = [s for s in block_items if s["id"] not in used_match_ids]
+            available = [s for s in day_items if s["id"] not in used_match_ids]
 
-    # Fallback pour sélections restantes inter-blocs (5 par 5)
-    unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
-    unpaired.sort(key=lambda x: x["dt"])
-    while len(unpaired) >= 5:
-        quint = unpaired[:5]
-        comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
-        for s in quint:
-            used_match_ids.add(s["id"])
-        combos_mixed.append({
-            "session": "inter-blocs",
-            "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
-            "items": quint,
-            "comb_odds": comb_odds,
-            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-        })
-        unpaired = [s for s in mixed_selections if s["id"] not in used_match_ids]
+        # Matchs orphelins du même jour (Quadruplé, Triplé ou Doublé restant SANS déborder sur le lendemain)
+        if len(available) == 4:
+            quad = available[:4]
+            comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
+            for s in quad: used_match_ids.add(s["id"])
+            combos_mixed.append({
+                "session": day_key,
+                "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+                "items": quad, "comb_odds": comb_odds,
+                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+            })
+        elif len(available) == 3:
+            trip = available[:3]
+            comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
+            for s in trip: used_match_ids.add(s["id"])
+            combos_mixed.append({
+                "session": day_key,
+                "type": "Triplé 100% Over 1.5 (3 Matchs)",
+                "items": trip, "comb_odds": comb_odds,
+                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+            })
+        elif len(available) == 2:
+            doub = available[:2]
+            comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
+            for s in doub: used_match_ids.add(s["id"])
+            combos_mixed.append({
+                "session": day_key,
+                "type": "Doublé 100% Over 1.5 (2 Matchs)",
+                "items": doub, "comb_odds": comb_odds,
+                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+            })
 
-    # S'il reste 4 matchs orphelins à la fin, on forme un Quadruplé
-    if len(unpaired) == 4:
-        quad = unpaired[:4]
-        comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
-        for s in quad:
-            used_match_ids.add(s["id"])
-        combos_mixed.append({
-            "session": "cloture-mixte",
-            "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
-            "items": quad,
-            "comb_odds": comb_odds,
-            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-        })
-    # S'il reste 3 matchs orphelins à la fin, on forme un Triplé
-    elif len(unpaired) == 3:
-        trip = unpaired[:3]
-        comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
-        for s in trip: used_match_ids.add(s["id"])
-        combos_mixed.append({
-            "session": trip[0]["session"],
-            "type": "Triplé 100% Over 1.5 (3 Matchs)",
-            "items": trip, "comb_odds": comb_odds,
-            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-        })
-
-    elif len(unpaired) == 2:
-        doub = unpaired[:2]
-        comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
-        for s in doub: used_match_ids.add(s["id"])
-        combos_mixed.append({
-            "session": doub[0]["session"],
-            "type": "Doublé 100% Over 1.5 (2 Matchs)",
-            "items": doub, "comb_odds": comb_odds,
-            "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-        })
-
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70]) ──
-
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70] PAR JOUR) ──
     second_match_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        block_key = get_betting_session_key(m_dt)
+        day_key = get_betting_session_key(m_dt)
         o25 = m.get("over25")
         ac_score = m.get("ac_score") or 0
         
         # Seuil Score Over 2.5 >= 70/100
         if o25 and 1.65 <= o25 <= 2.35 and ac_score >= 70:
             second_match_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
                 "market": "🎯 Over 2.5", "odds": o25,
                 "crit": f"Score {ac_score}/100", "score": ac_score
             })
-
-
-
-
-
-
-
 
     blocks_second = {}
     for s in second_match_selections:
@@ -778,9 +738,10 @@ def main():
     used_doub_o15 = set()
     used_doub_sec = set()
 
-    for b_key in sorted(blocks_second.keys()):
-        sec_list = blocks_second[b_key]
-        o15_list = [s for s in blocks_mixed.get(b_key, []) if s["id"] not in used_doub_o15]
+    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés
+    for day_key in sorted(set(list(blocks_second.keys()) + list(blocks_mixed.keys()))):
+        sec_list = blocks_second.get(day_key, [])
+        o15_list = [s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15]
         
         m_count = min(len(sec_list), len(o15_list))
         for k in range(m_count):
@@ -793,38 +754,33 @@ def main():
                 used_doub_sec.add(it_sec["id"])
                 used_doub_o15.add(it_o15["id"])
                 combos_hybrids.append({
-                    "session": b_key,
-                    "type": f"Doublé ({it_sec.get('market', 'Over 2.5')})",
+                    "session": day_key,
+                    "type": "Doublé 100% Attaque",
                     "items": [it_o15, it_sec],
                     "comb_odds": c_odds,
                     "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                 })
 
-    # Fallback pour matchs restants
-    rem_sec = [s for s in second_match_selections if s["id"] not in used_doub_sec]
-    rem_o15 = [s for s in mixed_selections if s["id"] not in used_doub_o15]
-
-    for it_sec in rem_sec:
-        avail_o15 = [s for s in rem_o15 if s["id"] != it_sec["id"]]
-        if not avail_o15:
-            break
-        closest_o15 = min(avail_o15, key=lambda x: abs((x["dt"] - it_sec["dt"]).total_seconds()))
-        c_odds = round(closest_o15["odds"] * it_sec["odds"], 2)
-        if c_odds >= 2.05:
-            rem_o15.remove(closest_o15)
-            used_doub_sec.add(it_sec["id"])
-            used_doub_o15.add(closest_o15["id"])
-            combos_hybrids.append({
-                "session": it_sec["session"],
-                "type": f"Doublé ({it_sec.get('market', 'Over 2.5')})",
-                "items": [closest_o15, it_sec],
-                "comb_odds": c_odds,
-                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-            })
-
-
-
-
+        # Matchs restants du même jour
+        rem_sec_day = [s for s in sec_list if s["id"] not in used_doub_sec]
+        rem_o15_day = [s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15]
+        for it_sec in rem_sec_day:
+            avail_o15 = [s for s in rem_o15_day if s["id"] != it_sec["id"]]
+            if not avail_o15:
+                break
+            closest_o15 = min(avail_o15, key=lambda x: abs((x["dt"] - it_sec["dt"]).total_seconds()))
+            c_odds = round(closest_o15["odds"] * it_sec["odds"], 2)
+            if c_odds >= 2.05:
+                rem_o15_day.remove(closest_o15)
+                used_doub_sec.add(it_sec["id"])
+                used_doub_o15.add(closest_o15["id"])
+                combos_hybrids.append({
+                    "session": day_key,
+                    "type": "Doublé 100% Attaque",
+                    "items": [closest_o15, it_sec],
+                    "comb_odds": c_odds,
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                })
 
     TICKET_THEMES = [
         {"bg_header": "#eff6ff", "border_card": "#bfdbfe", "border_left": "#2563eb", "title_color": "#1e40af"},
@@ -833,6 +789,8 @@ def main():
         {"bg_header": "#f5f3ff", "border_card": "#ddd6fe", "border_left": "#7c3aed", "title_color": "#5b21b6"},
         {"bg_header": "#fff1f2", "border_card": "#fecdd3", "border_left": "#e11d48", "title_color": "#9f1239"},
     ]
+
+    days_fr_map = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 
     # Génération HTML Quintuplés Over 1.5
     combos_mixed_html = ""
@@ -843,12 +801,14 @@ def main():
             if sess_label != current_sess:
                 current_sess = sess_label
                 try:
-                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d")
+                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (JOURNÉE 08h-23h59)"
                 except Exception:
-                    dt_sess = sess_label
-                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:12px; margin:14px 0 6px 0; padding-bottom:3px; border-bottom:2px solid #3b82f6;">📅 CRÉNEAU [{dt_sess}]</div>'
+                    day_title = f"📅 JOURNÉE [{sess_label}]"
+                combos_mixed_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
+
             items_rows = ""
             for item in cb["items"]:
                 m = item["m"]
@@ -970,7 +930,18 @@ def main():
     # Génération HTML Doublés 100% Attaque (1 Over 1.5 + 1 Over 2.5) avec fiches complètes du 13 août
     combos_hybrids_html = ""
     if combos_hybrids:
+        current_sess_h = None
         for idx_h, cb in enumerate(combos_hybrids, 1):
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess_h:
+                current_sess_h = sess_label
+                try:
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d")
+                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (JOURNÉE 08h-23h59)"
+                except Exception:
+                    day_title = f"📅 JOURNÉE [{sess_label}]"
+                combos_hybrids_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
+
             theme = TICKET_THEMES[(idx_h - 1) % len(TICKET_THEMES)]
             items_html = ""
             for item in cb["items"]:
@@ -998,6 +969,7 @@ def main():
                 {items_html}
               </div>
             </div>'''
+
     else:
         combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé disponible.</div>'
 
