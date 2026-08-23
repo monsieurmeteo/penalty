@@ -1119,9 +1119,10 @@ def main():
         wc_m = m.get("wincomp_market")
         wc_p = m.get("wincomp_prob") or 0.0
         ac_score = m.get("ac_score") or 0
-        score_u25 = m.get("score_u25") or 0
+        p_pure = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
+
         
         # 100% Attaque : Seul Over 2.5 est retenu pour les seconds choix
         dir_o25 = False
