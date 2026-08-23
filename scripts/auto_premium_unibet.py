@@ -497,7 +497,7 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Quadruplés Over 1.5 (Condition Dé-margée : Over 2.5 < Under 2.5 & P(Pure) >= 52%) ──
+    # ── Sélection 100% Quintuplés Over 1.5 (Méthode Stricte du 13 Août : Score Over 1.5 >= 80/100 & Freq >= 65%) ──
     s3_matches = []
     rejected_matches = []
 
@@ -507,10 +507,11 @@ def main():
         o15 = r.get("over15")
         prob_pure_o25 = r.get("prob_pure_o25") or 0.0
         score_o15 = r.get("score_o15") or 0
+        freq_o15 = r.get("freq_o15") or 0.0
         
-        # Validation d'Élite Over 1.5 : Marché Dé-margé (P_pure >= 52%) ET Score Over 1.5 >= 75/100
-        is_score_ok = (score_o15 >= 75) if score_o15 > 0 else (prob_pure_o25 >= 55.0)
-        is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.50 and is_score_ok)
+        # Validation d'Élite Over 1.5 du 13 Août : Score Over 1.5 >= 80/100 ET Fréquence >= 65% ET Over favori Unibet
+        is_score_ok = bool(score_o15 >= 80 and freq_o15 >= 65.0)
+        is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.40 and is_score_ok)
 
         if is_val:
             r["double_confirm"] = True
@@ -519,8 +520,10 @@ def main():
         else:
             if o25 and u25 and o25 >= u25:
                 r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
-            elif score_o15 > 0 and score_o15 < 75:
-                r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 75)"
+            elif score_o15 < 80:
+                r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 80)"
+            elif freq_o15 < 65.0:
+                r["rejection_reason"] = f"Fréquence Over 1.5 trop faible ({freq_o15:.0f}% < 65%)"
             elif prob_pure_o25 < 52.0 and o25 and u25:
                 r["rejection_reason"] = f"Probabilité pure sans marge trop faible ({prob_pure_o25}% < 52%)"
             elif not o25 or not u25:
@@ -529,9 +532,10 @@ def main():
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: -(x.get("score_o15") or int(x.get("prob_pure_o25") or 0)))
+    s3_matches.sort(key=lambda x: -x.get("score_o15", 0))
 
-    print(f"⭐ Matchs validés 100% Over 1.5 (Score >= 75/100 & P_pure >= 52%) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés 100% Over 1.5 (Score >= 80/100 & Freq >= 65%) : {len(s3_matches)} / {len(scanned_results)}")
+
 
 
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
