@@ -366,6 +366,24 @@ def main():
                                             d_refs={}, m_unibet=m)
                 if res:
                     m["ac_score"] = res.get("score", 0)
+                    m["ac_classe"] = res.get("classe", "")
+                    m["ac_prob"] = res.get("calibrated_prob", res.get("prob", 0))
+                    m["ac_xg"] = res.get("xg_total", 0.0)
+                    m["pts_ipo"] = res.get("pts_ipo", 0)
+                    m["ipo_comb"] = res.get("ipo_comb", 0.0)
+                    m["pts_goals"] = res.get("pts_goals", 0)
+                    m["total_goals_brut"] = res.get("total_goals_brut", 0.0)
+                    m["pts_freq"] = res.get("pts_freq", 0)
+                    m["avg_freq_all"] = res.get("o25_avg_rate", res.get("avg_freq_all", 0.0))
+                    m["pts_sot"] = res.get("pts_sot", 0)
+                    m["sot_comb"] = res.get("sot_comb", 0.0)
+                    m["pts_ha"] = res.get("pts_ha", 0)
+                    m["avg_freq_ha"] = res.get("avg_freq_ha", 0.0)
+                    m["pts_league"] = res.get("pts_league", 0)
+                    m["recent_h_dom"] = res.get("recent_h_dom", [])
+                    m["recent_a_ext"] = res.get("recent_a_ext", [])
+                    m["score_o15"] = res.get("score_o15", 0)
+                    m["freq_o15"] = res.get("freq_o15", 0.0)
             except Exception:
                 pass
             return m
@@ -374,15 +392,14 @@ def main():
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
         print(f"✅ AdamChoi enrichi sur {len(scanned_results)} matchs")
 
-    # ── Sélection 100% Marché Bookmaker Over 1.5 ──
-    # Critère : Cote Over 1.5 entre @1.10 et @1.45
-
+    # ── Sélection Over 1.5 : Cote @1.10 - @1.45 ET Score AdamChoi >= 80/100 ──
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
         o15 = r.get("over15")
-        is_val = bool(o15 and 1.10 <= o15 <= 1.45)
+        ac = r.get("ac_score", 0)
+        is_val = bool(o15 and 1.10 <= o15 <= 1.45 and ac >= 80)
 
         if is_val:
             r["double_confirm"] = True
@@ -391,13 +408,17 @@ def main():
         else:
             if not o15 or o15 < 1.10:
                 r["rejection_reason"] = f"Cote Over 1.5 non disponible ou trop écrasée (@{o15})"
-            else:
+            elif o15 > 1.45:
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
+            elif ac < 80:
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac}/100 < 80)"
+            else:
+                r["rejection_reason"] = "Critères non satisfaits"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: -x.get("prob_pure_o25", 0))
+    s3_matches.sort(key=lambda x: -x.get("ac_score", 0))
 
-    print(f"⭐ Matchs validés 100% Over 1.5 (@1.10 - @1.45) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 1.5 (@1.10 - @1.45 & AdamChoi >= 80) : {len(s3_matches)} / {len(scanned_results)}")
 
 
 
@@ -507,22 +528,21 @@ def main():
         return local_dt.strftime("%Y-%m-%d")
 
 
-    # ── MOTEUR UNIFIÉ OVER 1.5 (Strictement issu de s3_matches : Score >= 70/100 & Freq >= 60%) ──
-    # ── MOTEUR UNIFIÉ OVER 1.5 (Issu de s3_matches : Over favori & P(Pure) >= 52%) ──
+    # ── MOTEUR UNIFIÉ OVER 1.5 (Issu de s3_matches : Score AdamChoi >= 80) ──
     mixed_selections = []
     for m in s3_matches:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
         o15 = m.get("over15")
-        p_pure = m.get("prob_pure_o25", 55.0)
+        ac = m.get("ac_score", 0)
 
         mixed_selections.append({
             "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
             "market": "⚡ Over 1.5", "odds": o15,
-            "score": p_pure
+            "score": ac
         })
 
-    print(f"📊 Sélections Over 1.5 (P(Pure) >= 52%) retenues : {len(mixed_selections)}")
+    print(f"📊 Sélections Over 1.5 (AdamChoi >= 80) retenues : {len(mixed_selections)}")
 
 
     # Regroupement strict par Jour
@@ -535,12 +555,14 @@ def main():
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
+        o25 = m.get("over25")
         u25 = m.get("under25")
-        if u25:
+        # Under 2.5 valide : écart |u25 - o25| <= 0.40
+        if u25 and o25 and abs(u25 - o25) <= 0.40:
             under25_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
                 "market": "🛡️ Under 2.5", "odds": u25,
-                "crit": f"Under @{u25:.2f}"
+                "crit": f"Under @{u25:.2f} (Écart {round(abs(u25-o25),2):.2f})"
             })
 
     blocks_under = {}
@@ -558,15 +580,11 @@ def main():
         for it_sec in sec_list:
             if it_sec["id"] in used_global_match_ids: continue
             
-            # Meilleur partenaire Over 1.5 non consommé du même jour
+            # Meilleur partenaire Over 1.5 non consommé du même jour (cote combinée ~2.20)
             best_o15 = None
             best_diff = 999.0
             for it_o15 in o15_list:
                 if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
-                # Condition : Over 2.5 doit être favori sur ce match (o25 < u25)
-                m_o25 = it_o15["m"].get("over25")
-                m_u25 = it_o15["m"].get("under25")
-                if not (m_o25 and m_u25 and m_o25 < m_u25): continue
                 # Aucune équipe en commun entre les deux matchs
                 teams_o15 = {_clean_team_key(it_o15["m"].get("dom")), _clean_team_key(it_o15["m"].get("ext"))}
                 teams_u25 = {_clean_team_key(it_sec["m"].get("dom")), _clean_team_key(it_sec["m"].get("ext"))}
@@ -720,10 +738,8 @@ def main():
             for item in cb["items"]:
                 m = item["m"]
                 o = item["odds"]
-                o25 = m.get("over25", "N/A")
-                u25 = m.get("under25", "N/A")
-                p_pure = m.get("prob_pure_o25", 55.0)
-                lbl_q_badge = f"{p_pure}% pure"
+                ac = m.get("ac_score", 0)
+                lbl_q_badge = f"Score {ac}/100"
                 
                 items_rows += f'''
 
@@ -731,7 +747,7 @@ def main():
                     <td style="padding:6px 8px; font-weight:700; font-size:11px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
                     <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
                     <td style="padding:6px 8px; text-align:center;"><span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">Over 1.5 (@{o:.2f})</span></td>
-                    <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">O2.5: <b>@{o25}</b> &lt; U2.5: @{u25}</td>
+                    <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">Under 2.5: @{m.get('under25', 'N/A')}</td>
                     <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px; white-space:nowrap;">{lbl_q_badge}</span></td>
                 </tr>'''
 
@@ -796,8 +812,8 @@ def main():
                 m = item["m"]
                 mk = item["market"]
                 o = item["odds"]
-                p_pure = m.get("prob_pure_o25", 55.0)
-                lbl_tag = f"{p_pure}% pure" if "Over" in mk else f"Under @{o:.2f}"
+                ac = m.get("ac_score", 0)
+                lbl_tag = f"Score {ac}/100" if "Over" in mk else f"Under @{o:.2f}"
                 proof = render_match_proof_html(m)
                 items_html += f'''
                 <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
