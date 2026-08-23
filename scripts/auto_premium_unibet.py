@@ -323,7 +323,7 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Matchs de Journée uniquement (08h00 - 23h59, exclusion stricte de la nuit)
+    # Filtre Fenêtre : Matchs 24h/24 (Y compris la nuit — fenêtre glissante 36h)
     now_utc = datetime.now(timezone.utc)
     limit_36h = now_utc + timedelta(hours=36)
 
@@ -333,17 +333,15 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                m_local = m_dt.astimezone(timezone(timedelta(hours=2)))
-                # Exclusion stricte de la nuit (00h00 à 07h59) -> Uniquement 08h00 à 23h59
-                if 8 <= m_local.hour <= 23:
-                    if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
-                        m["dt_obj"] = m_dt
-                        scanned_results.append(m)
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
+                    m["dt_obj"] = m_dt
+                    scanned_results.append(m)
             except Exception:
                 pass
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs de Journée retenus (08h00 - 23h59) : {len(scanned_results)}")
+    print(f"Matchs 24h/24 retenus (Nuit & Journée) : {len(scanned_results)}")
+
 
 
 
@@ -791,10 +789,11 @@ def main():
                 current_sess = sess_label
                 try:
                     dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d")
-                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (JOURNÉE 08h-23h59)"
+                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (24H/24 · NUIT & JOURNÉE)"
                 except Exception:
-                    day_title = f"📅 JOURNÉE [{sess_label}]"
+                    day_title = f"📅 SESSION [{sess_label}]"
                 combos_mixed_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
+
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
 
@@ -926,10 +925,11 @@ def main():
                 current_sess_h = sess_label
                 try:
                     dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d")
-                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (JOURNÉE 08h-23h59)"
+                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')} (24H/24 · NUIT & JOURNÉE)"
                 except Exception:
-                    day_title = f"📅 JOURNÉE [{sess_label}]"
+                    day_title = f"📅 SESSION [{sess_label}]"
                 combos_hybrids_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
+
 
             theme = TICKET_THEMES[(idx_h - 1) % len(TICKET_THEMES)]
             items_html = ""
@@ -1129,7 +1129,7 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:16px 18px; text-align:center;">
             <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS OVER 1.5 & DOUBLÉS HYBRIDES</div>
             <h1 style="margin:0; font-size:18px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quadruplés 100% Over 1.5 &bull; Doublés Hybrides (1 Over 1.5 + 1 Under 2.5) &bull; Journée (08h-23h59)</p>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quadruplés 100% Over 1.5 &bull; Doublés Hybrides (1 Over 1.5 + 1 Under 2.5) &bull; Session 24h/24 (Nuit & Journée)</p>
           </div>
 
           <!-- COMPTEURS COMPACTS -->
@@ -1139,10 +1139,11 @@ def main():
                 <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUADRUPLÉS</div><div style="font-size:9px; color:#3b82f6;">4 Over 1.5</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#fef3c7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#92400e;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#92400e;">DOUBLÉS HYBRIDES</div><div style="font-size:9px; color:#b45309;">Over 1.5 + Under 2.5</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">P(Pure) ≥ 52%</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">Journée</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">24h/24</div></div></td>
               </tr>
             </table>
           </div>
+
 
           <!-- PLANNING HEURE PAR HEURE -->
           <div style="padding:10px 14px; background:#ffffff;">
