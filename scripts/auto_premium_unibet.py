@@ -491,7 +491,7 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Quintuplés Over 1.5 (Méthode Stricte du 13 Août : Score Over 1.5 >= 80/100 & Freq >= 65%) ──
+    # ── Sélection 100% Quintuplés Over 1.5 (Seuil Score Over 1.5 >= 70/100 & Freq >= 60%) ──
     s3_matches = []
     rejected_matches = []
 
@@ -503,8 +503,8 @@ def main():
         score_o15 = r.get("score_o15") or 0
         freq_o15 = r.get("freq_o15") or 0.0
         
-        # Validation d'Élite Over 1.5 du 13 Août : Score Over 1.5 >= 80/100 ET Fréquence >= 65% ET Over favori Unibet
-        is_score_ok = bool(score_o15 >= 80 and freq_o15 >= 65.0)
+        # Validation Over 1.5 : Score Over 1.5 >= 70/100 ET Fréquence >= 60% ET Over favori Unibet
+        is_score_ok = bool(score_o15 >= 70 and freq_o15 >= 60.0)
         is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.40 and is_score_ok)
 
         if is_val:
@@ -514,10 +514,10 @@ def main():
         else:
             if o25 and u25 and o25 >= u25:
                 r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
-            elif score_o15 < 80:
-                r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 80)"
-            elif freq_o15 < 65.0:
-                r["rejection_reason"] = f"Fréquence Over 1.5 trop faible ({freq_o15:.0f}% < 65%)"
+            elif score_o15 < 70:
+                r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 70)"
+            elif freq_o15 < 60.0:
+                r["rejection_reason"] = f"Fréquence Over 1.5 trop faible ({freq_o15:.0f}% < 60%)"
             elif prob_pure_o25 < 52.0 and o25 and u25:
                 r["rejection_reason"] = f"Probabilité pure sans marge trop faible ({prob_pure_o25}% < 52%)"
             elif not o25 or not u25:
@@ -528,7 +528,8 @@ def main():
 
     s3_matches.sort(key=lambda x: -x.get("score_o15", 0))
 
-    print(f"⭐ Matchs validés 100% Over 1.5 (Score >= 80/100 & Freq >= 65%) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés 100% Over 1.5 (Score >= 70/100 & Freq >= 60%) : {len(s3_matches)} / {len(scanned_results)}")
+
 
 
 
@@ -745,7 +746,7 @@ def main():
             "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
         })
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 80] + 1 OVER 2.5 [Score >= 80]) ──
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70]) ──
 
     second_match_selections = []
     for m in scanned_results:
@@ -754,13 +755,14 @@ def main():
         o25 = m.get("over25")
         ac_score = m.get("ac_score") or 0
         
-        # Règle Stricte du 13 Août : Score Over 2.5 >= 80/100 STRICT (Jamais de score fragile)
-        if o25 and 1.65 <= o25 <= 2.35 and ac_score >= 80:
+        # Seuil Score Over 2.5 >= 70/100
+        if o25 and 1.65 <= o25 <= 2.35 and ac_score >= 70:
             second_match_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🎯 Over 2.5", "odds": o25,
                 "crit": f"Score {ac_score}/100", "score": ac_score
             })
+
 
 
 
@@ -1107,9 +1109,9 @@ def main():
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
 
-        # 100% Attaque du 13 Août : Over 2.5 si Score >= 80, Over 1.5 si Score >= 80 et Freq >= 65%
-        retained_o15 = bool(score_o15 >= 80 and freq_o15 >= 65.0 and o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.40)
-        retained_o25 = bool(ac_score >= 80 and o25 and 1.65 <= o25 <= 2.35)
+        # 100% Attaque : Over 2.5 si Score >= 70, Over 1.5 si Score >= 70 et Freq >= 60%
+        retained_o15 = bool(score_o15 >= 70 and freq_o15 >= 60.0 and o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.40)
+        retained_o25 = bool(ac_score >= 70 and o25 and 1.65 <= o25 <= 2.35)
         retained = retained_o15 or retained_o25
         bg_row = "#f0fdf4" if retained else "#fff"
         
