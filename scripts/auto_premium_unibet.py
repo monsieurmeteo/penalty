@@ -657,44 +657,34 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR QUINTUPLÉS OVER 1.5 (Cote combinée MIN >= 2.20 — Cloisonnement strict par jour) ──
+    # ── MOTEUR QUADRUPLÉS OVER 1.5 (4 Matchs Max · Cote Cible >= 2.20 · Dédoublonnage Global Strict) ──
     MIN_COTE = 2.20
-    used_match_ids = set()
+    used_global_match_ids = set()
     combos_mixed = []
 
     for day_key in sorted(blocks_mixed.keys()):
         day_items = sorted(blocks_mixed[day_key], key=lambda x: x["dt"])
 
-        available = [s for s in day_items if s["id"] not in used_match_ids]
-        while len(available) >= 5:
-            quint = available[:5]
-            comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
-            for s in quint:
-                used_match_ids.add(s["id"])
+        available = [s for s in day_items if s["id"] not in used_global_match_ids]
+        while len(available) >= 4:
+            quad = available[:4]
+            comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
+            for s in quad:
+                used_global_match_ids.add(s["id"])
             if comb_odds >= MIN_COTE:
                 combos_mixed.append({
                     "session": day_key,
-                    "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
-                    "items": quint, "comb_odds": comb_odds,
-                    "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-                })
-            available = [s for s in day_items if s["id"] not in used_match_ids]
-
-        # Orphelins du jour — Quadruplé / Triplé / Doublé (cote min >= 2.20)
-        if len(available) == 4:
-            quad = available[:4]
-            comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
-            for s in quad: used_match_ids.add(s["id"])
-            if comb_odds >= MIN_COTE:
-                combos_mixed.append({
-                    "session": day_key, "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+                    "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
                     "items": quad, "comb_odds": comb_odds,
                     "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
                 })
-        elif len(available) == 3:
+            available = [s for s in day_items if s["id"] not in used_global_match_ids]
+
+        # Orphelins du jour — Triplé / Doublé (cote min >= 2.20)
+        if len(available) == 3:
             trip = available[:3]
             comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
-            for s in trip: used_match_ids.add(s["id"])
+            for s in trip: used_global_match_ids.add(s["id"])
             if comb_odds >= MIN_COTE:
                 combos_mixed.append({
                     "session": day_key, "type": "Triplé 100% Over 1.5 (3 Matchs)",
@@ -704,7 +694,7 @@ def main():
         elif len(available) == 2:
             doub = available[:2]
             comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
-            for s in doub: used_match_ids.add(s["id"])
+            for s in doub: used_global_match_ids.add(s["id"])
             if comb_odds >= MIN_COTE:
                 combos_mixed.append({
                     "session": day_key, "type": "Doublé 100% Over 1.5 (2 Matchs)",
@@ -712,13 +702,13 @@ def main():
                     "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
                 })
 
-    # Tri chronologique global
+    # Tri chronologique global des Quadruplés
     for cb in combos_mixed:
         cb["items"].sort(key=lambda x: x["dt"])
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70] — COTE CIBLE >= 2.20) ──
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 — ZÉRO DOUBLON AVEC LES AUTRES PARIS) ──
     second_match_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -739,22 +729,20 @@ def main():
         blocks_second.setdefault(s["session"], []).append(s)
 
     combos_hybrids = []
-    used_doub_o15 = set()
-    used_doub_sec = set()
 
-    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés (Cote Min 2.15-2.20)
+    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés (ZÉRO MATCH DÉJÀ JOUÉ AILLEURS)
     for day_key in sorted(set(list(blocks_second.keys()) + list(blocks_mixed.keys()))):
-        sec_list = sorted(blocks_second.get(day_key, []), key=lambda x: x["dt"])
-        o15_list = sorted([s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_doub_o15], key=lambda x: x["dt"])
+        sec_list = sorted([s for s in blocks_second.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
+        o15_list = sorted([s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
         
         for it_sec in sec_list:
-            if it_sec["id"] in used_doub_sec: continue
+            if it_sec["id"] in used_global_match_ids: continue
             
             # Recherche du meilleur partenaire Over 1.5 du même jour donnant une cote >= 2.20
             best_o15 = None
             best_diff = 999.0
             for it_o15 in o15_list:
-                if it_o15["id"] in used_doub_o15 or it_o15["id"] == it_sec["id"]: continue
+                if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
                 c_odds = round(it_o15["odds"] * it_sec["odds"], 2)
                 if c_odds >= MIN_COTE:
                     diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
@@ -763,8 +751,8 @@ def main():
                         best_o15 = it_o15
             
             if best_o15:
-                used_doub_sec.add(it_sec["id"])
-                used_doub_o15.add(best_o15["id"])
+                used_global_match_ids.add(it_sec["id"])
+                used_global_match_ids.add(best_o15["id"])
                 comb_odds = round(best_o15["odds"] * it_sec["odds"], 2)
                 pair_items = [best_o15, it_sec]
                 pair_items.sort(key=lambda x: x["dt"])
@@ -780,6 +768,7 @@ def main():
     for cb in combos_hybrids:
         cb["items"].sort(key=lambda x: x["dt"])
     combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
 
 
     TICKET_THEMES = [
@@ -1143,16 +1132,16 @@ def main():
 
           <!-- HEADER COMPACT -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:16px 18px; text-align:center;">
-            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUINTUPLÉS OVER 1.5 & DOUBLÉS 100% ATTAQUE</div>
+            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS OVER 1.5 & DOUBLÉS 100% ATTAQUE</div>
             <h1 style="margin:0; font-size:18px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quintuplés 100% Over 1.5 &bull; Doublés (1 Over 1.5 + 1 Over 2.5) &bull; Journée (08h-23h59)</p>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quadruplés 100% Over 1.5 &bull; Doublés (1 Over 1.5 + 1 Over 2.5) &bull; Journée (08h-23h59)</p>
           </div>
 
           <!-- COMPTEURS COMPACTS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:8px 12px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUINTUPLÉS</div><div style="font-size:9px; color:#3b82f6;">5 Over 1.5</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUADRUPLÉS</div><div style="font-size:9px; color:#3b82f6;">4 Over 1.5</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#15803d;">DOUBLÉS</div><div style="font-size:9px; color:#16a34a;">Over 1.5 + Over 2.5</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">Score ≥ 70/100</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">Journée</div></div></td>
@@ -1184,14 +1173,15 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 14px 4px 14px;">{evo_html}</div>
 
-          <!-- SECTION 2 : QUINTUPLÉS OVER 1.5 -->
+          <!-- SECTION 2 : QUADRUPLÉS OVER 1.5 -->
           <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. QUINTUPLÉS 100% OVER 1.5 &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(5 Matchs · Cote Cible ~2.40 - 3.50 · Mise 3,00 €)</span></span>
+              <span>🚀 1. QUADRUPLÉS 100% OVER 1.5 &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(4 Matchs · Cote Cible ~2.20 - 3.20 · Mise 3,00 €)</span></span>
               <span style="font-size:10px; background:#dbeafe; color:#1e40af; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
           </div>
+
 
           <!-- SECTION 3 : DOUBLÉS 100% ATTAQUE (OVER 1.5 + OVER 2.5) -->
           <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
