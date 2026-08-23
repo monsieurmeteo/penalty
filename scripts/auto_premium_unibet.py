@@ -933,70 +933,125 @@ def main():
     else:
         combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Quintuplé disponible.</div>'
 
-    # Génération HTML Doublés 100% Attaque (1 Over 1.5 + 1 Over 2.5)
+    def render_match_proof_html(m, sel_score=None):
+        score = sel_score if sel_score is not None else m.get("ac_score", 0)
+        if not score:
+            return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
+        if score >= 90:   classe = "🔥🔥🔥 Exceptionnel"
+        elif score >= 85: classe = "🔥🔥 Très fort"
+        elif score >= 80: classe = "🔥 Fort"
+        elif score >= 75: classe = "✅ Bon potentiel"
+        elif score >= 70: classe = "🟡 Intéressant"
+        elif score >= 65: classe = "⚠️ Moyen"
+        else:             classe = "⚠️ Fragile"
+        pts_ipo = m.get("pts_ipo", 0)
+        ipo_val = m.get("ipo_comb", 0.0)
+        pts_goals = m.get("pts_goals", 0)
+        goals_val = m.get("total_goals_brut", 0.0)
+        pts_freq = m.get("pts_freq", 0)
+        freq_val = m.get("avg_freq_all", 0.0)
+        pts_sot = m.get("pts_sot", 0)
+        sot_val = m.get("sot_comb", 0.0)
+        pts_ha = m.get("pts_ha", 0)
+        ha_val = m.get("avg_freq_ha", 0.0)
+        pts_league = m.get("pts_league", 0)
+
+        if score >= 90:
+            score_style = "background: linear-gradient(135deg, #dc2626, #ea580c); color: #ffffff;"
+        elif score >= 85:
+            score_style = "background: linear-gradient(135deg, #ea580c, #f59e0b); color: #ffffff;"
+        elif score >= 80:
+            score_style = "background: #f59e0b; color: #ffffff;"
+        else:
+            score_style = "background: #10b981; color: #ffffff;"
+
+        rec_h = m.get("recent_h_dom", [])
+        h_pills = []
+        for rm in rec_h[:10]:
+            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
+            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
+            tot = int(hg) + int(ag)
+            if tot >= 3:
+                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
+            else:
+                h_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+        h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
+
+        rec_a = m.get("recent_a_ext", [])
+        a_pills = []
+        for rm in rec_a[:10]:
+            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
+            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
+            tot = int(hg) + int(ag)
+            if tot >= 3:
+                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
+            else:
+                a_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
+        a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
+
+        return f'''
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE (BARÈME V2)</span>
+                <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
+                    {score}/100 &bull; {classe}
+                </span>
+            </div>
+
+            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
+                <b>1. IPO ({ipo_val:.2f})</b>: {pts_ipo}/25 &nbsp;|&nbsp; 
+                <b>2. Buts ({goals_val:.1f}b)</b>: {pts_goals}/15 &nbsp;|&nbsp; 
+                <b>3. Freq ({freq_val:.0f}%)</b>: {pts_freq}/20 &nbsp;|&nbsp; 
+                <b>4. Tirs ({sot_val:.1f}t)</b>: {pts_sot}/10 &nbsp;|&nbsp; 
+                <b>5. H/A ({ha_val:.0f}%)</b>: {pts_ha}/20 &nbsp;|&nbsp; 
+                <b>6. Ligue</b>: {pts_league}/10
+            </div>
+
+            <div style="font-size:11px; color:#334155; line-height:1.6;">
+                <div style="margin-bottom:6px;">
+                    <b>🏠 10m Domicile ({m['dom']})</b> :<br>{h_pills_html}
+                </div>
+                <div>
+                    <b>✈️ 10m Extérieur ({m['ext']})</b> :<br>{a_pills_html}
+                </div>
+            </div>
+        </div>
+        '''
+
+    # Génération HTML Doublés 100% Attaque (1 Over 1.5 + 1 Over 2.5) avec fiches complètes du 13 août
     combos_hybrids_html = ""
     if combos_hybrids:
         for idx_h, cb in enumerate(combos_hybrids, 1):
-            theme = TICKET_THEMES[(idx_h) % len(TICKET_THEMES)]
-            items_rows = ""
+            theme = TICKET_THEMES[(idx_h - 1) % len(TICKET_THEMES)]
+            items_html = ""
             for item in cb["items"]:
                 m = item["m"]
-                o = item["odds"]
                 mk = item["market"]
-                o25 = m.get("over25", "N/A")
-                u25 = m.get("under25", "N/A")
-                p_pure_val = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 55.0
-                wc_p = m.get("wincomp_prob")
-                ac_score_val = m.get("ac_score") or 0
-                
-                is_under = "Under" in mk
-                sc_u = m.get("score_u25") or 0
-                ac_score_val = m.get("ac_score") or 0
-                
-                if is_under:
-                    if sc_u >= 75:
-                        lbl_badge = f"Score Under {sc_u}/100"
-                    elif wc_p and wc_p >= 50.0:
-                        lbl_badge = f"Wincomp {wc_p:.0f}%"
-                    else:
-                        lbl_badge = f"{p_pure_val}% pure"
-                elif "1.5" in mk:
-                    sc_15 = m.get("score_o15") or ac_score_val or 0
-                    lbl_badge = f"Score {sc_15}/100" if sc_15 >= 70 else f"{p_pure_val}% pure"
-                else:
-                    if ac_score_val >= 75:
-                        lbl_badge = f"Score {ac_score_val}/100"
-                    elif wc_p and wc_p >= 50.0:
-                        lbl_badge = f"Wincomp {wc_p:.0f}%"
-                    else:
-                        lbl_badge = f"{p_pure_val}% pure"
-
-                bg_m = "#dcfce7" if "1.5" in mk else ("#dbeafe" if "Over" in mk else "#fef3c7")
-                cl_m = "#166534" if "1.5" in mk else ("#1e40af" if "Over" in mk else "#92400e")
-                lbl_signal = f"O2.5 @{o25} vs U2.5 @{u25}"
-
-                
-                items_rows += f'''
-                <tr style="border-bottom:1px solid #f1f5f9;">
-                    <td style="padding:6px 8px; font-weight:700; font-size:11px; color:#475569; white-space:nowrap;">{m['date_str']}</td>
-                    <td style="padding:6px 8px; font-size:12px; font-weight:700; color:#0f172a;">{m['dom']} vs {m['ext']} <span style="font-size:10px; color:#94a3b8; font-weight:400;">({m['league']})</span></td>
-                    <td style="padding:6px 8px; text-align:center;"><span style="background:{bg_m}; color:{cl_m}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:4px; white-space:nowrap;">{mk} (@{o:.2f})</span></td>
-                    <td style="padding:6px 8px; text-align:center; font-size:11px; color:#475569; white-space:nowrap;">{lbl_signal}</td>
-                    <td style="padding:6px 8px; text-align:center;"><span style="background:#e0f2fe; color:#0369a1; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">{lbl_badge}</span></td>
-                </tr>'''
+                o = item["odds"]
+                sc = item.get("score", m.get("ac_score", 0))
+                proof = render_match_proof_html(m, sel_score=sc)
+                items_html += f'''
+                <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                        <span>🔹 <b>{mk}</b> &nbsp;&bull;&nbsp; <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']})</span></span>
+                        <span style="background:{'#dc2626' if sc >= 90 else '#ea580c' if sc >= 85 else '#f59e0b' if sc >= 80 else '#10b981'}; color:#fff; font-weight:800; font-size:11px; padding:2px 9px; border-radius:10px; white-space:nowrap; margin-left:8px;">⭐ {sc}/100</span>
+                    </div>
+                    {proof}
+                </div>'''
 
             combos_hybrids_html += f'''
-            <div style="background:#ffffff; border:1px solid {theme['border_card']}; border-left:4px solid {theme['border_left']}; border-radius:8px; margin-bottom:10px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:7px 10px; border-bottom:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Doublé #{idx_h} ({cb['type']}) &bull; Cote Totale : <b style="background:#ffffff; color:{theme['title_color']}; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']}; font-size:13px;">@{cb['comb_odds']:.2f}</b></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 7px; border-radius:4px;">Mise {cb['stake']:.2f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Doublé 100% Attaque #{idx_h} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
-              <table style="width:100%; border-collapse:collapse; font-size:11px;">
-                <tbody>{items_rows}</tbody>
-              </table>
+              <div style="font-size:12px; color:#334155; line-height:1.5;">
+                {items_html}
+              </div>
             </div>'''
     else:
         combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé disponible.</div>'
+
 
 
     # Planning table construction
