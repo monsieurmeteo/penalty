@@ -780,20 +780,28 @@ def main():
         u25 = m.get("under25")
         wc_m = m.get("wincomp_market")
         wc_p = m.get("wincomp_prob") or 0.0
+        ac_score = m.get("ac_score") or 0
         p_pure_o25 = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         p_pure_u25 = round(100.0 - p_pure_o25, 1)
         
-        # Option A : Over 2.5 éligible (Validation Wincomparator >= 50% OU Cotes très serrées |U2.5 - O2.5| <= 0.20)
+        # Option A : Over 2.5 éligible (Score /100 >= 75 OU Wincomp >= 50% OU Cotes très serrées <= 0.20)
+        is_ac_o25 = bool(ac_score >= 75)
         is_wc_o25 = bool(wc_m == "+2.5" and wc_p >= 50.0)
         is_tight_o25 = bool(u25 and o25 and abs(u25 - o25) <= 0.20 and o25 <= u25 + 0.05)
         
-        if o25 and (is_wc_o25 or is_tight_o25) and 1.65 <= o25 <= 2.30:
+        if o25 and (is_ac_o25 or is_wc_o25 or is_tight_o25) and 1.65 <= o25 <= 2.30:
             diff = round(abs((u25 or 0) - o25), 2) if u25 else 0.10
-            lbl_crit = f"Wincomp {wc_p:.0f}%" if is_wc_o25 else f"Écart {diff:.2f} ≤ 0.20"
+            if is_ac_o25:
+                lbl_crit = f"Score {ac_score}/100"
+            elif is_wc_o25:
+                lbl_crit = f"Wincomp {wc_p:.0f}%"
+            else:
+                lbl_crit = f"Écart {diff:.2f} ≤ 0.20"
+
             second_match_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🎯 Over 2.5", "odds": o25,
-                "diff": diff, "crit": lbl_crit, "score": int(wc_p) if is_wc_o25 else int(round((1.0 - diff/0.20) * 100))
+                "diff": diff, "crit": lbl_crit, "score": ac_score if is_ac_o25 else (int(wc_p) if is_wc_o25 else int(round((1.0 - diff/0.20) * 100)))
             })
 
         # Option B : Under 2.5 éligible (Validation Wincomparator -2.5 >= 50% OU Cotes très serrées avec Under favori)
@@ -808,6 +816,7 @@ def main():
                 "market": "🛡️ Under 2.5", "odds": u25,
                 "diff": diff, "crit": lbl_crit, "score": int(wc_p) if is_wc_u25 else int(round((1.0 - diff/0.20) * 100))
             })
+
 
 
 
@@ -934,10 +943,19 @@ def main():
                 u25 = m.get("under25", "N/A")
                 p_pure_val = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 55.0
                 wc_p = m.get("wincomp_prob")
-                lbl_badge = f"Wincomp {wc_p:.0f}%" if wc_p else f"{p_pure_val}% pure"
+                ac_score_val = m.get("ac_score") or 0
+                
+                if ac_score_val >= 75:
+                    lbl_badge = f"Score {ac_score_val}/100"
+                elif wc_p and wc_p >= 50.0:
+                    lbl_badge = f"Wincomp {wc_p:.0f}%"
+                else:
+                    lbl_badge = f"{p_pure_val}% pure"
+
                 bg_m = "#dcfce7" if "1.5" in mk else ("#dbeafe" if "Over" in mk else "#fef3c7")
                 cl_m = "#166534" if "1.5" in mk else ("#1e40af" if "Over" in mk else "#92400e")
                 lbl_signal = f"O2.5 @{o25} vs U2.5 @{u25}"
+
 
                 
                 items_rows += f'''
@@ -1048,11 +1066,13 @@ def main():
         o15 = m.get("over15")
         wc_m = m.get("wincomp_market")
         wc_p = m.get("wincomp_prob") or 0.0
+        ac_score = m.get("ac_score") or 0
+        is_ac_o25 = bool(ac_score >= 75)
         is_wc_o25 = bool(wc_m == "+2.5" and wc_p >= 50.0)
         is_wc_u25 = bool(wc_m == "-2.5" and wc_p >= 50.0)
         
         retained_o15 = bool(o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.50)
-        retained_o25 = bool(o25 and (is_wc_o25 or (u25 and abs(u25 - o25) <= 0.20 and o25 <= u25 + 0.05)) and 1.65 <= o25 <= 2.30)
+        retained_o25 = bool(o25 and (is_ac_o25 or is_wc_o25 or (u25 and abs(u25 - o25) <= 0.20 and o25 <= u25 + 0.05)) and 1.65 <= o25 <= 2.30)
         retained_u25 = bool(u25 and (is_wc_u25 or (o25 and abs(u25 - o25) <= 0.20 and u25 <= o25 + 0.05)) and 1.65 <= u25 <= 2.30)
         retained = retained_o15 or retained_o25 or retained_u25
         bg_row = "#f0fdf4" if retained else "#fff"
@@ -1068,21 +1088,20 @@ def main():
         else:
             badge = '<span style="color:#94a3b8; font-size:10px;">—</span>'
 
-
         o15_txt = f"@{o15:.2f}" if o15 else "N/A"
         o25_txt = f"@{o25:.2f}" if o25 else "N/A"
         u25_txt = f"@{u25:.2f}" if u25 else "N/A"
         
-        wc_m = m.get("wincomp_market")
-        wc_p = m.get("wincomp_prob")
+        ac_tag = f" &bull; <b style='color:#d97706;'>Score {ac_score}/100</b>" if ac_score >= 70 else ""
         wc_tag = f" &bull; <b style='color:#0284c7;'>WC {wc_m} {wc_p:.0f}%</b>" if (wc_m and wc_p and wc_p >= 50.0) else ""
         
         if o25 and u25 and abs(u25 - o25) <= 0.20:
-            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{wc_tag}</span>'
+            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{ac_tag}{wc_tag}</span>'
         elif o25 and u25 and o25 < u25:
-            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){wc_tag}</span>'
+            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}{wc_tag}</span>'
         else:
-            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{wc_tag}</span>'
+            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{ac_tag}{wc_tag}</span>'
+
 
 
 
