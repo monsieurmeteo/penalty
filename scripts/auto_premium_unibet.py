@@ -503,28 +503,26 @@ def main():
         score_o15 = r.get("score_o15") or 0
         freq_o15 = r.get("freq_o15") or 0.0
         
-        # Validation Over 1.5 : Score Over 1.5 >= 70/100 ET Fréquence >= 60% ET Over favori Unibet
+        # Validation Over 1.5 : Score Over 1.5 >= 70/100 ET Fréquence >= 60%
+        # — cote vérifiée seulement pour former le ticket (>= @1.10), pas pour exclure du catalogue
         is_score_ok = bool(score_o15 >= 70 and freq_o15 >= 60.0)
-        is_val = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.40 and is_score_ok)
+        is_val = bool(is_score_ok and o15 and o15 >= 1.10)
 
         if is_val:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if o25 and u25 and o25 >= u25:
-                r["rejection_reason"] = f"Under 2.5 favori (Over: @{o25:.2f} >= Under: @{u25:.2f})"
-            elif score_o15 < 70:
+            if score_o15 < 70:
                 r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 70)"
             elif freq_o15 < 60.0:
                 r["rejection_reason"] = f"Fréquence Over 1.5 trop faible ({freq_o15:.0f}% < 60%)"
-            elif prob_pure_o25 < 52.0 and o25 and u25:
-                r["rejection_reason"] = f"Probabilité pure sans marge trop faible ({prob_pure_o25}% < 52%)"
-            elif not o25 or not u25:
-                r["rejection_reason"] = "Cotes Over/Under 2.5 non disponibles sur Unibet"
+            elif not o15 or o15 < 1.10:
+                r["rejection_reason"] = f"Cote Over 1.5 non disponible ou trop écrasée (@{o15})"
             else:
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
             rejected_matches.append(r)
+
 
     s3_matches.sort(key=lambda x: -x.get("score_o15", 0))
 
