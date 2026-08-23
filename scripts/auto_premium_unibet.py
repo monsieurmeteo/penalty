@@ -657,65 +657,66 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR UNIFIÉ QUINTUPLÉS OVER 1.5 (5 Matchs Chronologiques par Jour — Cote Cible ~2.40 - 3.50) ──
+    # ── MOTEUR QUINTUPLÉS OVER 1.5 (Cote combinée MIN >= 2.20 — Cloisonnement strict par jour) ──
+    MIN_COTE = 2.20
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Jour, appariement chronologique des matchs 5 par 5 (SANS AUCUN MÉLANGE ENTRE JOURS)
     for day_key in sorted(blocks_mixed.keys()):
         day_items = sorted(blocks_mixed[day_key], key=lambda x: x["dt"])
-        
+
         available = [s for s in day_items if s["id"] not in used_match_ids]
         while len(available) >= 5:
             quint = available[:5]
             comb_odds = round(quint[0]["odds"] * quint[1]["odds"] * quint[2]["odds"] * quint[3]["odds"] * quint[4]["odds"], 2)
             for s in quint:
                 used_match_ids.add(s["id"])
-            combos_mixed.append({
-                "session": day_key,
-                "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
-                "items": quint,
-                "comb_odds": comb_odds,
-                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-            })
+            if comb_odds >= MIN_COTE:
+                combos_mixed.append({
+                    "session": day_key,
+                    "type": "Quintuplé 100% Over 1.5 (5 Matchs)",
+                    "items": quint, "comb_odds": comb_odds,
+                    "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+                })
             available = [s for s in day_items if s["id"] not in used_match_ids]
 
-        # Matchs orphelins du même jour (Quadruplé, Triplé ou Doublé restant SANS déborder sur le lendemain)
+        # Orphelins du jour — Quadruplé / Triplé / Doublé (cote min >= 2.20)
         if len(available) == 4:
             quad = available[:4]
             comb_odds = round(quad[0]["odds"] * quad[1]["odds"] * quad[2]["odds"] * quad[3]["odds"], 2)
             for s in quad: used_match_ids.add(s["id"])
-            combos_mixed.append({
-                "session": day_key,
-                "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
-                "items": quad, "comb_odds": comb_odds,
-                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-            })
+            if comb_odds >= MIN_COTE:
+                combos_mixed.append({
+                    "session": day_key, "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+                    "items": quad, "comb_odds": comb_odds,
+                    "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+                })
         elif len(available) == 3:
             trip = available[:3]
             comb_odds = round(trip[0]["odds"] * trip[1]["odds"] * trip[2]["odds"], 2)
             for s in trip: used_match_ids.add(s["id"])
-            combos_mixed.append({
-                "session": day_key,
-                "type": "Triplé 100% Over 1.5 (3 Matchs)",
-                "items": trip, "comb_odds": comb_odds,
-                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-            })
+            if comb_odds >= MIN_COTE:
+                combos_mixed.append({
+                    "session": day_key, "type": "Triplé 100% Over 1.5 (3 Matchs)",
+                    "items": trip, "comb_odds": comb_odds,
+                    "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+                })
         elif len(available) == 2:
             doub = available[:2]
             comb_odds = round(doub[0]["odds"] * doub[1]["odds"], 2)
             for s in doub: used_match_ids.add(s["id"])
-            combos_mixed.append({
-                "session": day_key,
-                "type": "Doublé 100% Over 1.5 (2 Matchs)",
-                "items": doub, "comb_odds": comb_odds,
-                "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
-            })
+            if comb_odds >= MIN_COTE:
+                combos_mixed.append({
+                    "session": day_key, "type": "Doublé 100% Over 1.5 (2 Matchs)",
+                    "items": doub, "comb_odds": comb_odds,
+                    "stake": 3.0, "gain": round(3.0 * comb_odds, 2), "profit": round(3.0 * comb_odds - 3.0, 2)
+                })
 
-        # Tri chronologique des matchs au sein de chaque ticket Quintuplé
-        for cb in combos_mixed:
-            cb["items"].sort(key=lambda x: x["dt"])
-        combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+    # Tri chronologique global
+    for cb in combos_mixed:
+        cb["items"].sort(key=lambda x: x["dt"])
+    combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
 
     # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 70] + 1 OVER 2.5 [Score >= 70] — COTE CIBLE >= 2.20) ──
     second_match_selections = []
@@ -749,13 +750,13 @@ def main():
         for it_sec in sec_list:
             if it_sec["id"] in used_doub_sec: continue
             
-            # Recherche du meilleur partenaire Over 1.5 du même jour donnant une cote >= 2.15
+            # Recherche du meilleur partenaire Over 1.5 du même jour donnant une cote >= 2.20
             best_o15 = None
             best_diff = 999.0
             for it_o15 in o15_list:
                 if it_o15["id"] in used_doub_o15 or it_o15["id"] == it_sec["id"]: continue
                 c_odds = round(it_o15["odds"] * it_sec["odds"], 2)
-                if c_odds >= 2.15:
+                if c_odds >= MIN_COTE:
                     diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
                     if diff_time < best_diff:
                         best_diff = diff_time
