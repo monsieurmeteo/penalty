@@ -502,8 +502,79 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR QUADRUPLÉS OVER 1.5 (4 Matchs Max · Dédoublonnage Global Strict) ──
+    # ── MOTEUR DOUBLÉS HYBRIDES & DOUBLÉS UNDER 2.5 (Écart |Under - Over| <= 0.40) — EN PREMIER ──
+    under25_selections = []
+    for m in scanned_results:
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        day_key = get_betting_session_key(m_dt)
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        
+        # Règle : Under 2.5 proche de Over 2.5 (écart <= 0.40)
+        if u25 and o25:
+            diff = round(abs(u25 - o25), 2)
+            if diff <= 0.40:
+                under25_selections.append({
+                    "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
+                    "market": "🛡️ Under 2.5", "odds": u25,
+                    "crit": f"Under @{u25:.2f} (Écart: {diff:.2f} &le; 0.40)", "diff": diff
+                })
+
+    blocks_under = {}
+    for s in under25_selections:
+        blocks_under.setdefault(s["session"], []).append(s)
+
     used_global_match_ids = set()
+    combos_hybrids = []
+
+    # Doublés Hybrides : on parcourt chaque jour, on apparie 1 Under 2.5 + 1 Over 1.5
+    for day_key in sorted(set(list(blocks_under.keys()) + list(blocks_mixed.keys()))):
+        sec_list = sorted(blocks_under.get(day_key, []), key=lambda x: x["dt"])
+        o15_list = sorted(blocks_mixed.get(day_key, []), key=lambda x: x["dt"])
+
+        for it_sec in sec_list:
+            if it_sec["id"] in used_global_match_ids: continue
+            
+            # Meilleur partenaire Over 1.5 non consommé du même jour
+            best_o15 = None
+            best_diff = 999.0
+            for it_o15 in o15_list:
+                if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
+                diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
+                if diff_time < best_diff:
+                    best_diff = diff_time
+                    best_o15 = it_o15
+            
+            if best_o15:
+                used_global_match_ids.add(it_sec["id"])
+                used_global_match_ids.add(best_o15["id"])
+                comb_odds = round(best_o15["odds"] * it_sec["odds"], 2)
+                pair_items = sorted([best_o15, it_sec], key=lambda x: x["dt"])
+                combos_hybrids.append({
+                    "session": day_key,
+                    "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
+                    "items": pair_items,
+                    "comb_odds": comb_odds,
+                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+                })
+
+        # Doublés 100% Under 2.5 orphelins (écart <= 0.40, sans partenaire Over 1.5)
+        rem_u = [s for s in blocks_under.get(day_key, []) if s["id"] not in used_global_match_ids]
+        for j in range(0, len(rem_u) - 1, 2):
+            u1 = rem_u[j]; u2 = rem_u[j+1]
+            c_odds = round(u1["odds"] * u2["odds"], 2)
+            used_global_match_ids.add(u1["id"])
+            used_global_match_ids.add(u2["id"])
+            combos_hybrids.append({
+                "session": day_key,
+                "type": "Doublé 100% Under 2.5 (2 Matchs)",
+                "items": [u1, u2], "comb_odds": c_odds,
+                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+            })
+
+    combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
+    # ── MOTEUR QUADRUPLÉS OVER 1.5 (avec les Over 1.5 NON consommés par les Doublés) ──
     combos_mixed = []
 
     for day_key in sorted(blocks_mixed.keys()):
@@ -513,9 +584,7 @@ def main():
         while len(available) >= 4:
             chunk = available[:4]
             c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"] * chunk[3]["odds"], 2)
-            for s in chunk:
-                used_global_match_ids.add(s["id"])
-            
+            for s in chunk: used_global_match_ids.add(s["id"])
             combos_mixed.append({
                 "session": day_key,
                 "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
@@ -543,88 +612,10 @@ def main():
                 "stake": 3.0, "gain": round(3.0 * c_odds, 2), "profit": round(3.0 * c_odds - 3.0, 2)
             })
 
-    # Tri chronologique global des Combinés Over 1.5
     for cb in combos_mixed:
         cb["items"].sort(key=lambda x: x["dt"])
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
-
-    # ── MOTEUR DOUBLÉS HYBRIDES & DOUBLÉS UNDER 2.5 (Écart |Under - Over| <= 0.40) ──
-    under25_selections = []
-    for m in scanned_results:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        day_key = get_betting_session_key(m_dt)
-        o25 = m.get("over25")
-        u25 = m.get("under25")
-        
-        # Règle utilisateur absolue : Under 2.5 proche de Over 2.5 (jamais plus de 0.40 d'écart)
-        if u25 and o25:
-            diff = round(abs(u25 - o25), 2)
-            if diff <= 0.40:
-                under25_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
-                    "market": "🛡️ Under 2.5", "odds": u25,
-                    "crit": f"Under @{u25:.2f} (Écart: {diff:.2f} &le; 0.40)", "diff": diff
-                })
-
-    blocks_under = {}
-    for s in under25_selections:
-        blocks_under.setdefault(s["session"], []).append(s)
-
-    combos_hybrids = []
-
-    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés Hybrides (ZÉRO MATCH DÉJÀ JOUÉ AILLEURS)
-    for day_key in sorted(set(list(blocks_under.keys()) + list(blocks_mixed.keys()))):
-        sec_list = sorted([s for s in blocks_under.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
-        o15_list = sorted([s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
-        
-        for it_sec in sec_list:
-            if it_sec["id"] in used_global_match_ids: continue
-            
-            # Recherche du meilleur partenaire Over 1.5 du même jour
-            best_o15 = None
-            best_diff = 999.0
-            for it_o15 in o15_list:
-                if it_o15["id"] in used_global_match_ids or it_o15["id"] == it_sec["id"]: continue
-                diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
-                if diff_time < best_diff:
-                    best_diff = diff_time
-                    best_o15 = it_o15
-            
-            if best_o15:
-                used_global_match_ids.add(it_sec["id"])
-                used_global_match_ids.add(best_o15["id"])
-                comb_odds = round(best_o15["odds"] * it_sec["odds"], 2)
-                pair_items = [best_o15, it_sec]
-                pair_items.sort(key=lambda x: x["dt"])
-                combos_hybrids.append({
-                    "session": day_key,
-                    "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
-                    "items": pair_items,
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-
-        # Pour les Under 2.5 orphelins restants (écart <= 0.40) : former des Doublés 100% Under 2.5
-        rem_u = [s for s in blocks_under.get(day_key, []) if s["id"] not in used_global_match_ids]
-        for j in range(0, len(rem_u) - 1, 2):
-            u1 = rem_u[j]
-            u2 = rem_u[j+1]
-            c_odds = round(u1["odds"] * u2["odds"], 2)
-            used_global_match_ids.add(u1["id"])
-            used_global_match_ids.add(u2["id"])
-            combos_hybrids.append({
-                "session": day_key,
-                "type": "Doublé 100% Under 2.5 (2 Matchs)",
-                "items": [u1, u2],
-                "comb_odds": c_odds,
-                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-            })
-
-    # Tri chronologique des Doublés
-    for cb in combos_hybrids:
-        cb["items"].sort(key=lambda x: x["dt"])
-    combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
 
 
