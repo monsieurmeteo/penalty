@@ -589,19 +589,6 @@ def main():
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-        # Doublés 100% Under 2.5 orphelins (écart <= 0.40, sans partenaire Over 1.5)
-        rem_u = [s for s in blocks_under.get(day_key, []) if s["id"] not in used_global_match_ids]
-        for j in range(0, len(rem_u) - 1, 2):
-            u1 = rem_u[j]; u2 = rem_u[j+1]
-            c_odds = round(u1["odds"] * u2["odds"], 2)
-            used_global_match_ids.add(u1["id"])
-            used_global_match_ids.add(u2["id"])
-            combos_hybrids.append({
-                "session": day_key,
-                "type": "Doublé 100% Under 2.5 (2 Matchs)",
-                "items": [u1, u2], "comb_odds": c_odds,
-                "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-            })
 
     combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
