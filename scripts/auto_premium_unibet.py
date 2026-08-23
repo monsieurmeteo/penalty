@@ -1154,7 +1154,7 @@ def main():
               <tr>
                 <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUINTUPLÉS</div><div style="font-size:9px; color:#3b82f6;">5 Over 1.5</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#15803d;">DOUBLÉS</div><div style="font-size:9px; color:#16a34a;">Over 1.5 + Over 2.5</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">P(Pure) ≥ 52%</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">Score ≥ 70/100</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">Journée</div></div></td>
               </tr>
             </table>
