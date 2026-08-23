@@ -359,12 +359,6 @@ def main():
     # Étape 2 : Préchargement fixtures AdamChoi (optionnel — fallback auto si échoue)
     d_fx = None
     d_refs = {}
-    d_wincomp = []
-    try:
-        from wincomparator import fetch_wincomparator_predictions, find_wincomp_match, clean_team_name
-        d_wincomp = fetch_wincomparator_predictions(scanned_results)
-    except Exception as e_wc:
-        print(f"⚠️ Wincomparator non chargé ({e_wc})")
 
 
 
@@ -1052,35 +1046,17 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 p_pure = m.get("prob_pure_o25", 55.0)
-                wc_p = m.get("wincomp_prob")
-                is_under = "Under" in item["market"]
-                sc_u = m.get("score_u25") or 0
                 ac_sc = m.get("ac_score") or 0
                 
-                if is_under:
-                    if sc_u >= 75:
-                        lbl_badge = f"Score Under {sc_u}/100"
-                    elif wc_p and wc_p >= 50.0:
-                        lbl_badge = f"Wincomp {wc_p:.0f}%"
-                    else:
-                        lbl_badge = f"{p_pure}% pure"
-                    score_val = sc_u if sc_u >= 75 else (int(wc_p) if wc_p else int(p_pure))
-                    bg_m = "#fef3c7"
-                    cl_m = "#92400e"
-                elif "1.5" in item["market"]:
+                if "1.5" in item["market"]:
                     sc_15 = m.get("score_o15") or ac_sc or 0
                     lbl_badge = f"Score {sc_15}/100" if sc_15 >= 70 else f"{p_pure}% pure"
                     score_val = sc_15 if sc_15 >= 70 else int(p_pure)
                     bg_m = "#dcfce7"
                     cl_m = "#166534"
                 else:
-                    if ac_sc >= 75:
-                        lbl_badge = f"Score {ac_sc}/100"
-                    elif wc_p and wc_p >= 50.0:
-                        lbl_badge = f"Wincomp {wc_p:.0f}%"
-                    else:
-                        lbl_badge = f"{p_pure}% pure"
-                    score_val = ac_sc if ac_sc >= 75 else (int(wc_p) if wc_p else int(p_pure))
+                    lbl_badge = f"Score {ac_sc}/100" if ac_sc >= 70 else f"{p_pure}% pure"
+                    score_val = ac_sc if ac_sc >= 70 else int(p_pure)
                     bg_m = "#dbeafe"
                     cl_m = "#1e40af"
 
@@ -1137,25 +1113,16 @@ def main():
         o25 = m.get("over25")
         u25 = m.get("under25")
         o15 = m.get("over15")
-        wc_m = m.get("wincomp_market")
-        wc_p = m.get("wincomp_prob") or 0.0
         ac_score = m.get("ac_score") or 0
+        score_o15 = m.get("score_o15") or 0
+        freq_o15 = m.get("freq_o15") or 0.0
         p_pure = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
 
-        
-        # 100% Attaque : Seul Over 2.5 est retenu pour les seconds choix
-        dir_o25 = False
-        if wc_m == "+2.5" and wc_p >= 50.0 and o25 and 1.65 <= o25 <= 2.30:
-            dir_o25 = True
-        elif ac_score >= 75 and o25 and 1.65 <= o25 <= 2.30:
-            dir_o25 = True
-        elif is_tight and o25 and o25 <= u25 and 1.65 <= o25 <= 2.30:
-            dir_o25 = True
-        
-        retained_o15 = bool(o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.50)
-        retained_o25 = dir_o25
+        # 100% Attaque du 13 Août : Over 2.5 si Score >= 80, Over 1.5 si Score >= 80 et Freq >= 65%
+        retained_o15 = bool(score_o15 >= 80 and freq_o15 >= 65.0 and o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.40)
+        retained_o25 = bool(ac_score >= 80 and o25 and 1.65 <= o25 <= 2.35)
         retained = retained_o15 or retained_o25
         bg_row = "#f0fdf4" if retained else "#fff"
         
@@ -1173,15 +1140,15 @@ def main():
         u25_txt = f"@{u25:.2f}" if u25 else "N/A"
         
         ac_tag = f" &bull; <b style='color:#d97706;'>Score {ac_score}/100</b>" if ac_score >= 70 else ""
-        wc_tag = f" &bull; <b style='color:#0284c7;'>WC {wc_m} {wc_p:.0f}%</b>" if (wc_m and wc_p and wc_p >= 50.0) else ""
 
         
         if o25 and u25 and abs(u25 - o25) <= 0.20:
-            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{ac_tag}{wc_tag}</span>'
+            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{ac_tag}</span>'
         elif o25 and u25 and o25 < u25:
-            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}{wc_tag}</span>'
+            signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}</span>'
         else:
-            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{ac_tag}{wc_tag}</span>'
+            signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{ac_tag}</span>'
+
 
 
 
