@@ -649,40 +649,25 @@ def main():
             tranche = "Soirée (20h-23h59)"
         return f"{betting_date} · {tranche}"
 
-    # ── MOTEUR UNIFIÉ OVER 1.5 ──
+    # ── MOTEUR UNIFIÉ OVER 1.5 (Strictement issu de s3_matches : Score >= 80/100 & Freq >= 65%) ──
     mixed_selections = []
-    for m in scanned_results:
+    for m in s3_matches:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        o25 = m.get("over25")
-        u25 = m.get("under25")
         o15 = m.get("over15")
-        prob_pure_o25 = m.get("prob_pure_o25") or 0.0
+        sc_15 = m.get("score_o15", 0)
 
-        if o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0 and o15 and 1.10 <= o15 <= 1.50:
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "⚡ Over 1.5", "odds": o15,
-                "score": int(round(prob_pure_o25))
-            })
+        mixed_selections.append({
+            "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+            "market": "⚡ Over 1.5", "odds": o15,
+            "score": sc_15
+        })
 
-    # ── MOTEUR 2 : UNDER 2.5 (ÉCART <= 0.20) ──
+    # ── MOTEUR 2 : UNDER 2.5 (Désactivé en 100% Attaque) ──
     under25_selections = []
-    for m in scanned_results:
-        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        block_key = get_betting_session_key(m_dt)
-        o25 = m.get("over25")
-        u25 = m.get("under25")
-        if o25 and u25 and abs(u25 - o25) <= 0.20 and 1.50 <= u25 <= 2.30:
-            diff = round(abs(u25 - o25), 2)
-            under25_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🛡️ Under 2.5", "odds": u25,
-                "diff": diff, "score": int(round((1.0 - diff/0.20) * 100))
-            })
 
-    print(f"📊 Sélections Over 1.5 retenues : {len(mixed_selections)}")
-    print(f"📊 Sélections Under 2.5 (Écart <= 0.20) retenues : {len(under25_selections)}")
+    print(f"📊 Sélections Over 1.5 (Score >= 80/100) retenues : {len(mixed_selections)}")
+
 
     # Regroupement strict par Tranche Horaire
     blocks_mixed = {}
@@ -780,45 +765,22 @@ def main():
         print(f"✅ {matched_wc} matchs Unibet associés avec Wincomparator !")
 
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 [SCORE ≥ 75 OU WC ≥ 50%] — COTE CIBLE ≥ 2.20) ──
-    # Match 1 : ⚡ Over 1.5 (Score >= 75/100 & P_pure >= 52%)
-    # Match 2 : 🎯 Over 2.5 (Score >= 75/100 OU Wincomp >= 50% OU Cotes serrées Over favori)
+    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 [Score >= 80] + 1 OVER 2.5 [Score >= 80]) ──
     second_match_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         o25 = m.get("over25")
-        u25 = m.get("under25")
-        wc_m = m.get("wincomp_market")
-        wc_p = m.get("wincomp_prob") or 0.0
         ac_score = m.get("ac_score") or 0
-        p_pure_o25 = m.get("prob_pure_o25") if m.get("prob_pure_o25") is not None else 50.0
         
-        diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
-        is_tight_o25 = bool(u25 and o25 and diff <= 0.20 and o25 <= u25)
-        
-        if o25 and 1.65 <= o25 <= 2.30:
-            # 1. Validation Wincomparator Over 2.5
-            if wc_m == "+2.5" and wc_p >= 50.0:
-                second_match_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                    "market": "🎯 Over 2.5", "odds": o25,
-                    "diff": diff, "crit": f"Wincomp {wc_p:.0f}%", "score": int(wc_p)
-                })
-            # 2. Validation Score /100 AdamChoi Over 2.5
-            elif ac_score >= 75:
-                second_match_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                    "market": "🎯 Over 2.5", "odds": o25,
-                    "diff": diff, "crit": f"Score {ac_score}/100", "score": ac_score
-                })
-            # 3. Cotes très serrées avec Over favori
-            elif is_tight_o25:
-                second_match_selections.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                    "market": "🎯 Over 2.5", "odds": o25,
-                    "diff": diff, "crit": f"Écart {diff:.2f} ≤ 0.20", "score": int(round((1.0 - diff/0.20) * 100))
-                })
+        # Règle Stricte du 13 Août : Score Over 2.5 >= 80/100 STRICT (Jamais de score fragile)
+        if o25 and 1.65 <= o25 <= 2.35 and ac_score >= 80:
+            second_match_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "market": "🎯 Over 2.5", "odds": o25,
+                "crit": f"Score {ac_score}/100", "score": ac_score
+            })
+
 
 
 
