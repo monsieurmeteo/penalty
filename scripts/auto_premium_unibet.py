@@ -491,7 +491,7 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Quintuplés Over 1.5 (Seuil Score Over 1.5 >= 70/100 & Freq >= 60%) ──
+    # ── Sélection Over 1.5 (Marché Bookmaker : Over 2.5 < Under 2.5 & P(Pure) >= 52% ou Score >= 70) ──
     s3_matches = []
     rejected_matches = []
 
@@ -503,30 +503,28 @@ def main():
         score_o15 = r.get("score_o15") or 0
         freq_o15 = r.get("freq_o15") or 0.0
         
-        # Validation Over 1.5 : Score Over 1.5 >= 70/100 ET Fréquence >= 60%
-        # — cote vérifiée seulement pour former le ticket (>= @1.10), pas pour exclure du catalogue
+        # Over 1.5 : Over 2.5 < Under 2.5 ET Probabilité Pure >= 52% (ou Score Over 1.5 >= 70)
+        is_fav_o25 = bool(o25 and u25 and o25 < u25 and prob_pure_o25 >= 52.0)
         is_score_ok = bool(score_o15 >= 70 and freq_o15 >= 60.0)
-        is_val = bool(is_score_ok and o15 and o15 >= 1.10)
+        is_val = bool((is_fav_o25 or is_score_ok) and o15 and 1.10 <= o15 <= 1.45)
 
         if is_val:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if score_o15 < 70:
-                r["rejection_reason"] = f"Score Over 1.5 insuffisant ({score_o15}/100 < 70)"
-            elif freq_o15 < 60.0:
-                r["rejection_reason"] = f"Fréquence Over 1.5 trop faible ({freq_o15:.0f}% < 60%)"
-            elif not o15 or o15 < 1.10:
+            if not o15 or o15 < 1.10:
                 r["rejection_reason"] = f"Cote Over 1.5 non disponible ou trop écrasée (@{o15})"
+            elif not is_fav_o25 and not is_score_ok:
+                r["rejection_reason"] = f"Under 2.5 favori ou stats insuffisantes (P(Pure): {prob_pure_o25}%, Score: {score_o15}/100)"
             else:
                 r["rejection_reason"] = f"Cote Over 1.5 hors limites (@{o15})"
             rejected_matches.append(r)
 
+    s3_matches.sort(key=lambda x: -x.get("prob_pure_o25", 0))
 
-    s3_matches.sort(key=lambda x: -x.get("score_o15", 0))
+    print(f"⭐ Matchs validés 100% Over 1.5 (Over favori & P(Pure) >= 52%) : {len(s3_matches)} / {len(scanned_results)}")
 
-    print(f"⭐ Matchs validés 100% Over 1.5 (Score >= 70/100 & Freq >= 60%) : {len(s3_matches)} / {len(scanned_results)}")
 
 
 
@@ -708,31 +706,32 @@ def main():
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
 
-    # ── MOTEUR DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5 — ZÉRO DOUBLON AVEC LES AUTRES PARIS) ──
-    second_match_selections = []
+    # ── MOTEUR DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5 [ÉCART <= 0.20] — COTE MIN >= 2.20) ──
+    under25_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
         o25 = m.get("over25")
-        ac_score = m.get("ac_score") or 0
+        u25 = m.get("under25")
         
-        # Seuil Score Over 2.5 >= 70/100
-        if o25 and 1.65 <= o25 <= 2.35 and ac_score >= 70:
-            second_match_selections.append({
+        # Matchs serrés : Écart |Under 2.5 - Over 2.5| <= 0.20 et Cote Under 2.5 entre @1.60 et @2.25
+        if o25 and u25 and abs(u25 - o25) <= 0.20 and 1.60 <= u25 <= 2.25:
+            diff = round(abs(u25 - o25), 2)
+            under25_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
-                "market": "🎯 Over 2.5", "odds": o25,
-                "crit": f"Score {ac_score}/100", "score": ac_score
+                "market": "🛡️ Under 2.5", "odds": u25,
+                "crit": f"Écart {diff:.2f} ≤ 0.20", "diff": diff
             })
 
-    blocks_second = {}
-    for s in second_match_selections:
-        blocks_second.setdefault(s["session"], []).append(s)
+    blocks_under = {}
+    for s in under25_selections:
+        blocks_under.setdefault(s["session"], []).append(s)
 
     combos_hybrids = []
 
-    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés (ZÉRO MATCH DÉJÀ JOUÉ AILLEURS)
-    for day_key in sorted(set(list(blocks_second.keys()) + list(blocks_mixed.keys()))):
-        sec_list = sorted([s for s in blocks_second.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
+    # Appariement STRICTEMENT AU SEIN DU MÊME JOUR pour les Doublés Hybrides (ZÉRO MATCH DÉJÀ JOUÉ AILLEURS)
+    for day_key in sorted(set(list(blocks_under.keys()) + list(blocks_mixed.keys()))):
+        sec_list = sorted([s for s in blocks_under.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
         o15_list = sorted([s for s in blocks_mixed.get(day_key, []) if s["id"] not in used_global_match_ids], key=lambda x: x["dt"])
         
         for it_sec in sec_list:
@@ -758,16 +757,17 @@ def main():
                 pair_items.sort(key=lambda x: x["dt"])
                 combos_hybrids.append({
                     "session": day_key,
-                    "type": "Doublé 100% Attaque",
+                    "type": "Doublé Hybride (1 Over 1.5 + 1 Under 2.5)",
                     "items": pair_items,
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # Tri chronologique des Doublés
+    # Tri chronologique des Doublés Hybrides
     for cb in combos_hybrids:
         cb["items"].sort(key=lambda x: x["dt"])
     combos_hybrids.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+
 
 
 
@@ -951,7 +951,8 @@ def main():
             combos_hybrids_html += f'''
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Doublé 100% Attaque #{idx_h} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-weight:800; color:{theme['title_color']}; font-size:13px;">🎟️ Doublé Hybride #{idx_h} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
+
                 <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div style="font-size:12px; color:#334155; line-height:1.5;">
@@ -1070,18 +1071,18 @@ def main():
         diff = round(abs((u25 or 0) - (o25 or 0)), 2) if (u25 and o25) else 0.10
         is_tight = bool(u25 and o25 and diff <= 0.20)
 
-        # 100% Attaque : Over 2.5 si Score >= 70, Over 1.5 si Score >= 70 et Freq >= 60%
-        retained_o15 = bool(score_o15 >= 70 and freq_o15 >= 60.0 and o25 and u25 and o25 < u25 and p_pure >= 52.0 and o15 and 1.10 <= o15 <= 1.40)
-        retained_o25 = bool(ac_score >= 70 and o25 and 1.65 <= o25 <= 2.35)
-        retained = retained_o15 or retained_o25
+        # Audit : Over 1.5 (Marché/Score) ou Under 2.5 (Écart <= 0.20)
+        retained_o15 = bool(m in s3_matches)
+        retained_u25 = bool(o25 and u25 and abs(u25 - o25) <= 0.20 and 1.60 <= u25 <= 2.25)
+        retained = retained_o15 or retained_u25
         bg_row = "#f0fdf4" if retained else "#fff"
         
-        if retained_o15 and retained_o25:
-            badge = '<span style="color:#15803d; font-weight:700; font-size:10px;">✅ O1.5 + O2.5</span>'
+        if retained_o15 and retained_u25:
+            badge = '<span style="color:#15803d; font-weight:700; font-size:10px;">✅ O1.5 + U2.5</span>'
         elif retained_o15:
             badge = '<span style="color:#15803d; font-weight:700; font-size:10px;">✅ OVER 1.5</span>'
-        elif retained_o25:
-            badge = '<span style="color:#2563eb; font-weight:700; font-size:10px;">🎯 OVER 2.5</span>'
+        elif retained_u25:
+            badge = '<span style="color:#b45309; font-weight:700; font-size:10px;">🛡️ UNDER 2.5</span>'
         else:
             badge = '<span style="color:#94a3b8; font-size:10px;">—</span>'
 
@@ -1091,18 +1092,12 @@ def main():
         
         ac_tag = f" &bull; <b style='color:#d97706;'>Score {ac_score}/100</b>" if ac_score >= 70 else ""
 
-        
         if o25 and u25 and abs(u25 - o25) <= 0.20:
-            signal_txt = f'<span style="color:#2563eb; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{ac_tag}</span>'
+            signal_txt = f'<span style="color:#b45309; font-weight:700; font-size:10px;">Écart {abs(u25-o25):.2f} &le; 0.20{ac_tag}</span>'
         elif o25 and u25 and o25 < u25:
             signal_txt = f'<span style="color:#16a34a; font-weight:700; font-size:10px;">Over 2.5 &lt; Under ({p_pure}%){ac_tag}</span>'
         else:
             signal_txt = f'<span style="color:#94a3b8; font-size:10px;">Écart &gt; 0.20{ac_tag}</span>'
-
-
-
-
-
 
         scan_rows_html += (
             f'<tr style="background:{bg_row}; border-bottom:1px solid #f1f5f9;">'
@@ -1132,9 +1127,9 @@ def main():
 
           <!-- HEADER COMPACT -->
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:16px 18px; text-align:center;">
-            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS OVER 1.5 & DOUBLÉS 100% ATTAQUE</div>
+            <div style="font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; margin-bottom:4px;">⚽ FOOTBALL PREMIUM · QUADRUPLÉS OVER 1.5 & DOUBLÉS HYBRIDES</div>
             <h1 style="margin:0; font-size:18px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quadruplés 100% Over 1.5 &bull; Doublés (1 Over 1.5 + 1 Over 2.5) &bull; Journée (08h-23h59)</p>
+            <p style="margin:4px 0 0 0; font-size:11px; color:#cbd5e1;">Quadruplés 100% Over 1.5 &bull; Doublés Hybrides (1 Over 1.5 + 1 Under 2.5) &bull; Journée (08h-23h59)</p>
           </div>
 
           <!-- COMPTEURS COMPACTS -->
@@ -1142,8 +1137,8 @@ def main():
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
                 <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">QUADRUPLÉS</div><div style="font-size:9px; color:#3b82f6;">4 Over 1.5</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#dcfce7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#15803d;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#15803d;">DOUBLÉS</div><div style="font-size:9px; color:#16a34a;">Over 1.5 + Over 2.5</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">Score ≥ 70/100</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#fef3c7; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#92400e;">{nb_hybrids}</div><div style="font-size:9px; font-weight:700; color:#92400e;">DOUBLÉS HYBRIDES</div><div style="font-size:9px; color:#b45309;">Over 1.5 + Under 2.5</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#eff6ff; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#2563eb;">{len(s3_matches)}</div><div style="font-size:9px; font-weight:700; color:#2563eb;">RETENUS</div><div style="font-size:9px; color:#3b82f6;">P(Pure) ≥ 52%</div></div></td>
                 <td style="padding:0 3px;"><div style="background:#f1f5f9; border-radius:6px; padding:6px;"><div style="font-size:18px; font-weight:900; color:#0f172a;">{len(scanned_results)}</div><div style="font-size:9px; font-weight:700; color:#475569;">SCANNÉS</div><div style="font-size:9px; color:#64748b;">Journée</div></div></td>
               </tr>
             </table>
@@ -1182,18 +1177,14 @@ def main():
             {combos_mixed_html}
           </div>
 
-
-          <!-- SECTION 3 : DOUBLÉS 100% ATTAQUE (OVER 1.5 + OVER 2.5) -->
+          <!-- SECTION 3 : DOUBLÉS HYBRIDES (OVER 1.5 + UNDER 2.5) -->
           <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
-            <div style="font-size:13px; font-weight:800; color:#15803d; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 2. DOUBLÉS 100% ATTAQUE (1 OVER 1.5 + 1 OVER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Cote Cible ~2.15 - 2.60 · Mise 4,00 €)</span></span>
-              <span style="font-size:10px; background:#dcfce7; color:#15803d; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
+            <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Écart &le; 0.20 · Cote Cible ~2.15 - 2.60 · Mise 4,00 €)</span></span>
+              <span style="font-size:10px; background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
             </div>
             {combos_hybrids_html}
           </div>
-
-
-
 
           <!-- SECTION 4 : TOUS LES MATCHS ANALYSÉS -->
           <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
@@ -1216,8 +1207,9 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:10px 16px; background:#0f172a; font-size:9px; color:#64748b; text-align:center;">
-            ⚽ Paris sportifs · Quintuplés Over 1.5 & Doublés Hybrides · Unibet France · {now_str}
+            ⚽ Paris sportifs · Quadruplés Over 1.5 & Doublés Hybrides · Unibet France · {now_str}
           </div>
+
 
         </div>
       </body>
