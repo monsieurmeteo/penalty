@@ -342,13 +342,41 @@ def main():
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
     print(f"Matchs 24h/24 retenus (Nuit & Journée) : {len(scanned_results)}")
 
+    # ── Enrichissement AdamChoi (score /100) — requis pour la section Under 2.5 ──
+    try:
+        from analyze import analyze_pure_stats_20
+    except Exception as e_import:
+        analyze_pure_stats_20 = None
+        print(f"⚠️ analyze.py non disponible : {e_import}")
 
+    d_fx = None
+    if analyze_pure_stats_20:
+        try:
+            r_fx = requests.get(
+                "https://www.adamchoi.co.uk/scripts/data/json/scripts/getFixturesJsonForSearch.php?clflc=abc&timezoneOffset=0",
+                headers={"Authorization-Client": "ADAMCHOI.CO.UK", "User-Agent": "Mozilla/5.0"}, timeout=12)
+            d_fx = r_fx.json() if r_fx.status_code == 200 else None
+        except Exception:
+            d_fx = None
 
+        def enrich_adamchoi(m):
+            try:
+                res = analyze_pure_stats_20(m["dom"], m["ext"], d_fx, is_batch=True,
+                                            match_dt=m.get("dt_obj"), unibet_league=m.get("league", ""),
+                                            d_refs={}, m_unibet=m)
+                if res:
+                    m["ac_score"] = res.get("score", 0)
+            except Exception:
+                pass
+            return m
 
-    # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
-    # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
+        with ThreadPoolExecutor(max_workers=10) as ex:
+            scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
+        print(f"✅ AdamChoi enrichi sur {len(scanned_results)} matchs")
+
     # ── Sélection 100% Marché Bookmaker Over 1.5 ──
-    # Critère : Cote Over 1.5 située entre @1.10 et @1.45
+    # Critère : Cote Over 1.5 entre @1.10 et @1.45
+
     s3_matches = []
     rejected_matches = []
 
@@ -544,6 +572,10 @@ def main():
                 m_o25 = it_o15["m"].get("over25")
                 m_u25 = it_o15["m"].get("under25")
                 if not (m_o25 and m_u25 and m_o25 < m_u25): continue
+                # Aucune équipe en commun entre les deux matchs
+                teams_o15 = {_clean_team_key(it_o15["m"].get("dom")), _clean_team_key(it_o15["m"].get("ext"))}
+                teams_u25 = {_clean_team_key(it_sec["m"].get("dom")), _clean_team_key(it_sec["m"].get("ext"))}
+                if teams_o15 & teams_u25: continue
                 diff_time = abs((it_o15["dt"] - it_sec["dt"]).total_seconds())
                 if diff_time < best_diff:
                     best_diff = diff_time
@@ -620,7 +652,52 @@ def main():
         cb["items"].sort(key=lambda x: x["dt"])
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
 
+    # ── MOTEUR UNDER 2.5 ADAMCHOI (ac_score < 80 · Doublés ≥ 2.15) ──
+    # Méthode Aug 13 : Under 2.5 sur matchs fermés (score AdamChoi < 80)
+    u25_ac_selections = []
+    for m in scanned_results:
+        if m["id"] in used_global_match_ids: continue
+        ac = m.get("ac_score", None)
+        u25 = m.get("under25")
+        if u25 and ac is not None and ac < 80:
+            m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+            day_key = get_betting_session_key(m_dt)
+            u25_ac_selections.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
+                "market": "🔒 Under 2.5", "odds": u25, "score": ac
+            })
 
+    u25_ac_selections.sort(key=lambda x: x["dt"])
+    used_u25_ids = set()
+    combos_u25_ac = []
+
+    for i, s1 in enumerate(u25_ac_selections):
+        if s1["id"] in used_u25_ids: continue
+        best_partner = None
+        best_diff = 999.0
+        for s2 in u25_ac_selections[i+1:]:
+            if s2["id"] in used_u25_ids or s2["id"] == s1["id"]: continue
+            if s1["session"] != s2["session"]: continue
+            comb_odds = round(s1["odds"] * s2["odds"], 2)
+            if comb_odds >= 2.15:
+                diff = abs(comb_odds - 2.20)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = s2
+        if best_partner:
+            comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            used_u25_ids.add(s1["id"]); used_u25_ids.add(best_partner["id"])
+            used_global_match_ids.add(s1["id"]); used_global_match_ids.add(best_partner["id"])
+            combos_u25_ac.append({
+                "session": s1["session"],
+                "type": "Doublé Under 2.5 (AdamChoi < 80)",
+                "items": [s1, best_partner], "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
+
+
+    combos_u25_ac.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+    print(f"🔒 Doublés Under 2.5 AdamChoi (<80) : {len(combos_u25_ac)} combinés ({len(u25_ac_selections)} matchs éligibles)")
 
 
 
@@ -759,6 +836,46 @@ def main():
 
     else:
         combos_hybrids_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé disponible.</div>'
+
+    # ── HTML Section Under 2.5 AdamChoi (<80) ──
+    combos_u25_ac_html = ""
+    if combos_u25_ac:
+        current_sess_u = None
+        for idx_u, cb in enumerate(combos_u25_ac, 1):
+            sess_label = cb.get("session", "")
+            if sess_label != current_sess_u:
+                current_sess_u = sess_label
+                try:
+                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d")
+                    day_title = f"📅 {days_fr_map[dt_sess.weekday()].upper()} {dt_sess.strftime('%d/%m/%Y')}"
+                except Exception:
+                    day_title = f"📅 SESSION [{sess_label}]"
+                combos_u25_ac_html += f'<div style="background:#1e293b; color:#ffffff; font-weight:800; font-size:13px; padding:8px 12px; border-radius:6px; margin:20px 0 10px 0; letter-spacing:0.5px;">{day_title}</div>'
+
+            theme = TICKET_THEMES[(idx_u - 1) % len(TICKET_THEMES)]
+            items_html = ""
+            for item in cb["items"]:
+                m = item["m"]
+                o = item["odds"]
+                ac = item.get("score", "?")
+                items_html += f'''
+                <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>🔒 <b>Under 2.5</b> &nbsp;&bull;&nbsp; <span style="color:#0284c7; font-weight:700;">{m['date_str']}</span> &nbsp;&bull;&nbsp; <b>{m['dom']} vs {m['ext']}</b> &nbsp;&bull;&nbsp; Cote: <b>@{o:.2f}</b> <span style="color:#64748b; font-size:11px;">({m['league']})</span></span>
+                        <span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:2px 8px; border-radius:6px; white-space:nowrap; margin-left:8px;">AdamChoi {ac}/100</span>
+                    </div>
+                </div>'''
+
+            combos_u25_ac_html += f'''
+            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid #059669; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#ecfdf5; padding:8px 10px; border-radius:6px; margin-bottom:10px; border:1px solid #a7f3d0;">
+                <span style="font-weight:800; color:#065f46; font-size:13px;">🎟️ Doublé Under 2.5 #{idx_u} — Cote: <span style="background:#ffffff; color:#065f46; font-weight:900; padding:2px 8px; border-radius:5px; border:1px solid #a7f3d0;">@{cb['comb_odds']:.2f}</span></span>
+                <span style="font-size:12px; font-weight:700; color:#15803d; background:#dcfce7; padding:3px 9px; border-radius:6px; border:1px solid #86efac;">Mise 4,00 € &rarr; Gain Max: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+              </div>
+              <div style="font-size:12px; color:#334155; line-height:1.5;">{items_html}</div>
+            </div>'''
+    else:
+        combos_u25_ac_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Doublé Under 2.5 AdamChoi disponible.</div>'
 
     # Planning table construction (100% Marché Bookmaker)
     plan_rows = []
@@ -956,7 +1073,7 @@ def main():
           <!-- SECTION 2 : QUADRUPLÉS OVER 1.5 -->
           <div style="padding:10px 14px; background:#f8fafc; border-top:1px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. QUADRUPLÉS 100% OVER 1.5 &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(4 Matchs · Cote Cible ~2.20 - 3.20 · Mise 3,00 €)</span></span>
+              <span>🚀 1. QUADRUPLÉS 100% OVER 1.5</span>
               <span style="font-size:10px; background:#dbeafe; color:#1e40af; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -965,12 +1082,19 @@ def main():
           <!-- SECTION 3 : DOUBLÉS HYBRIDES (OVER 1.5 + UNDER 2.5) -->
           <div style="padding:10px 14px; background:#ffffff; border-top:1px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(2 Matchs · Under ≥ @1.50 · Cote Cible ~2.15 - 2.80 · Mise 4,00 €)</span></span>
-
-
+              <span>🛡️ 2. DOUBLÉS HYBRIDES (1 OVER 1.5 + 1 UNDER 2.5) &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(Écart ≤ 0.40 · Mise 4,00 €)</span></span>
               <span style="font-size:10px; background:#fef3c7; color:#92400e; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_hybrids)} ticket(s)</span>
             </div>
             {combos_hybrids_html}
+          </div>
+
+          <!-- SECTION 3.5 : DOUBLÉS UNDER 2.5 ADAMCHOI -->
+          <div style="padding:10px 14px; background:#f0fdf4; border-top:1px solid #e2e8f0;">
+            <div style="font-size:13px; font-weight:800; color:#065f46; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔒 3. DOUBLÉS UNDER 2.5 — MATCHS FERMÉS &nbsp;<span style="font-size:11px; font-weight:600; color:#64748b;">(AdamChoi &lt; 80 · Cote ~@2.20 · Mise 4,00 €)</span></span>
+              <span style="font-size:10px; background:#dcfce7; color:#065f46; padding:2px 6px; border-radius:4px; font-weight:700;">{len(combos_u25_ac)} ticket(s)</span>
+            </div>
+            {combos_u25_ac_html}
           </div>
 
           <!-- SECTION 4 : TOUS LES MATCHS ANALYSÉS -->
@@ -994,7 +1118,7 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:10px 16px; background:#0f172a; font-size:9px; color:#64748b; text-align:center;">
-            ⚽ Paris sportifs · Quadruplés Over 1.5 & Doublés Hybrides · Unibet France · {now_str}
+            ⚽ Paris sportifs · Over 1.5 Quadruplés &amp; Doublés Hybrides &amp; Under 2.5 AdamChoi · Unibet France · {now_str}
           </div>
 
 
