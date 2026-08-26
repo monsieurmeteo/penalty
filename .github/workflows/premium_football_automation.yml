@@ -2,8 +2,6 @@ name: Premium Football (Penalty & Over 1.5) Automation
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 */2 * * *'  # Toutes les 2h automatiquement
 
 concurrency:
   group: penalty-scan
