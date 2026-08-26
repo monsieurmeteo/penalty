@@ -584,24 +584,30 @@ def main():
         
         scores_h, scores_a = [], []
         for match in recent_h:
-            gh = int(match.get("homeGoals", match.get("homeGoalsFt", 0)))
-            ga = int(match.get("awayGoals", match.get("awayGoalsFt", 0)))
-            tot = gh + ga
-            scores_h.append(f"{gh}-{ga}")
-            if tot <= 1: counts_h["0-1"] += 1
-            elif 2 <= tot <= 3: counts_h["2-3"] += 1
-            elif 4 <= tot <= 6: counts_h["4-6"] += 1
-            else: counts_h["7+"] += 1
+            try:
+                gh = int(str(match.get("homeGoals") if match.get("homeGoals") is not None else (match.get("homeGoalsFt") or 0)))
+                ga = int(str(match.get("awayGoals") if match.get("awayGoals") is not None else (match.get("awayGoalsFt") or 0)))
+                tot = gh + ga
+                scores_h.append(f"{gh}-{ga}")
+                if tot <= 1: counts_h["0-1"] += 1
+                elif 2 <= tot <= 3: counts_h["2-3"] += 1
+                elif 4 <= tot <= 6: counts_h["4-6"] += 1
+                else: counts_h["7+"] += 1
+            except Exception:
+                pass
 
         for match in recent_a:
-            gh = int(match.get("homeGoals", match.get("homeGoalsFt", 0)))
-            ga = int(match.get("awayGoals", match.get("awayGoalsFt", 0)))
-            tot = gh + ga
-            scores_a.append(f"{gh}-{ga}")
-            if tot <= 1: counts_a["0-1"] += 1
-            elif 2 <= tot <= 3: counts_a["2-3"] += 1
-            elif 4 <= tot <= 6: counts_a["4-6"] += 1
-            else: counts_a["7+"] += 1
+            try:
+                gh = int(str(match.get("homeGoals") if match.get("homeGoals") is not None else (match.get("homeGoalsFt") or 0)))
+                ga = int(str(match.get("awayGoals") if match.get("awayGoals") is not None else (match.get("awayGoalsFt") or 0)))
+                tot = gh + ga
+                scores_a.append(f"{gh}-{ga}")
+                if tot <= 1: counts_a["0-1"] += 1
+                elif 2 <= tot <= 3: counts_a["2-3"] += 1
+                elif 4 <= tot <= 6: counts_a["4-6"] += 1
+                else: counts_a["7+"] += 1
+            except Exception:
+                pass
 
         n_tot = len(recent_h) + len(recent_a)
         if n_tot < 4:
