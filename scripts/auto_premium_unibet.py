@@ -130,7 +130,10 @@ def scan_unibet_match_details(game):
         c1, cx, c2 = None, None, None
         over15, over25, under25 = None, None, None
         over35, under35 = None, None
+        intervalle_0_1 = None
         intervalle_2_3 = None
+        intervalle_4_6 = None
+        intervalle_7_plus = None
         s22 = None
         btts_oui, btts_non = None, None
         start_iso = ""
@@ -195,22 +198,21 @@ def scan_unibet_match_details(game):
                                 if "plus" in o_desc: over35 = p_val
                                 elif "moins" in o_desc: under35 = p_val
 
-                    # Intervalle 2-3 Buts
-                    if intervalle_2_3 is None and not any(t in m_desc for t in [dom.lower(), ext.lower(), "équipe", "equipe", "mi-temps", "1ère", "2ème"]):
-                        if "intervalle" in m_desc:
+                    # Intervalles de Buts (0-1, 2-3, 4-6, 7+)
+                    if not any(t in m_desc for t in [dom.lower(), ext.lower(), "équipe", "equipe", "mi-temps", "1ère", "2ème"]):
+                        if "intervalle" in m_desc or ("2-3" in labels and "0-1" in labels):
                             for o in outcomes:
                                 o_desc = (o.get("description") or o.get("label") or "").strip().lower()
-                                if o_desc in ["2-3", "2 ou 3", "2 ou 3 buts", "2 - 3"]:
-                                    p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                                    if p_val > 1.0: intervalle_2_3 = p_val
-                        else:
-                            labels = [(o.get("description") or o.get("label") or "").strip().lower() for o in outcomes]
-                            if "2-3" in labels and "0-1" in labels:
-                                for o in outcomes:
-                                    o_desc = (o.get("description") or o.get("label") or "").strip().lower()
-                                    if o_desc in ["2-3", "2 ou 3", "2 ou 3 buts", "2 - 3"]:
-                                        p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                                        if p_val > 1.0: intervalle_2_3 = p_val
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if p_val > 1.0:
+                                    if o_desc in ["0-1", "0 ou 1", "0-1 but", "0 ou 1 but", "0 - 1"]:
+                                        if intervalle_0_1 is None: intervalle_0_1 = p_val
+                                    elif o_desc in ["2-3", "2 ou 3", "2 ou 3 buts", "2 - 3"]:
+                                        if intervalle_2_3 is None: intervalle_2_3 = p_val
+                                    elif o_desc in ["4-6", "4 à 6", "4-5", "4 ou plus", "4 - 6"]:
+                                        if intervalle_4_6 is None: intervalle_4_6 = p_val
+                                    elif o_desc in ["7 et plus", "7+", "7 ou plus", "7 - plus"]:
+                                        if intervalle_7_plus is None: intervalle_7_plus = p_val
 
                     # Score exact 2-2
                     if "score exact" in m_desc:
@@ -304,7 +306,10 @@ def scan_unibet_match_details(game):
                 "over25_fair": over25_fair,
                 "under25_fair": under25_fair,
                 "over35": over35, "under35": under35,
+                "intervalle_0_1": intervalle_0_1,
                 "intervalle_2_3": intervalle_2_3,
+                "intervalle_4_6": intervalle_4_6,
+                "intervalle_7_plus": intervalle_7_plus,
                 "s22": s22,
                 "btts_oui": btts_oui,
                 "btts_non": btts_non,
@@ -568,17 +573,109 @@ def main():
     for s in mixed_selections:
         blocks_mixed.setdefault(s["session"], []).append(s)
 
-    # ── MOTEUR DOUBLÉS HYBRIDES (1 Over 1.5 + 1 Intervalle 2-3 Buts) ──
+    def compute_match_interval_stats(m):
+        recent_h = (m.get("recent_h_dom") or [])[:5]
+        recent_a = (m.get("recent_a_ext") or [])[:5]
+        
+        counts_h = {"0-1": 0, "2-3": 0, "4-6": 0, "7+": 0}
+        counts_a = {"0-1": 0, "2-3": 0, "4-6": 0, "7+": 0}
+        
+        scores_h, scores_a = [], []
+        for match in recent_h:
+            gh = int(match.get("homeGoals", match.get("homeGoalsFt", 0)))
+            ga = int(match.get("awayGoals", match.get("awayGoalsFt", 0)))
+            tot = gh + ga
+            scores_h.append(f"{gh}-{ga}")
+            if tot <= 1: counts_h["0-1"] += 1
+            elif 2 <= tot <= 3: counts_h["2-3"] += 1
+            elif 4 <= tot <= 6: counts_h["4-6"] += 1
+            else: counts_h["7+"] += 1
+
+        for match in recent_a:
+            gh = int(match.get("homeGoals", match.get("homeGoalsFt", 0)))
+            ga = int(match.get("awayGoals", match.get("awayGoalsFt", 0)))
+            tot = gh + ga
+            scores_a.append(f"{gh}-{ga}")
+            if tot <= 1: counts_a["0-1"] += 1
+            elif 2 <= tot <= 3: counts_a["2-3"] += 1
+            elif 4 <= tot <= 6: counts_a["4-6"] += 1
+            else: counts_a["7+"] += 1
+
+        n_tot = len(recent_h) + len(recent_a)
+        if n_tot < 4:
+            return None
+
+        freq_01 = (counts_h["0-1"] + counts_a["0-1"]) / n_tot
+        freq_23 = (counts_h["2-3"] + counts_a["2-3"]) / n_tot
+        freq_46 = (counts_h["4-6"] + counts_a["4-6"]) / n_tot
+        freq_7plus = (counts_h["7+"] + counts_a["7+"]) / n_tot
+        nb_high = counts_h["4-6"] + counts_h["7+"] + counts_a["4-6"] + counts_a["7+"]
+
+        return {
+            "n_tot": n_tot,
+            "scores_h": scores_h, "scores_a": scores_a,
+            "freq_01": freq_01, "freq_23": freq_23,
+            "freq_46": freq_46, "freq_7plus": freq_7plus,
+            "nb_high": nb_high
+        }
+
+    # ── MOTEUR DOUBLÉS HYBRIDES (1 Over 1.5 + 1 Intervalle Sécurisé 5 Matchs) ──
     intervalle_selections = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         day_key = get_betting_session_key(m_dt)
+        
+        int_stats = compute_match_interval_stats(m)
+        int01 = m.get("intervalle_0_1")
         int23 = m.get("intervalle_2_3")
+        int46 = m.get("intervalle_4_6")
+
+        chosen_interval = None
+
+        # Marge de sécurité 1 : 2-3 Buts (Fréquence >= 50% sur 5 derniers matchs Dom/Ext, max 2 matchs à 4+ buts)
         if int23 and int23 >= 1.50:
+            if int_stats and int_stats["freq_23"] >= 0.50 and int_stats["nb_high"] <= 2:
+                chosen_interval = {
+                    "market": "🎯 2-3 Buts",
+                    "odds": int23,
+                    "crit": f"2-3 Buts @{int23:.2f} ({int_stats['freq_23']*100:.0f}% sur 5m)",
+                    "freq": int_stats["freq_23"]
+                }
+            elif not int_stats:
+                chosen_interval = {
+                    "market": "🎯 2-3 Buts",
+                    "odds": int23,
+                    "crit": f"2-3 Buts @{int23:.2f}",
+                    "freq": 0.50
+                }
+
+        # Marge de sécurité 2 : 0-1 But (Fréquence >= 50% sur matchs très fermés, cote >= 2.20)
+        if not chosen_interval and int01 and int01 >= 2.20:
+            if int_stats and int_stats["freq_01"] >= 0.50:
+                chosen_interval = {
+                    "market": "🛡️ 0-1 But",
+                    "odds": int01,
+                    "crit": f"0-1 But @{int01:.2f} ({int_stats['freq_01']*100:.0f}% sur 5m)",
+                    "freq": int_stats["freq_01"]
+                }
+
+        # Marge de sécurité 3 : 4-6 Buts (Fréquence >= 40% sur matchs très offensifs, cote >= 2.40)
+        if not chosen_interval and int46 and int46 >= 2.40:
+            if int_stats and int_stats["freq_46"] >= 0.40:
+                chosen_interval = {
+                    "market": "🚀 4-6 Buts",
+                    "odds": int46,
+                    "crit": f"4-6 Buts @{int46:.2f} ({int_stats['freq_46']*100:.0f}% sur 5m)",
+                    "freq": int_stats["freq_46"]
+                }
+
+        if chosen_interval:
             intervalle_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": day_key,
-                "market": "🎯 Intervalle 2-3 Buts", "odds": int23,
-                "crit": f"2-3 Buts @{int23:.2f}"
+                "market": chosen_interval["market"],
+                "odds": chosen_interval["odds"],
+                "crit": chosen_interval["crit"],
+                "int_stats": int_stats
             })
 
     blocks_intervalle = {}
@@ -588,7 +685,7 @@ def main():
     used_hybrid_match_ids = set()
     combos_hybrids = []
 
-    # Doublés Hybrides : on parcourt chaque jour, on apparie 1 Intervalle 2-3 Buts + 1 Over 1.5
+    # Doublés Hybrides : on parcourt chaque jour, on apparie 1 Intervalle Sécurisé + 1 Over 1.5
     for day_key in sorted(set(list(blocks_intervalle.keys()) + list(blocks_mixed.keys()))):
         sec_list = sorted(blocks_intervalle.get(day_key, []), key=lambda x: x["dt"])
         o15_list = sorted(blocks_mixed.get(day_key, []), key=lambda x: x["dt"])
@@ -620,7 +717,7 @@ def main():
                 pair_items = sorted([best_o15, it_sec], key=lambda x: x["dt"])
                 combos_hybrids.append({
                     "session": day_key,
-                    "type": "Doublé Hybride (1 Over 1.5 + 1 Intervalle 2-3 Buts)",
+                    "type": f"Doublé Hybride (1 Over 1.5 + {it_sec['market']})",
                     "items": pair_items,
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
@@ -741,15 +838,16 @@ def main():
         c2 = f"@{m.get('c2'):.2f}" if m.get('c2') else "N/A"
         o25 = f"@{m.get('over25'):.2f}" if m.get('over25') else "N/A"
         u25 = f"@{m.get('under25'):.2f}" if m.get('under25') else "N/A"
+        int01 = f"@{m.get('intervalle_0_1'):.2f}" if m.get('intervalle_0_1') else "N/A"
         int23 = f"@{m.get('intervalle_2_3'):.2f}" if m.get('intervalle_2_3') else "N/A"
-        margin = f"{m.get('margin_pct')}%" if m.get('margin_pct') else "N/A"
+        int46 = f"@{m.get('intervalle_4_6'):.2f}" if m.get('intervalle_4_6') else "N/A"
         buteur_txt = f"{m.get('buteur_name')} (@{m.get('buteur_cote')})" if m.get('buteur_name') else "Non disponible"
 
         return f'''
         <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; margin-top:6px; font-size:11px; color:#475569; line-height:1.5;">
             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
                 <span>🏦 <b>1N2 Unibet</b> : 1: <b>{c1}</b> | N: <b>{cx}</b> | 2: <b>{c2}</b></span>
-                <span>🎯 <b>Intervalle 2-3 Buts</b> : <b style="color:#065f46; font-size:12px;">{int23}</b></span>
+                <span>🎯 <b>Intervalles</b> : 0-1: <b>{int01}</b> | 2-3: <b style="color:#065f46;">{int23}</b> | 4-6: <b>{int46}</b></span>
             </div>
             <div style="display:flex; justify-content:space-between;">
                 <span>📊 <b>Marché 2.5 Buts</b> : Over: <b>{o25}</b> | Under: <b>{u25}</b></span>
@@ -780,7 +878,7 @@ def main():
                 mk = item["market"]
                 o = item["odds"]
                 ac = m.get("ac_score", 0)
-                lbl_tag = f"Score {ac}/100" if "Over" in mk else f"2-3 Buts @{o:.2f}"
+                lbl_tag = f"Score {ac}/100" if "Over" in mk else f"{mk} @{o:.2f}"
                 proof = render_match_proof_html(m)
                 items_html += f'''
                 <div style="margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:6px;">
@@ -836,7 +934,7 @@ def main():
             key = (m["id"], item["market"])
             if key not in seen_plan:
                 ac = m.get("ac_score", 0)
-                lbl_crit = f"Score {ac}/100" if "Over" in item["market"] else f"2-3 Buts @{item['odds']:.2f}"
+                lbl_crit = f"Score {ac}/100" if "Over" in item["market"] else f"{item['market']} @{item['odds']:.2f}"
                 bg_m = "#dcfce7" if "Over" in item["market"] else "#ecfdf5"
                 cl_m = "#166534" if "Over" in item["market"] else "#065f46"
 
