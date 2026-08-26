@@ -1,4 +1,5 @@
 import os, sys, time, json, re, smtplib, unicodedata, requests
+sys.stdout.reconfigure(line_buffering=True)
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -162,6 +163,7 @@ def scan_unibet_match_details(game):
                         continue
 
                     outcomes = m.get("outcomes", [])
+                    labels = [(o.get("description") or o.get("label") or "").strip().lower() for o in outcomes]
 
                     # 1N2
                     if m_desc in ["1 n 2", "1n2", "résultat du match"] and c1 is None:
