@@ -649,17 +649,7 @@ def main():
                     "freq": 0.50
                 }
 
-        # Marge de sécurité 2 : 0-1 But (Fréquence >= 50% sur matchs très fermés, cote >= 2.20)
-        if not chosen_interval and int01 and int01 >= 2.20:
-            if int_stats and int_stats["freq_01"] >= 0.50:
-                chosen_interval = {
-                    "market": "🛡️ 0-1 But",
-                    "odds": int01,
-                    "crit": f"0-1 But @{int01:.2f} ({int_stats['freq_01']*100:.0f}% sur 5m)",
-                    "freq": int_stats["freq_01"]
-                }
-
-        # Marge de sécurité 3 : 4-6 Buts (Fréquence >= 40% sur matchs très offensifs, cote >= 2.40)
+        # Marge de sécurité 2 : 4-6 Buts (Fréquence >= 40% sur matchs très offensifs, cote >= 2.40)
         if not chosen_interval and int46 and int46 >= 2.40:
             if int_stats and int_stats["freq_46"] >= 0.40:
                 chosen_interval = {
