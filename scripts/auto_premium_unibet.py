@@ -585,18 +585,17 @@ def main():
     # Un match ne peut servir que dans UN seul combiné.
     # Règle stricte : Match A = Over 1.5 / Match B = Over 2.5 (deux matchs différents obligatoires)
 
-    # Sélections Over 1.5 éligibles (Score >= 70 + cote dispo)
+    # Sélections Over 1.5 éligibles (Score AdamChoi ac_score >= 70 + cote dispo)
     o15_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        score_15 = max(m.get("score_o15", 0), m.get("ac_score", 0))
-        if score_15 >= 70 and m.get("over15"):
+        if m.get("ac_score", 0) >= 70 and m.get("over15"):
             o15_pool.append({
                 "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
-                "market": "🟦 Over 1.5", "odds": m["over15"], "score": score_15
+                "market": "🟦 Over 1.5", "odds": m["over15"], "score": m.get("ac_score", 0)
             })
 
-    # Sélections Over 2.5 éligibles (Score >= 75 + cote dispo + Over 2.5 < Under 2.5)
+    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 75 + cote dispo + Over 2.5 < Under 2.5)
     o25_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
