@@ -649,38 +649,8 @@ def main():
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
 
-    # Fallback inter-jours : si un Over 2.5 n'a pas trouvé de partenaire le même jour,
-    # on cherche un Over 1.5 d'un autre jour
-    for s25 in o25_pool:
-        if s25["id"] in used_ids:
-            continue
-        best_partner = None
-        best_diff = 999.0
-        for s15 in o15_pool:
-            if s15["id"] in used_ids or s15["id"] == s25["id"]:
-                continue
-            comb = round(s15["odds"] * s25["odds"], 2)
-            if comb >= 2.00:
-                diff = abs(comb - 2.10)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_partner = s15
-
-        if best_partner:
-            used_ids.add(s25["id"])
-            used_ids.add(best_partner["id"])
-            comb_odds = round(best_partner["odds"] * s25["odds"], 2)
-            pair = sorted([best_partner, s25], key=lambda x: x["dt"])
-            combos_mixed.append({
-                "session": s25["day"],
-                "type": "Doublé Over 1.5 + Over 2.5",
-                "items": pair,
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
-
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés Over 1.5 + Over 2.5 (>= @2.00) générés : {len(combos_mixed)}")
+    print(f"✅ Combinés Over 1.5 + Over 2.5 (même jour, >= @2.00) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO : >= 2 pen/10m Dom & Ext) ──
     # Tous les matchs validés par la compétence PENO (>= 2 pen/10m Domicile ET Extérieur) sont retenus.
@@ -831,7 +801,7 @@ def main():
                     dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
                 except Exception:
                     dt_sess = sess_label
-                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:18px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 CRENEAU [JOURNÉE DU {dt_sess} + NUIT SUIVANTE]</div>'
+                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:18px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION [JOURNÉE DU {dt_sess}]</div>'
 
             theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
             items_html = ""
