@@ -710,20 +710,32 @@ def main():
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
     print(f"✅ Combinés Hybrides (1 Over 2.5 + 2 Over 1.5, même jour, >= @2.00) générés : {len(combos_mixed)}")
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO : >= 2 pen/10m Dom & Ext) ──
-    # Tous les matchs validés par la compétence PENO (>= 2 pen/10m Domicile ET Extérieur) sont retenus.
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
+    # Critères stricts sans compromis :
+    # 1. Arbitre désigné OBLIGATOIRE (ref_name connu et différent de 'Inconnu')
+    # 2. Arbitre siffle >= 0.45 penalty par match (pen_per_match >= 0.45)
+    # 3. Statut PENO VALIDE ou DOUBLE_SIGNAL (>= 2 penalties sur 10m Dom & Ext)
+    # 4. Score Penalty >= 70/100
     pen_candidates = [
         m for m in scanned_results 
-        if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
+        if m.get("ref_name") and m.get("ref_name") not in ["Inconnu", "Arbitre non désigné", ""]
+        and m.get("pen_per_match", 0.0) >= 0.45
+        and m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
+        and m.get("score_penalty", 0) >= 70
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
 
-    # Matchs éliminés spécifiquement par la compétence PENO (< 2 pen/10m) pour information transparente
+    # Matchs neutralisés (Sans arbitre, ou Arbitre < 0.45 pen/m, ou PENO REJET)
     pen_rejected = [
         m for m in scanned_results
         if m.get("score_penalty", 0) >= 55
-        and m.get("peno_status") == "REJET"
+        and (
+            (not m.get("ref_name") or m.get("ref_name") in ["Inconnu", "Arbitre non désigné", ""])
+            or m.get("pen_per_match", 0.0) < 0.45
+            or m.get("peno_status") == "REJET"
+        )
+        and m not in pen_simples
     ]
     pen_rejected.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
 
@@ -1118,7 +1130,7 @@ def main():
               <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
             </div>
             <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire
+              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné (<b>&ge; 0.45 pen/match</b>) obligatoire
             </div>
             {pen_simples_html}
           </div>
@@ -1130,7 +1142,7 @@ def main():
               <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} neutralisé(s)</span>
             </div>
             <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              💡 <b>Information transparente</b> : Ces matchs avaient un bon score AdamChoi (≥ 55/100) et un arbitre nommé, mais la compétence PENO vous évite de parier car au moins une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
+              💡 <b>Information transparente</b> : Ces matchs avaient un bon score mais sont neutralisés car l'arbitre siffle moins de 0.45 pen/match ou une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
             </div>
             {pen_rejected_html}
           </div>
