@@ -292,9 +292,10 @@ def main():
                 unique_scanned[key] = m
     scanned_all = list(unique_scanned.values())
 
-    # Filtre Fenêtre : Journée + Nuit suivante (36 Heures max)
+    # Filtre Fenêtre : Matchs du jour uniquement (06h00 - 23h59, heure de Paris)
     now_utc = datetime.now(timezone.utc)
-    limit_36h = now_utc + timedelta(hours=36)
+    paris_tz = timezone(timedelta(hours=2))
+    limit_24h = now_utc + timedelta(hours=24)
 
     scanned_results = []
     for m in scanned_all:
@@ -302,21 +303,33 @@ def main():
         if start_iso:
             try:
                 m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
-                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
+                local_dt = m_dt.astimezone(paris_tz)
+                # Exclure matchs de nuit (00h00 à 05h59)
+                if local_dt.hour < 6:
+                    continue
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_24h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
-                scanned_results.append(m)
-        else:
-            scanned_results.append(m)
+                pass
+        # Ne pas ajouter les matchs sans date (date inconnue = on ignore)
 
-    # Fallback de sécurité : Si aucun match dans la fenêtre 36h, prendre tous les matchs à venir
+    # Fallback de sécurité : Si aucun match dans la fenêtre, prendre matchs du jour à venir sans filtrage nuit
     if len(scanned_results) == 0 and scanned_all:
-        print("⚠️ Aucun match dans la fenêtre 36h — Utilisation des prochains matchs disponibles...")
-        scanned_results = scanned_all
+        print("⚠️ Aucun match dans la fenêtre — Fallback sans filtre nuit...")
+        for m in scanned_all:
+            start_iso = m.get("start_iso")
+            if start_iso:
+                try:
+                    m_dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00"))
+                    if m_dt >= now_utc:
+                        m["dt_obj"] = m_dt
+                        scanned_results.append(m)
+                except Exception:
+                    pass
 
     scanned_results.sort(key=lambda x: x.get("dt_obj", now_utc))
-    print(f"Matchs dans la fenêtre Journée + Nuit Suivante (36h) : {len(scanned_results)}")
+    print(f"Matchs du jour retenus (06h00-23h59) : {len(scanned_results)}")
 
     # ── Enrichissement AdamChoi Score 3+ Buts /100 sur TOUS LES MATCHS SCANNÉS ──
     # Étape 1 : Import du moteur (ne doit JAMAIS échouer silencieusement)
@@ -563,112 +576,109 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : JOURNÉE + NUIT SUIVANTE = 1 BLOC
-    def get_betting_session_key(m_dt, slot_only=False):
-        local_dt = m_dt.astimezone(timezone(timedelta(hours=2)))
-        # Si le match a lieu entre 00h00 et 05h59, il appartient à la nuit de la journée précédente
-        if local_dt.hour < 6:
-            betting_date = (local_dt - timedelta(days=1)).strftime("%Y-%m-%d")
-        else:
-            betting_date = local_dt.strftime("%Y-%m-%d")
-        slot = "nuit" if local_dt.hour < 6 else "jour"
-        if slot_only:
-            return slot
-        return f"{betting_date}-block"
+    # ── Génération des Combinés : Journée uniquement (06h00–23h59)
+    def get_day_key(m_dt):
+        return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
 
-    def upgrade_sessions_to_day(sessions_dict):
-        return sessions_dict
+    # ── MOTEUR COMBINÉS : 1 Over 1.5 + 1 Over 2.5, cote combinée >= 2.20 ──
+    # Un match ne peut servir que dans UN seul combiné.
+    # Règle stricte : Match A = Over 1.5 / Match B = Over 2.5 (deux matchs différents obligatoires)
 
-    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Bloc Journée + Nuit — Cote Min 2.00) ──
-    mixed_selections = []
-    
+    # Sélections Over 1.5 éligibles (Score AdamChoi >= 75 + cote dispo)
+    o15_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        block_key = get_betting_session_key(m_dt)
-        
-        # 1. Over 2.5 si Score >= 75
-        if m.get("ac_score", 0) >= 75 and m.get("over25"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟥 Over 2.5", "odds": m["over25"],
-                "score": m.get("ac_score", 0)
-            })
-        # 2. BTTS Oui si Score >= 75
-        elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
-                "score": m.get("score_btts", 0)
-            })
-        # 3. Over 1.5 si Score >= 75
-        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟦 Over 1.5", "odds": m["over15"],
-                "score": m.get("score_o15", 0)
+        if m.get("ac_score", 0) >= 75 and m.get("over15"):
+            o15_pool.append({
+                "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
+                "market": "🟦 Over 1.5", "odds": m["over15"], "score": m.get("score_o15", m.get("ac_score", 0))
             })
 
-    # Regroupement strict par Bloc [Journée + Nuit Suivante]
-    blocks_mixed = {}
-    for s in mixed_selections:
-        blocks_mixed.setdefault(s["session"], []).append(s)
+    # Sélections Over 2.5 éligibles (Score AdamChoi >= 75 + cote dispo + Over 2.5 < Under 2.5)
+    o25_pool = []
+    for m in scanned_results:
+        m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        o25 = m.get("over25")
+        u25 = m.get("under25")
+        if m.get("ac_score", 0) >= 75 and o25 and u25 and o25 < u25:
+            o25_pool.append({
+                "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
+                "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
+            })
 
-    used_match_ids = set()
+    # Trier chaque pool par jour puis chronologiquement
+    o15_pool.sort(key=lambda x: x["dt"])
+    o25_pool.sort(key=lambda x: x["dt"])
+
+    print(f"📊 Pool Over 1.5 éligibles : {len(o15_pool)} | Pool Over 2.5 éligibles : {len(o25_pool)}")
+
+    used_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs
-    for b_key in sorted(blocks_mixed.keys()):
-        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
-        for i, s1 in enumerate(block_items):
-            if s1["id"] in used_match_ids: continue
+    # Pour chaque match Over 2.5, trouver le meilleur partenaire Over 1.5 du même jour
+    # → cote combinée la plus proche de 2.25 ET >= 2.20 ET matchs différents
+    for s25 in o25_pool:
+        if s25["id"] in used_ids:
+            continue
+        best_partner = None
+        best_diff = 999.0
+        for s15 in o15_pool:
+            if s15["id"] in used_ids or s15["id"] == s25["id"]:
+                continue
+            if s15["day"] != s25["day"]:
+                continue
+            comb = round(s15["odds"] * s25["odds"], 2)
+            if comb >= 2.20:
+                diff = abs(comb - 2.25)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = s15
 
-            best_partner = None
-            fallback_partner = None
-            best_diff = 999.0
-            fallback_diff = 999.0
+        if best_partner:
+            used_ids.add(s25["id"])
+            used_ids.add(best_partner["id"])
+            comb_odds = round(best_partner["odds"] * s25["odds"], 2)
+            pair = sorted([best_partner, s25], key=lambda x: x["dt"])
+            combos_mixed.append({
+                "session": s25["day"],
+                "type": "Doublé Over 1.5 + Over 2.5",
+                "items": pair,
+                "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
 
-            for s2 in block_items[i+1:]:
-                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
+    # Fallback inter-jours : si un Over 2.5 n'a pas trouvé de partenaire le même jour,
+    # on cherche un Over 1.5 d'un autre jour (optionnel, signalé comme "inter-jours")
+    for s25 in o25_pool:
+        if s25["id"] in used_ids:
+            continue
+        best_partner = None
+        best_diff = 999.0
+        for s15 in o15_pool:
+            if s15["id"] in used_ids or s15["id"] == s25["id"]:
+                continue
+            comb = round(s15["odds"] * s25["odds"], 2)
+            if comb >= 2.20:
+                diff = abs(comb - 2.25)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_partner = s15
 
-                comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.20:
-                    diff = abs(comb2 - 2.25)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = s2
+        if best_partner:
+            used_ids.add(s25["id"])
+            used_ids.add(best_partner["id"])
+            comb_odds = round(best_partner["odds"] * s25["odds"], 2)
+            pair = sorted([best_partner, s25], key=lambda x: x["dt"])
+            combos_mixed.append({
+                "session": s25["day"],
+                "type": "Doublé Over 1.5 + Over 2.5",
+                "items": pair,
+                "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
 
-            chosen_partner = best_partner
-            if chosen_partner:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(chosen_partner["id"])
-                comb_odds = round(s1["odds"] * chosen_partner["odds"], 2)
-                combos_mixed.append({
-                    "session": b_key,
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, chosen_partner],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-
-    # Fallback pour sélections isolées non couplées dans leur bloc
-    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
-    unpaired_selections.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired_selections):
-        if s1["id"] in used_match_ids: continue
-        for s2 in unpaired_selections[i+1:]:
-            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.20:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(s2["id"])
-                combos_mixed.append({
-                    "session": f"{s1['session']}-mixte",
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, s2],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-                break
+    combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+    print(f"✅ Combinés Over 1.5 + Over 2.5 (>= @2.20) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO : >= 2 pen/10m Dom & Ext) ──
     # Tous les matchs validés par la compétence PENO (>= 2 pen/10m Domicile ET Extérieur) sont retenus.
