@@ -691,10 +691,11 @@ def main():
 
         # 3. Triplé 100% Over 1.5 (surplus d'Over 1.5 orphelins du même jour)
         surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
-        while len(surplus_o15) >= 3:
-            chunk = surplus_o15[:3]
+        i_sp = 0
+        while i_sp + 2 < len(surplus_o15):
+            chunk = [surplus_o15[i_sp], surplus_o15[i_sp+1], surplus_o15[i_sp+2]]
             c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"], 2)
-            if c_odds >= 1.90:
+            if c_odds >= 1.80:
                 for s in chunk:
                     used_ids.add(s["id"])
                 items = sorted(chunk, key=lambda x: x["dt"])
@@ -705,7 +706,7 @@ def main():
                     "comb_odds": c_odds,
                     "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                 })
-            surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
+            i_sp += 3
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
     print(f"✅ Combinés Hybrides (1 Over 2.5 + 2 Over 1.5, même jour, >= @2.00) générés : {len(combos_mixed)}")
