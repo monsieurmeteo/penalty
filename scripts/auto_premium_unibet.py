@@ -453,8 +453,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 70/100 ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 70/100
+    # ── Sélection 100% Score AdamChoi Over 2.5 >= 75/100 ──
+    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 75/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -462,13 +462,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 70:
+        if ac_score >= 75:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 70)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -479,7 +479,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 70/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -596,13 +596,13 @@ def main():
                 "market": "🟦 Over 1.5", "odds": m["over15"], "score": score_15
             })
 
-    # Sélections Over 2.5 éligibles (Score >= 70 + cote dispo + Over 2.5 < Under 2.5)
+    # Sélections Over 2.5 éligibles (Score >= 75 + cote dispo + Over 2.5 < Under 2.5)
     o25_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         o25 = m.get("over25")
         u25 = m.get("under25")
-        if m.get("ac_score", 0) >= 70 and o25 and u25 and o25 < u25:
+        if m.get("ac_score", 0) >= 75 and o25 and u25 and o25 < u25:
             o25_pool.append({
                 "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
                 "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
@@ -612,7 +612,7 @@ def main():
     o15_pool.sort(key=lambda x: x["dt"])
     o25_pool.sort(key=lambda x: x["dt"])
 
-    print(f"📊 Pool Over 1.5 éligibles (Score >= 70) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 70) : {len(o25_pool)}")
+    print(f"📊 Pool Over 1.5 éligibles (Score >= 70) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 75) : {len(o25_pool)}")
 
     # Regroupement strict par jour
     days_set = sorted(set([s["day"] for s in o15_pool] + [s["day"] for s in o25_pool]))
@@ -1118,7 +1118,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS (1 Over 1.5 + 1 Over 2.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score &ge; 70 · Cote min 2.00)</span></span>
+              <span>🚀 1. COMBINÉS HYBRIDES (1 Over 2.5 + 2 Over 1.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 75 / O1.5 &ge; 70 · Cote min 2.00)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
