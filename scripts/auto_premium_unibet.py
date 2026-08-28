@@ -614,43 +614,101 @@ def main():
 
     print(f"📊 Pool Over 1.5 éligibles (Score >= 70) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 70) : {len(o25_pool)}")
 
+    # Regroupement strict par jour
+    days_set = sorted(set([s["day"] for s in o15_pool] + [s["day"] for s in o25_pool]))
+
     used_ids = set()
     combos_mixed = []
 
-    # Pour chaque match Over 2.5, trouver le meilleur partenaire Over 1.5 du même jour
-    # → cote combinée la plus proche de 2.10 ET >= 2.00 ET matchs différents
-    for s25 in o25_pool:
-        if s25["id"] in used_ids:
-            continue
-        best_partner = None
-        best_diff = 999.0
-        for s15 in o15_pool:
-            if s15["id"] in used_ids or s15["id"] == s25["id"]:
-                continue
-            if s15["day"] != s25["day"]:
-                continue
-            comb = round(s15["odds"] * s25["odds"], 2)
-            if comb >= 2.00:
-                diff = abs(comb - 2.10)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_partner = s15
+    for d in days_set:
+        day_o25 = [s for s in o25_pool if s["day"] == d and s["id"] not in used_ids]
+        day_o15 = [s for s in o15_pool if s["day"] == d and s["id"] not in used_ids]
 
-        if best_partner:
-            used_ids.add(s25["id"])
-            used_ids.add(best_partner["id"])
-            comb_odds = round(best_partner["odds"] * s25["odds"], 2)
-            pair = sorted([best_partner, s25], key=lambda x: x["dt"])
-            combos_mixed.append({
-                "session": s25["day"],
-                "type": "Doublé Over 1.5 + Over 2.5",
-                "items": pair,
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
+        # 1. Triplé Hybride : 1 Over 2.5 + 2 Over 1.5 (Prioritaire pour optimiser les orphelins et atteindre cote >= 2.00)
+        for s25 in day_o25:
+            if s25["id"] in used_ids:
+                continue
+            avail_o15 = [s for s in day_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
+            
+            if len(avail_o15) >= 2:
+                best_pair = None
+                best_diff = 999.0
+                for idx1 in range(len(avail_o15)):
+                    for idx2 in range(idx1 + 1, len(avail_o15)):
+                        p1 = avail_o15[idx1]
+                        p2 = avail_o15[idx2]
+                        comb3 = round(s25["odds"] * p1["odds"] * p2["odds"], 2)
+                        if comb3 >= 2.00:
+                            diff = abs(comb3 - 2.25)
+                            if diff < best_diff:
+                                best_diff = diff
+                                best_pair = (p1, p2, comb3)
+                
+                if best_pair:
+                    p1, p2, c_odds = best_pair
+                    used_ids.add(s25["id"])
+                    used_ids.add(p1["id"])
+                    used_ids.add(p2["id"])
+                    items = sorted([s25, p1, p2], key=lambda x: x["dt"])
+                    combos_mixed.append({
+                        "session": d,
+                        "type": "Triplé Hybride (1 Over 2.5 + 2 Over 1.5)",
+                        "items": items,
+                        "comb_odds": c_odds,
+                        "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                    })
+
+        # 2. Doublé Hybride : 1 Over 2.5 + 1 Over 1.5 (si la cote combinée atteint déjà >= 2.00)
+        remaining_o25 = [s for s in day_o25 if s["id"] not in used_ids]
+        remaining_o15 = [s for s in day_o15 if s["id"] not in used_ids]
+
+        for s25 in remaining_o25:
+            if s25["id"] in used_ids:
+                continue
+            best_partner = None
+            best_diff = 999.0
+            avail_o15 = [s for s in remaining_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
+            for s15 in avail_o15:
+                comb2 = round(s25["odds"] * s15["odds"], 2)
+                if comb2 >= 2.00:
+                    diff = abs(comb2 - 2.10)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_partner = (s15, comb2)
+            
+            if best_partner:
+                s15, c_odds = best_partner
+                used_ids.add(s25["id"])
+                used_ids.add(s15["id"])
+                items = sorted([s25, s15], key=lambda x: x["dt"])
+                combos_mixed.append({
+                    "session": d,
+                    "type": "Doublé Hybride (1 Over 2.5 + 1 Over 1.5)",
+                    "items": items,
+                    "comb_odds": c_odds,
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                })
+
+        # 3. Triplé 100% Over 1.5 (surplus d'Over 1.5 orphelins du même jour)
+        surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
+        while len(surplus_o15) >= 3:
+            chunk = surplus_o15[:3]
+            c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"], 2)
+            if c_odds >= 1.90:
+                for s in chunk:
+                    used_ids.add(s["id"])
+                items = sorted(chunk, key=lambda x: x["dt"])
+                combos_mixed.append({
+                    "session": d,
+                    "type": "Triplé 100% Over 1.5 (3 Matchs)",
+                    "items": items,
+                    "comb_odds": c_odds,
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                })
+            surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés Over 1.5 + Over 2.5 (même jour, >= @2.00) générés : {len(combos_mixed)}")
+    print(f"✅ Combinés Hybrides (1 Over 2.5 + 2 Over 1.5, même jour, >= @2.00) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO : >= 2 pen/10m Dom & Ext) ──
     # Tous les matchs validés par la compétence PENO (>= 2 pen/10m Domicile ET Extérieur) sont retenus.
