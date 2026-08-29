@@ -585,11 +585,11 @@ def main():
     # Un match ne peut servir que dans UN seul combiné.
     # Règle stricte : Match A = Over 1.5 / Match B = Over 2.5 (deux matchs différents obligatoires)
 
-    # Sélections Over 1.5 éligibles (Score AdamChoi ac_score >= 75 + cote dispo)
+    # Sélections Over 1.5 éligibles (Score AdamChoi ac_score >= 72 + cote dispo)
     o15_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        if m.get("ac_score", 0) >= 75 and m.get("over15"):
+        if m.get("ac_score", 0) >= 72 and m.get("over15"):
             o15_pool.append({
                 "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
                 "market": "🟦 Over 1.5", "odds": m["over15"], "score": m.get("ac_score", 0)
@@ -611,7 +611,7 @@ def main():
     o15_pool.sort(key=lambda x: x["dt"])
     o25_pool.sort(key=lambda x: x["dt"])
 
-    print(f"📊 Pool Over 1.5 éligibles (Score >= 75) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 75) : {len(o25_pool)}")
+    print(f"📊 Pool Over 1.5 éligibles (Score >= 72) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 75) : {len(o25_pool)}")
 
     # Regroupement strict par jour
     days_set = sorted(set([s["day"] for s in o15_pool] + [s["day"] for s in o25_pool]))
@@ -1117,7 +1117,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS HYBRIDES (1 Over 2.5 + 2 Over 1.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score &ge; 75/100 · Cote min 2.00)</span></span>
+              <span>🚀 1. COMBINÉS HYBRIDES (1 Over 2.5 + 2 Over 1.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 75 / O1.5 &ge; 72 · Cote min 2.00)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
