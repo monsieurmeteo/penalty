@@ -453,8 +453,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi Over 2.5 >= 70/100 ──
-    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 70/100
+    # ── Sélection 100% Score AdamChoi Over 2.5 >= 65/100 ──
+    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 65/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -462,13 +462,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 70:
+        if ac_score >= 65:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 70)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 65)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -479,7 +479,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 70/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 65/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -585,23 +585,23 @@ def main():
     # Un match ne peut servir que dans UN seul combiné.
     # Règle stricte : Match A = Over 1.5 / Match B = Over 2.5 (deux matchs différents obligatoires)
 
-    # Sélections Over 1.5 éligibles (Score AdamChoi ac_score >= 70 + cote dispo)
+    # Sélections Over 1.5 éligibles (Score AdamChoi ac_score >= 65 + cote dispo)
     o15_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        if m.get("ac_score", 0) >= 70 and m.get("over15"):
+        if m.get("ac_score", 0) >= 65 and m.get("over15"):
             o15_pool.append({
                 "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
                 "market": "🟦 Over 1.5", "odds": m["over15"], "score": m.get("ac_score", 0)
             })
 
-    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 70 + cote dispo + Over 2.5 < Under 2.5)
+    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 65 + cote dispo + Over 2.5 < Under 2.5)
     o25_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         o25 = m.get("over25")
         u25 = m.get("under25")
-        if m.get("ac_score", 0) >= 70 and o25 and u25 and o25 < u25:
+        if m.get("ac_score", 0) >= 65 and o25 and u25 and o25 < u25:
             o25_pool.append({
                 "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
                 "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
@@ -611,7 +611,7 @@ def main():
     o15_pool.sort(key=lambda x: x["dt"])
     o25_pool.sort(key=lambda x: x["dt"])
 
-    print(f"📊 Pool Over 1.5 éligibles (Score >= 70) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 70) : {len(o25_pool)}")
+    print(f"📊 Pool Over 1.5 éligibles (Score >= 65) : {len(o15_pool)} | Pool Over 2.5 éligibles (Score >= 65) : {len(o25_pool)}")
 
     # Regroupement strict par jour
     days_set = sorted(set([s["day"] for s in o15_pool] + [s["day"] for s in o25_pool]))
@@ -694,13 +694,13 @@ def main():
     # 1. Arbitre désigné OBLIGATOIRE (ref_name connu et différent de 'Inconnu')
     # 2. Arbitre siffle >= 0.45 penalty par match (pen_per_match >= 0.45)
     # 3. Statut PENO VALIDE ou DOUBLE_SIGNAL (>= 2 penalties sur 10m Dom & Ext)
-    # 4. Score Penalty >= 70/100
+    # 4. Score Penalty >= 65/100
     pen_candidates = [
         m for m in scanned_results 
         if m.get("ref_name") and m.get("ref_name") not in ["Inconnu", "Arbitre non désigné", ""]
         and m.get("pen_per_match", 0.0) >= 0.45
         and m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 70
+        and m.get("score_penalty", 0) >= 65
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
@@ -1121,7 +1121,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS HAUTE RENTABILITÉ (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score &ge; 70/100 · Cote min 3.20)</span></span>
+              <span>🚀 1. COMBINÉS HAUTE RENTABILITÉ (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score &ge; 65/100 · Cote min 3.20)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1185,7 +1185,7 @@ def main():
     report = [
         "# ⚽ SÉLECTION OVER 2.5 & OVER 1.5 — MATCHS DE JOURNÉE",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score AdamChoi >= 70/100  ET  Over 2.5 < Under 2.5\n",
+        f"**Critères** : Score AdamChoi >= 65/100  ET  Over 2.5 < Under 2.5\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
