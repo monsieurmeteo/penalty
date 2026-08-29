@@ -623,12 +623,52 @@ def main():
         day_o25 = [s for s in o25_pool if s["day"] == d and s["id"] not in used_ids]
         day_o15 = [s for s in o15_pool if s["day"] == d and s["id"] not in used_ids]
 
-        # 1. Triplé Hybride : 1 Over 2.5 + 2 Over 1.5 (Prioritaire pour optimiser les orphelins et atteindre cote >= 2.00)
-        for s25 in day_o25:
+        # 1. Triplé Renforcé Prioritaire : 2 Over 2.5 + 1 Over 1.5 (Cote Cible @3.20, minimum @2.80)
+        idx25 = 0
+        while idx25 + 1 < len(day_o25):
+            s25_a = day_o25[idx25]
+            s25_b = day_o25[idx25 + 1]
+            if s25_a["id"] in used_ids or s25_b["id"] in used_ids:
+                idx25 += 1
+                continue
+
+            avail_o15 = [s for s in day_o15 if s["id"] not in used_ids and s["id"] not in [s25_a["id"], s25_b["id"]]]
+            if avail_o15:
+                # Chercher l'Over 1.5 optimal pour atteindre la cote cible @3.20
+                best_s15 = None
+                best_diff = 999.0
+                for s15 in avail_o15:
+                    comb3 = round(s25_a["odds"] * s25_b["odds"] * s15["odds"], 2)
+                    diff = abs(comb3 - 3.20)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_s15 = (s15, comb3)
+                
+                if best_s15:
+                    s15, c_odds = best_s15
+                    used_ids.add(s25_a["id"])
+                    used_ids.add(s25_b["id"])
+                    used_ids.add(s15["id"])
+                    items = sorted([s25_a, s25_b, s15], key=lambda x: x["dt"])
+                    combos_mixed.append({
+                        "session": d,
+                        "type": "Triplé Renforcé (2 Over 2.5 + 1 Over 1.5)",
+                        "items": items,
+                        "comb_odds": c_odds,
+                        "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                    })
+                    idx25 += 2
+                    continue
+            idx25 += 1
+
+        # 2. Fallback pour Over 2.5 orphelin : 1 Over 2.5 + 2 Over 1.5 (si 1 seul Over 2.5 restant sur le jour)
+        rem_o25 = [s for s in day_o25 if s["id"] not in used_ids]
+        rem_o15 = [s for s in day_o15 if s["id"] not in used_ids]
+
+        for s25 in rem_o25:
             if s25["id"] in used_ids:
                 continue
-            avail_o15 = [s for s in day_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
-            
+            avail_o15 = [s for s in rem_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
             if len(avail_o15) >= 2:
                 best_pair = None
                 best_diff = 999.0
@@ -638,11 +678,10 @@ def main():
                         p2 = avail_o15[idx2]
                         comb3 = round(s25["odds"] * p1["odds"] * p2["odds"], 2)
                         if comb3 >= 2.00:
-                            diff = abs(comb3 - 2.25)
+                            diff = abs(comb3 - 2.40)
                             if diff < best_diff:
                                 best_diff = diff
                                 best_pair = (p1, p2, comb3)
-                
                 if best_pair:
                     p1, p2, c_odds = best_pair
                     used_ids.add(s25["id"])
@@ -656,37 +695,6 @@ def main():
                         "comb_odds": c_odds,
                         "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                     })
-
-        # 2. Doublé Hybride : 1 Over 2.5 + 1 Over 1.5 (si la cote combinée atteint déjà >= 2.00)
-        remaining_o25 = [s for s in day_o25 if s["id"] not in used_ids]
-        remaining_o15 = [s for s in day_o15 if s["id"] not in used_ids]
-
-        for s25 in remaining_o25:
-            if s25["id"] in used_ids:
-                continue
-            best_partner = None
-            best_diff = 999.0
-            avail_o15 = [s for s in remaining_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
-            for s15 in avail_o15:
-                comb2 = round(s25["odds"] * s15["odds"], 2)
-                if comb2 >= 2.00:
-                    diff = abs(comb2 - 2.10)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = (s15, comb2)
-            
-            if best_partner:
-                s15, c_odds = best_partner
-                used_ids.add(s25["id"])
-                used_ids.add(s15["id"])
-                items = sorted([s25, s15], key=lambda x: x["dt"])
-                combos_mixed.append({
-                    "session": d,
-                    "type": "Doublé Hybride (1 Over 2.5 + 1 Over 1.5)",
-                    "items": items,
-                    "comb_odds": c_odds,
-                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-                })
 
         # 3. Triplé 100% Over 1.5 (surplus d'Over 1.5 orphelins du même jour)
         surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
@@ -708,7 +716,7 @@ def main():
             i_sp += 3
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés Hybrides (1 Over 2.5 + 2 Over 1.5, même jour, >= @2.00) générés : {len(combos_mixed)}")
+    print(f"✅ Combinés Renforcés (2 Over 2.5 + 1 Over 1.5 @ ~3.20, même jour) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
@@ -1108,7 +1116,7 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote cible ~3.20</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">08h00 - 23h59</div></div></td>
               </tr>
@@ -1142,7 +1150,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS HYBRIDES (1 Over 2.5 + 2 Over 1.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 75 / O1.5 &ge; 72 · Cote min 2.00)</span></span>
+              <span>🚀 1. COMBINÉS RENFORCÉS (2 Over 2.5 + 1 Over 1.5) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Cote cible ~@3.20 · Score O2.5 &ge; 75 / O1.5 &ge; 72)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1211,7 +1219,7 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés (1 Over 1.5 + 1 Over 2.5) Recommandés (Cote Min: 2.00 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés Renforcés (2 Over 2.5 + 1 Over 1.5) Recommandés (Cote Cible: ~@3.20 — Mise 4,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1261,7 +1269,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Over 1.5/2.5 (Cote >= 2.00) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos (Cote ~@3.20) · {len(pen_simples)} Penalty OUI"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
