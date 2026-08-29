@@ -623,7 +623,7 @@ def main():
         day_o25 = [s for s in o25_pool if s["day"] == d and s["id"] not in used_ids]
         day_o15 = [s for s in o15_pool if s["day"] == d and s["id"] not in used_ids]
 
-        # 1. Triplé Renforcé Prioritaire : 2 Over 2.5 + 1 Over 1.5 (Cote minimale >= 3.20)
+        # 1. Triplé Renforcé Prioritaire : 2 Over 2.5 + 1 Over 1.5 (3 Matchs Max · Cible Cote ~@3.20)
         idx25 = 0
         while idx25 + 1 < len(day_o25):
             s25_a = day_o25[idx25]
@@ -634,16 +634,15 @@ def main():
 
             avail_o15 = [s for s in day_o15 if s["id"] not in used_ids and s["id"] not in [s25_a["id"], s25_b["id"]]]
             if avail_o15:
-                # Option A : 2 Over 2.5 + 1 Over 1.5 atteignant >= 3.20
+                # Chercher le meilleur Over 1.5 pour maximiser la cote vers @3.20
                 best_s15 = None
                 best_diff = 999.0
                 for s15 in avail_o15:
                     comb3 = round(s25_a["odds"] * s25_b["odds"] * s15["odds"], 2)
-                    if comb3 >= 3.20:
-                        diff = abs(comb3 - 3.40)
-                        if diff < best_diff:
-                            best_diff = diff
-                            best_s15 = (s15, comb3)
+                    diff = abs(comb3 - 3.20)
+                    if diff < best_diff:
+                        best_diff = diff
+                        best_s15 = (s15, comb3)
                 
                 if best_s15:
                     s15, c_odds = best_s15
@@ -660,29 +659,9 @@ def main():
                     })
                     idx25 += 2
                     continue
-                elif len(avail_o15) >= 2:
-                    # Option B : 2 Over 2.5 + 2 Over 1.5 pour sécuriser la cote >= 3.20
-                    p1 = avail_o15[0]
-                    p2 = avail_o15[1]
-                    comb4 = round(s25_a["odds"] * s25_b["odds"] * p1["odds"] * p2["odds"], 2)
-                    if comb4 >= 3.20:
-                        used_ids.add(s25_a["id"])
-                        used_ids.add(s25_b["id"])
-                        used_ids.add(p1["id"])
-                        used_ids.add(p2["id"])
-                        items = sorted([s25_a, s25_b, p1, p2], key=lambda x: x["dt"])
-                        combos_mixed.append({
-                            "session": d,
-                            "type": "Quadruplé Renforcé (2 Over 2.5 + 2 Over 1.5)",
-                            "items": items,
-                            "comb_odds": comb4,
-                            "stake": 4.0, "gain": round(4.0 * comb4, 2), "profit": round(4.0 * comb4 - 4.0, 2)
-                        })
-                        idx25 += 2
-                        continue
             idx25 += 1
 
-        # 2. Quadruplé Hybride pour Over 2.5 orphelin : 1 Over 2.5 + 3 Over 1.5 (Cote >= 3.20)
+        # 2. Triplé Hybride pour Over 2.5 orphelin : 1 Over 2.5 + 2 Over 1.5 (3 Matchs Max)
         rem_o25 = [s for s in day_o25 if s["id"] not in used_ids]
         rem_o15 = [s for s in day_o15 if s["id"] not in used_ids]
 
@@ -690,26 +669,21 @@ def main():
             if s25["id"] in used_ids:
                 continue
             avail_o15 = [s for s in rem_o15 if s["id"] not in used_ids and s["id"] != s25["id"]]
-            if len(avail_o15) >= 3:
-                p1, p2, p3 = avail_o15[0], avail_o15[1], avail_o15[2]
-                comb4 = round(s25["odds"] * p1["odds"] * p2["odds"] * p3["odds"], 2)
-                if comb4 >= 3.20:
-                    used_ids.add(s25["id"])
-                    used_ids.add(p1["id"])
-                    used_ids.add(p2["id"])
-                    used_ids.add(p3["id"])
-                    items = sorted([s25, p1, p2, p3], key=lambda x: x["dt"])
-                    combos_mixed.append({
-                        "session": d,
-                        "type": "Quadruplé Hybride (1 Over 2.5 + 3 Over 1.5)",
-                        "items": items,
-                        "comb_odds": comb4,
-                        "stake": 4.0, "gain": round(4.0 * comb4, 2), "profit": round(4.0 * comb4 - 4.0, 2)
-                    })
-            elif len(avail_o15) >= 2:
-                p1, p2 = avail_o15[0], avail_o15[1]
-                comb3 = round(s25["odds"] * p1["odds"] * p2["odds"], 2)
-                if comb3 >= 2.50:
+            if len(avail_o15) >= 2:
+                best_pair = None
+                best_diff = 999.0
+                for idx1 in range(len(avail_o15)):
+                    for idx2 in range(idx1 + 1, len(avail_o15)):
+                        p1 = avail_o15[idx1]
+                        p2 = avail_o15[idx2]
+                        comb3 = round(s25["odds"] * p1["odds"] * p2["odds"], 2)
+                        if comb3 >= 2.00:
+                            diff = abs(comb3 - 2.50)
+                            if diff < best_diff:
+                                best_diff = diff
+                                best_pair = (p1, p2, comb3)
+                if best_pair:
+                    p1, p2, c_odds = best_pair
                     used_ids.add(s25["id"])
                     used_ids.add(p1["id"])
                     used_ids.add(p2["id"])
@@ -718,31 +692,31 @@ def main():
                         "session": d,
                         "type": "Triplé Hybride (1 Over 2.5 + 2 Over 1.5)",
                         "items": items,
-                        "comb_odds": comb3,
-                        "stake": 4.0, "gain": round(4.0 * comb3, 2), "profit": round(4.0 * comb3 - 4.0, 2)
+                        "comb_odds": c_odds,
+                        "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                     })
 
-        # 3. Surplus d'Over 1.5 orphelins (Cote >= 3.20)
+        # 3. Triplé 100% Over 1.5 pour le surplus d'Over 1.5 orphelins (3 Matchs Max)
         surplus_o15 = [s for s in day_o15 if s["id"] not in used_ids]
         i_sp = 0
-        while i_sp + 3 < len(surplus_o15):
-            chunk = surplus_o15[i_sp:i_sp+4]
-            c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"] * chunk[3]["odds"], 2)
-            if c_odds >= 3.00:
+        while i_sp + 2 < len(surplus_o15):
+            chunk = [surplus_o15[i_sp], surplus_o15[i_sp+1], surplus_o15[i_sp+2]]
+            c_odds = round(chunk[0]["odds"] * chunk[1]["odds"] * chunk[2]["odds"], 2)
+            if c_odds >= 1.80:
                 for s in chunk:
                     used_ids.add(s["id"])
                 items = sorted(chunk, key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": d,
-                    "type": "Quadruplé 100% Over 1.5 (4 Matchs)",
+                    "type": "Triplé 100% Over 1.5 (3 Matchs)",
                     "items": items,
                     "comb_odds": c_odds,
                     "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                 })
-            i_sp += 4
+            i_sp += 3
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés Haute Rentabilité (Cote >= @3.20, même jour) générés : {len(combos_mixed)}")
+    print(f"✅ Combinés de 3 Matchs Maximum (même jour) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
