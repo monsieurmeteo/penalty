@@ -623,7 +623,7 @@ def main():
         day_o25 = [s for s in o25_pool if s["day"] == d and s["id"] not in used_ids]
         day_o15 = [s for s in o15_pool if s["day"] == d and s["id"] not in used_ids]
 
-        # ── RÈGLE STRICTE : 100% Triplés (2 Over 2.5 + 1 Over 1.5) avec Cote Minimale >= 3.20 ──
+        # ── 1. Triplés Hybrides : 2 Over 2.5 + 1 Over 1.5 (Cote minimale >= 3.20) ──
         day_o25_sorted = sorted(day_o25, key=lambda x: x["odds"], reverse=True)
 
         while len([s for s in day_o25_sorted if s["id"] not in used_ids]) >= 2:
@@ -638,7 +638,6 @@ def main():
                     avail_o15 = [s for s in rem_o15 if s["id"] not in [s25_a["id"], s25_b["id"]]]
                     for s15 in avail_o15:
                         comb3 = round(s25_a["odds"] * s25_b["odds"] * s15["odds"], 2)
-                        # Verrouillage strict : Cote minimale >= 3.20 obligatoire
                         if comb3 >= 3.20:
                             if best_triplet is None or comb3 < best_triplet[3]:
                                 best_triplet = (s25_a, s25_b, s15, comb3)
@@ -661,11 +660,34 @@ def main():
                     "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                 })
             else:
-                # Plus aucun triplet atteignant la cote minimale >= 3.20 sur cette session
                 break
 
+        # ── 2. Triplés 100% Over 2.5 : 3 Over 2.5 (Cote >= 3.20) pour tous les Over 2.5 restants ──
+        rem_o25_left = [s for s in day_o25_sorted if s["id"] not in used_ids]
+        i_25 = 0
+        while i_25 + 2 < len(rem_o25_left):
+            s_a = rem_o25_left[i_25]
+            s_b = rem_o25_left[i_25 + 1]
+            s_c = rem_o25_left[i_25 + 2]
+            c_odds = round(s_a["odds"] * s_b["odds"] * s_c["odds"], 2)
+            if c_odds >= 3.20:
+                used_ids.add(s_a["id"])
+                used_ids.add(s_b["id"])
+                used_ids.add(s_c["id"])
+                items = sorted([s_a, s_b, s_c], key=lambda x: x["dt"])
+                combos_mixed.append({
+                    "session": d,
+                    "type": "Triplé (3 Over 2.5)",
+                    "items": items,
+                    "comb_odds": c_odds,
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                })
+                i_25 += 3
+            else:
+                i_25 += 1
+
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés 100% Triplés (2 Over 2.5 + 1 Over 1.5, Cote >= 3.20) générés : {len(combos_mixed)}")
+    print(f"✅ Combinés Maximizés (3 Matchs, Cote >= 3.20, même jour) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
