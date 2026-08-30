@@ -604,7 +604,7 @@ def main():
             # Filtre anti-1-1 : défenses poreuses (les 2 équipes encaissent >= 1.0 b/m)
             # + tirs cadrés comb >= 8.8 (suffisamment d'occasions pour dépasser 2 buts)
             # Si données manquantes (ga = 0.0) on laisse passer (fail-open : mieux vaut pas bloquer)
-            anti_11_ok = (ga_dom >= 1.0 and ga_ext >= 1.0) or (ga_dom == 0.0 and ga_ext == 0.0)
+            anti_11_ok = (ga_dom >= 0.85 and ga_ext >= 0.85) or (ga_dom == 0.0 and ga_ext == 0.0)
             sot_ok = sot_c >= 8.8 or sot_c == 0.0
             if anti_11_ok and sot_ok:
                 o25_pool.append({
