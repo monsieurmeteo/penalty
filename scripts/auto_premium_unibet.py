@@ -444,6 +444,8 @@ def main():
                     m["p_dom_10m"] = res.get("p_dom_10m", 0)
                     m["p_ext_10m"] = res.get("p_ext_10m", 0)
                     m["p_tot_10m"] = res.get("p_tot_10m", 0)
+                    m["ga_dom"] = res.get("ga_dom", 0.0)
+                    m["ga_ext"] = res.get("ga_ext", 0.0)
             except Exception:
                 pass
         return m
@@ -585,21 +587,40 @@ def main():
     # Un match ne peut servir que dans UN seul combiné.
     # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 68/100, Cote >= 2.20
 
-    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 68 + cote dispo + Over 2.5 < Under 2.5)
+    # Sélections Over 2.5 éligibles :
+    #   Score AdamChoi >= 68 + Over 2.5 < Under 2.5
+    #   + Filtre Anti-1-1 : les 2 défenses poreuses (ga_dom >= 1.0 ET ga_ext >= 1.0)
+    #   + Filtre Anti-0-0/1-0 : tirs cadrés combinés (sot_comb >= 8.8)
     o25_pool = []
+    skipped_anti_11 = 0
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         o25 = m.get("over25")
         u25 = m.get("under25")
+        ga_dom = m.get("ga_dom", 0.0)
+        ga_ext = m.get("ga_ext", 0.0)
+        sot_c  = m.get("sot_comb", 0.0)
         if m.get("ac_score", 0) >= 68 and o25 and u25 and o25 < u25:
-            o25_pool.append({
-                "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
-                "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
-            })
+            # Filtre anti-1-1 : défenses poreuses (les 2 équipes encaissent >= 1.0 b/m)
+            # + tirs cadrés comb >= 8.8 (suffisamment d'occasions pour dépasser 2 buts)
+            # Si données manquantes (ga = 0.0) on laisse passer (fail-open : mieux vaut pas bloquer)
+            anti_11_ok = (ga_dom >= 1.0 and ga_ext >= 1.0) or (ga_dom == 0.0 and ga_ext == 0.0)
+            sot_ok = sot_c >= 8.8 or sot_c == 0.0
+            if anti_11_ok and sot_ok:
+                o25_pool.append({
+                    "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
+                    "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
+                })
+            else:
+                skipped_anti_11 += 1
+                tag = []
+                if not anti_11_ok: tag.append(f"Défenses fermées (ga_dom={ga_dom:.2f} ga_ext={ga_ext:.2f})")
+                if not sot_ok:     tag.append(f"SOT faibles ({sot_c:.1f} < 8.8)")
+                print(f"   ⛔ Anti-1-1 : {m['dom']} vs {m['ext']} → {' + '.join(tag)}")
 
     # Trier le pool par jour puis chronologiquement
     o25_pool.sort(key=lambda x: x["dt"])
-    print(f"📊 Pool Over 2.5 éligibles (Score >= 68) : {len(o25_pool)}")
+    print(f"📊 Pool Over 2.5 éligibles (Score >= 68 + Anti-1-1) : {len(o25_pool)} ({skipped_anti_11} filtrés défenses/SOT)")
 
     # Regroupement strict par jour
     days_set = sorted(set([s["day"] for s in o25_pool]))
@@ -631,18 +652,30 @@ def main():
                 used_ids.add(s25_a["id"])
                 used_ids.add(s25_b["id"])
                 items = sorted([s25_a, s25_b], key=lambda x: x["dt"])
+                # Mise progressive selon le score minimum des 2 matchs du doublé
+                min_score = min(s25_a["score"], s25_b["score"])
+                if min_score >= 85:
+                    stake = 5.0   # Score elite >= 85 : mise max
+                elif min_score >= 75:
+                    stake = 4.0   # Score fort 75-84 : mise standard
+                else:
+                    stake = 3.0   # Score correct 68-74 : mise prudente
                 combos_mixed.append({
                     "session": d,
                     "type": "Doublé (2 Over 2.5)",
                     "items": items,
                     "comb_odds": c_odds,
-                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                    "min_score": min_score,
+                    "stake": stake,
+                    "gain": round(stake * c_odds, 2),
+                    "profit": round(stake * c_odds - stake, 2)
                 })
             else:
                 break
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés 100% Doublés Over 2.5 (2 Matchs, Cote >= 2.20, Score >= 68, même jour) générés : {len(combos_mixed)}")
+    total_stake = sum(cb["stake"] for cb in combos_mixed)
+    print(f"✅ Combinés 100% Doublés Over 2.5 (Score >= 68, Cote >= 2.20, Mise progressive 3-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
@@ -850,7 +883,7 @@ def main():
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 10px; border-radius:5px; margin-bottom:7px; border:1px solid {theme['border_card']};">
                 <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Ticket #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 4 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise {cb['stake']:.0f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €) · Score min {cb['min_score']}/100</span>
               </div>
               <div>
                 {items_html}
@@ -1145,18 +1178,18 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Doublés (2 Over 2.5) Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés Doublés Over 2.5 — Mise Progressive (3€/4€/5€ selon Score)\n",
     ]
 
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Score min {cb['min_score']}/100 — Cote: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
             report.append("")
     else:
-        report.append("Aucun combiné multi-marchés disponible.\n")
+        report.append("Aucun combiné disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
     report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
