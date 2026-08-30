@@ -455,8 +455,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi Over 2.5 >= 68/100 ──
-    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 68/100
+    # ── Sélection 100% Score AdamChoi Over 2.5 >= 65/100 ──
+    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 65/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -464,13 +464,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 68:
+        if ac_score >= 65:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 68)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 65)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -481,7 +481,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 68/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 65/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -585,10 +585,10 @@ def main():
 
     # ── MOTEUR COMBINÉS : 100% DOUBLÉS OVER 2.5 (2 Matchs), Cote Combinée >= 2.20 ──
     # Un match ne peut servir que dans UN seul combiné.
-    # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 68/100, Cote >= 2.20
+    # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 65/100, Cote >= 2.20
 
     # Sélections Over 2.5 éligibles :
-    #   Score AdamChoi >= 68 + Over 2.5 < Under 2.5
+    #   Score AdamChoi >= 65 + Over 2.5 < Under 2.5
     #   + Filtre Anti-1-1 : les 2 défenses poreuses (ga_dom >= 1.0 ET ga_ext >= 1.0)
     #   + Filtre Anti-0-0/1-0 : tirs cadrés combinés (sot_comb >= 8.8)
     o25_pool = []
@@ -600,7 +600,7 @@ def main():
         ga_dom = m.get("ga_dom", 0.0)
         ga_ext = m.get("ga_ext", 0.0)
         sot_c  = m.get("sot_comb", 0.0)
-        if m.get("ac_score", 0) >= 68 and o25 and u25 and o25 < u25:
+        if m.get("ac_score", 0) >= 65 and o25 and u25 and o25 < u25:
             # Filtre anti-1-1 : défenses poreuses (les 2 équipes encaissent >= 1.0 b/m)
             # + tirs cadrés comb >= 8.8 (suffisamment d'occasions pour dépasser 2 buts)
             # Si données manquantes (ga = 0.0) on laisse passer (fail-open : mieux vaut pas bloquer)
