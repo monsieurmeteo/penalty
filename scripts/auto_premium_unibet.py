@@ -854,7 +854,7 @@ def main():
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 10px; border-radius:5px; margin-bottom:7px; border:1px solid {theme['border_card']};">
                 <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Ticket #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 4 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
+                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise {cb['stake']:.0f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €) · Score moy. {cb.get('avg_score', '')}/100</span>
               </div>
               <div>
                 {items_html}
@@ -1149,12 +1149,12 @@ def main():
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Doublés (2 Over 2.5) Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés Doublés (2 Over 2.5) Recommandés (Cote Min: 2.20 — Mise Progressive 3-5 € / ticket)\n",
     ]
 
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Score moy. {cb.get('avg_score', '')}/100 — Cote Totale: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
