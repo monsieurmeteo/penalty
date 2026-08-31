@@ -1144,8 +1144,6 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "p_dom_10m": p_dom_10m,
             "p_ext_10m": p_ext_10m,
             "p_tot_10m": p_tot_10m,
-            "ga_dom": round(ga_a, 2),
-            "ga_ext": round(ga_b, 2),
         }
 
 

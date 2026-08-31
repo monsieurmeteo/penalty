@@ -45,81 +45,53 @@ def _clean_team_key(name):
     return re.sub(r'[^a-z0-9]', '', n)
 
 def get_unibet_active_games():
-    print(f"Scraping Unibet France — {len(COUNTRIES)} catégories pays (crawl 2 niveaux)...")
+    print(f"Scraping Unibet France — {len(COUNTRIES)} catégories pays...")
 
     all_match_urls = set()
 
-    def extract_match_urls(soup):
-        """Extrait toutes les URLs de matchs (contenant -vs-) depuis une page BeautifulSoup."""
-        urls = set()
-        for a in soup.find_all("a", href=True):
-            href = a['href']
-            if "/paris-football/" in href and "-vs-" in href and len(href.split("/")) >= 6:
-                full = f"https://www.unibet.fr{href}" if href.startswith("/") else href
-                urls.add(full)
-        return urls
-
-    def extract_league_urls(soup, country):
-        """Extrait les URLs des sous-pages de championnats depuis une page pays."""
-        urls = set()
-        for a in soup.find_all("a", href=True):
-            href = a['href']
-            # Sous-page championnat : /paris-football/<pays>/<championnat>/
-            if href.startswith(f"/paris-football/{country}/") and href.count("/") >= 4:
-                full = f"https://www.unibet.fr{href}"
-                # Exclure les URLs de matchs (qui contiennent -vs-) et les slugs numériques seuls
-                if "-vs-" not in full:
-                    urls.add(full)
-        return urls
-
     def fetch_country(c):
-        collected = set()
+        url = f"https://www.unibet.fr/paris-football/{c}"
         try:
-            r = requests.get(f"https://www.unibet.fr/paris-football/{c}", headers=H, timeout=10)
-            if r.status_code != 200:
-                return collected
-            soup = BeautifulSoup(r.text, "html.parser")
-            # Niveau 1 : matchs directs sur la page pays
-            collected.update(extract_match_urls(soup))
-            # Niveau 2 : sous-pages championnats listées sur la page pays
-            league_urls = extract_league_urls(soup, c)
-            for lu in list(league_urls)[:20]:  # ponytail: limite à 20 ligues/pays pour éviter blast réseau
-                try:
-                    r2 = requests.get(lu, headers=H, timeout=8)
-                    if r2.status_code == 200:
-                        soup2 = BeautifulSoup(r2.text, "html.parser")
-                        collected.update(extract_match_urls(soup2))
-                except Exception:
-                    pass
+            r = requests.get(url, headers=H, timeout=8)
+            if r.status_code == 200:
+                soup = BeautifulSoup(r.text, "html.parser")
+                urls = set()
+                for a in soup.find_all("a", href=True):
+                    href = a['href']
+                    if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
+                        full_url = f"https://www.unibet.fr{href}" if href.startswith("/") else href
+                        urls.add(full_url)
+                return urls
         except Exception:
             pass
-        return collected
+        return set()
 
-    with ThreadPoolExecutor(max_workers=12) as ex:
-        for result in ex.map(fetch_country, COUNTRIES):
-            all_match_urls.update(result)
+    with ThreadPoolExecutor(max_workers=15) as ex:
+        for f in as_completed([ex.submit(fetch_country, c) for c in COUNTRIES]):
+            all_match_urls.update(f.result())
 
-    # Page principale football (filet de sécurité)
+    # Page principale football
     try:
         r_main = requests.get("https://www.unibet.fr/paris-football", headers=H, timeout=10)
-        if r_main.status_code == 200:
-            soup_m = BeautifulSoup(r_main.text, "html.parser")
-            all_match_urls.update(extract_match_urls(soup_m))
+        soup_m = BeautifulSoup(r_main.text, "html.parser")
+        for a in soup_m.find_all("a", href=True):
+            href = a['href']
+            if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
+                all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
     except Exception:
         pass
 
     unique_games = {}
     for url in all_match_urls:
         parts = url.strip("/").split("/")
-        # Structure : https://www.unibet.fr/paris-football/<pays>/<ligue>/<id>/<slug-vs-slug>
-        if len(parts) >= 8 and "-vs-" in parts[-1]:
-            teams_slug = parts[-1].split("-vs-", 1)
+        if len(parts) >= 5 and "vs" in parts[-1]:
+            teams_slug = parts[-1].split("-vs-")
             if len(teams_slug) == 2:
                 dom_name = teams_slug[0].replace("-", " ").title()
                 ext_name = teams_slug[1].replace("-", " ").title()
-                country  = parts[5].replace("-", " ").title() if len(parts) >= 6 else ""
-                league   = parts[6].replace("-", " ").title() if len(parts) >= 7 else ""
-                league_name = f"{country} • {league}" if country and league else (country or league)
+                country = parts[4].replace("-", " ").title() if len(parts) >= 6 else ""
+                league = parts[5].replace("-", " ").title() if len(parts) >= 6 else parts[3].replace("-", " ").title()
+                league_name = f"{country} • {league}" if country else league
 
                 key = (_clean_team_key(dom_name), _clean_team_key(ext_name))
                 g_item = {
@@ -131,15 +103,17 @@ def get_unibet_active_games():
                     "timestamp": int(time.time()),
                     "start_time": "À venir"
                 }
+
                 if key not in unique_games:
                     unique_games[key] = g_item
-                elif "cotes-boostees" in unique_games[key]["url"].lower() and "cotes-boostees" not in url.lower():
-                    unique_games[key] = g_item
+                else:
+                    # Remplacer les cotes boostées par la ligue officielle standard si présente
+                    if "cotes-boostees" in unique_games[key]["url"].lower() and "cotes-boostees" not in url.lower():
+                        unique_games[key] = g_item
 
     games = list(unique_games.values())
-    print(f"Fixtures trouvées (uniques, crawl 2 niveaux) : {len(games)}")
+    print(f"Fixtures trouvées (uniques) : {len(games)}")
     return games
-
 
 
 def scan_unibet_match_details(game):
@@ -470,8 +444,6 @@ def main():
                     m["p_dom_10m"] = res.get("p_dom_10m", 0)
                     m["p_ext_10m"] = res.get("p_ext_10m", 0)
                     m["p_tot_10m"] = res.get("p_tot_10m", 0)
-                    m["ga_dom"] = res.get("ga_dom", 0.0)
-                    m["ga_ext"] = res.get("ga_ext", 0.0)
             except Exception:
                 pass
         return m
@@ -481,8 +453,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi Over 2.5 >= 65/100 ──
-    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 65/100
+    # ── Sélection 100% Score AdamChoi Over 2.5 >= 60/100 ──
+    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 60/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -490,13 +462,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 65:
+        if ac_score >= 60:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 65)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 60)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -507,7 +479,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 65/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 60/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -611,42 +583,23 @@ def main():
 
     # ── MOTEUR COMBINÉS : 100% DOUBLÉS OVER 2.5 (2 Matchs), Cote Combinée >= 2.20 ──
     # Un match ne peut servir que dans UN seul combiné.
-    # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 65/100, Cote >= 2.20
+    # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 60/100, Cote >= 2.20
 
-    # Sélections Over 2.5 éligibles :
-    #   Score AdamChoi >= 65 + Over 2.5 < Under 2.5
-    #   + Filtre Anti-1-1 : les 2 défenses poreuses (ga_dom >= 1.0 ET ga_ext >= 1.0)
-    #   + Filtre Anti-0-0/1-0 : tirs cadrés combinés (sot_comb >= 8.8)
+    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 60 + cote dispo + Over 2.5 < Under 2.5)
     o25_pool = []
-    skipped_anti_11 = 0
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         o25 = m.get("over25")
         u25 = m.get("under25")
-        ga_dom = m.get("ga_dom", 0.0)
-        ga_ext = m.get("ga_ext", 0.0)
-        sot_c  = m.get("sot_comb", 0.0)
-        if m.get("ac_score", 0) >= 65 and o25 and u25 and o25 <= u25 + 0.20:
-            # Filtre anti-1-1 : défenses poreuses (les 2 équipes encaissent >= 1.0 b/m)
-            # + tirs cadrés comb >= 8.8 (suffisamment d'occasions pour dépasser 2 buts)
-            # Si données manquantes (ga = 0.0) on laisse passer (fail-open : mieux vaut pas bloquer)
-            anti_11_ok = (ga_dom >= 0.85 and ga_ext >= 0.85) or (ga_dom == 0.0 and ga_ext == 0.0)
-            sot_ok = sot_c >= 8.8 or sot_c == 0.0
-            if anti_11_ok and sot_ok:
-                o25_pool.append({
-                    "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
-                    "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
-                })
-            else:
-                skipped_anti_11 += 1
-                tag = []
-                if not anti_11_ok: tag.append(f"Défenses fermées (ga_dom={ga_dom:.2f} ga_ext={ga_ext:.2f})")
-                if not sot_ok:     tag.append(f"SOT faibles ({sot_c:.1f} < 8.8)")
-                print(f"   ⛔ Anti-1-1 : {m['dom']} vs {m['ext']} → {' + '.join(tag)}")
+        if m.get("ac_score", 0) >= 60 and o25 and u25 and o25 < u25:
+            o25_pool.append({
+                "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
+                "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
+            })
 
     # Trier le pool par jour puis chronologiquement
     o25_pool.sort(key=lambda x: x["dt"])
-    print(f"📊 Pool Over 2.5 éligibles (Score >= 68 + Anti-1-1) : {len(o25_pool)} ({skipped_anti_11} filtrés défenses/SOT)")
+    print(f"📊 Pool Over 2.5 éligibles (Score >= 60) : {len(o25_pool)}")
 
     # Regroupement strict par jour
     days_set = sorted(set([s["day"] for s in o25_pool]))
@@ -678,43 +631,31 @@ def main():
                 used_ids.add(s25_a["id"])
                 used_ids.add(s25_b["id"])
                 items = sorted([s25_a, s25_b], key=lambda x: x["dt"])
-                # Mise progressive selon le score minimum des 2 matchs du doublé
-                min_score = min(s25_a["score"], s25_b["score"])
-                if min_score >= 85:
-                    stake = 5.0   # Score elite >= 85 : mise max
-                elif min_score >= 75:
-                    stake = 4.0   # Score fort 75-84 : mise standard
-                else:
-                    stake = 3.0   # Score correct 68-74 : mise prudente
                 combos_mixed.append({
                     "session": d,
                     "type": "Doublé (2 Over 2.5)",
                     "items": items,
                     "comb_odds": c_odds,
-                    "min_score": min_score,
-                    "stake": stake,
-                    "gain": round(stake * c_odds, 2),
-                    "profit": round(stake * c_odds - stake, 2)
+                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
                 })
             else:
                 break
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Combinés 100% Doublés Over 2.5 (Score >= 68, Cote >= 2.20, Mise progressive 3-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
+    print(f"✅ Combinés 100% Doublés Over 2.5 (2 Matchs, Cote >= 2.20, même jour) générés : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
     # 1. Arbitre désigné OBLIGATOIRE (ref_name connu et différent de 'Inconnu')
     # 2. Arbitre siffle >= 0.45 penalty par match (pen_per_match >= 0.45)
     # 3. Statut PENO VALIDE ou DOUBLE_SIGNAL (>= 2 penalties sur 10m Dom & Ext)
-    # 4. Score Penalty >= 68/100
+    # 4. Score Penalty >= 60/100
     pen_candidates = [
         m for m in scanned_results 
         if m.get("ref_name") and m.get("ref_name") not in ["Inconnu", "Arbitre non désigné", ""]
         and m.get("pen_per_match", 0.0) >= 0.45
         and m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 68
+        and m.get("score_penalty", 0) >= 60
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
@@ -909,7 +850,7 @@ def main():
             <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
               <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 10px; border-radius:5px; margin-bottom:7px; border:1px solid {theme['border_card']};">
                 <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Ticket #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise {cb['stake']:.0f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €) · Score min {cb['min_score']}/100</span>
+                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 4 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €)</span>
               </div>
               <div>
                 {items_html}
@@ -1135,7 +1076,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS DOUBLÉS OVER 2.5 (Cote &ge; 2.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 68/100 · 2 Matchs)</span></span>
+              <span>🚀 1. COMBINÉS DOUBLÉS OVER 2.5 (Cote &ge; 2.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 60/100 · 2 Matchs)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1199,23 +1140,23 @@ def main():
     report = [
         "# ⚽ SÉLECTION OVER 2.5 — MATCHS DE JOURNÉE",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score AdamChoi >= 68/100  ET  Over 2.5 < Under 2.5\n",
+        f"**Critères** : Score AdamChoi >= 60/100  ET  Over 2.5 < Under 2.5\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Doublés Over 2.5 — Mise Progressive (3€/4€/5€ selon Score)\n",
+        f"## 🎯 Combinés Doublés (2 Over 2.5) Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
     ]
 
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Score min {cb['min_score']}/100 — Cote: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
             report.append("")
     else:
-        report.append("Aucun combiné disponible.\n")
+        report.append("Aucun combiné multi-marchés disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
     report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
