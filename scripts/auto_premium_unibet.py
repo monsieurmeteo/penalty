@@ -45,53 +45,81 @@ def _clean_team_key(name):
     return re.sub(r'[^a-z0-9]', '', n)
 
 def get_unibet_active_games():
-    print(f"Scraping Unibet France — {len(COUNTRIES)} catégories pays...")
+    print(f"Scraping Unibet France — {len(COUNTRIES)} catégories pays (crawl 2 niveaux)...")
 
     all_match_urls = set()
 
+    def extract_match_urls(soup):
+        """Extrait toutes les URLs de matchs (contenant -vs-) depuis une page BeautifulSoup."""
+        urls = set()
+        for a in soup.find_all("a", href=True):
+            href = a['href']
+            if "/paris-football/" in href and "-vs-" in href and len(href.split("/")) >= 6:
+                full = f"https://www.unibet.fr{href}" if href.startswith("/") else href
+                urls.add(full)
+        return urls
+
+    def extract_league_urls(soup, country):
+        """Extrait les URLs des sous-pages de championnats depuis une page pays."""
+        urls = set()
+        for a in soup.find_all("a", href=True):
+            href = a['href']
+            # Sous-page championnat : /paris-football/<pays>/<championnat>/
+            if href.startswith(f"/paris-football/{country}/") and href.count("/") >= 4:
+                full = f"https://www.unibet.fr{href}"
+                # Exclure les URLs de matchs (qui contiennent -vs-) et les slugs numériques seuls
+                if "-vs-" not in full:
+                    urls.add(full)
+        return urls
+
     def fetch_country(c):
-        url = f"https://www.unibet.fr/paris-football/{c}"
+        collected = set()
         try:
-            r = requests.get(url, headers=H, timeout=8)
-            if r.status_code == 200:
-                soup = BeautifulSoup(r.text, "html.parser")
-                urls = set()
-                for a in soup.find_all("a", href=True):
-                    href = a['href']
-                    if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
-                        full_url = f"https://www.unibet.fr{href}" if href.startswith("/") else href
-                        urls.add(full_url)
-                return urls
+            r = requests.get(f"https://www.unibet.fr/paris-football/{c}", headers=H, timeout=10)
+            if r.status_code != 200:
+                return collected
+            soup = BeautifulSoup(r.text, "html.parser")
+            # Niveau 1 : matchs directs sur la page pays
+            collected.update(extract_match_urls(soup))
+            # Niveau 2 : sous-pages championnats listées sur la page pays
+            league_urls = extract_league_urls(soup, c)
+            for lu in list(league_urls)[:20]:  # ponytail: limite à 20 ligues/pays pour éviter blast réseau
+                try:
+                    r2 = requests.get(lu, headers=H, timeout=8)
+                    if r2.status_code == 200:
+                        soup2 = BeautifulSoup(r2.text, "html.parser")
+                        collected.update(extract_match_urls(soup2))
+                except Exception:
+                    pass
         except Exception:
             pass
-        return set()
+        return collected
 
-    with ThreadPoolExecutor(max_workers=15) as ex:
-        for f in as_completed([ex.submit(fetch_country, c) for c in COUNTRIES]):
-            all_match_urls.update(f.result())
+    with ThreadPoolExecutor(max_workers=12) as ex:
+        for result in ex.map(fetch_country, COUNTRIES):
+            all_match_urls.update(result)
 
-    # Page principale football
+    # Page principale football (filet de sécurité)
     try:
         r_main = requests.get("https://www.unibet.fr/paris-football", headers=H, timeout=10)
-        soup_m = BeautifulSoup(r_main.text, "html.parser")
-        for a in soup_m.find_all("a", href=True):
-            href = a['href']
-            if "/paris-football/" in href and "vs" in href and len(href.split("/")) >= 5:
-                all_match_urls.add(f"https://www.unibet.fr{href}" if href.startswith("/") else href)
+        if r_main.status_code == 200:
+            soup_m = BeautifulSoup(r_main.text, "html.parser")
+            all_match_urls.update(extract_match_urls(soup_m))
     except Exception:
         pass
 
     unique_games = {}
     for url in all_match_urls:
         parts = url.strip("/").split("/")
-        if len(parts) >= 5 and "vs" in parts[-1]:
-            teams_slug = parts[-1].split("-vs-")
+        # Structure : https://www.unibet.fr/paris-football/<pays>/<ligue>/<id>/<slug-vs-slug>
+        if len(parts) >= 8 and "-vs-" in parts[-1]:
+            teams_slug = parts[-1].split("-vs-", 1)
             if len(teams_slug) == 2:
                 dom_name = teams_slug[0].replace("-", " ").title()
                 ext_name = teams_slug[1].replace("-", " ").title()
-                country = parts[4].replace("-", " ").title() if len(parts) >= 6 else ""
-                league = parts[5].replace("-", " ").title() if len(parts) >= 6 else parts[3].replace("-", " ").title()
-                league_name = f"{country} • {league}" if country else league
+                country  = parts[5].replace("-", " ").title() if len(parts) >= 6 else ""
+                league   = parts[6].replace("-", " ").title() if len(parts) >= 7 else ""
+                league_name = f"{country} • {league}" if country and league else (country or league)
 
                 key = (_clean_team_key(dom_name), _clean_team_key(ext_name))
                 g_item = {
@@ -103,17 +131,15 @@ def get_unibet_active_games():
                     "timestamp": int(time.time()),
                     "start_time": "À venir"
                 }
-
                 if key not in unique_games:
                     unique_games[key] = g_item
-                else:
-                    # Remplacer les cotes boostées par la ligue officielle standard si présente
-                    if "cotes-boostees" in unique_games[key]["url"].lower() and "cotes-boostees" not in url.lower():
-                        unique_games[key] = g_item
+                elif "cotes-boostees" in unique_games[key]["url"].lower() and "cotes-boostees" not in url.lower():
+                    unique_games[key] = g_item
 
     games = list(unique_games.values())
-    print(f"Fixtures trouvées (uniques) : {len(games)}")
+    print(f"Fixtures trouvées (uniques, crawl 2 niveaux) : {len(games)}")
     return games
+
 
 
 def scan_unibet_match_details(game):
