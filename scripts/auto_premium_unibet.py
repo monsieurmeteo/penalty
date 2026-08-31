@@ -631,18 +631,22 @@ def main():
                 used_ids.add(s25_a["id"])
                 used_ids.add(s25_b["id"])
                 items = sorted([s25_a, s25_b], key=lambda x: x["dt"])
+                avg_score = (s25_a["score"] + s25_b["score"]) / 2
+                stake = 5.0 if avg_score >= 80 else (4.0 if avg_score >= 70 else 3.0)
                 combos_mixed.append({
                     "session": d,
                     "type": "Doublé (2 Over 2.5)",
                     "items": items,
                     "comb_odds": c_odds,
-                    "stake": 4.0, "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+                    "avg_score": round(avg_score, 1),
+                    "stake": stake, "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
                 })
             else:
                 break
 
     combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
-    print(f"✅ Combinés 100% Doublés Over 2.5 (2 Matchs, Cote >= 2.20, même jour) générés : {len(combos_mixed)}")
+    total_stake = sum(cb["stake"] for cb in combos_mixed)
+    print(f"✅ Combinés Doublés Over 2.5 (Score >= 60, Cote >= 2.20, Mise 3-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
