@@ -626,7 +626,7 @@ def main():
         ga_dom = m.get("ga_dom", 0.0)
         ga_ext = m.get("ga_ext", 0.0)
         sot_c  = m.get("sot_comb", 0.0)
-        if m.get("ac_score", 0) >= 65 and o25 and u25 and o25 < u25:
+        if m.get("ac_score", 0) >= 65 and o25 and u25 and o25 <= u25 + 0.20:
             # Filtre anti-1-1 : défenses poreuses (les 2 équipes encaissent >= 1.0 b/m)
             # + tirs cadrés comb >= 8.8 (suffisamment d'occasions pour dépasser 2 buts)
             # Si données manquantes (ga = 0.0) on laisse passer (fail-open : mieux vaut pas bloquer)
