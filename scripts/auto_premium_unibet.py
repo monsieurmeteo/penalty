@@ -581,7 +581,7 @@ def main():
     # Chaque match sélectionné = 1 pari simple Over 2.5
     # Critères : Score >= 60 + Over 2.5 >= @1.60 + Over 2.5 < Under 2.5
     # Mise progressive selon le Score AdamChoi
-    MIN_O25_SINGLE = 1.65  # Cote Unibet minimale → @1.60 réel au tabac (-0.05)
+    MIN_O25_SINGLE = 1.60  # Cote Unibet minimale (= @1.55 réel au tabac après -0.05)
 
     def get_day_key(m_dt):
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
