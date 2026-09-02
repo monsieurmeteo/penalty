@@ -581,7 +581,7 @@ def main():
     # Chaque match sélectionné = 1 pari simple Over 2.5
     # Critères : Score >= 60 + Over 2.5 >= @1.60 + Over 2.5 < Under 2.5
     # Mise progressive selon le Score AdamChoi
-    MIN_O25_SINGLE = 1.60  # Cote minimale Over 2.5 pour être rentable long terme
+    MIN_O25_SINGLE = 1.65  # Cote Unibet minimale → @1.60 réel au tabac (-0.05)
 
     def get_day_key(m_dt):
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
@@ -981,8 +981,7 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 2.20</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">PARIS SIMPLES</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 1.60</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">08h00 - 23h59</div></div></td>
               </tr>
             </table>
