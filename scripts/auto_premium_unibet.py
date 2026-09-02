@@ -610,35 +610,8 @@ def main():
     total_stake = sum(cb["stake"] for cb in combos_mixed)
     print(f"✅ Paris Simples Over 2.5 (Score >= 60, Cote >= @1.60, Mise 3-5€) : {len(combos_mixed)} paris / Mise totale : {total_stake:.0f} €")
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
-    # Critères stricts sans compromis :
-    # 1. Arbitre désigné OBLIGATOIRE (ref_name connu et différent de 'Inconnu')
-    # 2. Arbitre siffle >= 0.45 penalty par match (pen_per_match >= 0.45)
-    # 3. Statut PENO VALIDE ou DOUBLE_SIGNAL (>= 2 penalties sur 10m Dom & Ext)
-    # 4. Score Penalty >= 60/100
-    pen_candidates = [
-        m for m in scanned_results 
-        if m.get("ref_name") and m.get("ref_name") not in ["Inconnu", "Arbitre non désigné", ""]
-        and m.get("pen_per_match", 0.0) >= 0.45
-        and m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 60
-    ]
-    pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
-    pen_simples = pen_candidates
-
-    # Matchs neutralisés (Sans arbitre, ou Arbitre < 0.45 pen/m, ou PENO REJET)
-    pen_rejected = [
-        m for m in scanned_results
-        if m.get("score_penalty", 0) >= 55
-        and (
-            (not m.get("ref_name") or m.get("ref_name") in ["Inconnu", "Arbitre non désigné", ""])
-            or m.get("pen_per_match", 0.0) < 0.45
-            or m.get("peno_status") == "REJET"
-        )
-        and m not in pen_simples
-    ]
-    pen_rejected.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
-
+    pen_simples = []   # Penalty supprimé
+    pen_rejected = []  # Penalty supprimé
 
 
     def render_match_proof_html(m):
