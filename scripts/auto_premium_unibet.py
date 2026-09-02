@@ -577,76 +577,38 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── Génération des Combinés : Journée uniquement (06h00–23h59)
+    # ── MOTEUR PARIS SIMPLES : Over 2.5 individuel ──
+    # Chaque match sélectionné = 1 pari simple Over 2.5
+    # Critères : Score >= 60 + Over 2.5 >= @1.60 + Over 2.5 < Under 2.5
+    # Mise progressive selon le Score AdamChoi
+    MIN_O25_SINGLE = 1.60  # Cote minimale Over 2.5 pour être rentable long terme
+
     def get_day_key(m_dt):
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
 
-    # ── MOTEUR COMBINÉS : 100% DOUBLÉS OVER 2.5 (2 Matchs), Cote Combinée >= 2.20 ──
-    # Un match ne peut servir que dans UN seul combiné.
-    # Règle stricte : 2 sélections Over 2.5 différentes par ticket, Score AdamChoi >= 60/100, Cote >= 2.20
-
-    # Sélections Over 2.5 éligibles (Score AdamChoi ac_score >= 60 + cote dispo + Over 2.5 < Under 2.5)
-    o25_pool = []
+    combos_mixed = []  # gardé pour compatibilité HTML/email
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         o25 = m.get("over25")
         u25 = m.get("under25")
-        if m.get("ac_score", 0) >= 60 and o25 and u25 and o25 < u25:
-            o25_pool.append({
-                "m": m, "id": m["id"], "dt": m_dt, "day": get_day_key(m_dt),
-                "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
+        score = m.get("ac_score", 0)
+        if score >= 60 and o25 and u25 and o25 >= MIN_O25_SINGLE and o25 < u25:
+            stake = 5.0 if score >= 80 else (4.0 if score >= 70 else 3.0)
+            combos_mixed.append({
+                "session": get_day_key(m_dt),
+                "type": "Pari Simple Over 2.5",
+                "items": [{"m": m, "id": m["id"], "dt": m_dt, "market": "🟥 Over 2.5",
+                            "odds": o25, "score": score}],
+                "comb_odds": o25,
+                "avg_score": float(score),
+                "stake": stake,
+                "gain": round(stake * o25, 2),
+                "profit": round(stake * o25 - stake, 2)
             })
 
-    # Trier le pool par jour puis chronologiquement
-    o25_pool.sort(key=lambda x: x["dt"])
-    print(f"📊 Pool Over 2.5 éligibles (Score >= 60) : {len(o25_pool)}")
-
-    # Regroupement strict par jour
-    days_set = sorted(set([s["day"] for s in o25_pool]))
-
-    used_ids = set()
-    combos_mixed = []
-
-    for d in days_set:
-        day_o25 = [s for s in o25_pool if s["day"] == d and s["id"] not in used_ids]
-        day_o25_sorted = sorted(day_o25, key=lambda x: x["odds"], reverse=True)
-
-        # ── Doublés Over 2.5 (2 Matchs) : Cote minimale >= 2.20 ──
-        while len([s for s in day_o25_sorted if s["id"] not in used_ids]) >= 2:
-            rem_o25 = [s for s in day_o25_sorted if s["id"] not in used_ids]
-            best_pair = None
-            for i in range(len(rem_o25)):
-                for j in range(i + 1, len(rem_o25)):
-                    s25_a = rem_o25[i]
-                    s25_b = rem_o25[j]
-                    comb2 = round(s25_a["odds"] * s25_b["odds"], 2)
-                    if comb2 >= 2.20:
-                        if best_pair is None or comb2 < best_pair[2]:
-                            best_pair = (s25_a, s25_b, comb2)
-                if best_pair:
-                    break
-
-            if best_pair:
-                s25_a, s25_b, c_odds = best_pair
-                used_ids.add(s25_a["id"])
-                used_ids.add(s25_b["id"])
-                items = sorted([s25_a, s25_b], key=lambda x: x["dt"])
-                avg_score = (s25_a["score"] + s25_b["score"]) / 2
-                stake = 5.0 if avg_score >= 80 else (4.0 if avg_score >= 70 else 3.0)
-                combos_mixed.append({
-                    "session": d,
-                    "type": "Doublé (2 Over 2.5)",
-                    "items": items,
-                    "comb_odds": c_odds,
-                    "avg_score": round(avg_score, 1),
-                    "stake": stake, "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
-                })
-            else:
-                break
-
-    combos_mixed.sort(key=lambda cb: (cb["session"], cb["items"][0]["dt"]))
+    combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
     total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Combinés Doublés Over 2.5 (Score >= 60, Cote >= 2.20, Mise 3-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
+    print(f"✅ Paris Simples Over 2.5 (Score >= 60, Cote >= @1.60, Mise 3-5€) : {len(combos_mixed)} paris / Mise totale : {total_stake:.0f} €")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Arbitre OBLIGATOIRE >= 0.45 pen/m + PENO >= 2 pen/10m) ──
     # Critères stricts sans compromis :
