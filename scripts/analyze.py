@@ -1101,6 +1101,36 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     pts_league = o25_b6
     avg_freq_ha = comb_o25_pct
 
+    # ── Score 2ème mi-temps plus prolifique ──────────────────────────────────
+    def _pct_2t_more(matches):
+        """% matchs où buts 2T > buts 1T, sur les matchs avec données HT."""
+        valid, wins = 0, 0
+        for m in matches:
+            ht_h = m.get("homeGoalsHt")
+            ht_a = m.get("awayGoalsHt")
+            ft_h = m.get("homeGoalsFt", m.get("homeGoals"))
+            ft_a = m.get("awayGoalsFt", m.get("awayGoals"))
+            if None in (ht_h, ht_a, ft_h, ft_a):
+                continue
+            goals_1t = int(ht_h) + int(ht_a)
+            goals_2t = int(ft_h) + int(ft_a) - goals_1t
+            valid += 1
+            if goals_2t > goals_1t:
+                wins += 1
+        return round(wins / valid * 100) if valid >= 3 else 0
+
+    pct_2t_dom = _pct_2t_more(recent_h_dom[:10])
+    pct_2t_ext = _pct_2t_more(recent_a_ext[:10])
+    # Score combiné : moyenne pondérée des deux équipes (0-100)
+    if pct_2t_dom > 0 and pct_2t_ext > 0:
+        score_2t = round((pct_2t_dom + pct_2t_ext) / 2)
+    elif pct_2t_dom > 0:
+        score_2t = pct_2t_dom
+    elif pct_2t_ext > 0:
+        score_2t = pct_2t_ext
+    else:
+        score_2t = 0
+
     if is_batch:
         return {
             "team_a": team_a,
@@ -1144,7 +1174,11 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "p_dom_10m": p_dom_10m,
             "p_ext_10m": p_ext_10m,
             "p_tot_10m": p_tot_10m,
+            "score_2t": score_2t,
+            "pct_2t_dom": pct_2t_dom,
+            "pct_2t_ext": pct_2t_ext,
         }
+
 
 
 

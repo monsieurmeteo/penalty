@@ -248,6 +248,33 @@ def scan_unibet_match_details(game):
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
 
 
+            # ── Cote "2nde mi-temps la plus prolifique" (HTML statique) ──
+            mt2_odds = None
+            try:
+                from bs4 import BeautifulSoup
+                html_txt = content  # on réutilise la réponse déjà chargée
+                # content est du JSON ici — on va chercher dans le HTML brut de la page
+                page_url = game.get("url", "")
+                if page_url:
+                    rh = requests.get(f"https://www.unibet.fr{page_url}", headers=HEADERS, timeout=8)
+                    if rh.status_code == 200:
+                        idx = rh.text.lower().find("prolif")
+                        if idx >= 0:
+                            bloc = rh.text[idx - 50: idx + 1500]
+                            bs = BeautifulSoup(bloc, "html.parser")
+                            spans = [s.get_text(strip=True) for s in bs.find_all("span") if s.get_text(strip=True)]
+                            # spans attendus: ['1ère mi-temps', '@X.XX', '2nde mi-temps', '@X.XX', ...]
+                            for i, sp in enumerate(spans):
+                                if "2nde" in sp.lower() or "2ème" in sp.lower() or "deuxième" in sp.lower() or "second" in sp.lower():
+                                    if i + 1 < len(spans):
+                                        try:
+                                            mt2_odds = float(spans[i + 1].replace(",", "."))
+                                        except ValueError:
+                                            pass
+                                    break
+            except Exception:
+                pass
+
             return {
                 **game,
                 "dom": dom,
@@ -263,6 +290,7 @@ def scan_unibet_match_details(game):
                 "buteur_name": buteur_name,
                 "buteur_cote": buteur_cote,
                 "buteur_avg": buteur_avg,
+                "mt2_odds": mt2_odds,
             }
     except Exception as e:
         print(f"❌ ERROR scanning {game.get('url')}: {e}")
@@ -577,41 +605,63 @@ def main():
     else:
         evo_html = '<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px; margin-bottom:20px; text-align:center; color:#64748b; font-size:13px;">ℹ️ Aucune variation depuis le dernier run.</div>'
 
-    # ── MOTEUR PARIS SIMPLES : Over 2.5 individuel ──
-    # Chaque match sélectionné = 1 pari simple Over 2.5
-    # Critères : Score >= 60 + Over 2.5 >= @1.60 + Over 2.5 < Under 2.5
-    # Mise progressive selon le Score AdamChoi
-    MIN_O25_SINGLE = 1.60  # Cote Unibet minimale (= @1.55 réel au tabac après -0.05)
+    pen_simples = []   # Penalty supprimé
+    pen_rejected = []  # Penalty supprimé
 
     def get_day_key(m_dt):
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
 
-    combos_mixed = []  # gardé pour compatibilité HTML/email
+    # ── MOTEUR DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE ─────────────────────
+    # Critères : score_2t >= 60 + mt2_odds >= @1.85 (Unibet) + cote combinée >= 3.20
+    # Mise : 4€ (score_2t moyen 60-79) / 5€ (score_2t moyen >= 80)
+    MIN_2T_SCORE = 60
+    MIN_2T_ODDS  = 1.85   # Unibet → ~@1.80 réel tabac
+    MIN_2T_COMBO = 3.20   # cote combinée minimum
+
+    mt2_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        o25 = m.get("over25")
-        u25 = m.get("under25")
-        score = m.get("ac_score", 0)
-        if score >= 60 and o25 and u25 and o25 >= MIN_O25_SINGLE and o25 < u25:
-            stake = 5.0 if score >= 80 else (4.0 if score >= 70 else 3.0)
+        s2t = m.get("score_2t", 0)
+        mt2 = m.get("mt2_odds")
+        if s2t >= MIN_2T_SCORE and mt2 and mt2 >= MIN_2T_ODDS:
+            mt2_pool.append({"m": m, "id": m["id"], "dt": m_dt,
+                             "day": get_day_key(m_dt), "odds": mt2, "score": s2t,
+                             "market": "🕐 2T Prolifique"})
+
+    mt2_pool.sort(key=lambda x: x["dt"])
+    print(f"📊 Pool 2T prolifique (Score2T >= {MIN_2T_SCORE}, Cote >= @{MIN_2T_ODDS}) : {len(mt2_pool)}")
+
+    combos_mixed = []
+    used_2t = set()
+    for d in sorted(set(s["day"] for s in mt2_pool)):
+        day_pool = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t]
+        day_pool_sorted = sorted(day_pool, key=lambda x: -x["odds"])
+        best_pair = None
+        for i in range(len(day_pool_sorted)):
+            for j in range(i + 1, len(day_pool_sorted)):
+                a, b = day_pool_sorted[i], day_pool_sorted[j]
+                c_odds = round(a["odds"] * b["odds"], 2)
+                if c_odds >= MIN_2T_COMBO:
+                    if best_pair is None or c_odds < best_pair[2]:
+                        best_pair = (a, b, c_odds)
+            if best_pair:
+                break
+        if best_pair:
+            a, b, c_odds = best_pair
+            used_2t.update([a["id"], b["id"]])
+            avg_s2t = (a["score"] + b["score"]) / 2
+            stake = 5.0 if avg_s2t >= 80 else 4.0
+            items = sorted([a, b], key=lambda x: x["dt"])
             combos_mixed.append({
-                "session": get_day_key(m_dt),
-                "type": "Pari Simple Over 2.5",
-                "items": [{"m": m, "id": m["id"], "dt": m_dt, "market": "🟥 Over 2.5",
-                            "odds": o25, "score": score}],
-                "comb_odds": o25,
-                "avg_score": float(score),
-                "stake": stake,
-                "gain": round(stake * o25, 2),
-                "profit": round(stake * o25 - stake, 2)
+                "session": d, "type": "Doublé 2T Prolifique",
+                "items": items, "comb_odds": c_odds,
+                "avg_score": round(avg_s2t, 1), "stake": stake,
+                "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
             })
 
     combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
     total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Paris Simples Over 2.5 (Score >= 60, Cote >= @1.60, Mise 3-5€) : {len(combos_mixed)} paris / Mise totale : {total_stake:.0f} €")
-
-    pen_simples = []   # Penalty supprimé
-    pen_rejected = []  # Penalty supprimé
+    print(f"✅ Doublés 2T Prolifique (Cote combinée >= @{MIN_2T_COMBO}, Mise 4-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
 
 
     def render_match_proof_html(m):
