@@ -667,568 +667,198 @@ def main():
     mt1_pool.sort(key=lambda x: (-x["score"], -x["odds"]))
     print(f"📊 Pool 2T: {len(mt2_pool)} matchs | Pool 1T: {len(mt1_pool)} matchs (fenêtre {WINDOW_H}h)")
 
-    # ── MOTEUR DE SÉLECTIONS ET COMBINÉS HYBRIDES (1T + 2T) ─────────────────
-    # Les used_* sont par catégorie (B, A, Hybrides, 2T, 1T simples)
-    # Un match peut apparaître dans plusieurs catégories — pas de pool global épuisé.
-    # Les items de chaque ticket sont toujours triés par ordre chronologique (dt).
-    stake_sys = 1.00  # 1.00 € par combinaison -> 3.00 € par système 2/3 (Mise totale 3 €)
-
-    MAX_SYS_B   = 6   # Systèmes 2/3 Type B [2x 1T + 1x 2T]
-    MAX_SYS_A   = 6   # Systèmes 2/3 Type A [2x 2T + 1x 1T]
-    MAX_HYB_DBL = 6   # Combinés Doublés Hybrides [1x 1T + 1x 2T]
-    MAX_2T_DBL  = 8   # Combinés Doublés 2T Purs [2x 2T]
-    MAX_1T_SMP  = 8   # Paris Simples 1T secs
-
-    def sorted_by_dt(items):
-        """Tri chronologique des items d'un ticket (heure de match croissante)."""
-        return sorted(items, key=lambda x: x["dt"])
-
-    # 1. SYSTÈMES 2/3 HYBRIDES TYPE B (2 Matchs 1ère MT + 1 Match 2ème MT)
-    # Pool indépendant pour cette catégorie
-    used_b = set()
-    systems_23_b = []
-    for _ in range(MAX_SYS_B):
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_b]
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_b]
-        if len(rem_1t) >= 2 and len(rem_2t) >= 1:
-            c1, c2 = rem_1t[0], rem_1t[1]
-            avail_2t = [s for s in rem_2t if s["id"] not in (c1["id"], c2["id"])]
-            if not avail_2t:
-                break
-            a = avail_2t[0]
-            used_b.update([c1["id"], c2["id"], a["id"]])
-            o_12 = round(c1["odds"] * c2["odds"], 2)
-            o_1a = round(c1["odds"] * a["odds"], 2)
-            o_2a = round(c2["odds"] * a["odds"], 2)
-            min_g = round(stake_sys * min(o_12, o_1a, o_2a), 2)
-            max_g = round(stake_sys * (o_12 + o_1a + o_2a), 2)
-            all_days = sorted(set([c1["day"], c2["day"], a["day"]]))
-            day_lbl = " / ".join(all_days)
-            # Trier les 3 sélections dans l'ordre chronologique du match
-            items_chron = sorted_by_dt([c1, c2, a])
-            # Identifier les rôles dans l'ordre chronologique
-            c1_chron = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c1["id"])
-            c2_chron = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c2["id"])
-            a_chron  = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a["id"])
-            systems_23_b.append({
-                "type": "2x 1T + 1x 2T", "day": day_lbl,
-                "c1": c1_chron, "c2": c2_chron, "a": a_chron,
-                "_items_chron": items_chron,  # liste ordonnée chron pour affichage
-                "o_12": o_12, "o_1a": o_1a, "o_2a": o_2a,
-                "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
-                "min_gain": min_g, "max_gain": max_g
-            })
-        else:
-            break
-
-    # 2. SYSTÈMES 2/3 HYBRIDES TYPE A (2 Matchs 2ème MT + 1 Match 1ère MT)
-    # Pool indépendant pour cette catégorie
-    used_a = set()
-    systems_23_a = []
-    for _ in range(MAX_SYS_A):
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_a]
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_a]
-        if len(rem_2t) >= 2 and len(rem_1t) >= 1:
-            a1, a2 = rem_2t[0], rem_2t[1]
-            avail_1t = [s for s in rem_1t if s["id"] not in (a1["id"], a2["id"])]
-            if not avail_1t:
-                break
-            c = avail_1t[0]
-            used_a.update([a1["id"], a2["id"], c["id"]])
-            o_12 = round(a1["odds"] * a2["odds"], 2)
-            o_1c = round(a1["odds"] * c["odds"], 2)
-            o_2c = round(a2["odds"] * c["odds"], 2)
-            min_g = round(stake_sys * min(o_12, o_1c, o_2c), 2)
-            max_g = round(stake_sys * (o_12 + o_1c + o_2c), 2)
-            all_days = sorted(set([a1["day"], a2["day"], c["day"]]))
-            day_lbl = " / ".join(all_days)
-            # Tri chronologique des 3 sélections
-            items_chron = sorted_by_dt([a1, a2, c])
-            a1_chron = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a1["id"])
-            a2_chron = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a2["id"])
-            c_chron  = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c["id"])
-            systems_23_a.append({
-                "type": "2x 2T + 1x 1T", "day": day_lbl,
-                "a1": a1_chron, "a2": a2_chron, "c": c_chron,
-                "_items_chron": items_chron,
-                "o_12": o_12, "o_1c": o_1c, "o_2c": o_2c,
-                "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
-                "min_gain": min_g, "max_gain": max_g
-            })
-        else:
-            break
-
-    # 3. COMBINÉS DOUBLÉS HYBRIDES (1 Match 1ère MT + 1 Match 2ème MT)
-    # Pool indépendant — chaque match peut aussi être dans un système 2/3
-    used_hyb = set()
-    combos_hybrid = []
-    for _ in range(MAX_HYB_DBL):
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_hyb]
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_hyb]
-        if len(rem_1t) >= 1 and len(rem_2t) >= 1:
-            c = rem_1t[0]
-            avail_2t = [s for s in rem_2t if s["id"] != c["id"]]
-            if not avail_2t:
-                break
-            a = avail_2t[0]
-            used_hyb.update([c["id"], a["id"]])
-            comb_o = round(c["odds"] * a["odds"], 2)
-            all_days = sorted(set([c["day"], a["day"]]))
-            day_lbl = " / ".join(all_days)
-            # Tri chronologique : afficher les 2 matchs dans l'ordre horaire
-            items_chron = sorted_by_dt([c, a])
-            combos_hybrid.append({
-                "type": "Doublé Hybride (1T + 2T)", "day": day_lbl,
-                "items": items_chron,  # triés chronologiquement
-                "comb_odds": comb_o, "stake": 3.0,
-                "gain": round(3.0 * comb_o, 2), "profit": round(3.0 * comb_o - 3.0, 2)
-            })
-        else:
-            break
-
-    # 4. COMBINÉS DOUBLÉS 2T PURS (2 Matchs 2ème MT)
-    # Pool indépendant
-    used_2t_dbl = set()
-    combos_2t_pure = []
-    for _ in range(MAX_2T_DBL):
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t_dbl]
-        if len(rem_2t) >= 2:
-            a1, a2 = rem_2t[0], rem_2t[1]
-            used_2t_dbl.update([a1["id"], a2["id"]])
-            comb_o = round(a1["odds"] * a2["odds"], 2)
-            all_days = sorted(set([a1["day"], a2["day"]]))
-            day_lbl = " / ".join(all_days)
-            # Tri chronologique des 2 matchs
-            items_chron = sorted_by_dt([a1, a2])
-            combos_2t_pure.append({
-                "type": "Doublé 2T Prolifique", "day": day_lbl,
-                "items": items_chron,  # triés chronologiquement
-                "comb_odds": comb_o, "stake": 4.0,
-                "gain": round(4.0 * comb_o, 2), "profit": round(4.0 * comb_o - 4.0, 2)
-            })
-        else:
-            break
-
-    # 5. PARIS SIMPLES 1T SECS (les pépites restantes, hors Formule B)
-    simples_1t = [s for s in mt1_pool if s["id"] not in used_b][:MAX_1T_SMP]
-    combos_mixed = combos_hybrid + combos_2t_pure
-
-    print(f"🎲 Systèmes 2/3 Type B (2x 1T + 1x 2T) : {len(systems_23_b)}")
-    print(f"🎲 Systèmes 2/3 Type A (2x 2T + 1x 1T) : {len(systems_23_a)}")
-    print(f"⚡ Doublés Hybrides (1T + 2T)          : {len(combos_hybrid)}")
-    print(f"🚀 Doublés 2T Purs (2x 2T)             : {len(combos_2t_pure)}")
-    print(f"🎯 Simples 1T Secs                     : {len(simples_1t)}")
-
-
-
-    def render_match_proof_html(m):
-        score = m.get("ac_score", 0)
-        # Pas de données AdamChoi pour ce match → ne pas afficher de bloc vide
-        if not score:
-            return '<div style="color:#94a3b8; font-size:11px; font-style:italic; margin-top:6px;">📭 Données AdamChoi non disponibles pour cette équipe.</div>'
-        classe = m.get("ac_classe", "Bon potentiel")
-        pts_ipo = m.get("pts_ipo", 0)
-        ipo_val = m.get("ipo_comb", 0.0)
-        pts_goals = m.get("pts_goals", 0)
-        goals_val = m.get("total_goals_brut", 0.0)
-        pts_freq = m.get("pts_freq", 0)
-        freq_val = m.get("avg_freq_all", 0.0)
-        pts_sot = m.get("pts_sot", 0)
-        sot_val = m.get("sot_comb", 0.0)
-        pts_ha = m.get("pts_ha", 0)
-        ha_val = m.get("avg_freq_ha", 0.0)
-        pts_league = m.get("pts_league", 0)
-
-        if score >= 90:
-            score_style = "background: linear-gradient(135deg, #dc2626, #ea580c); color: #ffffff;"
-        elif score >= 85:
-            score_style = "background: linear-gradient(135deg, #ea580c, #f59e0b); color: #ffffff;"
-        elif score >= 80:
-            score_style = "background: #f59e0b; color: #ffffff;"
-        else:
-            score_style = "background: #10b981; color: #ffffff;"
-
-        rec_h = m.get("recent_h_dom", [])
-        h_pills = []
-        for rm in rec_h[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot >= 3:
-                h_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
-            else:
-                h_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
-        h_pills_html = " ".join(h_pills) if h_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
-
-        rec_a = m.get("recent_a_ext", [])
-        a_pills = []
-        for rm in rec_a[:10]:
-            hg = rm.get("homeGoals", rm.get("homeGoalsFt", 0))
-            ag = rm.get("awayGoals", rm.get("awayGoalsFt", 0))
-            tot = int(hg) + int(ag)
-            if tot >= 3:
-                a_pills.append(f'<span style="background:#dcfce7; color:#166534; font-weight:800; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #bbf7d0; display:inline-block; margin:1px;">{hg}-{ag} 🔥</span>')
-            else:
-                a_pills.append(f'<span style="background:#f1f5f9; color:#64748b; font-weight:600; font-size:11px; padding:2px 6px; border-radius:4px; border:1px solid #e2e8f0; display:inline-block; margin:1px;">{hg}-{ag}</span>')
-        a_pills_html = " ".join(a_pills) if a_pills else '<span style="color:#94a3b8; font-style:italic;">Données indisponibles</span>'
-
-        return f'''
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; margin-top:8px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-                <span style="font-weight:800; font-size:12px; color:#0f172a;">📊 AUDIT STATISTIQUE (BARÈME V2)</span>
-                <span style="{score_style} font-weight:800; font-size:11px; padding:3px 10px; border-radius:12px; letter-spacing:0.3px;">
-                    {score}/100 &bull; {classe}
-                </span>
-            </div>
-
-            <div style="background:#eef2ff; padding:8px 10px; border-radius:6px; border:1px solid #c7d2fe; font-size:11px; color:#3730a3; margin-bottom:8px; line-height:1.6;">
-                <b>🕐 Profil 2ème Mi-Temps</b> : <b>{m.get('score_2t', 0)}%</b> de matchs avec 2T &gt; 1T &nbsp;|&nbsp; 
-                DOM : <b>{m.get('pct_2t_dom', 0)}%</b> &nbsp;|&nbsp; EXT : <b>{m.get('pct_2t_ext', 0)}%</b> &nbsp;|&nbsp; 
-                Cote 2T : <b>@{m.get('mt2_odds', 0):.2f}</b>
-            </div>
-
-            <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
-                <b>1. IPO ({ipo_val:.2f})</b>: {pts_ipo}/25 &nbsp;|&nbsp; 
-                <b>2. Buts ({goals_val:.1f}b)</b>: {pts_goals}/15 &nbsp;|&nbsp; 
-                <b>3. Freq ({freq_val:.0f}%)</b>: {pts_freq}/20 &nbsp;|&nbsp; 
-                <b>4. Tirs ({sot_val:.1f}t)</b>: {pts_sot}/10 &nbsp;|&nbsp; 
-                <b>5. H/A ({ha_val:.0f}%)</b>: {pts_ha}/20 &nbsp;|&nbsp; 
-                <b>6. Ligue</b>: {pts_league}/10
-            </div>
-
-            <div style="font-size:11px; color:#334155; line-height:1.6;">
-                <div style="margin-bottom:6px;">
-                    <b>🏠 10m Domicile ({m['dom']})</b> :<br>{h_pills_html}
-                </div>
-                <div>
-                    <b>✈️ 10m Extérieur ({m['ext']})</b> :<br>{a_pills_html}
-                </div>
-            </div>
-        </div>
-        '''
-
-
-
-    # ── Rendu HTML unifié — tous les tickets regroupés par jour ──────────────
+    # ── MOTEUR DE SÉLECTIONS ET COMBINÉS 3 MATCHS (SYSTÈMES 2/3) ────────────
+    # RÈGLES STRICTES :
+    # 1. Same-Day : Chaque combiné est composé de 3 matchs se jouant le MÊME JOUR J (jamais de mélange jeudi/vendredi).
+    # 2. Tri chronologique : Les 3 sélections de chaque ticket sont triées par heure de coup d'envoi croissante.
+    # 3. Mise : 3.00 € fixe par ticket Système 2/3 (3 combinaisons x 1.00 €).
+    # 4. "Ce que vous devez jouer" : Ne contient STRICTEMENT et UNIQUEMENT que les matchs présents dans ces combinés de 3 matchs.
+    stake_sys = 1.00  # 1.00 € par combinaison -> 3.00 € par système 2/3
 
     JOURS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+    JOURS_LONGS = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
 
-    def fmt_match_dt(item):
-        """Retourne 'Mer. 03/09 · 18h45' depuis item['dt'] (UTC → Paris)."""
-        try:
-            dt_paris = item["dt"].astimezone(timezone(timedelta(hours=2)))
-            return f"{JOURS_FR[dt_paris.weekday()]} {dt_paris.strftime('%d/%m')} · {dt_paris.strftime('%Hh%M')}"
-        except Exception:
-            return "?"
+    def fmt_match_dt(dt_obj):
+        dt_p = dt_obj.astimezone(timezone(timedelta(hours=2)))
+        return f"{JOURS_FR[dt_p.weekday()]} {dt_p.strftime('%d/%m')} · {dt_p.strftime('%Hh%M')}"
 
-    def day_label(day_key):
-        """'2026-09-04' → 'Jeu. 04/09'"""
+    def day_label_fr(day_key):
         try:
             from datetime import date as _date
             d = _date.fromisoformat(day_key)
-            return f"{JOURS_FR[d.weekday()]} {d.strftime('%d/%m')}"
+            return f"{JOURS_LONGS[d.weekday()]} {d.strftime('%d/%m')}"
         except Exception:
             return day_key
 
-    def ticket_sort_dt(tk):
-        """Datetime du premier match (le plus tôt) d'un ticket pour tri chrono."""
-        items = tk.get("_items", [])
-        if items:
-            return min(x["dt"] for x in items)
-        return now_utc
-
-    # ── Construire la liste unifiée de tous les tickets ───────────────────────
-    all_tickets = []
-
-    for t in systems_23_b:
-        items = t.get("_items_chron", [t["c1"], t["c2"], t["a"]])
-        all_tickets.append({"kind": "SYS_B", "data": t, "_items": items,
-                            "_sort_dt": min(x["dt"] for x in items),
-                            "_day": min(x["day"] for x in items)})
-
-    for t in systems_23_a:
-        items = t.get("_items_chron", [t["a1"], t["a2"], t["c"]])
-        all_tickets.append({"kind": "SYS_A", "data": t, "_items": items,
-                            "_sort_dt": min(x["dt"] for x in items),
-                            "_day": min(x["day"] for x in items)})
-
-    for t in combos_hybrid:
-        items = t["items"]
-        all_tickets.append({"kind": "DBL_HYB", "data": t, "_items": items,
-                            "_sort_dt": min(x["dt"] for x in items),
-                            "_day": min(x["day"] for x in items)})
-
-    for t in combos_2t_pure:
-        items = t["items"]
-        all_tickets.append({"kind": "DBL_2T", "data": t, "_items": items,
-                            "_sort_dt": min(x["dt"] for x in items),
-                            "_day": min(x["day"] for x in items)})
-
-    for s in simples_1t:
-        all_tickets.append({"kind": "SMP_1T", "data": s, "_items": [s],
-                            "_sort_dt": s["dt"], "_day": s["day"]})
-
-    # Trier tous les tickets par heure du premier match
-    all_tickets.sort(key=lambda x: x["_sort_dt"])
-
-    # Grouper par jour
-    from itertools import groupby
-    from operator import itemgetter
-
-    def render_match_row(item, override_badge=None):
-        """Rendu d'une ligne match avec badge heure + type mi-temps."""
-        m = item["m"]
-        mkt = item.get("market", "")
-        if "2T" in mkt:
-            badge_bg, badge_cl, badge_txt = "#dbeafe", "#1e40af", f"🔵 2ème MT · {fmt_match_dt(item)}"
-            inst = "Cocher : 2ème Mi-Temps la plus prolifique"
-            score_lbl = f"Score 2T: <b>{item['score']}%</b>"
-            border_cl, bg_cl = "#2563eb", "#eff6ff"
-            cote_cl = "#1d4ed8"
+    def make_sys_ticket(m1, m2, m3, idx, day_k):
+        """Crée un ticket Système 2/3 avec 3 matchs triés chronologiquement."""
+        items = sorted([m1, m2, m3], key=lambda x: x["dt"])
+        o1 = items[0]["odds"]
+        o2 = items[1]["odds"]
+        o3 = items[2]["odds"]
+        c12 = round(o1 * o2, 2)
+        c13 = round(o1 * o3, 2)
+        c23 = round(o2 * o3, 2)
+        min_g = round(stake_sys * min(c12, c13, c23), 2)
+        max_g = round(stake_sys * (c12 + c13 + c23), 2)
+        
+        nb_1t = sum(1 for x in items if "1T" in x["market"])
+        nb_2t = sum(1 for x in items if "2T" in x["market"])
+        if nb_1t == 2 and nb_2t == 1:
+            color = "#7c3aed"
+            bg_hdr = "#ede9fe"
+            type_desc = "Formule B (2x 1T + 1x 2T)"
+        elif nb_2t == 2 and nb_1t == 1:
+            color = "#2563eb"
+            bg_hdr = "#dbeafe"
+            type_desc = "Formule A (2x 2T + 1x 1T)"
+        elif nb_2t == 3:
+            color = "#0284c7"
+            bg_hdr = "#e0f2fe"
+            type_desc = "Sécurité 2T (3x 2ème MT)"
         else:
-            badge_bg, badge_cl, badge_txt = "#fef3c7", "#92400e", f"🟡 1ère MT · {fmt_match_dt(item)}"
-            inst = "Cocher : 1ère Mi-Temps la plus prolifique"
-            score_lbl = f"Score 1T: <b>{item['score']}%</b>"
-            border_cl, bg_cl = "#d97706", "#fffbeb"
-            cote_cl = "#b45309"
-        if override_badge:
-            badge_txt = override_badge
-        return f'''
-        <div style="background:{bg_cl}; border:1px solid {badge_bg}; border-left:4px solid {border_cl}; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
-          <div style="font-size:10px; font-weight:700; color:{badge_cl}; background:{badge_bg}; display:inline-block; padding:1px 7px; border-radius:4px; margin-bottom:4px;">{badge_txt}</div>
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <span><b>{m['dom']} vs {m['ext']}</b> <span style="color:#64748b; font-size:10px;">({m.get('league','')})</span></span>
-            <span style="font-size:13px; font-weight:900; color:{cote_cl}; background:#fff; padding:1px 6px; border-radius:4px; border:1px solid {badge_bg};">@{item['odds']:.2f}</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; color:{badge_cl}; font-size:10px; margin-top:2px;">
-            <span>👉 <b>{inst}</b></span>
-            <span>{score_lbl}</span>
-          </div>
-        </div>'''
+            color = "#d97706"
+            bg_hdr = "#fef3c7"
+            type_desc = "Offensif 1T (3x 1ère MT)"
 
-    def render_ticket(tk, idx):
-        kind = tk["kind"]
-        t = tk["data"]
+        return {
+            "idx": idx,
+            "day": day_k,
+            "items": items,
+            "type_desc": type_desc,
+            "color": color,
+            "bg_hdr": bg_hdr,
+            "c12": c12, "c13": c13, "c23": c23,
+            "comb_odds": c12,
+            "stake": round(stake_sys * 3, 2),
+            "stake_line": stake_sys,
+            "stake_tot": round(stake_sys * 3, 2),
+            "gain": max_g,
+            "profit": round(max_g - (stake_sys * 3), 2),
+            "min_gain": min_g,
+            "max_gain": max_g,
+            "prof_min": round(min_g - (stake_sys * 3), 2),
+            "prof_max": round(max_g - (stake_sys * 3), 2),
+        }
 
-        if kind in ("SYS_B", "SYS_A"):
-            # Système 2/3
-            items = tk["_items"]
-            stake_sys = t["stake_line"]
-            tot_st = t["stake_tot"]
-            if kind == "SYS_B":
-                type_lbl = "2x 1ère MT + 1x 2ème MT"
-                o1_lbl, o2_lbl, o3_lbl = "1T+1T", "1T+2T", "1T+2T"
-                o_a, o_b, o_c = t["o_12"], t["o_1a"], t["o_2a"]
-                hdr_bg, hdr_cl, bord = "#ede9fe", "#6d28d9", "#7c3aed"
+    # Grouper les pools par jour J
+    days_present = sorted(list(set([m["day"] for m in mt2_pool] + [m["day"] for m in mt1_pool])))
+    all_systems = []
+    sys_idx = 1
+
+    for day_k in days_present:
+        p1 = [s for s in mt1_pool if s["day"] == day_k]
+        p2 = [s for s in mt2_pool if s["day"] == day_k]
+        
+        # Au moins 3 matchs ce jour-là pour composer des combinés
+        if len(p1) + len(p2) < 3:
+            continue
+            
+        used_day = set()
+
+        # 1. Formule B (2x 1T + 1x 2T) sur ce jour J
+        while True:
+            avail_1 = [s for s in p1 if s["id"] not in used_day]
+            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            if len(avail_1) >= 2 and len(avail_2) >= 1:
+                c1, c2 = avail_1[0], avail_1[1]
+                a = avail_2[0]
+                used_day.update([c1["id"], c2["id"], a["id"]])
+                all_systems.append(make_sys_ticket(c1, c2, a, sys_idx, day_k))
+                sys_idx += 1
             else:
-                type_lbl = "2x 2ème MT + 1x 1ère MT"
-                o1_lbl, o2_lbl, o3_lbl = "2T+2T", "2T+1T", "2T+1T"
-                o_a, o_b, o_c = t["o_12"], t["o_1c"], t["o_2c"]
-                hdr_bg, hdr_cl, bord = "#dbeafe", "#1e40af", "#2563eb"
-            min_g, max_g = t["min_gain"], t["max_gain"]
-            prof_min = round(min_g - tot_st, 2)
-            prof_max = round(max_g - tot_st, 2)
-            rows_html = "".join(render_match_row(i) for i in items)
-            return f'''
-            <div style="background:#fff; border:1.5px solid {hdr_bg}; border-left:5px solid {bord}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:{hdr_bg}; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid {hdr_bg};">
-                <span style="font-weight:900; color:{hdr_cl}; font-size:13px;">🎟️ SYSTÈME 2/3 #{idx} — {type_lbl}</span>
-                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">Mise {tot_st:.2f} € (3 × {stake_sys:.2f} €)</span>
-              </div>
-              {rows_html}
-              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; margin-top:6px;">
-                <div style="color:#475569; margin-bottom:4px;">
-                  Combinaisons : Ticket 1 ({o1_lbl}): <b>@{o_a:.2f}</b> · Ticket 2 ({o2_lbl}): <b>@{o_b:.2f}</b> · Ticket 3 ({o3_lbl}): <b>@{o_c:.2f}</b>
-                </div>
-                <div style="display:flex; justify-content:space-between; border-top:1px dashed #cbd5e1; padding-top:5px;">
-                  <span style="color:#15803d; font-weight:800;">🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px;">(+{prof_min:.2f} € net)</span></span>
-                  <span style="color:{hdr_cl}; font-weight:900; font-size:13px;">🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; color:#15803d;">(+{prof_max:.2f} €)</span></span>
-                </div>
-              </div>
-            </div>'''
+                break
 
-        elif kind == "DBL_HYB":
-            items = tk["_items"]
-            cote = t["comb_odds"]
-            gain = t["gain"]
-            profit = t["profit"]
-            rows_html = "".join(render_match_row(i) for i in items)
-            return f'''
-            <div style="background:#fff; border:1.5px solid #fed7aa; border-left:5px solid #ea580c; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#fff7ed; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #fed7aa;">
-                <span style="font-weight:900; color:#c2410c; font-size:12px;">⚡ DOUBLÉ HYBRIDE #{idx} — 1ère MT + 2ème MT</span>
-                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Cote @{cote:.2f} · Mise 3 € → {gain:.2f} € (+{profit:.2f} €)</span>
-              </div>
-              {rows_html}
-            </div>'''
+        # 2. Formule A (2x 2T + 1x 1T) sur ce jour J
+        while True:
+            avail_1 = [s for s in p1 if s["id"] not in used_day]
+            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            if len(avail_2) >= 2 and len(avail_1) >= 1:
+                a1, a2 = avail_2[0], avail_2[1]
+                c = avail_1[0]
+                used_day.update([a1["id"], a2["id"], c["id"]])
+                all_systems.append(make_sys_ticket(a1, a2, c, sys_idx, day_k))
+                sys_idx += 1
+            else:
+                break
 
-        elif kind == "DBL_2T":
-            items = tk["_items"]
-            cote = t["comb_odds"]
-            gain = t["gain"]
-            profit = t["profit"]
-            rows_html = "".join(render_match_row(i) for i in items)
-            return f'''
-            <div style="background:#fff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #bfdbfe;">
-                <span style="font-weight:900; color:#1e40af; font-size:12px;">🚀 DOUBLÉ 2T PUR #{idx} — 2ème MT + 2ème MT</span>
-                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Cote @{cote:.2f} · Mise 4 € → {gain:.2f} € (+{profit:.2f} €)</span>
-              </div>
-              {rows_html}
-            </div>'''
+        # 3. Triplets 2T restants (3x 2T) sur ce jour J
+        while True:
+            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            if len(avail_2) >= 3:
+                a1, a2, a3 = avail_2[0], avail_2[1], avail_2[2]
+                used_day.update([a1["id"], a2["id"], a3["id"]])
+                all_systems.append(make_sys_ticket(a1, a2, a3, sys_idx, day_k))
+                sys_idx += 1
+            else:
+                break
 
-        else:  # SMP_1T
-            s = t
-            m = s["m"]
-            dt_lbl = fmt_match_dt(s)
-            return f'''
-            <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #b45309; border-radius:8px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:10px; font-weight:700; color:#92400e; background:#fef3c7; display:inline-block; padding:1px 7px; border-radius:4px; margin-bottom:3px;">⚡ SIMPLE 1T #{idx} · {dt_lbl}</div>
-                <b style="font-size:12px; color:#0f172a;">{m['dom']} vs {m['ext']}</b>
-                <span style="font-size:10px; color:#64748b;"> ({m.get('league','')})</span><br>
-                <span style="font-size:11px; color:#92400e;">👉 <b>1ère MT prolifique</b> · Score 1T: <b>{s['score']}%</b> · Moy. buts: {s['goals']:.1f}</span>
-              </div>
-              <div style="text-align:right; min-width:90px;">
-                <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
-                <span style="font-size:10px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 6px; border-radius:4px;">Mise 3 € → {3.0*s['odds']:.2f} €</span>
-              </div>
-            </div>'''
+        # 4. Triplets 1T restants (3x 1T) sur ce jour J
+        while True:
+            avail_1 = [s for s in p1 if s["id"] not in used_day]
+            if len(avail_1) >= 3:
+                c1, c2, c3 = avail_1[0], avail_1[1], avail_1[2]
+                used_day.update([c1["id"], c2["id"], c3["id"]])
+                all_systems.append(make_sys_ticket(c1, c2, c3, sys_idx, day_k))
+                sys_idx += 1
+            else:
+                break
 
-    # ── Rendu final regroupé par jour ─────────────────────────────────────────
-    systems_23_html = ""
-    combos_hybrid_html = ""
-    combos_2t_html = ""
-    simples_1t_html = ""
+        # 5. Si 2 orphelins restent sur ce jour J, on les associe à la meilleure base du jour pour former un ticket
+        left_1 = [s for s in p1 if s["id"] not in used_day]
+        left_2 = [s for s in p2 if s["id"] not in used_day]
+        leftovers = left_1 + left_2
+        if len(leftovers) == 2 and p2:
+            anchor = [s for s in p2 if s["id"] not in [x["id"] for x in leftovers]]
+            if anchor:
+                m1, m2 = leftovers[0], leftovers[1]
+                used_day.update([m1["id"], m2["id"]])
+                all_systems.append(make_sys_ticket(m1, m2, anchor[0], sys_idx, day_k))
+                sys_idx += 1
+        elif len(leftovers) == 1 and len(p2) >= 2:
+            anchors = [s for s in p2 if s["id"] != leftovers[0]["id"]][:2]
+            if len(anchors) == 2:
+                used_day.add(leftovers[0]["id"])
+                all_systems.append(make_sys_ticket(leftovers[0], anchors[0], anchors[1], sys_idx, day_k))
+                sys_idx += 1
 
-    # Une seule section unifiée
-    unified_html = ""
-    idx_by_kind = {"SYS_B": 0, "SYS_A": 0, "DBL_HYB": 0, "DBL_2T": 0, "SMP_1T": 0}
+    print(f"🎲 Total Systèmes 2/3 générés (Same-Day) : {len(all_systems)}")
 
-    # Grouper par jour (clé = day_key '2026-09-04')
-    days_seen = []
-    day_groups = {}
-    for tk in all_tickets:
-        dk = tk["_day"]
-        if dk not in day_groups:
-            day_groups[dk] = []
-            days_seen.append(dk)
-        day_groups[dk].append(tk)
+    combos_mixed = all_systems
+    combos_hybrid = []
+    combos_2t_pure = []
+    simples_1t = []
 
-    for dk in days_seen:
-        unified_html += f'<div style="font-size:13px; font-weight:900; color:#0f172a; background:#f1f5f9; padding:8px 12px; border-radius:7px; margin:16px 0 10px 0; border-left:5px solid #6366f1;">📅 {day_label(dk)}</div>'
-        for tk in day_groups[dk]:
-            kind = tk["kind"]
-            idx_by_kind[kind] += 1
-            unified_html += render_ticket(tk, idx_by_kind[kind])
-
-    if not unified_html:
-        unified_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Aucun ticket généré sur cette session.</div>'
-
-
-
-    # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
+    # ── Tableau chronologique : STRICTEMENT et UNIQUEMENT les matchs des combinés ──
     plan_rows = []
     seen_plan = set()
-
-
-
-    # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
-    plan_rows = []
-    seen_plan = set()
-
-    # Matchs des Systèmes 2/3 Type B (2x 1T + 1x 2T)
-    for idx_sys, sys_item in enumerate(systems_23_b, 1):
-        for role, item, mkt, bg, cl in [
-            ("1T", sys_item["c1"], sys_item["c1"]["market"], "#fef3c7", "#92400e"),
-            ("1T", sys_item["c2"], sys_item["c2"]["market"], "#fef3c7", "#92400e"),
-            ("2T", sys_item["a"], sys_item["a"]["market"], "#e0e7ff", "#3730a3")
-        ]:
+    for tk in all_systems:
+        for item in tk["items"]:
             m = item["m"]
-            key = (m["id"], mkt, f"SYSB_{idx_sys}")
+            key = (m["id"], item["market"])
             if key not in seen_plan:
-                plan_rows.append({
-                    "dt": item["dt"], "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
-                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%", "score_val": item["score"],
-                    "type_label": f"SYS 2/3 #{idx_sys} ({role})",
-                    "bg_market": bg, "cl_market": cl,
-                })
-                seen_plan.add(key)
-
-    # Matchs des Systèmes 2/3 Type A (2x 2T + 1x 1T)
-    for idx_sys, sys_item in enumerate(systems_23_a, 1):
-        for role, item, mkt, bg, cl in [
-            ("2T", sys_item["a1"], sys_item["a1"]["market"], "#e0e7ff", "#3730a3"),
-            ("2T", sys_item["a2"], sys_item["a2"]["market"], "#e0e7ff", "#3730a3"),
-            ("1T", sys_item["c"], sys_item["c"]["market"], "#fef3c7", "#92400e")
-        ]:
-            m = item["m"]
-            key = (m["id"], mkt, f"SYSA_{idx_sys}")
-            if key not in seen_plan:
-                plan_rows.append({
-                    "dt": item["dt"], "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
-                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%", "score_val": item["score"],
-                    "type_label": f"SYS 2/3 A#{idx_sys} ({role})",
-                    "bg_market": bg, "cl_market": cl,
-                })
-                seen_plan.add(key)
-
-    # Doublés Hybrides
-    for idx_hyb, ch in enumerate(combos_hybrid, 1):
-        for item in ch["items"]:
-            m = item["m"]
-            key = (m["id"], item["market"], f"HYB_{idx_hyb}")
-            if key not in seen_plan:
+                dt_p = item["dt"].astimezone(timezone(timedelta(hours=2)))
+                jour_fr = JOURS_FR[dt_p.weekday()]
+                heure_str = f"{jour_fr} {dt_p.strftime('%d/%m')} · {dt_p.strftime('%Hh%M')}"
                 is_1t = "1T" in item["market"]
                 plan_rows.append({
-                    "dt": item["dt"], "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
-                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%", "score_val": item["score"],
-                    "type_label": f"DOUBLÉ HYBRIDE #{idx_hyb}",
-                    "bg_market": "#fef3c7" if is_1t else "#e0e7ff",
-                    "cl_market": "#92400e" if is_1t else "#3730a3",
+                    "dt": item["dt"],
+                    "date_str": heure_str,
+                    "match": f"{m['dom']} vs {m['ext']}",
+                    "league": m.get("league", ""),
+                    "market": item["market"],
+                    "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%",
+                    "score_val": item["score"],
+                    "type_label": f"SYS #{tk['idx']}",
+                    "bg_market": "#fef3c7" if is_1t else "#dbeafe",
+                    "cl_market": "#92400e" if is_1t else "#1e40af",
+                    "id": m["id"],
                 })
                 seen_plan.add(key)
-
-    # Doublés 2T Purs
-    for idx_cb, cb in enumerate(combos_2t_pure, 1):
-        for item in cb["items"]:
-            m = item["m"]
-            key = (m["id"], item["market"], f"DBL2T_{idx_cb}")
-            if key not in seen_plan:
-                plan_rows.append({
-                    "dt": item["dt"], "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
-                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%", "score_val": item["score"],
-                    "type_label": f"DOUBLÉ 2T #{idx_cb}",
-                    "bg_market": "#e0e7ff", "cl_market": "#3730a3",
-                })
-                seen_plan.add(key)
-
-    # Simples 1T restants
-    for idx_s, s in enumerate(simples_1t, 1):
-        m = s["m"]
-        key = (m["id"], "1T_SIMPLE")
-        if key not in seen_plan:
-            plan_rows.append({
-                "dt": s["dt"], "date_str": m.get("date_str", ""),
-                "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
-                "market": "⚡ 1T Prolifique", "cote": f"@{s['odds']:.2f}",
-                "score_label": f"{s['score']}%", "score_val": s["score"],
-                "type_label": f"SIMPLE 1T #{idx_s}",
-                "bg_market": "#fffbeb", "cl_market": "#b45309",
-            })
-            seen_plan.add(key)
-
     plan_rows.sort(key=lambda x: x["dt"])
 
-    # Génération HTML des lignes du planning
+    # Génération HTML des lignes du planning (Design hier)
     plan_rows_html = ""
     for pr in plan_rows:
         sv = pr["score_val"]
@@ -1253,51 +883,124 @@ def main():
     if not plan_rows_html:
         plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun match retenu sur le créneau à venir.</td></tr>'
 
+    # ── HTML Section Tickets Combinés 2/3 (Design coupons comme hier) ─────────
+    systems_html = ""
+    for day_k in days_present:
+        day_systems = [tk for tk in all_systems if tk["day"] == day_k]
+        if not day_systems:
+            continue
+            
+        dt_sess = day_label_fr(day_k)
+        systems_html += f'''
+        <div style="font-weight:900; color:#0f172a; font-size:13px; margin:16px 0 10px 0; padding:8px 12px; background:#f1f5f9; border-left:5px solid #3b82f6; border-radius:6px;">
+          📅 SESSION [JOURNÉE DU {dt_sess.upper()}] — {len(day_systems)} TICKET(S) SYSTÈME 2/3
+        </div>'''
+        
+        for tk in day_systems:
+            items_html = ""
+            for item in tk["items"]:
+                m = item["m"]
+                dt_p = item["dt"].astimezone(timezone(timedelta(hours=2)))
+                jour_fr = JOURS_FR[dt_p.weekday()]
+                match_h = f"{jour_fr} {dt_p.strftime('%d/%m')} · {dt_p.strftime('%Hh%M')}"
+                is_1t = "1T" in item["market"]
+                
+                if is_1t:
+                    b_bg, b_cl, b_txt = "#fef3c7", "#92400e", f"🟡 1ère Mi-Temps la plus prolifique · {match_h}"
+                    cons = "1ère Mi-Temps la plus prolifique"
+                    c_border, c_bg = "#fde68a", "#fffbeb"
+                    cote_cl = "#b45309"
+                    sc_txt = f"Score 1T: <b>{item['score']}%</b>"
+                else:
+                    b_bg, b_cl, b_txt = "#dbeafe", "#1e40af", f"🔵 2ème Mi-Temps la plus prolifique · {match_h}"
+                    cons = "2ème Mi-Temps la plus prolifique"
+                    c_border, c_bg = "#bfdbfe", "#eff6ff"
+                    cote_cl = "#1d4ed8"
+                    sc_txt = f"Score 2T: <b>{item['score']}%</b>"
+                    
+                items_html += f'''
+                <div style="background:{c_bg}; border:1px solid {c_border}; border-left:4px solid {b_cl}; padding:8px 10px; margin-bottom:6px; border-radius:6px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:3px;">
+                    <span style="font-size:10px; font-weight:700; color:{b_cl}; background:{b_bg}; padding:1px 7px; border-radius:4px;">{b_txt}</span>
+                    <span style="font-size:13px; font-weight:900; color:{cote_cl}; background:#ffffff; padding:1px 7px; border-radius:4px; border:1px solid {c_border};">@{item['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b style="font-size:12px; color:#0f172a;">{m['dom']} vs {m['ext']}</b> <span style="color:#64748b; font-size:10px;">({m.get('league','')})</span></span>
+                    <span style="font-size:11px; color:#475569;">{sc_txt}</span>
+                  </div>
+                  <div style="margin-top:2px; font-size:10px; color:{b_cl};">
+                    👉 <b>Cocher sur le ticket : {cons}</b>
+                  </div>
+                </div>'''
+
+            s1 = tk["items"][0]["m"]["dom"][:12]
+            s2 = tk["items"][1]["m"]["dom"][:12]
+            s3 = tk["items"][2]["m"]["dom"][:12]
+
+            systems_html += f'''
+            <div style="background:#ffffff; border:1.5px solid {tk['color']}44; border-left:5px solid {tk['color']}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{tk['bg_hdr']}; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid {tk['color']}33;">
+                <div>
+                  <span style="font-weight:900; color:{tk['color']}; font-size:13px;">🎟️ SYSTÈME 2/3 #{tk['idx']} — {tk['type_desc']}</span>
+                  <span style="font-size:11px; color:#64748b; font-weight:600;"> · {dt_sess}</span>
+                </div>
+                <div>
+                  <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
+                    Mise {tk['stake_tot']:.2f} € (3 x {tk['stake_line']:.2f} €)
+                  </span>
+                </div>
+              </div>
+
+              <!-- 3 Sélections chronologiques -->
+              <div style="margin-bottom:8px;">
+                {items_html}
+              </div>
+
+              <!-- Bloc Gains & Garanties -->
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px;">
+                <div style="color:#475569; margin-bottom:4px;">
+                  Combinaisons : Ticket 1 ({s1}+{s2}): <b>@{tk['c12']:.2f}</b> · Ticket 2 ({s1}+{s3}): <b>@{tk['c13']:.2f}</b> · Ticket 3 ({s2}+{s3}): <b>@{tk['c23']:.2f}</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:5px;">
+                  <div style="color:#15803d; font-weight:800;">
+                    🛡️ Remboursé dès 2/3 : <b>{tk['min_gain']:.2f} €</b> <span style="font-size:10px; font-weight:700;">(+{tk['prof_min']:.2f} € net)</span>
+                  </div>
+                  <div style="color:{tk['color']}; font-weight:900; font-size:13px;">
+                    🏆 Carton plein 3/3 : <b>{tk['max_gain']:.2f} €</b> <span style="font-size:10px; font-weight:700; color:#15803d;">(+{tk['prof_max']:.2f} €)</span>
+                  </div>
+                </div>
+              </div>
+            </div>'''
+            
+    if not systems_html:
+        systems_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Aucun Système 2/3 disponible sur cette session.</div>'
+
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
+    retained_ids = set([pr["id"] for pr in plan_rows])
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: max(x.get("score_2t", 0), x.get("score_1t", 0)), reverse=True):
-        retained = (m in s3_matches) or any(m["id"] == s["id"] for s in mt1_pool)
+    for m in sorted(scanned_results, key=lambda x: x.get("ac_score", 0), reverse=True):
+        retained = m["id"] in retained_ids
         bg_row = "#f0fdf4" if retained else "#fff"
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
-        mt2 = f"@{m['mt2_odds']:.2f}" if m.get("mt2_odds") else "N/A"
-        mt1 = f"@{m['mt1_odds']:.2f}" if m.get("mt1_odds") else "N/A"
-        s2t_v = m.get("score_2t", 0)
-        s1t_v = m.get("score_1t", 0)
-        goals_v = m.get("total_goals_brut", 0.0)
-        
-        # Badges
-        s2t_bg = "#dcfce7" if s2t_v >= 65 else ("#fef3c7" if s2t_v >= 55 else "#fee2e2")
-        s2t_cl = "#15803d" if s2t_v >= 65 else ("#92400e" if s2t_v >= 55 else "#dc2626")
-        s2t_badge = f'<span style="background:{s2t_bg}; color:{s2t_cl}; font-weight:800; font-size:11px; padding:2px 6px; border-radius:5px;">{s2t_v}%</span>' if s2t_v > 0 else '<span style="color:#94a3b8;">—</span>'
-
-        s1t_bg = "#fef3c7" if s1t_v >= 35 else "#f1f5f9"
-        s1t_cl = "#92400e" if s1t_v >= 35 else "#64748b"
-        s1t_badge = f'<span style="background:{s1t_bg}; color:{s1t_cl}; font-weight:800; font-size:11px; padding:2px 6px; border-radius:5px;">{s1t_v}%</span>' if s1t_v > 0 else '<span style="color:#94a3b8;">—</span>'
-
-        goals_badge = f'<span style="font-size:11px; font-weight:700; color:#334155;">{goals_v:.1f}b</span>' if goals_v > 0 else '<span style="color:#94a3b8;">—</span>'
-
+        mt2_str = f"@{m['mt2_odds']:.2f}" if m.get("mt2_odds") else "N/A"
+        mt1_str = f"@{m['mt1_odds']:.2f}" if m.get("mt1_odds") else "N/A"
         scan_rows_html += (
-            f'<tr style="background:{bg_row};">'
-            f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
-            f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
-            f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
-            f'<td style="padding:7px 4px; text-align:center; border-bottom:1px solid #f1f5f9;">{s2t_badge}</td>'
-            f'<td style="padding:7px 4px; text-align:center; border-bottom:1px solid #f1f5f9;">{s1t_badge}</td>'
-            f'<td style="padding:7px 4px; text-align:center; border-bottom:1px solid #f1f5f9;">{goals_badge}</td>'
-            f'<td style="padding:7px 4px; text-align:center; font-weight:800; font-size:12px; color:#1e40af; border-bottom:1px solid #f1f5f9;">{mt2}</td>'
-            f'<td style="padding:7px 4px; text-align:center; font-weight:800; font-size:12px; color:#b45309; border-bottom:1px solid #f1f5f9;">{mt1}</td>'
-            f'<td style="padding:7px 4px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
+            f'<tr style="background:{bg_row}; border-bottom:1px solid #f1f5f9;">'
+            f'<td style="padding:6px 8px; font-size:11px; white-space:nowrap;">{m.get("date_str", "")}</td>'
+            f'<td style="padding:6px 8px;"><b style="color:#0f172a;">{m["dom"]} vs {m["ext"]}</b><br><span style="font-size:9px; color:#94a3b8;">{m.get("league", "")}</span></td>'
+            f'<td style="padding:6px 4px; text-align:center; font-weight:700;">{m.get("score_2t", 0)}%</td>'
+            f'<td style="padding:6px 4px; text-align:center; font-weight:700;">{m.get("score_1t", 0)}%</td>'
+            f'<td style="padding:6px 4px; text-align:center;">{m.get("total_goals_brut", 0):.1f}</td>'
+            f'<td style="padding:6px 4px; text-align:center; font-weight:700; color:#1d4ed8;">{mt2_str}</td>'
+            f'<td style="padding:6px 4px; text-align:center; font-weight:700; color:#b45309;">{mt1_str}</td>'
+            f'<td style="padding:6px 4px; text-align:center;">{badge}</td>'
             f'</tr>'
         )
 
-    # ── Email HTML Nouveau Design ─────────────────────────────────────────────
-    now_local = datetime.now(timezone(timedelta(hours=2)))
-    days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
-    date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
-    tot_sys = len(systems_23_b) + len(systems_23_a)
-    tot_hyb_dbl = len(combos_hybrid)
-    tot_2t_dbl = len(combos_2t_pure)
-    tot_smp_1t = len(simples_1t)
+    # ── Corps de l\'email (Design d\'hier avec SECTION 1 PLANNING et SECTION 2 TICKETS) ──
+    tot_sys = len(all_systems)
+    tot_matches_plan = len(plan_rows)
+    tot_budget = tot_sys * 3.0
 
     html_body = f"""
     <!DOCTYPE html>
@@ -1310,26 +1013,26 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Tickets Hybrides Mi-Temps Prolifiques (1T / 2T) · Systèmes 2/3 & Doublés · {now_str}</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Systèmes 2/3 Hybrides (1T / 2T) · Remboursé dès 2/3 · {now_str}</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:12px 14px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#6d28d9;">{tot_sys}</div><div style="font-size:9px; font-weight:700; color:#6d28d9;">SYSTÈMES 2/3</div><div style="font-size:9px; color:#7c3aed;">1T & 2T Hybrides</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#ffedd5; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#c2410c;">{tot_hyb_dbl}</div><div style="font-size:9px; font-weight:700; color:#c2410c;">DOUBLÉS HYBRIDES</div><div style="font-size:9px; color:#ea580c;">Cotes @5.00+</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#1d4ed8;">{tot_2t_dbl}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">DOUBLÉS 2T</div><div style="font-size:9px; color:#3b82f6;">Cotes @3.50+</div></div></td>
-                <td style="padding:0 3px;"><div style="background:#fef3c7; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#b45309;">{tot_smp_1t}</div><div style="font-size:9px; font-weight:700; color:#b45309;">SIMPLES 1T</div><div style="font-size:9px; color:#d97706;">Cotes @2.50+</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px 4px;"><div style="font-size:22px; font-weight:900; color:#6d28d9;">{tot_sys}</div><div style="font-size:10px; font-weight:700; color:#6d28d9;">SYSTÈMES 2/3</div><div style="font-size:9px; color:#7c3aed;">3 Matchs / ticket</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px 4px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{tot_matches_plan}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">MATCHS RETENUS</div><div style="font-size:9px; color:#3b82f6;">Dans les combinés</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dcfce7; border-radius:8px; padding:10px 4px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{tot_budget:.0f} €</div><div style="font-size:10px; font-weight:700; color:#15803d;">BUDGET TOTAL</div><div style="font-size:9px; color:#16a34a;">3.00 € / système</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px 4px;"><div style="font-size:22px; font-weight:900; color:#b45309;">DÈS 2/3</div><div style="font-size:10px; font-weight:700; color:#b45309;">GARANTIE</div><div style="font-size:9px; color:#d97706;">Remboursé ou gagnant</div></div></td>
               </tr>
             </table>
           </div>
 
-          <!-- SECTION 1 : PLANNING HEURE PAR HEURE -->
+          <!-- SECTION 1 : PLANNING HEURE PAR HEURE (Design hier) -->
           <div style="padding:16px 16px 8px 16px;">
             <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
               <span>📅 CE QUE VOUS DEVEZ JOUER — HEURE PAR HEURE</span>
-              <span style="font-size:11px; background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:6px;">{len(plan_rows)} pari(s)</span>
+              <span style="font-size:11px; background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:6px;">{len(plan_rows)} match(s)</span>
             </div>
             <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
               <table style="width:100%; border-collapse:collapse; font-size:12px;">
@@ -1339,7 +1042,7 @@ def main():
                   <th style="padding:9px 6px; text-align:center; min-width:100px;">Marché</th>
                   <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Cote</th>
                   <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Score</th>
-                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Type</th>
+                  <th style="padding:9px 6px; text-align:center; white-space:nowrap;">Système</th>
                 </tr></thead>
                 <tbody>{plan_rows_html}</tbody>
               </table>
@@ -1349,17 +1052,16 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-
-          <!-- TICKETS PAR JOUR — tous types regroupés chronologiquement -->
+          <!-- SECTION 2 : LES TICKETS COMBINÉS 2/3 (Design hier) -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎟️ TICKETS À JOUER &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">— regroupés par jour, dans l'ordre chronologique</span></span>
-              <span style="font-size:11px; background:#e0e7ff; color:#4338ca; padding:2px 8px; border-radius:6px; font-weight:700;">{len(all_tickets)} ticket(s)</span>
+              <span>🎟️ SYSTÈMES MULTIPLES 2/3 (3 MATCHS PAR TICKET) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Mise 3.00 € · Remboursé dès 2/3)</span></span>
+              <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{len(all_systems)} ticket(s)</span>
             </div>
-            {unified_html}
+            {systems_html}
           </div>
 
-          <!-- SECTION 6 : TOUS LES MATCHS ANALYSÉS -->
+          <!-- SECTION 3 : TOUS LES MATCHS ANALYSÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px;">📊 TOUS LES MATCHS ANALYSÉS ({len(scanned_results)} scannés)</div>
             <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
@@ -1391,71 +1093,26 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION SYSTÈMES 2/3 HYBRIDES & DOUBLÉS PROLIFIQUES",
+        f"# ⚽ SÉLECTION SYSTÈMES 2/3 HYBRIDES — MISE 3.00 €",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Systèmes 2/3 Hybrides** : Formules [2x 1T + 1x 2T] et [2x 2T + 1x 1T] · Mise 3.00 € (3 x 1.00 €)",
-        f"**Règle de remboursement** : Remboursé avec profit garanti dès 2 bons résultats sur 3 (Cotes combinées >= 3.50)\n",
+        f"**Matchs Retenus dans les Combinés** : {len(plan_rows)}",
+        f"**Systèmes 2/3 Générés** : {len(all_systems)} tickets (Mise 3.00 € par ticket, remboursé dès 2/3)\n",
+        f"## 📅 CE QUE VOUS DEVEZ JOUER — HEURE PAR HEURE\n",
+        f"| Heure | Match | Ligue | Marché | Cote | Score | Système |",
+        f"|:---:|:---|:---|:---:|:---:|:---:|:---:|",
     ]
+    for pr in plan_rows:
+        report.append(f"| {pr['date_str']} | **{pr['match']}** | {pr['league']} | {pr['market']} | {pr['cote']} | {pr['score_label']} | {pr['type_label']} |")
 
-    if systems_23_b:
-        report.append(f"## 🔥 Systèmes 2/3 Formule B (2x 1T + 1x 2T — {len(systems_23_b)} tickets — Mise 3.00 € / système)\n")
-        for idx_b, sb in enumerate(systems_23_b, 1):
-            c1, c2, a = sb["c1"]["m"], sb["c2"]["m"], sb["a"]["m"]
-            report.append(f"### Système 2/3 Formule B #{idx_b} — {sb['day']} | Mise: 3.00 € → Gain Min (2/3): `{sb['min_gain']:.2f} €` | Gain Max (3/3): `{sb['max_gain']:.2f} €`")
-            report.append(f"- **🟡 1ère MT #1** : `{c1['date_str']}` — **{c1['dom']} vs {c1['ext']}** (@`{sb['c1']['odds']:.2f}`) — Score 1T: {sb['c1']['score']}%")
-            report.append(f"- **🟡 1ère MT #2** : `{c2['date_str']}` — **{c2['dom']} vs {c2['ext']}** (@`{sb['c2']['odds']:.2f}`) — Score 1T: {sb['c2']['score']}%")
-            report.append(f"- **🔵 2ème MT** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{sb['a']['odds']:.2f}`) — Score 2T: {sb['a']['score']}%")
-            report.append(f"- *Combinaisons* : 1T+1T: @`{sb['o_12']:.2f}` | 1T+2T: @`{sb['o_1a']:.2f}` | 1T+2T: @`{sb['o_2a']:.2f}`\n")
-
-    if systems_23_a:
-        report.append(f"## 🛡️ Systèmes 2/3 Formule A (2x 2T + 1x 1T — {len(systems_23_a)} tickets — Mise 3.00 € / système)\n")
-        for idx_a, sa in enumerate(systems_23_a, 1):
-            a1, a2, c = sa["a1"]["m"], sa["a2"]["m"], sa["c"]["m"]
-            report.append(f"### Système 2/3 Formule A #{idx_a} — {sa['day']} | Mise: 3.00 € → Gain Min (2/3): `{sa['min_gain']:.2f} €` | Gain Max (3/3): `{sa['max_gain']:.2f} €`")
-            report.append(f"- **🔵 2ème MT #1** : `{a1['date_str']}` — **{a1['dom']} vs {a1['ext']}** (@`{sa['a1']['odds']:.2f}`) — Score 2T: {sa['a1']['score']}%")
-            report.append(f"- **🔵 2ème MT #2** : `{a2['date_str']}` — **{a2['dom']} vs {a2['ext']}** (@`{sa['a2']['odds']:.2f}`) — Score 2T: {sa['a2']['score']}%")
-            report.append(f"- **🟡 1ère MT** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{sa['c']['odds']:.2f}`) — Score 1T: {sa['c']['score']}%")
-            report.append(f"- *Combinaisons* : 2T+2T: @`{sa['o_12']:.2f}` | 2T+1T: @`{sa['o_1c']:.2f}` | 2T+1T: @`{sa['o_2c']:.2f}`\n")
-
-    if combos_hybrid:
-        report.append(f"## ⚡ Combinés Doublés Hybrides (1T + 2T — {len(combos_hybrid)} tickets — Cotes @5.00+ — Mise 3.00 €)\n")
-        for idx_h, ch in enumerate(combos_hybrid, 1):
-            c, a = ch["items"][0]["m"], ch["items"][1]["m"]
-            report.append(f"### Doublé Hybride #{idx_h} — Cote Totale: `{ch['comb_odds']:.2f}` | Mise 3 € → Gain: `{ch['gain']:.2f} €` *(+{ch['profit']:.2f} € net)*")
-            report.append(f"- **🟡 1ère MT** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{ch['items'][0]['odds']:.2f}`) — Score 1T: {ch['items'][0]['score']}%")
-            report.append(f"- **🔵 2ème MT** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{ch['items'][1]['odds']:.2f}`) — Score 2T: {ch['items'][1]['score']}%")
-            report.append("")
-
-    if combos_2t_pure:
-        report.append(f"## 🚀 Combinés Doublés 2T Purs ({len(combos_2t_pure)} tickets — Cotes @3.50+ — Mise 4.00 €)\n")
-        for idx, cb in enumerate(combos_2t_pure, 1):
-            a1, a2 = cb["items"][0]["m"], cb["items"][1]["m"]
-            report.append(f"### Doublé 2T #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4 € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
-            report.append(f"- **🔵 2ème MT #1** : `{a1['date_str']}` — **{a1['dom']} vs {a1['ext']}** (@`{cb['items'][0]['odds']:.2f}`) — Score 2T: {cb['items'][0]['score']}%")
-            report.append(f"- **🔵 2ème MT #2** : `{a2['date_str']}` — **{a2['dom']} vs {a2['ext']}** (@`{cb['items'][1]['odds']:.2f}`) — Score 2T: {cb['items'][1]['score']}%")
-            report.append("")
-
-    if simples_1t:
-        report.append(f"## 🎯 Paris Simples 1T Restants ({len(simples_1t)} matchs — Mise 3.00 €)\n")
-        for idx_s, s in enumerate(simples_1t, 1):
-            m = s["m"]
-            report.append(f"- **Simple 1T #{idx_s}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{s['odds']:.2f}`) — Score 1T: **{s['score']}%** (Moy. buts: {s['goals']:.1f}b)")
-        report.append("")
-
-    report.append("## ✅ Matchs Candidats 2T & 1T")
-    report.append("| Date | Ligue | Match | Score 2T | Score 1T | Buts Moy. | Cote 2T | Cote 1T |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |")
-    for m in s3_matches:
-        mt2_str = f"@{m['mt2_odds']:.2f}" if m.get("mt2_odds") else "N/A"
-        mt1_str = f"@{m['mt1_odds']:.2f}" if m.get("mt1_odds") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m.get('score_2t', 0)}%** | **{m.get('score_1t', 0)}%** | **{m.get('total_goals_brut', 0):.1f}** | **{mt2_str}** | **{mt1_str}** |")
-
-    report.append(f"\n## 🚫 Matchs Non Retenus ({len(rejected_matches)})\n")
-    report.append("| Date | Ligue | Match | Score 2T | Buts | Raison du Rejet |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
-    for m in rejected_matches:
-        reason = m.get("rejection_reason", "Non éligible")
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {m.get('score_2t', 0)}% | {m.get('total_goals_brut', 0):.1f} | {reason} |")
+    report.append("\n## 🎟️ DÉTAIL DES TICKETS SYSTÈMES 2/3\n")
+    for tk in all_systems:
+        report.append(f"### Système 2/3 #{tk['idx']} — {tk['type_desc']} ({day_label_fr(tk['day'])})")
+        report.append(f"- **Mise** : 3.00 € (3 x 1.00 €)")
+        for it in tk["items"]:
+            m = it["m"]
+            report.append(f"  - {it['market']} : **{m['dom']} vs {m['ext']}** (@`{it['odds']:.2f}`) — Score: {it['score']}%")
+        report.append(f"- **Combinaisons** : {tk['items'][0]['m']['dom'][:10]}+{tk['items'][1]['m']['dom'][:10]} (@`{tk['c12']:.2f}`) | {tk['items'][0]['m']['dom'][:10]}+{tk['items'][2]['m']['dom'][:10]} (@`{tk['c13']:.2f}`) | {tk['items'][1]['m']['dom'][:10]}+{tk['items'][2]['m']['dom'][:10]} (@`{tk['c23']:.2f}`)")
+        report.append(f"- **Gains** : Remboursé dès 2/3 : `{tk['min_gain']:.2f} €` *(+{tk['prof_min']:.2f} € net)* | Carton plein 3/3 : `{tk['max_gain']:.2f} €` *(+{tk['prof_max']:.2f} € net)*\n")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -1472,7 +1129,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {tot_sys} Systèmes 2/3 Hybrides · {tot_hyb_dbl} Doublés Hybrides · {tot_2t_dbl} Doublés 2T"
+    raw_subject = f"⚽ Football {subject_date} — {len(all_systems)} Systèmes 2/3 (Mise 3€) · {len(plan_rows)} Matchs à Jouer"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
