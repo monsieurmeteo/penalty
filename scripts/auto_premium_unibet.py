@@ -308,10 +308,10 @@ def main():
     scanned_all = list(unique_scanned.values())
 
     # Filtre Fenêtre : Matchs de journée uniquement (08h00 - 23h59, heure de Paris)
-    # ZÉRO match de nuit (entre 00h00 et 07h59)
+    # ZÉRO match de nuit (entre 00h00 et 07h59) — Fenêtre élargie à 84h (3,5 journées / week-end complet)
     now_utc = datetime.now(timezone.utc)
     paris_tz = timezone(timedelta(hours=2))
-    limit_36h = now_utc + timedelta(hours=36)
+    limit_84h = now_utc + timedelta(hours=84)
 
     scanned_results = []
     for m in scanned_all:
@@ -323,7 +323,7 @@ def main():
                 # Exclusion stricte des matchs de nuit (00h00 à 07h59)
                 if local_dt.hour < 8 or local_dt.hour >= 24:
                     continue
-                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_36h:
+                if (now_utc - timedelta(hours=3)) <= m_dt <= limit_84h:
                     m["dt_obj"] = m_dt
                     scanned_results.append(m)
             except Exception:
@@ -468,33 +468,36 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi Over 2.5 >= 60/100 ──
-    # Seul critère pour Over 2.5 : ac_score (barème composite AdamChoi) >= 60/100
-    # Les Red Flags sont informatifs uniquement — ne rejettent pas.
+    # ── Sélection 100% 2ème Mi-Temps la Plus Prolifique ──
+    # Critères : score_2t >= 55% + total_goals >= 2.0 + mt2_odds entre @1.80 et @2.20
     s3_matches = []
     rejected_matches = []
 
     for r in scanned_results:
-        ac_score = r.get("ac_score", 0)
+        s2t = r.get("score_2t", 0)
+        mt2 = r.get("mt2_odds")
+        goals = r.get("total_goals_brut", 0.0)
 
-        if ac_score >= 60:
+        if s2t >= 55 and goals >= 2.0 and mt2 and 1.80 <= mt2 <= 2.20:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
-            if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 60)"
-            else:
-                r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
+            reasons = []
+            if s2t < 55: reasons.append(f"Score 2T faible ({s2t}% < 55%)")
+            if goals < 2.0: reasons.append(f"Peu de buts ({goals:.1f} < 2.0)")
+            if not mt2: reasons.append("Cote 2T non dispo")
+            elif not (1.80 <= mt2 <= 2.20): reasons.append(f"Cote 2T hors plage (@{mt2})")
+            r["rejection_reason"] = " · ".join(reasons) if reasons else "Non retenu"
             rejected_matches.append(r)
 
-    s3_matches.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    s3_matches.sort(key=lambda x: x.get("score_2t", 0), reverse=True)
 
     hybrid_option_b_matches = s3_matches
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés Over 2.5 (Score AdamChoi >= 60/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés 2T Prolifique (Score 2T >= 55%, Goals >= 2.0, Cote @1.80-2.20) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -629,13 +632,47 @@ def main():
 
     combos_mixed = []
     used_2t = set()
+
+    # 1. Appariement par jour (tant qu'il y a >= 2 matchs éligibles ce jour-là)
     for d in sorted(set(s["day"] for s in mt2_pool)):
         day_pool = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t]
         day_pool_sorted = sorted(day_pool, key=lambda x: (-x["score"], -x["odds"]))
+        while len([s for s in day_pool_sorted if s["id"] not in used_2t]) >= 2:
+            rem = [s for s in day_pool_sorted if s["id"] not in used_2t]
+            best_pair = None
+            for i in range(len(rem)):
+                for j in range(i + 1, len(rem)):
+                    a, b = rem[i], rem[j]
+                    c_odds = round(a["odds"] * b["odds"], 2)
+                    if c_odds >= MIN_2T_COMBO:
+                        if best_pair is None or c_odds < best_pair[2]:
+                            best_pair = (a, b, c_odds)
+                if best_pair:
+                    break
+            if best_pair:
+                a, b, c_odds = best_pair
+                used_2t.update([a["id"], b["id"]])
+                avg_s2t = (a["score"] + b["score"]) / 2
+                stake = 5.0 if avg_s2t >= 80 else 4.0
+                items = sorted([a, b], key=lambda x: x["dt"])
+                combos_mixed.append({
+                    "session": d, "type": "Doublé 2T Prolifique",
+                    "items": items, "comb_odds": c_odds,
+                    "avg_score": round(avg_s2t, 1), "stake": stake,
+                    "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
+                })
+            else:
+                break
+
+    # 2. Appariement des orphelins restants inter-jours (ex: 1 match vendredi + 1 match samedi)
+    rem_all = [s for s in mt2_pool if s["id"] not in used_2t]
+    rem_sorted = sorted(rem_all, key=lambda x: (-x["score"], -x["odds"]))
+    while len([s for s in rem_sorted if s["id"] not in used_2t]) >= 2:
+        rem = [s for s in rem_sorted if s["id"] not in used_2t]
         best_pair = None
-        for i in range(len(day_pool_sorted)):
-            for j in range(i + 1, len(day_pool_sorted)):
-                a, b = day_pool_sorted[i], day_pool_sorted[j]
+        for i in range(len(rem)):
+            for j in range(i + 1, len(rem)):
+                a, b = rem[i], rem[j]
                 c_odds = round(a["odds"] * b["odds"], 2)
                 if c_odds >= MIN_2T_COMBO:
                     if best_pair is None or c_odds < best_pair[2]:
@@ -648,12 +685,15 @@ def main():
             avg_s2t = (a["score"] + b["score"]) / 2
             stake = 5.0 if avg_s2t >= 80 else 4.0
             items = sorted([a, b], key=lambda x: x["dt"])
+            session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
             combos_mixed.append({
-                "session": d, "type": "Doublé 2T Prolifique",
+                "session": session_lbl, "type": "Doublé 2T Prolifique",
                 "items": items, "comb_odds": c_odds,
                 "avg_score": round(avg_s2t, 1), "stake": stake,
                 "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
             })
+        else:
+            break
 
     combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
     total_stake = sum(cb["stake"] for cb in combos_mixed)
@@ -969,35 +1009,29 @@ def main():
 
     # ── Tableau compact des matchs analysés/rejetés ──────────────────────────
     scan_rows_html = ""
-    for m in sorted(scanned_results, key=lambda x: x.get("ac_score", 0), reverse=True):
+    for m in sorted(scanned_results, key=lambda x: x.get("score_2t", 0), reverse=True):
         retained = m in s3_matches
         bg_row = "#f0fdf4" if retained else "#fff"
         badge = '<span style="color:#15803d; font-weight:700;">✅ RETENU</span>' if retained else '<span style="color:#94a3b8;">—</span>'
-        o25 = f"@{m['over25']:.2f}" if m.get("over25") else "N/A"
-        score_v = m.get("ac_score", 0)
-        btts_v = m.get("score_btts", 0)
+        mt2 = f"@{m['mt2_odds']:.2f}" if m.get("mt2_odds") else "N/A"
+        s2t_v = m.get("score_2t", 0)
+        goals_v = m.get("total_goals_brut", 0.0)
         
-        # Badges scores
-        score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
-        score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
-        score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
+        # Badge Score 2T
+        s2t_bg = "#dcfce7" if s2t_v >= 65 else ("#fef3c7" if s2t_v >= 55 else "#fee2e2")
+        s2t_cl = "#15803d" if s2t_v >= 65 else ("#92400e" if s2t_v >= 55 else "#dc2626")
+        s2t_badge = f'<span style="background:{s2t_bg}; color:{s2t_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{s2t_v}%</span>' if s2t_v > 0 else '<span style="color:#94a3b8;">—</span>'
 
-        btts_bg = "#dcfce7" if btts_v >= 65 else ("#fef3c7" if btts_v >= 50 else "#f1f5f9")
-        btts_cl = "#15803d" if btts_v >= 65 else ("#92400e" if btts_v >= 50 else "#94a3b8")
-        btts_badge = f'<span style="background:{btts_bg}; color:{btts_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{btts_v}/100</span>' if btts_v > 0 else '<span style="color:#94a3b8;">—</span>'
-
-        ref_n = m.get("ref_name", "Inconnu")
-        ref_badge = f'<span style="font-size:10px; color:#475569; font-weight:600;">👨‍⚖️ {ref_n}</span>' if ref_n != "Inconnu" else '<span style="color:#94a3b8; font-size:10px;">—</span>'
+        goals_badge = f'<span style="font-size:11px; font-weight:700; color:#334155;">{goals_v:.1f}b</span>' if goals_v > 0 else '<span style="color:#94a3b8;">—</span>'
 
         scan_rows_html += (
             f'<tr style="background:{bg_row};">'
             f'<td style="padding:7px 8px; font-size:11px; color:#475569; border-bottom:1px solid #f1f5f9;">{m.get("date_str", "")}</td>'
             f'<td style="padding:7px 8px; font-size:12px; font-weight:700; color:#0f172a; border-bottom:1px solid #f1f5f9;">{m.get("dom", "")} vs {m.get("ext", "")}'
             f'<br><span style="font-size:10px; color:#94a3b8; font-weight:400;">{m.get("league", "")}</span></td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{score_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{btts_badge}</td>'
-            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{o25}</td>'
-            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{ref_badge}</td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{s2t_badge}</td>'
+            f'<td style="padding:7px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">{goals_badge}</td>'
+            f'<td style="padding:7px 6px; text-align:center; font-weight:800; font-size:12px; border-bottom:1px solid #f1f5f9;">{mt2}</td>'
             f'<td style="padding:7px 6px; text-align:center; font-size:11px; border-bottom:1px solid #f1f5f9;">{badge}</td>'
             f'</tr>'
         )
@@ -1007,7 +1041,6 @@ def main():
     days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
     date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
     nb_mixed = len(combos_mixed)
-    nb_pen   = len(pen_simples)
 
     html_body = f"""
     <!DOCTYPE html>
@@ -1020,15 +1053,15 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Analyse Multi-Marchés · Mise à jour : {now_str} · Matchs de Journée (08h-23h59)</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Méthode 2ème Mi-Temps la Plus Prolifique · Mise à jour : {now_str}</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">PARIS SIMPLES</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 1.60</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">08h00 - 23h59</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">DOUBLÉS 2T</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 3.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Fenêtre 84h</div></div></td>
               </tr>
             </table>
           </div>
@@ -1057,37 +1090,13 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
+          <!-- SECTION 2 : COMBINÉS DOUBLÉS 2T PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS DOUBLÉS OVER 2.5 (Cote &ge; 2.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score O2.5 &ge; 60/100 · 2 Matchs)</span></span>
+              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 55% · Mise 4-5€)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
-          </div>
-
-          <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
-          <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 2. PENALTY OUI — PARIS SIMPLES</span>
-              <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
-            </div>
-            <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné (<b>&ge; 0.45 pen/match</b>) obligatoire
-            </div>
-            {pen_simples_html}
-          </div>
-
-          <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
-          <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
-            <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO</span>
-              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} neutralisé(s)</span>
-            </div>
-            <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              💡 <b>Information transparente</b> : Ces matchs avaient un bon score mais sont neutralisés car l'arbitre siffle moins de 0.45 pen/match ou une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
-            </div>
-            {pen_rejected_html}
           </div>
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
@@ -1098,10 +1107,9 @@ def main():
                 <thead><tr style="background:#f1f5f9; color:#64748b; font-size:10px; text-transform:uppercase; font-weight:700; border-bottom:1px solid #e2e8f0;">
                   <th style="padding:7px 8px; text-align:left;">Heure</th>
                   <th style="padding:7px 8px; text-align:left;">Match</th>
-                  <th style="padding:7px 6px; text-align:center;">Score Over 2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Score BTTS</th>
-                  <th style="padding:7px 6px; text-align:center;">Cote O2.5</th>
-                  <th style="padding:7px 6px; text-align:center;">Arbitre</th>
+                  <th style="padding:7px 6px; text-align:center;">Score 2T</th>
+                  <th style="padding:7px 6px; text-align:center;">Buts Moy.</th>
+                  <th style="padding:7px 6px; text-align:center;">Cote 2T</th>
                   <th style="padding:7px 6px; text-align:center;">Statut</th>
                 </tr></thead>
                 <tbody>{scan_rows_html}</tbody>
@@ -1111,7 +1119,7 @@ def main():
 
           <!-- FOOTER -->
           <div style="padding:12px 20px; background:#0f172a; font-size:10px; color:#64748b; text-align:center;">
-            ⚠️ Paris sportifs · Jouez avec modération · Analyse 100% AdamChoi · Unibet France · {now_str}
+            ⚠️ Paris sportifs · Jouez avec modération · Analyse 100% AdamChoi 2T · Unibet France · {now_str}
           </div>
 
         </div>
@@ -1119,50 +1127,37 @@ def main():
     </html>
     """
 
-
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 — MATCHS DE JOURNÉE",
+        "# ⚽ SÉLECTION 2ÈME MI-TEMPS LA PLUS PROLIFIQUE — COMBINÉS DOUBLÉS",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score AdamChoi >= 60/100  ET  Over 2.5 < Under 2.5\n",
-        f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
-        f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
-        f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
-        f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Doublés (2 Over 2.5) Recommandés (Cote Min: 2.20 — Mise Progressive 3-5 € / ticket)\n",
+        f"**Critères** : Score 2T >= 55%  ·  Buts totaux >= 2.0  ·  Cote 2T @1.80-@2.20  ·  Combiné >= 3.20\n",
+        f"## 🎯 Combinés Doublés 2T Recommandés (Cote Min: 3.20 — Mise Progressive 4-5 € / ticket)\n",
     ]
 
     if combos_mixed:
         for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Score moy. {cb.get('avg_score', '')}/100 — Cote Totale: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+            report.append(f"### Ticket #{idx} ({cb['type']}) — Score 2T moy. {cb.get('avg_score', '')}% — Cote Totale: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
             report.append("")
     else:
-        report.append("Aucun combiné multi-marchés disponible.\n")
+        report.append("Aucun combiné 2T disponible sur cette session.\n")
 
-    report.append("## ✅ Matchs Sélectionnés Individuellement")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("## ✅ Matchs Sélectionnés Individuellement (Candidats 2T)")
+    report.append("| Date | Ligue | Match | Score 2T | Buts Moy. | Cote 2T |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: |")
     for m in s3_matches:
-        o25 = m.get("over25", "N/A")
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
-        but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{btts_cell}** | **{o25}** | {but} |")
+        mt2_str = f"@{m['mt2_odds']:.2f}" if m.get("mt2_odds") else "N/A"
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{m.get('score_2t', 0)}%** | **{m.get('total_goals_brut', 0):.1f}** | **{mt2_str}** |")
 
-    report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Raison du Rejet |")
+    report.append(f"\n## 🚫 Matchs Non Retenus ({len(rejected_matches)})\n")
+    report.append("| Date | Ligue | Match | Score 2T | Buts | Raison du Rejet |")
     report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
     for m in rejected_matches:
-        b_oui = m.get("btts_oui")
-        b_non = m.get("btts_non")
-        btts_val = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
-        o25_val = f"{m['over25']:.2f}" if m.get("over25") is not None else "N/A"
         reason = m.get("rejection_reason", "Non éligible")
-        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {btts_val} | {o25_val} | {reason} |")
+        report.append(f"| {m['date_str']} | {m['league']} | {m['dom']} vs {m['ext']} | {m.get('score_2t', 0)}% | {m.get('total_goals_brut', 0):.1f} | {reason} |")
 
     with open("report.md", "w", encoding="utf-8") as f:
         f.write("\n".join(report))
@@ -1179,7 +1174,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Doublés Over 2.5 (Cote >= 2.20) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Doublé(s) 2T Prolifique (Cote >= 3.20)"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
