@@ -809,8 +809,8 @@ def main():
         else:
             break
 
-    # 5. PARIS SIMPLES 1T SECS (les pépites restantes)
-    simples_1t = [s for s in mt1_pool if s["id"] not in used_1t][:MAX_1T_SMP]
+    # 5. PARIS SIMPLES 1T SECS (les pépites restantes, hors Formule B)
+    simples_1t = [s for s in mt1_pool if s["id"] not in used_b][:MAX_1T_SMP]
     combos_mixed = combos_hybrid + combos_2t_pure
 
     print(f"🎲 Systèmes 2/3 Type B (2x 1T + 1x 2T) : {len(systems_23_b)}")
