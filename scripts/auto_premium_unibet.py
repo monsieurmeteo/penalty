@@ -459,6 +459,9 @@ def main():
                     m["p_dom_10m"] = res.get("p_dom_10m", 0)
                     m["p_ext_10m"] = res.get("p_ext_10m", 0)
                     m["p_tot_10m"] = res.get("p_tot_10m", 0)
+                    m["score_2t"] = res.get("score_2t", 0)
+                    m["pct_2t_dom"] = res.get("pct_2t_dom", 0)
+                    m["pct_2t_ext"] = res.get("pct_2t_ext", 0)
             except Exception:
                 pass
         return m
@@ -760,6 +763,12 @@ def main():
                 </span>
             </div>
 
+            <div style="background:#eef2ff; padding:8px 10px; border-radius:6px; border:1px solid #c7d2fe; font-size:11px; color:#3730a3; margin-bottom:8px; line-height:1.6;">
+                <b>🕐 Profil 2ème Mi-Temps</b> : <b>{m.get('score_2t', 0)}%</b> de matchs avec 2T &gt; 1T &nbsp;|&nbsp; 
+                DOM : <b>{m.get('pct_2t_dom', 0)}%</b> &nbsp;|&nbsp; EXT : <b>{m.get('pct_2t_ext', 0)}%</b> &nbsp;|&nbsp; 
+                Cote 2T : <b>@{m.get('mt2_odds', 0):.2f}</b>
+            </div>
+
             <div style="background:#ffffff; padding:8px 10px; border-radius:6px; border:1px solid #e2e8f0; font-size:11px; color:#475569; margin-bottom:8px; line-height:1.6;">
                 <b>1. IPO ({ipo_val:.2f})</b>: {pts_ipo}/25 &nbsp;|&nbsp; 
                 <b>2. Buts ({goals_val:.1f}b)</b>: {pts_goals}/15 &nbsp;|&nbsp; 
@@ -954,11 +963,11 @@ def main():
                     "league": m.get("league", ""),
                     "market": item["market"],
                     "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}/100",
+                    "score_label": f"{item['score']}%",
                     "score_val": item["score"],
-                    "type_label": f"COMBINÉ #{idx_cb}",
-                    "bg_market": "#dbeafe" if "Over 2.5" in item["market"] else ("#fef3c7" if "BTTS" in item["market"] else "#d1fae5"),
-                    "cl_market": "#1e40af" if "Over 2.5" in item["market"] else ("#92400e" if "BTTS" in item["market"] else "#065f46"),
+                    "type_label": f"DOUBLÉ #{idx_cb}",
+                    "bg_market": "#e0e7ff",
+                    "cl_market": "#3730a3",
                 })
                 seen_plan.add(key)
 
