@@ -251,9 +251,6 @@ def scan_unibet_match_details(game):
             # ── Cote "2nde mi-temps la plus prolifique" (HTML statique) ──
             mt2_odds = None
             try:
-                from bs4 import BeautifulSoup
-                html_txt = content  # on réutilise la réponse déjà chargée
-                # content est du JSON ici — on va chercher dans le HTML brut de la page
                 page_url = game.get("url", "")
                 if page_url:
                     rh = requests.get(f"https://www.unibet.fr{page_url}", headers=HEADERS, timeout=8)
@@ -613,15 +610,16 @@ def main():
 
     # ── MOTEUR DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE ─────────────────────
     # Triple validation :
-    # 1. score_2t >= 65%  → historique solide 2T > 1T (AdamChoi)
-    # 2. total_goals >= 2.5 → match offensif (évite les 0-0 → 1-0 trompeurs)
-    # 3. mt2_odds entre @1.80 et @2.20 → valeur réelle, marché pas trop incertain
-    # Combo >= @3.20 | Mise 4€ (score_2t 65-79) / 5€ (score_2t >= 80)
-    MIN_2T_SCORE  = 65     # % matchs récents 2T > 1T
-    MIN_2T_GOALS  = 2.5    # buts moyens totaux (filtre matchs offensifs)
+    # 1. score_2t >= 55%  → majorité des matchs récents ont 2T > 1T
+    # 2. total_goals >= 2.0 → match offensif minimal
+    # 3. mt2_odds entre @1.80 et @2.20 → valeur réelle
+    # Combo >= @3.20 | Mise 4€ (score_2t 55-79) / 5€ (score_2t >= 80)
+    MIN_2T_SCORE  = 55     # % matchs récents 2T > 1T
+    MIN_2T_GOALS  = 2.0    # buts moyens totaux
     MIN_2T_ODDS   = 1.80   # Unibet → ~@1.75 réel tabac
     MAX_2T_ODDS   = 2.20   # plafond : marché trop incertain au-delà
     MIN_2T_COMBO  = 3.20   # cote combinée minimum
+
 
     mt2_pool = []
     for m in scanned_results:
