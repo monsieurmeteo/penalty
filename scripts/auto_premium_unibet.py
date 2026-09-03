@@ -909,259 +909,229 @@ def main():
 
 
 
-    # ── HTML Section Systèmes Multiples 2/3 Hybrides ─────────────────────────
+    # ── Rendu HTML unifié — tous les tickets regroupés par jour ──────────────
+
+    JOURS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+
+    def fmt_match_dt(item):
+        """Retourne 'Mer. 03/09 · 18h45' depuis item['dt'] (UTC → Paris)."""
+        try:
+            dt_paris = item["dt"].astimezone(timezone(timedelta(hours=2)))
+            return f"{JOURS_FR[dt_paris.weekday()]} {dt_paris.strftime('%d/%m')} · {dt_paris.strftime('%Hh%M')}"
+        except Exception:
+            return "?"
+
+    def day_label(day_key):
+        """'2026-09-04' → 'Jeu. 04/09'"""
+        try:
+            from datetime import date as _date
+            d = _date.fromisoformat(day_key)
+            return f"{JOURS_FR[d.weekday()]} {d.strftime('%d/%m')}"
+        except Exception:
+            return day_key
+
+    def ticket_sort_dt(tk):
+        """Datetime du premier match (le plus tôt) d'un ticket pour tri chrono."""
+        items = tk.get("_items", [])
+        if items:
+            return min(x["dt"] for x in items)
+        return now_utc
+
+    # ── Construire la liste unifiée de tous les tickets ───────────────────────
+    all_tickets = []
+
+    for t in systems_23_b:
+        items = t.get("_items_chron", [t["c1"], t["c2"], t["a"]])
+        all_tickets.append({"kind": "SYS_B", "data": t, "_items": items,
+                            "_sort_dt": min(x["dt"] for x in items),
+                            "_day": min(x["day"] for x in items)})
+
+    for t in systems_23_a:
+        items = t.get("_items_chron", [t["a1"], t["a2"], t["c"]])
+        all_tickets.append({"kind": "SYS_A", "data": t, "_items": items,
+                            "_sort_dt": min(x["dt"] for x in items),
+                            "_day": min(x["day"] for x in items)})
+
+    for t in combos_hybrid:
+        items = t["items"]
+        all_tickets.append({"kind": "DBL_HYB", "data": t, "_items": items,
+                            "_sort_dt": min(x["dt"] for x in items),
+                            "_day": min(x["day"] for x in items)})
+
+    for t in combos_2t_pure:
+        items = t["items"]
+        all_tickets.append({"kind": "DBL_2T", "data": t, "_items": items,
+                            "_sort_dt": min(x["dt"] for x in items),
+                            "_day": min(x["day"] for x in items)})
+
+    for s in simples_1t:
+        all_tickets.append({"kind": "SMP_1T", "data": s, "_items": [s],
+                            "_sort_dt": s["dt"], "_day": s["day"]})
+
+    # Trier tous les tickets par heure du premier match
+    all_tickets.sort(key=lambda x: x["_sort_dt"])
+
+    # Grouper par jour
+    from itertools import groupby
+    from operator import itemgetter
+
+    def render_match_row(item, override_badge=None):
+        """Rendu d'une ligne match avec badge heure + type mi-temps."""
+        m = item["m"]
+        mkt = item.get("market", "")
+        if "2T" in mkt:
+            badge_bg, badge_cl, badge_txt = "#dbeafe", "#1e40af", f"🔵 2ème MT · {fmt_match_dt(item)}"
+            inst = "Cocher : 2ème Mi-Temps la plus prolifique"
+            score_lbl = f"Score 2T: <b>{item['score']}%</b>"
+            border_cl, bg_cl = "#2563eb", "#eff6ff"
+            cote_cl = "#1d4ed8"
+        else:
+            badge_bg, badge_cl, badge_txt = "#fef3c7", "#92400e", f"🟡 1ère MT · {fmt_match_dt(item)}"
+            inst = "Cocher : 1ère Mi-Temps la plus prolifique"
+            score_lbl = f"Score 1T: <b>{item['score']}%</b>"
+            border_cl, bg_cl = "#d97706", "#fffbeb"
+            cote_cl = "#b45309"
+        if override_badge:
+            badge_txt = override_badge
+        return f'''
+        <div style="background:{bg_cl}; border:1px solid {badge_bg}; border-left:4px solid {border_cl}; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
+          <div style="font-size:10px; font-weight:700; color:{badge_cl}; background:{badge_bg}; display:inline-block; padding:1px 7px; border-radius:4px; margin-bottom:4px;">{badge_txt}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span><b>{m['dom']} vs {m['ext']}</b> <span style="color:#64748b; font-size:10px;">({m.get('league','')})</span></span>
+            <span style="font-size:13px; font-weight:900; color:{cote_cl}; background:#fff; padding:1px 6px; border-radius:4px; border:1px solid {badge_bg};">@{item['odds']:.2f}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; color:{badge_cl}; font-size:10px; margin-top:2px;">
+            <span>👉 <b>{inst}</b></span>
+            <span>{score_lbl}</span>
+          </div>
+        </div>'''
+
+    def render_ticket(tk, idx):
+        kind = tk["kind"]
+        t = tk["data"]
+
+        if kind in ("SYS_B", "SYS_A"):
+            # Système 2/3
+            items = tk["_items"]
+            stake_sys = t["stake_line"]
+            tot_st = t["stake_tot"]
+            if kind == "SYS_B":
+                type_lbl = "2x 1ère MT + 1x 2ème MT"
+                o1_lbl, o2_lbl, o3_lbl = "1T+1T", "1T+2T", "1T+2T"
+                o_a, o_b, o_c = t["o_12"], t["o_1a"], t["o_2a"]
+                hdr_bg, hdr_cl, bord = "#ede9fe", "#6d28d9", "#7c3aed"
+            else:
+                type_lbl = "2x 2ème MT + 1x 1ère MT"
+                o1_lbl, o2_lbl, o3_lbl = "2T+2T", "2T+1T", "2T+1T"
+                o_a, o_b, o_c = t["o_12"], t["o_1c"], t["o_2c"]
+                hdr_bg, hdr_cl, bord = "#dbeafe", "#1e40af", "#2563eb"
+            min_g, max_g = t["min_gain"], t["max_gain"]
+            prof_min = round(min_g - tot_st, 2)
+            prof_max = round(max_g - tot_st, 2)
+            rows_html = "".join(render_match_row(i) for i in items)
+            return f'''
+            <div style="background:#fff; border:1.5px solid {hdr_bg}; border-left:5px solid {bord}; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:{hdr_bg}; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid {hdr_bg};">
+                <span style="font-weight:900; color:{hdr_cl}; font-size:13px;">🎟️ SYSTÈME 2/3 #{idx} — {type_lbl}</span>
+                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">Mise {tot_st:.2f} € (3 × {stake_sys:.2f} €)</span>
+              </div>
+              {rows_html}
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; margin-top:6px;">
+                <div style="color:#475569; margin-bottom:4px;">
+                  Combinaisons : Ticket 1 ({o1_lbl}): <b>@{o_a:.2f}</b> · Ticket 2 ({o2_lbl}): <b>@{o_b:.2f}</b> · Ticket 3 ({o3_lbl}): <b>@{o_c:.2f}</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; border-top:1px dashed #cbd5e1; padding-top:5px;">
+                  <span style="color:#15803d; font-weight:800;">🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px;">(+{prof_min:.2f} € net)</span></span>
+                  <span style="color:{hdr_cl}; font-weight:900; font-size:13px;">🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; color:#15803d;">(+{prof_max:.2f} €)</span></span>
+                </div>
+              </div>
+            </div>'''
+
+        elif kind == "DBL_HYB":
+            items = tk["_items"]
+            cote = t["comb_odds"]
+            gain = t["gain"]
+            profit = t["profit"]
+            rows_html = "".join(render_match_row(i) for i in items)
+            return f'''
+            <div style="background:#fff; border:1.5px solid #fed7aa; border-left:5px solid #ea580c; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#fff7ed; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #fed7aa;">
+                <span style="font-weight:900; color:#c2410c; font-size:12px;">⚡ DOUBLÉ HYBRIDE #{idx} — 1ère MT + 2ème MT</span>
+                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Cote @{cote:.2f} · Mise 3 € → {gain:.2f} € (+{profit:.2f} €)</span>
+              </div>
+              {rows_html}
+            </div>'''
+
+        elif kind == "DBL_2T":
+            items = tk["_items"]
+            cote = t["comb_odds"]
+            gain = t["gain"]
+            profit = t["profit"]
+            rows_html = "".join(render_match_row(i) for i in items)
+            return f'''
+            <div style="background:#fff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #bfdbfe;">
+                <span style="font-weight:900; color:#1e40af; font-size:12px;">🚀 DOUBLÉ 2T PUR #{idx} — 2ème MT + 2ème MT</span>
+                <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Cote @{cote:.2f} · Mise 4 € → {gain:.2f} € (+{profit:.2f} €)</span>
+              </div>
+              {rows_html}
+            </div>'''
+
+        else:  # SMP_1T
+            s = t
+            m = s["m"]
+            dt_lbl = fmt_match_dt(s)
+            return f'''
+            <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #b45309; border-radius:8px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:10px; font-weight:700; color:#92400e; background:#fef3c7; display:inline-block; padding:1px 7px; border-radius:4px; margin-bottom:3px;">⚡ SIMPLE 1T #{idx} · {dt_lbl}</div>
+                <b style="font-size:12px; color:#0f172a;">{m['dom']} vs {m['ext']}</b>
+                <span style="font-size:10px; color:#64748b;"> ({m.get('league','')})</span><br>
+                <span style="font-size:11px; color:#92400e;">👉 <b>1ère MT prolifique</b> · Score 1T: <b>{s['score']}%</b> · Moy. buts: {s['goals']:.1f}</span>
+              </div>
+              <div style="text-align:right; min-width:90px;">
+                <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
+                <span style="font-size:10px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 6px; border-radius:4px;">Mise 3 € → {3.0*s['odds']:.2f} €</span>
+              </div>
+            </div>'''
+
+    # ── Rendu final regroupé par jour ─────────────────────────────────────────
     systems_23_html = ""
-    idx_global_sys = 1
-
-    # Formule B : 2 Matchs 1ère MT + 1 Match 2ème MT
-    if systems_23_b:
-        systems_23_html += '<div style="font-size:12px; font-weight:800; color:#7c3aed; background:#ede9fe; padding:6px 10px; border-radius:6px; margin:8px 0 10px 0; border:1px solid #ddd6fe;">🔥 FORMULE B : 2 MATCHS 1ÈRE MI-TEMPS + 1 MATCH 2ÈME MI-TEMPS (Fort Potentiel Cotes @2.70+)</div>'
-        for sys_item in systems_23_b:
-            c1 = sys_item["c1"]["m"]
-            c2 = sys_item["c2"]["m"]
-            a  = sys_item["a"]["m"]
-            st_line = sys_item["stake_line"]
-            tot_st  = sys_item["stake_tot"]
-            o_12, o_1a, o_2a = sys_item["o_12"], sys_item["o_1a"], sys_item["o_2a"]
-            min_g, max_g = sys_item["min_gain"], sys_item["max_gain"]
-            prof_min = round(min_g - tot_st, 2)
-            prof_max = round(max_g - tot_st, 2)
-
-            systems_23_html += f'''
-            <div style="background:#ffffff; border:1.5px solid #c7d2fe; border-left:5px solid #7c3aed; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #e9d5ff;">
-                <div>
-                  <span style="font-weight:900; color:#6d28d9; font-size:13px;">🎟️ SYSTÈME 2/3 HYBRIDE #{idx_global_sys} [2x 1T + 1x 2T]</span>
-                  <span style="font-size:11px; color:#7c3aed; font-weight:600;"> · {sys_item['day']}</span>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
-                    Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
-                  </span>
-                </div>
-              </div>
-
-              <!-- 3 Sélections -->
-              <div style="margin-bottom:8px;">
-                <!-- 1T #1 -->
-                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🟡 {c1['dom']} vs {c1['ext']}</b> <span style="color:#64748b; font-size:10px;">({c1.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c1']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
-                    <span>Score 1T: <b>{sys_item['c1']['score']}%</b></span>
-                  </div>
-                </div>
-                <!-- 1T #2 -->
-                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🟡 {c2['dom']} vs {c2['ext']}</b> <span style="color:#64748b; font-size:10px;">({c2.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c2']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
-                    <span>Score 1T: <b>{sys_item['c2']['score']}%</b></span>
-                  </div>
-                </div>
-                <!-- 2T -->
-                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🔵 {a['dom']} vs {a['ext']}</b> <span style="color:#64748b; font-size:10px;">({a.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
-                    <span>Score 2T: <b>{sys_item['a']['score']}%</b></span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bloc Gains & Garanties -->
-              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px;">
-                <div style="color:#475569; margin-bottom:4px;">
-                  Combinaisons : Ticket 1 (1T+1T): <b>@{o_12:.2f}</b> · Ticket 2 (1T+2T): <b>@{o_1a:.2f}</b> · Ticket 3 (1T+2T): <b>@{o_2a:.2f}</b>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:5px;">
-                  <div style="color:#15803d; font-weight:800;">
-                    🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px; font-weight:700;">(+{prof_min:.2f} € net)</span>
-                  </div>
-                  <div style="color:#6d28d9; font-weight:900; font-size:13px;">
-                    🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; font-weight:700; color:#15803d;">(+{prof_max:.2f} €)</span>
-                  </div>
-                </div>
-              </div>
-            </div>'''
-            idx_global_sys += 1
-
-    # Formule A : 2 Matchs 2ème MT + 1 Match 1ère MT
-    if systems_23_a:
-        systems_23_html += '<div style="font-size:12px; font-weight:800; color:#1d4ed8; background:#dbeafe; padding:6px 10px; border-radius:6px; margin:14px 0 10px 0; border:1px solid #bfdbfe;">🛡️ FORMULE A : 2 MATCHS 2ÈME MI-TEMPS + 1 MATCH 1ÈRE MI-TEMPS (Haute Sécurité Bases @1.95)</div>'
-        for sys_item in systems_23_a:
-            a1 = sys_item["a1"]["m"]
-            a2 = sys_item["a2"]["m"]
-            c  = sys_item["c"]["m"]
-            st_line = sys_item["stake_line"]
-            tot_st  = sys_item["stake_tot"]
-            o_12, o_1c, o_2c = sys_item["o_12"], sys_item["o_1c"], sys_item["o_2c"]
-            min_g, max_g = sys_item["min_gain"], sys_item["max_gain"]
-            prof_min = round(min_g - tot_st, 2)
-            prof_max = round(max_g - tot_st, 2)
-
-            systems_23_html += f'''
-            <div style="background:#ffffff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #bfdbfe;">
-                <div>
-                  <span style="font-weight:900; color:#1e40af; font-size:13px;">🎟️ SYSTÈME 2/3 HYBRIDE #{idx_global_sys} [2x 2T + 1x 1T]</span>
-                  <span style="font-size:11px; color:#2563eb; font-weight:600;"> · {sys_item['day']}</span>
-                </div>
-                <div>
-                  <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
-                    Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
-                  </span>
-                </div>
-              </div>
-
-              <!-- 3 Sélections -->
-              <div style="margin-bottom:8px;">
-                <!-- 2T #1 -->
-                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🔵 {a1['dom']} vs {a1['ext']}</b> <span style="color:#64748b; font-size:10px;">({a1.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a1']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
-                    <span>Score 2T: <b>{sys_item['a1']['score']}%</b></span>
-                  </div>
-                </div>
-                <!-- 2T #2 -->
-                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🔵 {a2['dom']} vs {a2['ext']}</b> <span style="color:#64748b; font-size:10px;">({a2.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a2']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
-                    <span>Score 2T: <b>{sys_item['a2']['score']}%</b></span>
-                  </div>
-                </div>
-                <!-- 1T -->
-                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; border-radius:5px; font-size:11px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span><b>🟡 {c['dom']} vs {c['ext']}</b> <span style="color:#64748b; font-size:10px;">({c.get('league','')})</span></span>
-                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c']['odds']:.2f}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
-                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
-                    <span>Score 1T: <b>{sys_item['c']['score']}%</b></span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Bloc Gains & Garanties -->
-              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px;">
-                <div style="color:#475569; margin-bottom:4px;">
-                  Combinaisons : Ticket 1 (2T+2T): <b>@{o_12:.2f}</b> · Ticket 2 (2T+1T): <b>@{o_1c:.2f}</b> · Ticket 3 (2T+1T): <b>@{o_2c:.2f}</b>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:5px;">
-                  <div style="color:#15803d; font-weight:800;">
-                    🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px; font-weight:700;">(+{prof_min:.2f} € net)</span>
-                  </div>
-                  <div style="color:#1e40af; font-weight:900; font-size:13px;">
-                    🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; font-weight:700; color:#15803d;">(+{prof_max:.2f} €)</span>
-                  </div>
-                </div>
-              </div>
-            </div>'''
-            idx_global_sys += 1
-
-    if not systems_23_html:
-        systems_23_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Système 2/3 formé sur cette session.</div>'
-
-    # ── HTML Section Combinés Doublés Hybrides (1T + 2T) ────────────────────
     combos_hybrid_html = ""
-    for idx_hyb, ch in enumerate(combos_hybrid, 1):
-        c = ch["items"][0]["m"]
-        a = ch["items"][1]["m"]
-        combos_hybrid_html += f'''
-        <div style="background:#ffffff; border:1.5px solid #fed7aa; border-left:5px solid #ea580c; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#fff7ed; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #fed7aa;">
-            <div>
-              <span style="font-weight:900; color:#c2410c; font-size:12px;">⚡ DOUBLÉ HYBRIDE #{idx_hyb}</span>
-              <span style="font-size:10px; color:#ea580c; font-weight:600;"> · {ch['day']}</span>
-            </div>
-            <div>
-              <span style="font-size:13px; font-weight:900; color:#9a3412; background:#ffffff; padding:2px 7px; border-radius:4px; border:1px solid #fdba74;">Cote @{ch['comb_odds']:.2f}</span>
-              &nbsp;
-              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Mise 3 € &rarr; {ch['gain']:.2f} € (+{ch['profit']:.2f} €)</span>
-            </div>
-          </div>
-          <div style="font-size:11px; line-height:1.6;">
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed #fed7aa;">
-              <span><b>🟡 1ère MT :</b> {c['dom']} vs {c['ext']} <span style="color:#64748b; font-size:10px;">({c.get('league','')})</span></span>
-              <span><b style="color:#b45309;">@{ch['items'][0]['odds']:.2f}</b> · 1T: {ch['items'][0]['score']}%</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0;">
-              <span><b>🔵 2ème MT :</b> {a['dom']} vs {a['ext']} <span style="color:#64748b; font-size:10px;">({a.get('league','')})</span></span>
-              <span><b style="color:#1d4ed8;">@{ch['items'][1]['odds']:.2f}</b> · 2T: {ch['items'][1]['score']}%</span>
-            </div>
-          </div>
-        </div>'''
-    if not combos_hybrid_html:
-        combos_hybrid_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé hybride sur cette session.</div>'
-
-    # ── HTML Section Combinés Doublés 2T Purs (2x 2T) ───────────────────────
     combos_2t_html = ""
-    for idx_2t, c2t in enumerate(combos_2t_pure, 1):
-        a1 = c2t["items"][0]["m"]
-        a2 = c2t["items"][1]["m"]
-        combos_2t_html += f'''
-        <div style="background:#ffffff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #bfdbfe;">
-            <div>
-              <span style="font-weight:900; color:#1e40af; font-size:12px;">🚀 DOUBLÉ 2T PUR #{idx_2t}</span>
-              <span style="font-size:10px; color:#2563eb; font-weight:600;"> · {c2t['day']}</span>
-            </div>
-            <div>
-              <span style="font-size:13px; font-weight:900; color:#1e40af; background:#ffffff; padding:2px 7px; border-radius:4px; border:1px solid #bfdbfe;">Cote @{c2t['comb_odds']:.2f}</span>
-              &nbsp;
-              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Mise 4 € &rarr; {c2t['gain']:.2f} € (+{c2t['profit']:.2f} €)</span>
-            </div>
-          </div>
-          <div style="font-size:11px; line-height:1.6;">
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed #bfdbfe;">
-              <span><b>🔵 2ème MT :</b> {a1['dom']} vs {a1['ext']} <span style="color:#64748b; font-size:10px;">({a1.get('league','')})</span></span>
-              <span><b style="color:#1d4ed8;">@{c2t['items'][0]['odds']:.2f}</b> · 2T: {c2t['items'][0]['score']}%</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0;">
-              <span><b>🔵 2ème MT :</b> {a2['dom']} vs {a2['ext']} <span style="color:#64748b; font-size:10px;">({a2.get('league','')})</span></span>
-              <span><b style="color:#1d4ed8;">@{c2t['items'][1]['odds']:.2f}</b> · 2T: {c2t['items'][1]['score']}%</span>
-            </div>
-          </div>
-        </div>'''
-    if not combos_2t_html:
-        combos_2t_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé 2T pur sur cette session.</div>'
-
-    # ── HTML Section Simples 1T Restants ────────────────────────────────────
     simples_1t_html = ""
-    for idx_s, s in enumerate(simples_1t, 1):
-        m = s["m"]
-        simples_1t_html += f'''
-        <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #b45309; border-radius:8px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <b style="font-size:12px; color:#0f172a;">⚡ Simple 1T #{idx_s} : {m["dom"]} vs {m["ext"]}</b>
-            <span style="font-size:10px; color:#64748b;"> · {m.get("date_str", "")} ({m.get("league", "")})</span>
-            <br><span style="font-size:11px; color:#92400e;">👉 <b>Pari : 1ère MT prolifique</b> · Score 1T: <b>{s['score']}%</b> (Moy. buts: {s['goals']:.1f}b)</span>
-          </div>
-          <div style="text-align:right;">
-            <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
-            <span style="font-size:10px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 6px; border-radius:4px;">Mise 3 € &rarr; {3.0*s['odds']:.2f} €</span>
-          </div>
-        </div>'''
-    if not simples_1t_html:
-        simples_1t_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match 1T simple orphelin.</div>'
+
+    # Une seule section unifiée
+    unified_html = ""
+    idx_by_kind = {"SYS_B": 0, "SYS_A": 0, "DBL_HYB": 0, "DBL_2T": 0, "SMP_1T": 0}
+
+    # Grouper par jour (clé = day_key '2026-09-04')
+    days_seen = []
+    day_groups = {}
+    for tk in all_tickets:
+        dk = tk["_day"]
+        if dk not in day_groups:
+            day_groups[dk] = []
+            days_seen.append(dk)
+        day_groups[dk].append(tk)
+
+    for dk in days_seen:
+        unified_html += f'<div style="font-size:13px; font-weight:900; color:#0f172a; background:#f1f5f9; padding:8px 12px; border-radius:7px; margin:16px 0 10px 0; border-left:5px solid #6366f1;">📅 {day_label(dk)}</div>'
+        for tk in day_groups[dk]:
+            kind = tk["kind"]
+            idx_by_kind[kind] += 1
+            unified_html += render_ticket(tk, idx_by_kind[kind])
+
+    if not unified_html:
+        unified_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:20px;">Aucun ticket généré sur cette session.</div>'
+
+
+
+    # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
+    plan_rows = []
+    seen_plan = set()
+
+
 
     # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
     plan_rows = []
@@ -1379,40 +1349,14 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : SYSTÈMES MULTIPLES 2/3 HYBRIDES -->
-          <div style="padding:12px 16px 10px 16px; background:#f5f3ff; border-top:2px solid #ddd6fe;">
-            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎟️ SYSTÈMES MULTIPLES 2/3 HYBRIDES &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 3.00€ · Remboursé dès 2/3)</span></span>
-              <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_sys} ticket(s)</span>
-            </div>
-            {systems_23_html}
-          </div>
 
-          <!-- SECTION 3 : DOUBLÉS HYBRIDES (1T + 2T) -->
-          <div style="padding:12px 16px 10px 16px; background:#fff7ed; border-top:2px solid #fed7aa;">
-            <div style="font-size:14px; font-weight:800; color:#c2410c; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ COMBINÉS DOUBLÉS HYBRIDES (1x 1T + 1x 2T) &nbsp;<span style="font-size:12px; font-weight:600; color:#ea580c;">(Cotes @5.00+ · Mise 3€)</span></span>
-              <span style="font-size:11px; background:#ffedd5; color:#c2410c; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_hyb_dbl} ticket(s)</span>
-            </div>
-            {combos_hybrid_html}
-          </div>
-
-          <!-- SECTION 4 : DOUBLÉS 2T PURS -->
+          <!-- TICKETS PAR JOUR — tous types regroupés chronologiquement -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS PURS &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Cotes @3.50+ · Score 2T &ge; 55% · Mise 4€)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_2t_dbl} ticket(s)</span>
+              <span>🎟️ TICKETS À JOUER &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">— regroupés par jour, dans l'ordre chronologique</span></span>
+              <span style="font-size:11px; background:#e0e7ff; color:#4338ca; padding:2px 8px; border-radius:6px; font-weight:700;">{len(all_tickets)} ticket(s)</span>
             </div>
-            {combos_2t_html}
-          </div>
-
-          <!-- SECTION 5 : SIMPLES 1T RESTANTS -->
-          <div style="padding:12px 16px 10px 16px; background:#fffbeb; border-top:2px solid #fde68a;">
-            <div style="font-size:14px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 PARIS SIMPLES 1ÈRE MI-TEMPS RESTANTS &nbsp;<span style="font-size:12px; font-weight:600; color:#b45309;">(Grosses Cotes @2.50+ · Mise 3€)</span></span>
-              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_smp_1t} simple(s)</span>
-            </div>
-            {simples_1t_html}
+            {unified_html}
           </div>
 
           <!-- SECTION 6 : TOUS LES MATCHS ANALYSÉS -->
