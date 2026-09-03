@@ -636,81 +636,9 @@ def main():
                              "day": get_day_key(m_dt), "odds": mt2, "score": s2t,
                              "goals": goals, "market": "🕐 2T Prolifique"})
 
-    mt2_pool.sort(key=lambda x: x["dt"])
-    print(f"📊 Pool 2T prolifique (Score2T>={MIN_2T_SCORE}%, Goals>={MIN_2T_GOALS}, @{MIN_2T_ODDS}-@{MAX_2T_ODDS}) : {len(mt2_pool)}")
+    mt2_pool.sort(key=lambda x: (-x["score"], x["dt"]))
 
-    combos_mixed = []
-    used_2t = set()
-
-    # 1. Appariement par jour (tant qu'il y a >= 2 matchs éligibles ce jour-là)
-    for d in sorted(set(s["day"] for s in mt2_pool)):
-        day_pool = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t]
-        day_pool_sorted = sorted(day_pool, key=lambda x: (-x["score"], -x["odds"]))
-        while len([s for s in day_pool_sorted if s["id"] not in used_2t]) >= 2:
-            rem = [s for s in day_pool_sorted if s["id"] not in used_2t]
-            best_pair = None
-            for i in range(len(rem)):
-                for j in range(i + 1, len(rem)):
-                    a, b = rem[i], rem[j]
-                    c_odds = round(a["odds"] * b["odds"], 2)
-                    if c_odds >= MIN_2T_COMBO:
-                        if best_pair is None or c_odds < best_pair[2]:
-                            best_pair = (a, b, c_odds)
-                if best_pair:
-                    break
-            if best_pair:
-                a, b, c_odds = best_pair
-                used_2t.update([a["id"], b["id"]])
-                avg_s2t = (a["score"] + b["score"]) / 2
-                stake = 5.0 if avg_s2t >= 75 else 4.0
-                items = sorted([a, b], key=lambda x: x["dt"])
-                combos_mixed.append({
-                    "session": d, "type": "Doublé 2T Prolifique",
-                    "items": items, "comb_odds": c_odds,
-                    "avg_score": round(avg_s2t, 1), "stake": stake,
-                    "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
-                })
-            else:
-                break
-
-    # 2. Appariement des orphelins restants inter-jours (ex: 1 match vendredi + 1 match samedi)
-    rem_all = [s for s in mt2_pool if s["id"] not in used_2t]
-    rem_sorted = sorted(rem_all, key=lambda x: (-x["score"], -x["odds"]))
-    while len([s for s in rem_sorted if s["id"] not in used_2t]) >= 2:
-        rem = [s for s in rem_sorted if s["id"] not in used_2t]
-        best_pair = None
-        for i in range(len(rem)):
-            for j in range(i + 1, len(rem)):
-                a, b = rem[i], rem[j]
-                c_odds = round(a["odds"] * b["odds"], 2)
-                if c_odds >= MIN_2T_COMBO:
-                    if best_pair is None or c_odds < best_pair[2]:
-                        best_pair = (a, b, c_odds)
-            if best_pair:
-                break
-        if best_pair:
-            a, b, c_odds = best_pair
-            used_2t.update([a["id"], b["id"]])
-            avg_s2t = (a["score"] + b["score"]) / 2
-            stake = 5.0 if avg_s2t >= 75 else 4.0
-            items = sorted([a, b], key=lambda x: x["dt"])
-            session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
-            combos_mixed.append({
-                "session": session_lbl, "type": "Doublé 2T Prolifique",
-                "items": items, "comb_odds": c_odds,
-                "avg_score": round(avg_s2t, 1), "stake": stake,
-                "gain": round(stake * c_odds, 2), "profit": round(stake * c_odds - stake, 2)
-            })
-        else:
-            break
-
-    combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
-    total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Doublés 2T Prolifique (Combo>={MIN_2T_COMBO}, Mise 4-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
-
-    # ── MOTEUR 2 : 1ÈRE MI-TEMPS LA PLUS PROLIFIQUE (GROSSES COTES @2.40+) ──
-    # Moyenne naturelle du foot en 1T > 2T : seulement ~25%.
-    # Dès que score_1t >= 35%, l'équipe marque beaucoup plus vite que la normale (Value Bet).
+    # ── Pool 1T Prolifique ──
     MIN_1T_SCORE = 35
     MIN_1T_GOALS = 2.0
     MIN_1T_ODDS  = 2.30
@@ -729,33 +657,99 @@ def main():
                              "goals": goals, "market": "⚡ 1T Prolifique"})
 
     mt1_pool.sort(key=lambda x: (-x["score"], -x["odds"]))
-    print(f"📊 Pool 1T prolifique (Score1T>={MIN_1T_SCORE}%, Goals>={MIN_1T_GOALS}, Cote>=@{MIN_1T_ODDS}) : {len(mt1_pool)}")
+    print(f"📊 Pool 2T: {len(mt2_pool)} matchs | Pool 1T: {len(mt1_pool)} matchs")
 
-    combos_1t = []
-    used_1t = set()
-    # Appariement en doublés grosses cotes (Cote >= 5.50)
-    for i in range(len(mt1_pool)):
-        if mt1_pool[i]["id"] in used_1t: continue
-        for j in range(i + 1, len(mt1_pool)):
-            if mt1_pool[j]["id"] in used_1t: continue
-            a, b = mt1_pool[i], mt1_pool[j]
-            c_odds = round(a["odds"] * b["odds"], 2)
-            if c_odds >= 5.50:
-                used_1t.update([a["id"], b["id"]])
-                avg_s1t = (a["score"] + b["score"]) / 2
-                items = sorted([a, b], key=lambda x: x["dt"])
-                session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
-                combos_1t.append({
-                    "session": session_lbl, "type": "Doublé 1T (Grosse Cote)",
-                    "items": items, "comb_odds": c_odds,
-                    "avg_score": round(avg_s1t, 1), "stake": 3.0,
-                    "gain": round(3.0 * c_odds, 2), "profit": round(3.0 * c_odds - 3.0, 2)
+    # ── MOTEUR SYSTÈMES MULTIPLES 2/3 (2 Bases 2T + 1 Pépite 1T) ───────────
+    used_2t_for_sys = set()
+    used_1t_for_sys = set()
+    systems_23 = []
+    stake_line = 1.50  # 1.50 € par ligne -> 4.50 € par système 2/3
+
+    # 1. Trios par jour
+    for d in sorted(set(s["day"] for s in mt1_pool)):
+        day_1t = [s for s in mt1_pool if s["day"] == d and s["id"] not in used_1t_for_sys]
+        for c in day_1t:
+            avail_2t = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t_for_sys and s["id"] != c["id"]]
+            if len(avail_2t) >= 2:
+                a, b = avail_2t[0], avail_2t[1]
+                used_1t_for_sys.add(c["id"])
+                used_2t_for_sys.update([a["id"], b["id"]])
+                o_ab = round(a["odds"] * b["odds"], 2)
+                o_ac = round(a["odds"] * c["odds"], 2)
+                o_bc = round(b["odds"] * c["odds"], 2)
+                min_g = round(stake_line * min(o_ab, o_ac, o_bc), 2)
+                max_g = round(stake_line * (o_ab + o_ac + o_bc), 2)
+                systems_23.append({
+                    "day": d, "a": a, "b": b, "c": c,
+                    "o_ab": o_ab, "o_ac": o_ac, "o_bc": o_bc,
+                    "stake_line": stake_line, "stake_tot": round(stake_line * 3, 2),
+                    "min_gain": min_g, "max_gain": max_g
                 })
-                break
 
-    # Matchs 1T orphelins restants -> Paris Simples secs à grosse cote
-    simples_1t = [s for s in mt1_pool if s["id"] not in used_1t]
-    print(f"⚡ 1T Prolifique : {len(combos_1t)} doublé(s) (@5.50+) et {len(simples_1t)} simple(s) sec(s) (Mise 3€)")
+    # 2. Trios inter-jours pour les 1T restantes
+    rem_1t = [s for s in mt1_pool if s["id"] not in used_1t_for_sys]
+    for c in rem_1t:
+        avail_2t = [s for s in mt2_pool if s["id"] not in used_2t_for_sys and s["id"] != c["id"]]
+        if len(avail_2t) >= 2:
+            a, b = avail_2t[0], avail_2t[1]
+            used_1t_for_sys.add(c["id"])
+            used_2t_for_sys.update([a["id"], b["id"]])
+            o_ab = round(a["odds"] * b["odds"], 2)
+            o_ac = round(a["odds"] * c["odds"], 2)
+            o_bc = round(b["odds"] * c["odds"], 2)
+            min_g = round(stake_line * min(o_ab, o_ac, o_bc), 2)
+            max_g = round(stake_line * (o_ab + o_ac + o_bc), 2)
+            session_lbl = f"{a['day']} / {c['day']}" if a['day'] != c['day'] else a['day']
+            systems_23.append({
+                "day": session_lbl, "a": a, "b": b, "c": c,
+                "o_ab": o_ab, "o_ac": o_ac, "o_bc": o_bc,
+                "stake_line": stake_line, "stake_tot": round(stake_line * 3, 2),
+                "min_gain": min_g, "max_gain": max_g
+            })
+
+    print(f"🎲 Systèmes 2/3 (2T+1T) générés : {len(systems_23)} tickets (Mise 4.50€)")
+
+    # ── MOTEUR DOUBLÉS 2T RESTANTS (pour les matchs 2T non utilisés en 2/3) ──
+    rem_2t = [s for s in mt2_pool if s["id"] not in used_2t_for_sys]
+    combos_mixed = []
+    used_2t_rem = set()
+
+    for d in sorted(set(s["day"] for s in rem_2t)):
+        day_pool = [s for s in rem_2t if s["day"] == d and s["id"] not in used_2t_rem]
+        while len([s for s in day_pool if s["id"] not in used_2t_rem]) >= 2:
+            rem = [s for s in day_pool if s["id"] not in used_2t_rem]
+            a, b = rem[0], rem[1]
+            c_odds = round(a["odds"] * b["odds"], 2)
+            used_2t_rem.update([a["id"], b["id"]])
+            avg_s2t = (a["score"] + b["score"]) / 2
+            items = sorted([a, b], key=lambda x: x["dt"])
+            combos_mixed.append({
+                "session": d, "type": "Doublé 2T Prolifique",
+                "items": items, "comb_odds": c_odds,
+                "avg_score": round(avg_s2t, 1), "stake": 4.0,
+                "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+            })
+
+    # Doublés 2T orphelins inter-jours
+    rem_all_2t = [s for s in rem_2t if s["id"] not in used_2t_rem]
+    while len(rem_all_2t) >= 2:
+        a, b = rem_all_2t[0], rem_all_2t[1]
+        c_odds = round(a["odds"] * b["odds"], 2)
+        used_2t_rem.update([a["id"], b["id"]])
+        rem_all_2t = [s for s in rem_all_2t if s["id"] not in used_2t_rem]
+        avg_s2t = (a["score"] + b["score"]) / 2
+        items = sorted([a, b], key=lambda x: x["dt"])
+        session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
+        combos_mixed.append({
+            "session": session_lbl, "type": "Doublé 2T Prolifique",
+            "items": items, "comb_odds": c_odds,
+            "avg_score": round(avg_s2t, 1), "stake": 4.0,
+            "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+        })
+
+    # Simples 1T restants
+    simples_1t = [s for s in mt1_pool if s["id"] not in used_1t_for_sys]
+    print(f"✅ Doublés 2T restants : {len(combos_mixed)} | Simples 1T restants : {len(simples_1t)}")
 
 
 
@@ -979,58 +973,126 @@ def main():
     if not pen_simples_html:
         pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
 
-    # ── HTML Section 1T Prolifique (Grosses Cotes) ──────────────────────────
-    mt1_html = ""
-    if combos_1t:
-        for idx_1t, cb in enumerate(combos_1t, 1):
-            items_1t_html = ""
-            for item in cb["items"]:
-                m = item["m"]
-                items_1t_html += f'''
-                <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px dashed #e2e8f0; font-size:12px;">
-                  <div><b>{m["dom"]} vs {m["ext"]}</b> <span style="color:#64748b; font-size:10px;">({m.get("league", "")})</span></div>
-                  <div><span style="background:#fef3c7; color:#92400e; font-weight:800; padding:2px 7px; border-radius:4px; font-size:11px;">1T: {item["score"]}%</span> &nbsp; Cote 1T: <b style="color:#0f172a; background:#f1f5f9; padding:1px 6px; border-radius:4px;">@{item["odds"]:.2f}</b></div>
-                </div>'''
-            mt1_html += f'''
-            <div style="background:#ffffff; border:1.5px solid #fde68a; border-left:5px solid #d97706; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:#fffbeb; padding:6px 10px; border-radius:5px; margin-bottom:7px; border:1px solid #fde68a;">
-                <span style="font-weight:800; color:#92400e; font-size:12px;">💥 Doublé 1T #{idx_1t} — Cote Totale: <span style="background:#ffffff; color:#b45309; font-weight:900; padding:2px 7px; border-radius:4px; border:1px solid #fde68a;">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise 3 € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €) · Score moy. {cb.get('avg_score', '')}%</span>
-              </div>
-              <div>{items_1t_html}</div>
-            </div>'''
+    # ── HTML Section Systèmes Multiples 2/3 (2T + 1T) ────────────────────────
+    systems_23_html = ""
+    for idx_sys, sys_item in enumerate(systems_23, 1):
+        a = sys_item["a"]["m"]
+        b = sys_item["b"]["m"]
+        c = sys_item["c"]["m"]
+        st_line = sys_item["stake_line"]
+        tot_st = sys_item["stake_tot"]
+        o_ab = sys_item["o_ab"]
+        o_ac = sys_item["o_ac"]
+        o_bc = sys_item["o_bc"]
+        min_g = sys_item["min_gain"]
+        max_g = sys_item["max_gain"]
+        profit_min = round(min_g - tot_st, 2)
+        profit_max = round(max_g - tot_st, 2)
 
-    if simples_1t:
-        for idx_s, s in enumerate(simples_1t, 1):
-            m = s["m"]
-            mt1_html += f'''
-            <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #b45309; border-radius:8px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <b style="font-size:12px; color:#0f172a;">⚡ Simple 1T #{idx_s} : {m["dom"]} vs {m["ext"]}</b>
-                <span style="font-size:10px; color:#64748b;"> · {m.get("date_str", "")} ({m.get("league", "")})</span>
-                <br><span style="font-size:11px; color:#92400e;">Score 1T : <b>{s['score']}%</b> des matchs ont plus de buts en 1ère MT (Moyenne buts: {s['goals']:.1f}b)</span>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
-                <span style="font-size:10px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 6px; border-radius:4px;">Mise 3 € &rarr; {3.0*s['odds']:.2f} €</span>
-              </div>
-            </div>'''
+        systems_23_html += f'''
+        <div style="background:#ffffff; border:1.5px solid #c7d2fe; border-left:5px solid #4f46e5; border-radius:10px; padding:12px 14px; margin-bottom:12px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+          <!-- Header Système -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#eef2ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #c7d2fe;">
+            <div>
+              <span style="font-weight:900; color:#3730a3; font-size:13px;">🎲 SYSTÈME 2/3 #{idx_sys}</span>
+              <span style="font-size:11px; color:#4338ca; font-weight:600;"> · {sys_item['day']}</span>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
+                Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
+              </span>
+            </div>
+          </div>
 
-    if not mt1_html:
-        mt1_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucune opportunité 1T Prolifique sur cette session.</div>'
+          <!-- 3 Matchs du Système -->
+          <div style="background:#f8fafc; border-radius:6px; padding:8px 10px; margin-bottom:9px; border:1px solid #e2e8f0; font-size:11px; line-height:1.7;">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:4px; margin-bottom:4px;">
+              <span><b>🔵 Base 2T #1 :</b> {a['dom']} vs {a['ext']} <span style="color:#64748b;">({a.get('league','')})</span></span>
+              <span><b style="background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px;">@{sys_item['a']['odds']:.2f}</b> · 2T: {sys_item['a']['score']}%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:4px; margin-bottom:4px;">
+              <span><b>🔵 Base 2T #2 :</b> {b['dom']} vs {b['ext']} <span style="color:#64748b;">({b.get('league','')})</span></span>
+              <span><b style="background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px;">@{sys_item['b']['odds']:.2f}</b> · 2T: {sys_item['b']['score']}%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span><b>🟡 Pépite 1T :</b> {c['dom']} vs {c['ext']} <span style="color:#64748b;">({c.get('league','')})</span></span>
+              <span><b style="background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:4px;">@{sys_item['c']['odds']:.2f}</b> · 1T: {sys_item['c']['score']}%</span>
+            </div>
+          </div>
 
-    pen_simples_html = ""
-    pen_rejected_html = ""
+          <!-- Détail des 3 Combinaisons & Gains -->
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:8px 10px; border-radius:6px; border:1px solid #e9d5ff; font-size:11px;">
+            <div>
+              <div style="color:#475569; margin-bottom:2px;">
+                <b>Ticket 1 (2T+2T)</b>: @{o_ab:.2f} &nbsp;|&nbsp; <b>Ticket 2 (2T+1T)</b>: @{o_ac:.2f} &nbsp;|&nbsp; <b>Ticket 3 (2T+1T)</b>: @{o_bc:.2f}
+              </div>
+              <div style="color:#15803d; font-weight:700;">
+                🛡️ Remboursé + gain dès 2/3 : <b>{min_g:.2f} €</b> (+{profit_min:.2f} € net)
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px; color:#6b21a8; font-weight:700; text-transform:uppercase;">Carton plein (3/3)</div>
+              <div style="font-size:15px; font-weight:900; color:#7c3aed;">{max_g:.2f} € <span style="font-size:11px; font-weight:700; color:#15803d;">(+{profit_max:.2f} €)</span></div>
+            </div>
+          </div>
+        </div>'''
+
+    if not systems_23_html:
+        systems_23_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Système 2/3 formé sur cette session.</div>'
+
+    # ── HTML Section Simples 1T Restants ────────────────────────────────────
+    simples_1t_html = ""
+    for idx_s, s in enumerate(simples_1t, 1):
+        m = s["m"]
+        simples_1t_html += f'''
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #b45309; border-radius:8px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <b style="font-size:12px; color:#0f172a;">⚡ Simple 1T #{idx_s} : {m["dom"]} vs {m["ext"]}</b>
+            <span style="font-size:10px; color:#64748b;"> · {m.get("date_str", "")} ({m.get("league", "")})</span>
+            <br><span style="font-size:11px; color:#92400e;">Score 1T : <b>{s['score']}%</b> de 1T plus prolifique (Moyenne buts: {s['goals']:.1f}b)</span>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
+            <span style="font-size:10px; background:#dcfce7; color:#15803d; font-weight:700; padding:2px 6px; border-radius:4px;">Mise 3 € &rarr; {3.0*s['odds']:.2f} €</span>
+          </div>
+        </div>'''
+    if not simples_1t_html:
+        simples_1t_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match 1T simple orphelin.</div>'
 
     # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
     plan_rows = []
     seen_plan = set()
 
-    # Combinés 2T Prolifique
+    # Matchs des Systèmes 2/3
+    for idx_sys, sys_item in enumerate(systems_23, 1):
+        for role, item, mkt, bg, cl in [
+            ("Base 2T", sys_item["a"], sys_item["a"]["market"], "#e0e7ff", "#3730a3"),
+            ("Base 2T", sys_item["b"], sys_item["b"]["market"], "#e0e7ff", "#3730a3"),
+            ("Pépite 1T", sys_item["c"], sys_item["c"]["market"], "#fef3c7", "#92400e")
+        ]:
+            m = item["m"]
+            key = (m["id"], mkt, f"SYS_{idx_sys}")
+            if key not in seen_plan:
+                plan_rows.append({
+                    "dt": item["dt"],
+                    "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}",
+                    "league": m.get("league", ""),
+                    "market": item["market"],
+                    "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%",
+                    "score_val": item["score"],
+                    "type_label": f"SYSTÈME 2/3 #{idx_sys} ({role})",
+                    "bg_market": bg,
+                    "cl_market": cl,
+                })
+                seen_plan.add(key)
+
+    # Doublés 2T restants
     for idx_cb, cb in enumerate(combos_mixed, 1):
         for item in cb["items"]:
             m = item["m"]
-            key = (m["id"], item["market"])
+            key = (m["id"], item["market"], f"DBL_{idx_cb}")
             if key not in seen_plan:
                 plan_rows.append({
                     "dt": item["dt"],
@@ -1047,26 +1109,7 @@ def main():
                 })
                 seen_plan.add(key)
 
-    # Combinés 1T Prolifique
-    for idx_cb, cb in enumerate(combos_1t, 1):
-        for item in cb["items"]:
-            m = item["m"]
-            key = (m["id"], item["market"])
-            if key not in seen_plan:
-                plan_rows.append({
-                    "dt": item["dt"],
-                    "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}",
-                    "league": m.get("league", ""),
-                    "market": item["market"],
-                    "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%",
-                    "score_val": item["score"],
-                    "type_label": f"DOUBLÉ 1T #{idx_cb}",
-                    "bg_market": "#fef3c7",
-                    "cl_market": "#92400e",
-                })
-                seen_plan.add(key)
+
 
     # Simples 1T Prolifique
     for idx_s, s in enumerate(simples_1t, 1):
@@ -1156,8 +1199,9 @@ def main():
     now_local = datetime.now(timezone(timedelta(hours=2)))
     days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
     date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
+    nb_sys = len(systems_23)
     nb_mixed = len(combos_mixed)
-    nb_1t_total = len(combos_1t) + len(simples_1t)
+    nb_simples_1t = len(simples_1t)
 
     html_body = f"""
     <!DOCTYPE html>
@@ -1170,16 +1214,16 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Méthodes 2T Prolifique (Cote &ge; 3.20) & 1T Prolifique (Cotes @2.30 - @9.00) · Mise à jour : {now_str}</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Systèmes Multiples 2/3 (2T + 1T) & Doublés 2T Prolifiques · Mise à jour : {now_str}</p>
           </div>
 
           <!-- COMPTEURS -->
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
+                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#6d28d9;">{nb_sys}</div><div style="font-size:10px; font-weight:700; color:#6d28d9;">SYSTÈMES 2/3</div><div style="font-size:10px; color:#7c3aed;">Remboursé dès 2/3</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">DOUBLÉS 2T</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 3.20</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#b45309;">{nb_1t_total}</div><div style="font-size:10px; font-weight:700; color:#b45309;">TICKETS 1T</div><div style="font-size:10px; color:#d97706;">Cotes @2.30 - @9.00</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Fenêtre 84h</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#b45309;">{nb_simples_1t}</div><div style="font-size:10px; font-weight:700; color:#b45309;">SIMPLES 1T</div><div style="font-size:10px; color:#d97706;">Cotes @2.30+</div></div></td>
               </tr>
             </table>
           </div>
@@ -1208,22 +1252,31 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS DOUBLÉS 2T PROLIFIQUE -->
+          <!-- SECTION 2 : SYSTÈMES MULTIPLES 2/3 (2T + 1T) -->
+          <div style="padding:12px 16px 10px 16px; background:#f5f3ff; border-top:2px solid #ddd6fe;">
+            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🎲 SYSTÈMES MULTIPLES 2/3 (2 Bases 2T + 1 Pépite 1T) &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 4.50€ · Remboursé garanti dès 2/3)</span></span>
+              <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_sys} ticket(s)</span>
+            </div>
+            {systems_23_html}
+          </div>
+
+          <!-- SECTION 3 : DOUBLÉS 2T RESTANTS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 55% · Mise 4-5€)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
+              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS RESTANTS (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 55% · Mise 4€)</span></span>
+              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_mixed} ticket(s)</span>
             </div>
             {combos_mixed_html}
           </div>
 
-          <!-- SECTION 3 : OPPORTUNITÉS 1ÈRE MI-TEMPS LA PLUS PROLIFIQUE -->
+          <!-- SECTION 4 : SIMPLES 1T RESTANTS -->
           <div style="padding:12px 16px 10px 16px; background:#fffbeb; border-top:2px solid #fde68a;">
             <div style="font-size:14px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ OPPORTUNITÉS 1ÈRE MI-TEMPS LA PLUS PROLIFIQUE &nbsp;<span style="font-size:12px; font-weight:600; color:#b45309;">(Score 1T &ge; 35% · Cotes @2.30 - @9.00 · Mise 3€)</span></span>
-              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_1t)} doublé(s) · {len(simples_1t)} simple(s)</span>
+              <span>⚡ PARIS SIMPLES 1ÈRE MI-TEMPS RESTANTS &nbsp;<span style="font-size:12px; font-weight:600; color:#b45309;">(Score 1T &ge; 35% · Cotes @2.30+ · Mise 3€)</span></span>
+              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_simples_1t} simple(s)</span>
             </div>
-            {mt1_html}
+            {simples_1t_html}
           </div>
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
@@ -1258,32 +1311,34 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION MI-TEMPS LA PLUS PROLIFIQUE (2T & 1T)",
+        "# ⚽ SÉLECTION SYSTÈMES 2/3 (2T + 1T) & DOUBLÉS 2T",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères 2T** : Score 2T >= 55%  ·  Buts totaux >= 2.0  ·  Cote 2T @1.80-@2.20  ·  Combiné >= 3.20",
-        f"**Critères 1T** : Score 1T >= 35%  ·  Buts totaux >= 2.0  ·  Cote 1T >= @2.30  ·  Doublé >= @5.50\n",
-        f"## 🎯 Combinés Doublés 2T Recommandés ({len(combos_mixed)} tickets — Cote Min: 3.20 — Mise 4-5 € / ticket)\n",
+        f"**Critères Système 2/3** : 2 bases 2T (Score 2T >= 55%) + 1 pépite 1T (Score 1T >= 35%) · Mise 4.50 € (3 x 1.50 €)",
+        f"**Règle de remboursement** : Remboursé avec profit garanti dès 2 bons résultats sur 3 (Cote min combo >= 3.40)\n",
+        f"## 🎲 Systèmes Multiples 2/3 Recommandés ({nb_sys} tickets — Mise 4.50 € / système)\n",
     ]
 
-    if combos_mixed:
-        for idx, cb in enumerate(combos_mixed, 1):
-            report.append(f"### Ticket #{idx} ({cb['type']}) — Score 2T moy. {cb.get('avg_score', '')}% — Cote Totale: `{cb['comb_odds']:.2f}` | Mise {cb['stake']:.0f} € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
-            for item in cb["items"]:
-                m = item["m"]
-                report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
-            report.append("")
-    else:
-        report.append("Aucun combiné 2T disponible sur cette session.\n")
+    for idx_sys, sys_item in enumerate(systems_23, 1):
+        a = sys_item["a"]["m"]
+        b = sys_item["b"]["m"]
+        c = sys_item["c"]["m"]
+        report.append(f"### Système 2/3 #{idx_sys} — {sys_item['day']} | Mise: {sys_item['stake_tot']:.2f} € → Gain Min (2/3): `{sys_item['min_gain']:.2f} €` | Gain Max (3/3): `{sys_item['max_gain']:.2f} €`")
+        report.append(f"- **🔵 Base 2T #1** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{sys_item['a']['odds']:.2f}`) — Score 2T: {sys_item['a']['score']}%")
+        report.append(f"- **🔵 Base 2T #2** : `{b['date_str']}` — **{b['dom']} vs {b['ext']}** (@`{sys_item['b']['odds']:.2f}`) — Score 2T: {sys_item['b']['score']}%")
+        report.append(f"- **🟡 Pépite 1T** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{sys_item['c']['odds']:.2f}`) — Score 1T: {sys_item['c']['score']}%")
+        report.append(f"- *Combinaisons* : 2T+2T: @`{sys_item['o_ab']:.2f}` | 2T+1T: @`{sys_item['o_ac']:.2f}` | 2T+1T: @`{sys_item['o_bc']:.2f}`\n")
 
-    report.append(f"## ⚡ Opportunités 1T Prolifique (Grosses Cotes — {len(combos_1t)} doublés · {len(simples_1t)} simples — Mise 3 €)\n")
-    if combos_1t:
-        for idx_1t, cb in enumerate(combos_1t, 1):
-            report.append(f"### Doublé 1T #{idx_1t} — Score 1T moy. {cb.get('avg_score', '')}% — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 3 € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
+    if combos_mixed:
+        report.append(f"## 🚀 Doublés 2T Restants ({nb_mixed} tickets — Cote Min: 3.20 — Mise 4.00 €)\n")
+        for idx, cb in enumerate(combos_mixed, 1):
+            report.append(f"### Doublé 2T #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4 € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
                 report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
             report.append("")
+
     if simples_1t:
+        report.append(f"## ⚡ Simples 1T Restants ({nb_simples_1t} matchs — Mise 3.00 €)\n")
         for idx_s, s in enumerate(simples_1t, 1):
             m = s["m"]
             report.append(f"- **Simple 1T #{idx_s}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{s['odds']:.2f}`) — Score 1T: **{s['score']}%** (Moy. buts: {s['goals']:.1f}b)")
@@ -1319,7 +1374,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Doublé(s) 2T · {nb_1t_total} Ticket(s) 1T Prolifique"
+    raw_subject = f"⚽ Football {subject_date} — {nb_sys} Systèmes 2/3 (2T+1T) · {nb_mixed} Doublés 2T"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
