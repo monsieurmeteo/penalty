@@ -770,6 +770,7 @@ def main():
 
     # 5. PARIS SIMPLES 1T SECS (les pépites restantes)
     simples_1t = [s for s in mt1_pool if s["id"] not in used_1t][:MAX_1T_SMP]
+    combos_mixed = combos_hybrid + combos_2t_pure
 
     print(f"🎲 Systèmes 2/3 Type B (2x 1T + 1x 2T) : {len(systems_23_b)}")
     print(f"🎲 Systèmes 2/3 Type A (2x 2T + 1x 1T) : {len(systems_23_a)}")
@@ -865,139 +866,7 @@ def main():
         </div>
         '''
 
-    # Thèmes de couleurs alternées pour les tickets combinés
-    TICKET_THEMES = [
-        # Thème 1: Bleu Océan
-        {
-            "bg_header": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)",
-            "border_card": "#93c5fd",
-            "border_left": "#2563eb",
-            "title_color": "#1e40af",
-        },
-        # Thème 2: Ambre Doré
-        {
-            "bg_header": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)",
-            "border_card": "#fde68a",
-            "border_left": "#d97706",
-            "title_color": "#92400e",
-        },
-        # Thème 3: Émeraude Menthe
-        {
-            "bg_header": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)",
-            "border_card": "#a7f3d0",
-            "border_left": "#059669",
-            "title_color": "#065f46",
-        },
-        # Thème 4: Violet Indigo
-        {
-            "bg_header": "linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)",
-            "border_card": "#ddd6fe",
-            "border_left": "#7c3aed",
-            "title_color": "#5b21b6",
-        },
-        # Thème 5: Rose Ruby
-        {
-            "bg_header": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)",
-            "border_card": "#fecdd3",
-            "border_left": "#e11d48",
-            "title_color": "#9f1239",
-        },
-    ]
 
-    combos_mixed_html = ""
-    if combos_mixed:
-        current_sess = None
-        for idx, cb in enumerate(combos_mixed, 1):
-            sess_label = cb.get("session", "")
-            if sess_label != current_sess:
-                current_sess = sess_label
-                try:
-                    dt_sess = datetime.strptime(sess_label[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
-                except Exception:
-                    dt_sess = sess_label
-                combos_mixed_html += f'<div style="font-weight:800; color:#0f172a; font-size:13px; margin:16px 0 8px 0; padding-bottom:4px; border-bottom:2px solid #3b82f6;">📅 SESSION [JOURNÉE DU {dt_sess}]</div>'
-
-            theme = TICKET_THEMES[(idx - 1) % len(TICKET_THEMES)]
-            items_html = ""
-            for item in cb["items"]:
-                m = item["m"]
-                mk = item["market"]
-                o = item["odds"]
-                sc = item["score"]
-                classe = m.get("ac_classe", "Bon potentiel")
-                ipo = m.get("ipo_comb", 0.0)
-                sot = m.get("sot_comb", 0.0)
-                tot_goals = m.get("total_goals_brut", 0.0)
-
-                # Badge score style
-                if sc >= 90:
-                    sc_badge = f'<span style="background:#dc2626; color:#ffffff; font-weight:800; font-size:10px; padding:2px 7px; border-radius:4px;">⭐ {sc}/100</span>'
-                elif sc >= 80:
-                    sc_badge = f'<span style="background:#ea580c; color:#ffffff; font-weight:800; font-size:10px; padding:2px 7px; border-radius:4px;">⭐ {sc}/100</span>'
-                else:
-                    sc_badge = f'<span style="background:#16a34a; color:#ffffff; font-weight:800; font-size:10px; padding:2px 7px; border-radius:4px;">⭐ {sc}/100</span>'
-
-                items_html += f'''
-                <div style="padding:6px 10px; margin-bottom:4px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px;">
-                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px;">
-                    <span style="font-size:12px; font-weight:800; color:#0f172a;">
-                      🕒 <span style="color:#0284c7;">{m['date_str']}</span> &nbsp;&bull;&nbsp; {m['dom']} vs {m['ext']}
-                    </span>
-                    <span style="font-size:10px; color:#64748b;">{m['league']}</span>
-                  </div>
-                  <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#334155;">
-                    <div>
-                      <b>{mk}</b> &nbsp;&bull;&nbsp; Cote: <b style="color:#0f172a; background:#e2e8f0; padding:1px 6px; border-radius:4px;">@{o:.2f}</b>
-                      &nbsp;&bull;&nbsp; {sc_badge} <span style="color:#64748b; font-size:10px;">({classe})</span>
-                    </div>
-                    <div style="color:#64748b; font-size:10px;">
-                      IPO: <b>{ipo:.2f}</b> | Buts: <b>{tot_goals:.1f}b</b> | Tirs: <b>{sot:.1f}t</b>
-                    </div>
-                  </div>
-                </div>'''
-            
-            combos_mixed_html += f'''
-            <div style="background:#ffffff; border:1.5px solid {theme['border_card']}; border-left:5px solid {theme['border_left']}; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
-              <div style="display:flex; justify-content:space-between; align-items:center; background:{theme['bg_header']}; padding:6px 10px; border-radius:5px; margin-bottom:7px; border:1px solid {theme['border_card']};">
-                <span style="font-weight:800; color:{theme['title_color']}; font-size:12px;">🎟️ Ticket #{idx} ({cb['type']}) — Cote Totale: <span style="background:#ffffff; color:{theme['title_color']}; font-weight:900; padding:2px 7px; border-radius:4px; border:1px solid {theme['border_card']};">@{cb['comb_odds']:.2f}</span></span>
-                <span style="font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 8px; border-radius:5px; border:1px solid #86efac;">Mise {cb['stake']:.0f} € &rarr; Gain: {cb['gain']:.2f} € (+{cb['profit']:.2f} €) · Score moy. {cb.get('avg_score', '')}/100</span>
-              </div>
-              <div>
-                {items_html}
-              </div>
-            </div>'''
-    else:
-        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné multi-marchés disponible (moins de 2 sélections éligibles).</div>'
-
-    # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
-    pen_simples_html = ""
-    for idx_ps, m in enumerate(pen_simples, 1):
-        ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
-        sp  = m.get("score_penalty", 0)
-        avg_b = m.get("avg_booking", 0.0)
-        sot_c = m.get("sot_comb", 0.0)
-        sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
-        peno_b = m.get("peno_badge") or ""
-        peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
-        pen_simples_html += f'''
-        <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
-          </div>
-          <div style="font-size:12px; color:#334155; line-height:1.9;">
-            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
-            {ref_status_str}<br>
-            {peno_badge_html}
-            <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
-          </div>
-          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
-            🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
-          </div>
-        </div>'''
-    if not pen_simples_html:
-        pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
 
     # ── HTML Section Systèmes Multiples 2/3 Hybrides ─────────────────────────
     systems_23_html = ""
