@@ -472,7 +472,7 @@ def main():
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
     # ── Sélection 100% 2ème Mi-Temps la Plus Prolifique ──
-    # Critères : score_2t >= 55% + total_goals >= 2.0 + mt2_odds entre @1.80 et @2.20
+    # Critères : score_2t >= 50% + total_goals >= 2.0 + mt2_odds entre @1.80 et @2.20
     s3_matches = []
     rejected_matches = []
 
@@ -481,13 +481,13 @@ def main():
         mt2 = r.get("mt2_odds")
         goals = r.get("total_goals_brut", 0.0)
 
-        if s2t >= 55 and goals >= 2.0 and mt2 and 1.80 <= mt2 <= 2.20:
+        if s2t >= 50 and goals >= 2.0 and mt2 and 1.80 <= mt2 <= 2.20:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             reasons = []
-            if s2t < 55: reasons.append(f"Score 2T faible ({s2t}% < 55%)")
+            if s2t < 50: reasons.append(f"Score 2T faible ({s2t}% < 50%)")
             if goals < 2.0: reasons.append(f"Peu de buts ({goals:.1f} < 2.0)")
             if not mt2: reasons.append("Cote 2T non dispo")
             elif not (1.80 <= mt2 <= 2.20): reasons.append(f"Cote 2T hors plage (@{mt2})")
@@ -500,7 +500,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés 2T Prolifique (Score 2T >= 55%, Goals >= 2.0, Cote @1.80-2.20) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés 2T Prolifique (Score 2T >= 50%, Goals >= 2.0, Cote @1.80-2.20) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -606,11 +606,11 @@ def main():
 
     # ── MOTEUR DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE ─────────────────────
     # Triple validation :
-    # 1. score_2t >= 55%  → majorité des matchs récents ont 2T > 1T
+    # 1. score_2t >= 50%  → au moins la moitié des matchs récents ont 2T > 1T
     # 2. total_goals >= 2.0 → match offensif minimal
     # 3. mt2_odds entre @1.80 et @2.20 → valeur réelle
-    # Combo >= @3.20 | Mise 4€ (score_2t 55-79) / 5€ (score_2t >= 80)
-    MIN_2T_SCORE  = 55     # % matchs récents 2T > 1T
+    # Combo >= @3.20 | Mise 3€ (score 50-59) / 4€ (score 60-74) / 5€ (score >= 75)
+    MIN_2T_SCORE  = 50     # % matchs récents 2T > 1T
     MIN_2T_GOALS  = 2.0    # buts moyens totaux
     MIN_2T_ODDS   = 1.80   # Unibet → ~@1.75 réel tabac
     MAX_2T_ODDS   = 2.20   # plafond : marché trop incertain au-delà
@@ -656,7 +656,7 @@ def main():
                 a, b, c_odds = best_pair
                 used_2t.update([a["id"], b["id"]])
                 avg_s2t = (a["score"] + b["score"]) / 2
-                stake = 5.0 if avg_s2t >= 80 else 4.0
+                stake = 5.0 if avg_s2t >= 75 else (4.0 if avg_s2t >= 60 else 3.0)
                 items = sorted([a, b], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": d, "type": "Doublé 2T Prolifique",
@@ -686,7 +686,7 @@ def main():
             a, b, c_odds = best_pair
             used_2t.update([a["id"], b["id"]])
             avg_s2t = (a["score"] + b["score"]) / 2
-            stake = 5.0 if avg_s2t >= 80 else 4.0
+            stake = 5.0 if avg_s2t >= 75 else (4.0 if avg_s2t >= 60 else 3.0)
             items = sorted([a, b], key=lambda x: x["dt"])
             session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
             combos_mixed.append({
@@ -700,7 +700,7 @@ def main():
 
     combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
     total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Doublés 2T Prolifique (Combo>={MIN_2T_COMBO}, Mise 4-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
+    print(f"✅ Doublés 2T Prolifique (Combo>={MIN_2T_COMBO}, Mise 3-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
 
 
     def render_match_proof_html(m):
@@ -1102,7 +1102,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS DOUBLÉS 2T PROLIFIQUE -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 55% · Mise 4-5€)</span></span>
+              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 50% · Mise 3-5€)</span></span>
               <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
             </div>
             {combos_mixed_html}
@@ -1140,8 +1140,8 @@ def main():
     report = [
         "# ⚽ SÉLECTION 2ÈME MI-TEMPS LA PLUS PROLIFIQUE — COMBINÉS DOUBLÉS",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score 2T >= 55%  ·  Buts totaux >= 2.0  ·  Cote 2T @1.80-@2.20  ·  Combiné >= 3.20\n",
-        f"## 🎯 Combinés Doublés 2T Recommandés (Cote Min: 3.20 — Mise Progressive 4-5 € / ticket)\n",
+        f"**Critères** : Score 2T >= 50%  ·  Buts totaux >= 2.0  ·  Cote 2T @1.80-@2.20  ·  Combiné >= 3.20\n",
+        f"## 🎯 Combinés Doublés 2T Recommandés (Cote Min: 3.20 — Mise Progressive 3-5 € / ticket)\n",
     ]
 
     if combos_mixed:
