@@ -1,100 +1,130 @@
 {
   "s3": {
-    "3363898": {
-      "match": "Hansa Rostock - Stuttgart",
+    "3358874": {
+      "match": "FC Würzburger - Cologne",
       "league": "Allemagne • Cpe Allemagne",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.38,
-      "double": true,
-      "ac_score": 98
-    },
-    "3371607": {
-      "match": "Paksi SE - Ujpest",
-      "league": "Hongrie • D1 Hongrie",
-      "date_str": "Ven. 21/08 à 17h30",
+      "date_str": "Lun. 24/08 à 18h00",
+      "val_btts": 1.6,
       "val_o25": 1.36,
-      "double": true,
-      "ac_score": 96
+      "val_o15": 1.1,
+      "double": true
     },
-    "3372994": {
-      "match": "Colwyn Bay - Airbus FC",
-      "league": "Pays De Galles • D1 P Degalles",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 96
-    },
-    "3357647": {
-      "match": "Arsenal - Coventry",
-      "league": "Angleterre • Premier League",
-      "date_str": "Ven. 21/08 à 21h00",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 92
-    },
-    "3356627": {
-      "match": "SC Pr Münster - Karlsruhe",
+    "3358872": {
+      "match": "Hallescher FC - Schalke 04",
       "league": "Allemagne • Cpe Allemagne",
-      "date_str": "Ven. 21/08 à 18h00",
-      "val_o25": 1.5,
-      "double": true,
-      "ac_score": 90
+      "date_str": "Lun. 24/08 à 20h45",
+      "val_btts": 1.6,
+      "val_o25": 1.4,
+      "val_o15": 1.1,
+      "double": true
     },
-    "3368630": {
-      "match": "CSD Macara - Santos",
-      "league": "Amerique • Copa Sudamericana",
-      "date_str": "Ven. 21/08 à 00h00",
-      "val_o25": 1.95,
-      "double": true,
-      "ac_score": 89
+    "3367562": {
+      "match": "Brøndby - Silkeborg",
+      "league": "Danemark • D1 Danemark",
+      "date_str": "Lun. 24/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.42,
+      "val_o15": 1.12,
+      "double": true
     },
-    "3371361": {
-      "match": "Al Nasr (EAU) - Al Wahda",
-      "league": "Emirats Arabes Unis • D1 Emirats Au",
-      "date_str": "Ven. 21/08 à 18h35",
-      "val_o25": 1.55,
-      "double": true,
-      "ac_score": 89
-    },
-    "3366994": {
-      "match": "Al Qadisiya - Al Ittihad FC",
+    "3366990": {
+      "match": "Al Ittihad FC - Al Hazem",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Ven. 21/08 à 20h00",
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 89
-    },
-    "3363936": {
-      "match": "Cardiff - The New Saints",
-      "league": "Pays De Galles • D1 P Degalles",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.52,
-      "double": true,
-      "ac_score": 89
-    },
-    "3362712": {
-      "match": "Marseille - Strasbourg",
-      "league": "France • Ligue 1 Mcdonalds",
-      "date_str": "Ven. 21/08 à 20h45",
-      "val_o25": 1.48,
-      "double": true,
-      "ac_score": 89
-    },
-    "3363943": {
-      "match": "IK Sirius FK - Häcken",
-      "league": "Suede • D1 Suede",
-      "date_str": "Ven. 21/08 à 19h00",
-      "val_o25": 1.35,
-      "double": true,
-      "ac_score": 85
-    },
-    "3366002": {
-      "match": "FC Leon - Monterrey",
-      "league": "Mexique • D1 Mexique",
-      "date_str": "Sam. 22/08 à 03h00",
+      "date_str": "Lun. 24/08 à 20h00",
+      "val_btts": 1.6,
       "val_o25": 1.45,
-      "double": true,
-      "ac_score": 85
+      "val_o15": 1.12,
+      "double": true
+    },
+    "3353330": {
+      "match": "Atlanta Utd - Kansas City",
+      "league": "Etats Unis • Mls",
+      "date_str": "Lun. 24/08 à 01h00",
+      "val_btts": 1.45,
+      "val_o25": 1.45,
+      "val_o15": 1.12,
+      "double": true
+    },
+    "3366989": {
+      "match": "Neom SC - Al Qadisiya",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Lun. 24/08 à 18h40",
+      "val_btts": 1.52,
+      "val_o25": 1.48,
+      "val_o15": 1.12,
+      "double": true
+    },
+    "3364533": {
+      "match": "Malmö - Djurgårdens",
+      "league": "Suede • D1 Suede",
+      "date_str": "Lun. 24/08 à 19h00",
+      "val_btts": 1.45,
+      "val_o25": 1.52,
+      "val_o15": 1.15,
+      "double": true
+    },
+    "3364520": {
+      "match": "FK Transinvest - FA Siauliai",
+      "league": "Lituanie • D1 Lituanie",
+      "date_str": "Lun. 24/08 à 17h45",
+      "val_btts": 1.55,
+      "val_o25": 1.52,
+      "val_o15": 1.15,
+      "double": true
+    },
+    "3357651": {
+      "match": "Fulham - Chelsea",
+      "league": "Angleterre • Premier League",
+      "date_str": "Lun. 24/08 à 21h00",
+      "val_btts": 1.52,
+      "val_o25": 1.57,
+      "val_o15": 1.18,
+      "double": true
+    },
+    "3367622": {
+      "match": "UNAM Pumas - Club Necaxa",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Lun. 24/08 à 03h00",
+      "val_btts": 1.55,
+      "val_o25": 1.62,
+      "val_o15": 1.18,
+      "double": true
+    },
+    "3367621": {
+      "match": "Atl. San Luis - CF Pachuca",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Lun. 24/08 à 01h00",
+      "val_btts": 1.5,
+      "val_o25": 1.65,
+      "val_o15": 1.2,
+      "double": true
+    },
+    "3364170": {
+      "match": "FC Botosani - Csikszereda",
+      "league": "Roumanie • D1 Roumanie",
+      "date_str": "Lun. 24/08 à 17h30",
+      "val_btts": 1.6,
+      "val_o25": 1.65,
+      "val_o15": 1.2,
+      "double": true
+    },
+    "3372743": {
+      "match": "Mac.Netanya - Bnei Sakhnin",
+      "league": "Israel • D1 Israel",
+      "date_str": "Lun. 24/08 à 19h00",
+      "val_btts": 1.6,
+      "val_o25": 1.65,
+      "val_o15": 1.18,
+      "double": true
+    },
+    "3369270": {
+      "match": "Celta Fortuna - FC Andorra",
+      "league": "Espagne • Laliga 2",
+      "date_str": "Lun. 24/08 à 19h00",
+      "val_btts": 1.55,
+      "val_o25": 1.7,
+      "val_o15": 1.2,
+      "double": true
     }
   }
 }
