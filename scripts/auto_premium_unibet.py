@@ -997,7 +997,10 @@ def main():
             f'</tr>'
         )
 
-    # ── Corps de l\'email (Design d\'hier avec SECTION 1 PLANNING et SECTION 2 TICKETS) ──
+    # ── Corps de l'email (Design d'hier avec SECTION 1 PLANNING et SECTION 2 TICKETS) ──
+    now_local = datetime.now(timezone(timedelta(hours=2)))
+    days_fr_hdr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    date_header = now_local.strftime(f"{days_fr_hdr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
     tot_sys = len(all_systems)
     tot_matches_plan = len(plan_rows)
     tot_budget = tot_sys * 3.0
