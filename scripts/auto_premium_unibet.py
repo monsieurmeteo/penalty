@@ -659,97 +659,123 @@ def main():
     mt1_pool.sort(key=lambda x: (-x["score"], -x["odds"]))
     print(f"📊 Pool 2T: {len(mt2_pool)} matchs | Pool 1T: {len(mt1_pool)} matchs")
 
-    # ── MOTEUR SYSTÈMES MULTIPLES 2/3 (2 Bases 2T + 1 Pépite 1T) ───────────
-    used_2t_for_sys = set()
-    used_1t_for_sys = set()
-    systems_23 = []
-    stake_line = 1.50  # 1.50 € par ligne -> 4.50 € par système 2/3
+    # ── MOTEUR DE SÉLECTIONS ET COMBINÉS HYBRIDES (1T + 2T) ─────────────────
+    used_2t = set()
+    used_1t = set()
+    stake_sys = 1.50  # 1.50 € par combinaison -> 4.50 € par système 2/3
 
-    # 1. Trios par jour
-    for d in sorted(set(s["day"] for s in mt1_pool)):
-        day_1t = [s for s in mt1_pool if s["day"] == d and s["id"] not in used_1t_for_sys]
-        for c in day_1t:
-            avail_2t = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t_for_sys and s["id"] != c["id"]]
-            if len(avail_2t) >= 2:
-                a, b = avail_2t[0], avail_2t[1]
-                used_1t_for_sys.add(c["id"])
-                used_2t_for_sys.update([a["id"], b["id"]])
-                o_ab = round(a["odds"] * b["odds"], 2)
-                o_ac = round(a["odds"] * c["odds"], 2)
-                o_bc = round(b["odds"] * c["odds"], 2)
-                min_g = round(stake_line * min(o_ab, o_ac, o_bc), 2)
-                max_g = round(stake_line * (o_ab + o_ac + o_bc), 2)
-                systems_23.append({
-                    "day": d, "a": a, "b": b, "c": c,
-                    "o_ab": o_ab, "o_ac": o_ac, "o_bc": o_bc,
-                    "stake_line": stake_line, "stake_tot": round(stake_line * 3, 2),
-                    "min_gain": min_g, "max_gain": max_g
-                })
+    MAX_SYS_B   = 6   # Systèmes 2/3 Type B [2x 1T + 1x 2T] (fort potentiel cotes @2.70+)
+    MAX_SYS_A   = 6   # Systèmes 2/3 Type A [2x 2T + 1x 1T] (haute sécurité bases @1.95)
+    MAX_HYB_DBL = 6   # Combinés Doublés Hybrides [1x 1T + 1x 2T] (Cotes @5.00+)
+    MAX_2T_DBL  = 8   # Combinés Doublés 2T Purs [2x 2T] (Cotes @3.50+)
+    MAX_1T_SMP  = 8   # Paris Simples 1T secs (pépites restantes)
 
-    # 2. Trios inter-jours pour les 1T restantes
-    rem_1t = [s for s in mt1_pool if s["id"] not in used_1t_for_sys]
-    for c in rem_1t:
-        avail_2t = [s for s in mt2_pool if s["id"] not in used_2t_for_sys and s["id"] != c["id"]]
-        if len(avail_2t) >= 2:
-            a, b = avail_2t[0], avail_2t[1]
-            used_1t_for_sys.add(c["id"])
-            used_2t_for_sys.update([a["id"], b["id"]])
-            o_ab = round(a["odds"] * b["odds"], 2)
-            o_ac = round(a["odds"] * c["odds"], 2)
-            o_bc = round(b["odds"] * c["odds"], 2)
-            min_g = round(stake_line * min(o_ab, o_ac, o_bc), 2)
-            max_g = round(stake_line * (o_ab + o_ac + o_bc), 2)
-            session_lbl = f"{a['day']} / {c['day']}" if a['day'] != c['day'] else a['day']
-            systems_23.append({
-                "day": session_lbl, "a": a, "b": b, "c": c,
-                "o_ab": o_ab, "o_ac": o_ac, "o_bc": o_bc,
-                "stake_line": stake_line, "stake_tot": round(stake_line * 3, 2),
+    # 1. SYSTÈMES 2/3 HYBRIDES TYPE B (2 Matchs 1ère MT + 1 Match 2ème MT)
+    systems_23_b = []
+    for _ in range(MAX_SYS_B):
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        if len(rem_1t) >= 2 and len(rem_2t) >= 1:
+            c1, c2 = rem_1t[0], rem_1t[1]
+            avail_2t = [s for s in rem_2t if s["id"] not in (c1["id"], c2["id"])]
+            if not avail_2t:
+                break
+            a = avail_2t[0]
+            used_1t.update([c1["id"], c2["id"]])
+            used_2t.add(a["id"])
+            o_12 = round(c1["odds"] * c2["odds"], 2)
+            o_1a = round(c1["odds"] * a["odds"], 2)
+            o_2a = round(c2["odds"] * a["odds"], 2)
+            min_g = round(stake_sys * min(o_12, o_1a, o_2a), 2)
+            max_g = round(stake_sys * (o_12 + o_1a + o_2a), 2)
+            day_lbl = c1["day"] if c1["day"] == c2["day"] == a["day"] else f"{c1['day']} / {a['day']}"
+            systems_23_b.append({
+                "type": "2x 1T + 1x 2T", "day": day_lbl,
+                "c1": c1, "c2": c2, "a": a,
+                "o_12": o_12, "o_1a": o_1a, "o_2a": o_2a,
+                "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
                 "min_gain": min_g, "max_gain": max_g
             })
+        else:
+            break
 
-    print(f"🎲 Systèmes 2/3 (2T+1T) générés : {len(systems_23)} tickets (Mise 4.50€)")
-
-    # ── MOTEUR DOUBLÉS 2T RESTANTS (pour les matchs 2T non utilisés en 2/3) ──
-    rem_2t = [s for s in mt2_pool if s["id"] not in used_2t_for_sys]
-    combos_mixed = []
-    used_2t_rem = set()
-
-    for d in sorted(set(s["day"] for s in rem_2t)):
-        day_pool = [s for s in rem_2t if s["day"] == d and s["id"] not in used_2t_rem]
-        while len([s for s in day_pool if s["id"] not in used_2t_rem]) >= 2:
-            rem = [s for s in day_pool if s["id"] not in used_2t_rem]
-            a, b = rem[0], rem[1]
-            c_odds = round(a["odds"] * b["odds"], 2)
-            used_2t_rem.update([a["id"], b["id"]])
-            avg_s2t = (a["score"] + b["score"]) / 2
-            items = sorted([a, b], key=lambda x: x["dt"])
-            combos_mixed.append({
-                "session": d, "type": "Doublé 2T Prolifique",
-                "items": items, "comb_odds": c_odds,
-                "avg_score": round(avg_s2t, 1), "stake": 4.0,
-                "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
+    # 2. SYSTÈMES 2/3 HYBRIDES TYPE A (2 Matchs 2ème MT + 1 Match 1ère MT)
+    systems_23_a = []
+    for _ in range(MAX_SYS_A):
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        if len(rem_2t) >= 2 and len(rem_1t) >= 1:
+            a1, a2 = rem_2t[0], rem_2t[1]
+            avail_1t = [s for s in rem_1t if s["id"] not in (a1["id"], a2["id"])]
+            if not avail_1t:
+                break
+            c = avail_1t[0]
+            used_2t.update([a1["id"], a2["id"]])
+            used_1t.add(c["id"])
+            o_12 = round(a1["odds"] * a2["odds"], 2)
+            o_1c = round(a1["odds"] * c["odds"], 2)
+            o_2c = round(a2["odds"] * c["odds"], 2)
+            min_g = round(stake_sys * min(o_12, o_1c, o_2c), 2)
+            max_g = round(stake_sys * (o_12 + o_1c + o_2c), 2)
+            day_lbl = a1["day"] if a1["day"] == a2["day"] == c["day"] else f"{a1['day']} / {c['day']}"
+            systems_23_a.append({
+                "type": "2x 2T + 1x 1T", "day": day_lbl,
+                "a1": a1, "a2": a2, "c": c,
+                "o_12": o_12, "o_1c": o_1c, "o_2c": o_2c,
+                "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
+                "min_gain": min_g, "max_gain": max_g
             })
+        else:
+            break
 
-    # Doublés 2T orphelins inter-jours
-    rem_all_2t = [s for s in rem_2t if s["id"] not in used_2t_rem]
-    while len(rem_all_2t) >= 2:
-        a, b = rem_all_2t[0], rem_all_2t[1]
-        c_odds = round(a["odds"] * b["odds"], 2)
-        used_2t_rem.update([a["id"], b["id"]])
-        rem_all_2t = [s for s in rem_all_2t if s["id"] not in used_2t_rem]
-        avg_s2t = (a["score"] + b["score"]) / 2
-        items = sorted([a, b], key=lambda x: x["dt"])
-        session_lbl = f"{items[0]['day']} / {items[1]['day']}" if items[0]['day'] != items[1]['day'] else items[0]['day']
-        combos_mixed.append({
-            "session": session_lbl, "type": "Doublé 2T Prolifique",
-            "items": items, "comb_odds": c_odds,
-            "avg_score": round(avg_s2t, 1), "stake": 4.0,
-            "gain": round(4.0 * c_odds, 2), "profit": round(4.0 * c_odds - 4.0, 2)
-        })
+    # 3. COMBINÉS DOUBLÉS HYBRIDES (1 Match 1ère MT + 1 Match 2ème MT)
+    combos_hybrid = []
+    for _ in range(MAX_HYB_DBL):
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        if len(rem_1t) >= 1 and len(rem_2t) >= 1:
+            c = rem_1t[0]
+            avail_2t = [s for s in rem_2t if s["id"] != c["id"]]
+            if not avail_2t:
+                break
+            a = avail_2t[0]
+            used_1t.add(c["id"])
+            used_2t.add(a["id"])
+            comb_o = round(c["odds"] * a["odds"], 2)
+            day_lbl = c["day"] if c["day"] == a["day"] else f"{c['day']} / {a['day']}"
+            combos_hybrid.append({
+                "type": "Doublé Hybride (1T + 2T)", "day": day_lbl,
+                "items": [c, a], "comb_odds": comb_o, "stake": 3.0,
+                "gain": round(3.0 * comb_o, 2), "profit": round(3.0 * comb_o - 3.0, 2)
+            })
+        else:
+            break
 
-    # Simples 1T restants
-    simples_1t = [s for s in mt1_pool if s["id"] not in used_1t_for_sys]
-    print(f"✅ Doublés 2T restants : {len(combos_mixed)} | Simples 1T restants : {len(simples_1t)}")
+    # 4. COMBINÉS DOUBLÉS 2T PURS (2 Matchs 2ème MT)
+    combos_2t_pure = []
+    for _ in range(MAX_2T_DBL):
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        if len(rem_2t) >= 2:
+            a1, a2 = rem_2t[0], rem_2t[1]
+            used_2t.update([a1["id"], a2["id"]])
+            comb_o = round(a1["odds"] * a2["odds"], 2)
+            day_lbl = a1["day"] if a1["day"] == a2["day"] else f"{a1['day']} / {a2['day']}"
+            combos_2t_pure.append({
+                "type": "Doublé 2T Prolifique", "day": day_lbl,
+                "items": [a1, a2], "comb_odds": comb_o, "stake": 4.0,
+                "gain": round(4.0 * comb_o, 2), "profit": round(4.0 * comb_o - 4.0, 2)
+            })
+        else:
+            break
+
+    # 5. PARIS SIMPLES 1T SECS (les pépites restantes)
+    simples_1t = [s for s in mt1_pool if s["id"] not in used_1t][:MAX_1T_SMP]
+
+    print(f"🎲 Systèmes 2/3 Type B (2x 1T + 1x 2T) : {len(systems_23_b)}")
+    print(f"🎲 Systèmes 2/3 Type A (2x 2T + 1x 1T) : {len(systems_23_a)}")
+    print(f"⚡ Doublés Hybrides (1T + 2T)          : {len(combos_hybrid)}")
+    print(f"🚀 Doublés 2T Purs (2x 2T)             : {len(combos_2t_pure)}")
+    print(f"🎯 Simples 1T Secs                     : {len(simples_1t)}")
 
 
 
@@ -973,72 +999,240 @@ def main():
     if not pen_simples_html:
         pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
 
-    # ── HTML Section Systèmes Multiples 2/3 (2T + 1T) ────────────────────────
+    # ── HTML Section Systèmes Multiples 2/3 Hybrides ─────────────────────────
     systems_23_html = ""
-    for idx_sys, sys_item in enumerate(systems_23, 1):
-        a = sys_item["a"]["m"]
-        b = sys_item["b"]["m"]
-        c = sys_item["c"]["m"]
-        st_line = sys_item["stake_line"]
-        tot_st = sys_item["stake_tot"]
-        o_ab = sys_item["o_ab"]
-        o_ac = sys_item["o_ac"]
-        o_bc = sys_item["o_bc"]
-        min_g = sys_item["min_gain"]
-        max_g = sys_item["max_gain"]
-        profit_min = round(min_g - tot_st, 2)
-        profit_max = round(max_g - tot_st, 2)
+    idx_global_sys = 1
 
-        systems_23_html += f'''
-        <div style="background:#ffffff; border:1.5px solid #c7d2fe; border-left:5px solid #4f46e5; border-radius:10px; padding:12px 14px; margin-bottom:12px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
-          <!-- Header Système -->
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#eef2ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #c7d2fe;">
-            <div>
-              <span style="font-weight:900; color:#3730a3; font-size:13px;">🎲 SYSTÈME 2/3 #{idx_sys}</span>
-              <span style="font-size:11px; color:#4338ca; font-weight:600;"> · {sys_item['day']}</span>
-            </div>
-            <div style="text-align:right;">
-              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
-                Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
-              </span>
-            </div>
-          </div>
+    # Formule B : 2 Matchs 1ère MT + 1 Match 2ème MT
+    if systems_23_b:
+        systems_23_html += '<div style="font-size:12px; font-weight:800; color:#7c3aed; background:#ede9fe; padding:6px 10px; border-radius:6px; margin:8px 0 10px 0; border:1px solid #ddd6fe;">🔥 FORMULE B : 2 MATCHS 1ÈRE MI-TEMPS + 1 MATCH 2ÈME MI-TEMPS (Fort Potentiel Cotes @2.70+)</div>'
+        for sys_item in systems_23_b:
+            c1 = sys_item["c1"]["m"]
+            c2 = sys_item["c2"]["m"]
+            a  = sys_item["a"]["m"]
+            st_line = sys_item["stake_line"]
+            tot_st  = sys_item["stake_tot"]
+            o_12, o_1a, o_2a = sys_item["o_12"], sys_item["o_1a"], sys_item["o_2a"]
+            min_g, max_g = sys_item["min_gain"], sys_item["max_gain"]
+            prof_min = round(min_g - tot_st, 2)
+            prof_max = round(max_g - tot_st, 2)
 
-          <!-- 3 Matchs du Système -->
-          <div style="background:#f8fafc; border-radius:6px; padding:8px 10px; margin-bottom:9px; border:1px solid #e2e8f0; font-size:11px; line-height:1.7;">
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:4px; margin-bottom:4px;">
-              <span><b>🔵 Base 2T #1 :</b> {a['dom']} vs {a['ext']} <span style="color:#64748b;">({a.get('league','')})</span></span>
-              <span><b style="background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px;">@{sys_item['a']['odds']:.2f}</b> · 2T: {sys_item['a']['score']}%</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed #cbd5e1; padding-bottom:4px; margin-bottom:4px;">
-              <span><b>🔵 Base 2T #2 :</b> {b['dom']} vs {b['ext']} <span style="color:#64748b;">({b.get('league','')})</span></span>
-              <span><b style="background:#dbeafe; color:#1e40af; padding:1px 6px; border-radius:4px;">@{sys_item['b']['odds']:.2f}</b> · 2T: {sys_item['b']['score']}%</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span><b>🟡 Pépite 1T :</b> {c['dom']} vs {c['ext']} <span style="color:#64748b;">({c.get('league','')})</span></span>
-              <span><b style="background:#fef3c7; color:#92400e; padding:1px 6px; border-radius:4px;">@{sys_item['c']['odds']:.2f}</b> · 1T: {sys_item['c']['score']}%</span>
-            </div>
-          </div>
-
-          <!-- Détail des 3 Combinaisons & Gains -->
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:8px 10px; border-radius:6px; border:1px solid #e9d5ff; font-size:11px;">
-            <div>
-              <div style="color:#475569; margin-bottom:2px;">
-                <b>Ticket 1 (2T+2T)</b>: @{o_ab:.2f} &nbsp;|&nbsp; <b>Ticket 2 (2T+1T)</b>: @{o_ac:.2f} &nbsp;|&nbsp; <b>Ticket 3 (2T+1T)</b>: @{o_bc:.2f}
+            systems_23_html += f'''
+            <div style="background:#ffffff; border:1.5px solid #c7d2fe; border-left:5px solid #7c3aed; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#faf5ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #e9d5ff;">
+                <div>
+                  <span style="font-weight:900; color:#6d28d9; font-size:13px;">🎟️ SYSTÈME 2/3 HYBRIDE #{idx_global_sys} [2x 1T + 1x 2T]</span>
+                  <span style="font-size:11px; color:#7c3aed; font-weight:600;"> · {sys_item['day']}</span>
+                </div>
+                <div>
+                  <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
+                    Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
+                  </span>
+                </div>
               </div>
-              <div style="color:#15803d; font-weight:700;">
-                🛡️ Remboursé + gain dès 2/3 : <b>{min_g:.2f} €</b> (+{profit_min:.2f} € net)
+
+              <!-- 3 Sélections -->
+              <div style="margin-bottom:8px;">
+                <!-- 1T #1 -->
+                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🟡 {c1['dom']} vs {c1['ext']}</b> <span style="color:#64748b; font-size:10px;">({c1.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c1']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
+                    <span>Score 1T: <b>{sys_item['c1']['score']}%</b></span>
+                  </div>
+                </div>
+                <!-- 1T #2 -->
+                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🟡 {c2['dom']} vs {c2['ext']}</b> <span style="color:#64748b; font-size:10px;">({c2.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c2']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
+                    <span>Score 1T: <b>{sys_item['c2']['score']}%</b></span>
+                  </div>
+                </div>
+                <!-- 2T -->
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🔵 {a['dom']} vs {a['ext']}</b> <span style="color:#64748b; font-size:10px;">({a.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
+                    <span>Score 2T: <b>{sys_item['a']['score']}%</b></span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:10px; color:#6b21a8; font-weight:700; text-transform:uppercase;">Carton plein (3/3)</div>
-              <div style="font-size:15px; font-weight:900; color:#7c3aed;">{max_g:.2f} € <span style="font-size:11px; font-weight:700; color:#15803d;">(+{profit_max:.2f} €)</span></div>
-            </div>
-          </div>
-        </div>'''
+
+              <!-- Bloc Gains & Garanties -->
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px;">
+                <div style="color:#475569; margin-bottom:4px;">
+                  Combinaisons : Ticket 1 (1T+1T): <b>@{o_12:.2f}</b> · Ticket 2 (1T+2T): <b>@{o_1a:.2f}</b> · Ticket 3 (1T+2T): <b>@{o_2a:.2f}</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:5px;">
+                  <div style="color:#15803d; font-weight:800;">
+                    🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px; font-weight:700;">(+{prof_min:.2f} € net)</span>
+                  </div>
+                  <div style="color:#6d28d9; font-weight:900; font-size:13px;">
+                    🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; font-weight:700; color:#15803d;">(+{prof_max:.2f} €)</span>
+                  </div>
+                </div>
+              </div>
+            </div>'''
+            idx_global_sys += 1
+
+    # Formule A : 2 Matchs 2ème MT + 1 Match 1ère MT
+    if systems_23_a:
+        systems_23_html += '<div style="font-size:12px; font-weight:800; color:#1d4ed8; background:#dbeafe; padding:6px 10px; border-radius:6px; margin:14px 0 10px 0; border:1px solid #bfdbfe;">🛡️ FORMULE A : 2 MATCHS 2ÈME MI-TEMPS + 1 MATCH 1ÈRE MI-TEMPS (Haute Sécurité Bases @1.95)</div>'
+        for sys_item in systems_23_a:
+            a1 = sys_item["a1"]["m"]
+            a2 = sys_item["a2"]["m"]
+            c  = sys_item["c"]["m"]
+            st_line = sys_item["stake_line"]
+            tot_st  = sys_item["stake_tot"]
+            o_12, o_1c, o_2c = sys_item["o_12"], sys_item["o_1c"], sys_item["o_2c"]
+            min_g, max_g = sys_item["min_gain"], sys_item["max_gain"]
+            prof_min = round(min_g - tot_st, 2)
+            prof_max = round(max_g - tot_st, 2)
+
+            systems_23_html += f'''
+            <div style="background:#ffffff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:12px 14px; margin-bottom:14px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+              <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:7px 12px; border-radius:6px; margin-bottom:9px; border:1px solid #bfdbfe;">
+                <div>
+                  <span style="font-weight:900; color:#1e40af; font-size:13px;">🎟️ SYSTÈME 2/3 HYBRIDE #{idx_global_sys} [2x 2T + 1x 1T]</span>
+                  <span style="font-size:11px; color:#2563eb; font-weight:600;"> · {sys_item['day']}</span>
+                </div>
+                <div>
+                  <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:3px 9px; border-radius:5px; border:1px solid #86efac;">
+                    Mise {tot_st:.2f} € (3 x {st_line:.2f} €)
+                  </span>
+                </div>
+              </div>
+
+              <!-- 3 Sélections -->
+              <div style="margin-bottom:8px;">
+                <!-- 2T #1 -->
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🔵 {a1['dom']} vs {a1['ext']}</b> <span style="color:#64748b; font-size:10px;">({a1.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a1']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
+                    <span>Score 2T: <b>{sys_item['a1']['score']}%</b></span>
+                  </div>
+                </div>
+                <!-- 2T #2 -->
+                <div style="background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #2563eb; padding:7px 10px; margin-bottom:5px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🔵 {a2['dom']} vs {a2['ext']}</b> <span style="color:#64748b; font-size:10px;">({a2.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#1d4ed8; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #bfdbfe;">@{sys_item['a2']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#1e40af; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 2ème Mi-Temps la plus prolifique</b></span>
+                    <span>Score 2T: <b>{sys_item['a2']['score']}%</b></span>
+                  </div>
+                </div>
+                <!-- 1T -->
+                <div style="background:#fffbeb; border:1px solid #fde68a; border-left:4px solid #d97706; padding:7px 10px; border-radius:5px; font-size:11px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><b>🟡 {c['dom']} vs {c['ext']}</b> <span style="color:#64748b; font-size:10px;">({c.get('league','')})</span></span>
+                    <span style="font-size:13px; font-weight:900; color:#b45309; background:#ffffff; padding:1px 6px; border-radius:4px; border:1px solid #fde68a;">@{sys_item['c']['odds']:.2f}</span>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; color:#92400e; font-size:10px; margin-top:2px;">
+                    <span>👉 <b>Cocher sur le ticket : 1ère Mi-Temps la plus prolifique</b></span>
+                    <span>Score 1T: <b>{sys_item['c']['score']}%</b></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bloc Gains & Garanties -->
+              <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px;">
+                <div style="color:#475569; margin-bottom:4px;">
+                  Combinaisons : Ticket 1 (2T+2T): <b>@{o_12:.2f}</b> · Ticket 2 (2T+1T): <b>@{o_1c:.2f}</b> · Ticket 3 (2T+1T): <b>@{o_2c:.2f}</b>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #cbd5e1; padding-top:5px;">
+                  <div style="color:#15803d; font-weight:800;">
+                    🛡️ Remboursé dès 2/3 : <b>{min_g:.2f} €</b> <span style="font-size:10px; font-weight:700;">(+{prof_min:.2f} € net)</span>
+                  </div>
+                  <div style="color:#1e40af; font-weight:900; font-size:13px;">
+                    🏆 3/3 : <b>{max_g:.2f} €</b> <span style="font-size:10px; font-weight:700; color:#15803d;">(+{prof_max:.2f} €)</span>
+                  </div>
+                </div>
+              </div>
+            </div>'''
+            idx_global_sys += 1
 
     if not systems_23_html:
         systems_23_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun Système 2/3 formé sur cette session.</div>'
+
+    # ── HTML Section Combinés Doublés Hybrides (1T + 2T) ────────────────────
+    combos_hybrid_html = ""
+    for idx_hyb, ch in enumerate(combos_hybrid, 1):
+        c = ch["items"][0]["m"]
+        a = ch["items"][1]["m"]
+        combos_hybrid_html += f'''
+        <div style="background:#ffffff; border:1.5px solid #fed7aa; border-left:5px solid #ea580c; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#fff7ed; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #fed7aa;">
+            <div>
+              <span style="font-weight:900; color:#c2410c; font-size:12px;">⚡ DOUBLÉ HYBRIDE #{idx_hyb}</span>
+              <span style="font-size:10px; color:#ea580c; font-weight:600;"> · {ch['day']}</span>
+            </div>
+            <div>
+              <span style="font-size:13px; font-weight:900; color:#9a3412; background:#ffffff; padding:2px 7px; border-radius:4px; border:1px solid #fdba74;">Cote @{ch['comb_odds']:.2f}</span>
+              &nbsp;
+              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Mise 3 € &rarr; {ch['gain']:.2f} € (+{ch['profit']:.2f} €)</span>
+            </div>
+          </div>
+          <div style="font-size:11px; line-height:1.6;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed #fed7aa;">
+              <span><b>🟡 1ère MT :</b> {c['dom']} vs {c['ext']} <span style="color:#64748b; font-size:10px;">({c.get('league','')})</span></span>
+              <span><b style="color:#b45309;">@{ch['items'][0]['odds']:.2f}</b> · 1T: {ch['items'][0]['score']}%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0;">
+              <span><b>🔵 2ème MT :</b> {a['dom']} vs {a['ext']} <span style="color:#64748b; font-size:10px;">({a.get('league','')})</span></span>
+              <span><b style="color:#1d4ed8;">@{ch['items'][1]['odds']:.2f}</b> · 2T: {ch['items'][1]['score']}%</span>
+            </div>
+          </div>
+        </div>'''
+    if not combos_hybrid_html:
+        combos_hybrid_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé hybride sur cette session.</div>'
+
+    # ── HTML Section Combinés Doublés 2T Purs (2x 2T) ───────────────────────
+    combos_2t_html = ""
+    for idx_2t, c2t in enumerate(combos_2t_pure, 1):
+        a1 = c2t["items"][0]["m"]
+        a2 = c2t["items"][1]["m"]
+        combos_2t_html += f'''
+        <div style="background:#ffffff; border:1.5px solid #bfdbfe; border-left:5px solid #2563eb; border-radius:10px; padding:11px 13px; margin-bottom:12px; box-shadow:0 1px 5px rgba(0,0,0,0.03);">
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; padding:6px 10px; border-radius:6px; margin-bottom:8px; border:1px solid #bfdbfe;">
+            <div>
+              <span style="font-weight:900; color:#1e40af; font-size:12px;">🚀 DOUBLÉ 2T PUR #{idx_2t}</span>
+              <span style="font-size:10px; color:#2563eb; font-weight:600;"> · {c2t['day']}</span>
+            </div>
+            <div>
+              <span style="font-size:13px; font-weight:900; color:#1e40af; background:#ffffff; padding:2px 7px; border-radius:4px; border:1px solid #bfdbfe;">Cote @{c2t['comb_odds']:.2f}</span>
+              &nbsp;
+              <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; border:1px solid #86efac;">Mise 4 € &rarr; {c2t['gain']:.2f} € (+{c2t['profit']:.2f} €)</span>
+            </div>
+          </div>
+          <div style="font-size:11px; line-height:1.6;">
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed #bfdbfe;">
+              <span><b>🔵 2ème MT :</b> {a1['dom']} vs {a1['ext']} <span style="color:#64748b; font-size:10px;">({a1.get('league','')})</span></span>
+              <span><b style="color:#1d4ed8;">@{c2t['items'][0]['odds']:.2f}</b> · 2T: {c2t['items'][0]['score']}%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 0;">
+              <span><b>🔵 2ème MT :</b> {a2['dom']} vs {a2['ext']} <span style="color:#64748b; font-size:10px;">({a2.get('league','')})</span></span>
+              <span><b style="color:#1d4ed8;">@{c2t['items'][1]['odds']:.2f}</b> · 2T: {c2t['items'][1]['score']}%</span>
+            </div>
+          </div>
+        </div>'''
+    if not combos_2t_html:
+        combos_2t_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun doublé 2T pur sur cette session.</div>'
 
     # ── HTML Section Simples 1T Restants ────────────────────────────────────
     simples_1t_html = ""
@@ -1049,7 +1243,7 @@ def main():
           <div>
             <b style="font-size:12px; color:#0f172a;">⚡ Simple 1T #{idx_s} : {m["dom"]} vs {m["ext"]}</b>
             <span style="font-size:10px; color:#64748b;"> · {m.get("date_str", "")} ({m.get("league", "")})</span>
-            <br><span style="font-size:11px; color:#92400e;">Score 1T : <b>{s['score']}%</b> de 1T plus prolifique (Moyenne buts: {s['goals']:.1f}b)</span>
+            <br><span style="font-size:11px; color:#92400e;">👉 <b>Pari : 1ère MT prolifique</b> · Score 1T: <b>{s['score']}%</b> (Moy. buts: {s['goals']:.1f}b)</span>
           </div>
           <div style="text-align:right;">
             <div style="font-size:15px; font-weight:900; color:#b45309;">@{s['odds']:.2f}</div>
@@ -1063,71 +1257,92 @@ def main():
     plan_rows = []
     seen_plan = set()
 
-    # Matchs des Systèmes 2/3
-    for idx_sys, sys_item in enumerate(systems_23, 1):
+    # Matchs des Systèmes 2/3 Type B (2x 1T + 1x 2T)
+    for idx_sys, sys_item in enumerate(systems_23_b, 1):
         for role, item, mkt, bg, cl in [
-            ("Base 2T", sys_item["a"], sys_item["a"]["market"], "#e0e7ff", "#3730a3"),
-            ("Base 2T", sys_item["b"], sys_item["b"]["market"], "#e0e7ff", "#3730a3"),
-            ("Pépite 1T", sys_item["c"], sys_item["c"]["market"], "#fef3c7", "#92400e")
+            ("1T", sys_item["c1"], sys_item["c1"]["market"], "#fef3c7", "#92400e"),
+            ("1T", sys_item["c2"], sys_item["c2"]["market"], "#fef3c7", "#92400e"),
+            ("2T", sys_item["a"], sys_item["a"]["market"], "#e0e7ff", "#3730a3")
         ]:
             m = item["m"]
-            key = (m["id"], mkt, f"SYS_{idx_sys}")
+            key = (m["id"], mkt, f"SYSB_{idx_sys}")
             if key not in seen_plan:
                 plan_rows.append({
-                    "dt": item["dt"],
-                    "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}",
-                    "league": m.get("league", ""),
-                    "market": item["market"],
-                    "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%",
-                    "score_val": item["score"],
-                    "type_label": f"SYSTÈME 2/3 #{idx_sys} ({role})",
-                    "bg_market": bg,
-                    "cl_market": cl,
+                    "dt": item["dt"], "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
+                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%", "score_val": item["score"],
+                    "type_label": f"SYS 2/3 #{idx_sys} ({role})",
+                    "bg_market": bg, "cl_market": cl,
                 })
                 seen_plan.add(key)
 
-    # Doublés 2T restants
-    for idx_cb, cb in enumerate(combos_mixed, 1):
+    # Matchs des Systèmes 2/3 Type A (2x 2T + 1x 1T)
+    for idx_sys, sys_item in enumerate(systems_23_a, 1):
+        for role, item, mkt, bg, cl in [
+            ("2T", sys_item["a1"], sys_item["a1"]["market"], "#e0e7ff", "#3730a3"),
+            ("2T", sys_item["a2"], sys_item["a2"]["market"], "#e0e7ff", "#3730a3"),
+            ("1T", sys_item["c"], sys_item["c"]["market"], "#fef3c7", "#92400e")
+        ]:
+            m = item["m"]
+            key = (m["id"], mkt, f"SYSA_{idx_sys}")
+            if key not in seen_plan:
+                plan_rows.append({
+                    "dt": item["dt"], "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
+                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%", "score_val": item["score"],
+                    "type_label": f"SYS 2/3 A#{idx_sys} ({role})",
+                    "bg_market": bg, "cl_market": cl,
+                })
+                seen_plan.add(key)
+
+    # Doublés Hybrides
+    for idx_hyb, ch in enumerate(combos_hybrid, 1):
+        for item in ch["items"]:
+            m = item["m"]
+            key = (m["id"], item["market"], f"HYB_{idx_hyb}")
+            if key not in seen_plan:
+                is_1t = "1T" in item["market"]
+                plan_rows.append({
+                    "dt": item["dt"], "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
+                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%", "score_val": item["score"],
+                    "type_label": f"DOUBLÉ HYBRIDE #{idx_hyb}",
+                    "bg_market": "#fef3c7" if is_1t else "#e0e7ff",
+                    "cl_market": "#92400e" if is_1t else "#3730a3",
+                })
+                seen_plan.add(key)
+
+    # Doublés 2T Purs
+    for idx_cb, cb in enumerate(combos_2t_pure, 1):
         for item in cb["items"]:
             m = item["m"]
-            key = (m["id"], item["market"], f"DBL_{idx_cb}")
+            key = (m["id"], item["market"], f"DBL2T_{idx_cb}")
             if key not in seen_plan:
                 plan_rows.append({
-                    "dt": item["dt"],
-                    "date_str": m.get("date_str", ""),
-                    "match": f"{m['dom']} vs {m['ext']}",
-                    "league": m.get("league", ""),
-                    "market": item["market"],
-                    "cote": f"@{item['odds']:.2f}",
-                    "score_label": f"{item['score']}%",
-                    "score_val": item["score"],
+                    "dt": item["dt"], "date_str": m.get("date_str", ""),
+                    "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
+                    "market": item["market"], "cote": f"@{item['odds']:.2f}",
+                    "score_label": f"{item['score']}%", "score_val": item["score"],
                     "type_label": f"DOUBLÉ 2T #{idx_cb}",
-                    "bg_market": "#e0e7ff",
-                    "cl_market": "#3730a3",
+                    "bg_market": "#e0e7ff", "cl_market": "#3730a3",
                 })
                 seen_plan.add(key)
 
-
-
-    # Simples 1T Prolifique
+    # Simples 1T restants
     for idx_s, s in enumerate(simples_1t, 1):
         m = s["m"]
         key = (m["id"], "1T_SIMPLE")
         if key not in seen_plan:
             plan_rows.append({
-                "dt": s["dt"],
-                "date_str": m.get("date_str", ""),
-                "match": f"{m['dom']} vs {m['ext']}",
-                "league": m.get("league", ""),
-                "market": "⚡ 1T Prolifique",
-                "cote": f"@{s['odds']:.2f}",
-                "score_label": f"{s['score']}%",
-                "score_val": s["score"],
+                "dt": s["dt"], "date_str": m.get("date_str", ""),
+                "match": f"{m['dom']} vs {m['ext']}", "league": m.get("league", ""),
+                "market": "⚡ 1T Prolifique", "cote": f"@{s['odds']:.2f}",
+                "score_label": f"{s['score']}%", "score_val": s["score"],
                 "type_label": f"SIMPLE 1T #{idx_s}",
-                "bg_market": "#fffbeb",
-                "cl_market": "#b45309",
+                "bg_market": "#fffbeb", "cl_market": "#b45309",
             })
             seen_plan.add(key)
 
@@ -1199,9 +1414,10 @@ def main():
     now_local = datetime.now(timezone(timedelta(hours=2)))
     days_fr = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
     date_header = now_local.strftime(f"{days_fr[now_local.weekday()]} %d/%m/%Y · %Hh%M")
-    nb_sys = len(systems_23)
-    nb_mixed = len(combos_mixed)
-    nb_simples_1t = len(simples_1t)
+    tot_sys = len(systems_23_b) + len(systems_23_a)
+    tot_hyb_dbl = len(combos_hybrid)
+    tot_2t_dbl = len(combos_2t_pure)
+    tot_smp_1t = len(simples_1t)
 
     html_body = f"""
     <!DOCTYPE html>
@@ -1214,16 +1430,17 @@ def main():
           <div style="background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%); padding:22px 24px; text-align:center;">
             <div style="font-size:10px; letter-spacing:2px; text-transform:uppercase; color:#94a3b8; margin-bottom:6px;">⚽ FOOTBALL PREMIUM · UNIBET FRANCE</div>
             <h1 style="margin:0; font-size:21px; font-weight:900; color:#ffffff;">{date_header}</h1>
-            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Systèmes Multiples 2/3 (2T + 1T) & Doublés 2T Prolifiques · Mise à jour : {now_str}</p>
+            <p style="margin:7px 0 0 0; font-size:11px; color:#cbd5e1;">Tickets Hybrides Mi-Temps Prolifiques (1T / 2T) · Systèmes 2/3 & Doublés · {now_str}</p>
           </div>
 
           <!-- COMPTEURS -->
-          <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
+          <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:12px 14px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#6d28d9;">{nb_sys}</div><div style="font-size:10px; font-weight:700; color:#6d28d9;">SYSTÈMES 2/3</div><div style="font-size:10px; color:#7c3aed;">Remboursé dès 2/3</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">DOUBLÉS 2T</div><div style="font-size:10px; color:#3b82f6;">Cote &ge; 3.20</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:22px; font-weight:900; color:#b45309;">{nb_simples_1t}</div><div style="font-size:10px; font-weight:700; color:#b45309;">SIMPLES 1T</div><div style="font-size:10px; color:#d97706;">Cotes @2.30+</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#ede9fe; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#6d28d9;">{tot_sys}</div><div style="font-size:9px; font-weight:700; color:#6d28d9;">SYSTÈMES 2/3</div><div style="font-size:9px; color:#7c3aed;">1T & 2T Hybrides</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#ffedd5; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#c2410c;">{tot_hyb_dbl}</div><div style="font-size:9px; font-weight:700; color:#c2410c;">DOUBLÉS HYBRIDES</div><div style="font-size:9px; color:#ea580c;">Cotes @5.00+</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#dbeafe; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#1d4ed8;">{tot_2t_dbl}</div><div style="font-size:9px; font-weight:700; color:#1d4ed8;">DOUBLÉS 2T</div><div style="font-size:9px; color:#3b82f6;">Cotes @3.50+</div></div></td>
+                <td style="padding:0 3px;"><div style="background:#fef3c7; border-radius:8px; padding:8px 4px;"><div style="font-size:20px; font-weight:900; color:#b45309;">{tot_smp_1t}</div><div style="font-size:9px; font-weight:700; color:#b45309;">SIMPLES 1T</div><div style="font-size:9px; color:#d97706;">Cotes @2.50+</div></div></td>
               </tr>
             </table>
           </div>
@@ -1252,34 +1469,43 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : SYSTÈMES MULTIPLES 2/3 (2T + 1T) -->
+          <!-- SECTION 2 : SYSTÈMES MULTIPLES 2/3 HYBRIDES -->
           <div style="padding:12px 16px 10px 16px; background:#f5f3ff; border-top:2px solid #ddd6fe;">
             <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎲 SYSTÈMES MULTIPLES 2/3 (2 Bases 2T + 1 Pépite 1T) &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 4.50€ · Remboursé garanti dès 2/3)</span></span>
-              <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_sys} ticket(s)</span>
+              <span>🎟️ SYSTÈMES MULTIPLES 2/3 HYBRIDES &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 4.50€ · Remboursé dès 2/3)</span></span>
+              <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_sys} ticket(s)</span>
             </div>
             {systems_23_html}
           </div>
 
-          <!-- SECTION 3 : DOUBLÉS 2T RESTANTS -->
-          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS RESTANTS (Cote &ge; 3.20) &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score 2T &ge; 55% · Mise 4€)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_mixed} ticket(s)</span>
+          <!-- SECTION 3 : DOUBLÉS HYBRIDES (1T + 2T) -->
+          <div style="padding:12px 16px 10px 16px; background:#fff7ed; border-top:2px solid #fed7aa;">
+            <div style="font-size:14px; font-weight:800; color:#c2410c; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>⚡ COMBINÉS DOUBLÉS HYBRIDES (1x 1T + 1x 2T) &nbsp;<span style="font-size:12px; font-weight:600; color:#ea580c;">(Cotes @5.00+ · Mise 3€)</span></span>
+              <span style="font-size:11px; background:#ffedd5; color:#c2410c; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_hyb_dbl} ticket(s)</span>
             </div>
-            {combos_mixed_html}
+            {combos_hybrid_html}
           </div>
 
-          <!-- SECTION 4 : SIMPLES 1T RESTANTS -->
+          <!-- SECTION 4 : DOUBLÉS 2T PURS -->
+          <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🚀 COMBINÉS DOUBLÉS 2ÈME MI-TEMPS PURS &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Cotes @3.50+ · Score 2T &ge; 55% · Mise 4€)</span></span>
+              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_2t_dbl} ticket(s)</span>
+            </div>
+            {combos_2t_html}
+          </div>
+
+          <!-- SECTION 5 : SIMPLES 1T RESTANTS -->
           <div style="padding:12px 16px 10px 16px; background:#fffbeb; border-top:2px solid #fde68a;">
             <div style="font-size:14px; font-weight:800; color:#92400e; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ PARIS SIMPLES 1ÈRE MI-TEMPS RESTANTS &nbsp;<span style="font-size:12px; font-weight:600; color:#b45309;">(Score 1T &ge; 35% · Cotes @2.30+ · Mise 3€)</span></span>
-              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{nb_simples_1t} simple(s)</span>
+              <span>🎯 PARIS SIMPLES 1ÈRE MI-TEMPS RESTANTS &nbsp;<span style="font-size:12px; font-weight:600; color:#b45309;">(Grosses Cotes @2.50+ · Mise 3€)</span></span>
+              <span style="font-size:11px; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_smp_1t} simple(s)</span>
             </div>
             {simples_1t_html}
           </div>
 
-          <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
+          <!-- SECTION 6 : TOUS LES MATCHS ANALYSÉS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:13px; font-weight:800; color:#475569; margin-bottom:8px;">📊 TOUS LES MATCHS ANALYSÉS ({len(scanned_results)} scannés)</div>
             <div style="border-radius:8px; overflow:hidden; border:1px solid #e2e8f0;">
@@ -1311,34 +1537,52 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION SYSTÈMES 2/3 (2T + 1T) & DOUBLÉS 2T",
+        "# ⚽ SÉLECTION SYSTÈMES 2/3 HYBRIDES & DOUBLÉS PROLIFIQUES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères Système 2/3** : 2 bases 2T (Score 2T >= 55%) + 1 pépite 1T (Score 1T >= 35%) · Mise 4.50 € (3 x 1.50 €)",
-        f"**Règle de remboursement** : Remboursé avec profit garanti dès 2 bons résultats sur 3 (Cote min combo >= 3.40)\n",
-        f"## 🎲 Systèmes Multiples 2/3 Recommandés ({nb_sys} tickets — Mise 4.50 € / système)\n",
+        f"**Systèmes 2/3 Hybrides** : Formules [2x 1T + 1x 2T] et [2x 2T + 1x 1T] · Mise 4.50 € (3 x 1.50 €)",
+        f"**Règle de remboursement** : Remboursé avec profit garanti dès 2 bons résultats sur 3 (Cotes combinées >= 3.50)\n",
     ]
 
-    for idx_sys, sys_item in enumerate(systems_23, 1):
-        a = sys_item["a"]["m"]
-        b = sys_item["b"]["m"]
-        c = sys_item["c"]["m"]
-        report.append(f"### Système 2/3 #{idx_sys} — {sys_item['day']} | Mise: {sys_item['stake_tot']:.2f} € → Gain Min (2/3): `{sys_item['min_gain']:.2f} €` | Gain Max (3/3): `{sys_item['max_gain']:.2f} €`")
-        report.append(f"- **🔵 Base 2T #1** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{sys_item['a']['odds']:.2f}`) — Score 2T: {sys_item['a']['score']}%")
-        report.append(f"- **🔵 Base 2T #2** : `{b['date_str']}` — **{b['dom']} vs {b['ext']}** (@`{sys_item['b']['odds']:.2f}`) — Score 2T: {sys_item['b']['score']}%")
-        report.append(f"- **🟡 Pépite 1T** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{sys_item['c']['odds']:.2f}`) — Score 1T: {sys_item['c']['score']}%")
-        report.append(f"- *Combinaisons* : 2T+2T: @`{sys_item['o_ab']:.2f}` | 2T+1T: @`{sys_item['o_ac']:.2f}` | 2T+1T: @`{sys_item['o_bc']:.2f}`\n")
+    if systems_23_b:
+        report.append(f"## 🔥 Systèmes 2/3 Formule B (2x 1T + 1x 2T — {len(systems_23_b)} tickets — Mise 4.50 € / système)\n")
+        for idx_b, sb in enumerate(systems_23_b, 1):
+            c1, c2, a = sb["c1"]["m"], sb["c2"]["m"], sb["a"]["m"]
+            report.append(f"### Système 2/3 Formule B #{idx_b} — {sb['day']} | Mise: 4.50 € → Gain Min (2/3): `{sb['min_gain']:.2f} €` | Gain Max (3/3): `{sb['max_gain']:.2f} €`")
+            report.append(f"- **🟡 1ère MT #1** : `{c1['date_str']}` — **{c1['dom']} vs {c1['ext']}** (@`{sb['c1']['odds']:.2f}`) — Score 1T: {sb['c1']['score']}%")
+            report.append(f"- **🟡 1ère MT #2** : `{c2['date_str']}` — **{c2['dom']} vs {c2['ext']}** (@`{sb['c2']['odds']:.2f}`) — Score 1T: {sb['c2']['score']}%")
+            report.append(f"- **🔵 2ème MT** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{sb['a']['odds']:.2f}`) — Score 2T: {sb['a']['score']}%")
+            report.append(f"- *Combinaisons* : 1T+1T: @`{sb['o_12']:.2f}` | 1T+2T: @`{sb['o_1a']:.2f}` | 1T+2T: @`{sb['o_2a']:.2f}`\n")
 
-    if combos_mixed:
-        report.append(f"## 🚀 Doublés 2T Restants ({nb_mixed} tickets — Cote Min: 3.20 — Mise 4.00 €)\n")
-        for idx, cb in enumerate(combos_mixed, 1):
+    if systems_23_a:
+        report.append(f"## 🛡️ Systèmes 2/3 Formule A (2x 2T + 1x 1T — {len(systems_23_a)} tickets — Mise 4.50 € / système)\n")
+        for idx_a, sa in enumerate(systems_23_a, 1):
+            a1, a2, c = sa["a1"]["m"], sa["a2"]["m"], sa["c"]["m"]
+            report.append(f"### Système 2/3 Formule A #{idx_a} — {sa['day']} | Mise: 4.50 € → Gain Min (2/3): `{sa['min_gain']:.2f} €` | Gain Max (3/3): `{sa['max_gain']:.2f} €`")
+            report.append(f"- **🔵 2ème MT #1** : `{a1['date_str']}` — **{a1['dom']} vs {a1['ext']}** (@`{sa['a1']['odds']:.2f}`) — Score 2T: {sa['a1']['score']}%")
+            report.append(f"- **🔵 2ème MT #2** : `{a2['date_str']}` — **{a2['dom']} vs {a2['ext']}** (@`{sa['a2']['odds']:.2f}`) — Score 2T: {sa['a2']['score']}%")
+            report.append(f"- **🟡 1ère MT** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{sa['c']['odds']:.2f}`) — Score 1T: {sa['c']['score']}%")
+            report.append(f"- *Combinaisons* : 2T+2T: @`{sa['o_12']:.2f}` | 2T+1T: @`{sa['o_1c']:.2f}` | 2T+1T: @`{sa['o_2c']:.2f}`\n")
+
+    if combos_hybrid:
+        report.append(f"## ⚡ Combinés Doublés Hybrides (1T + 2T — {len(combos_hybrid)} tickets — Cotes @5.00+ — Mise 3.00 €)\n")
+        for idx_h, ch in enumerate(combos_hybrid, 1):
+            c, a = ch["items"][0]["m"], ch["items"][1]["m"]
+            report.append(f"### Doublé Hybride #{idx_h} — Cote Totale: `{ch['comb_odds']:.2f}` | Mise 3 € → Gain: `{ch['gain']:.2f} €` *(+{ch['profit']:.2f} € net)*")
+            report.append(f"- **🟡 1ère MT** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{ch['items'][0]['odds']:.2f}`) — Score 1T: {ch['items'][0]['score']}%")
+            report.append(f"- **🔵 2ème MT** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{ch['items'][1]['odds']:.2f}`) — Score 2T: {ch['items'][1]['score']}%")
+            report.append("")
+
+    if combos_2t_pure:
+        report.append(f"## 🚀 Combinés Doublés 2T Purs ({len(combos_2t_pure)} tickets — Cotes @3.50+ — Mise 4.00 €)\n")
+        for idx, cb in enumerate(combos_2t_pure, 1):
+            a1, a2 = cb["items"][0]["m"], cb["items"][1]["m"]
             report.append(f"### Doublé 2T #{idx} — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4 € → Gain: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
-            for item in cb["items"]:
-                m = item["m"]
-                report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
+            report.append(f"- **🔵 2ème MT #1** : `{a1['date_str']}` — **{a1['dom']} vs {a1['ext']}** (@`{cb['items'][0]['odds']:.2f}`) — Score 2T: {cb['items'][0]['score']}%")
+            report.append(f"- **🔵 2ème MT #2** : `{a2['date_str']}` — **{a2['dom']} vs {a2['ext']}** (@`{cb['items'][1]['odds']:.2f}`) — Score 2T: {cb['items'][1]['score']}%")
             report.append("")
 
     if simples_1t:
-        report.append(f"## ⚡ Simples 1T Restants ({nb_simples_1t} matchs — Mise 3.00 €)\n")
+        report.append(f"## 🎯 Paris Simples 1T Restants ({len(simples_1t)} matchs — Mise 3.00 €)\n")
         for idx_s, s in enumerate(simples_1t, 1):
             m = s["m"]
             report.append(f"- **Simple 1T #{idx_s}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{s['odds']:.2f}`) — Score 1T: **{s['score']}%** (Moy. buts: {s['goals']:.1f}b)")
@@ -1374,7 +1618,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {nb_sys} Systèmes 2/3 (2T+1T) · {nb_mixed} Doublés 2T"
+    raw_subject = f"⚽ Football {subject_date} — {tot_sys} Systèmes 2/3 Hybrides · {tot_hyb_dbl} Doublés Hybrides · {tot_2t_dbl} Doublés 2T"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
