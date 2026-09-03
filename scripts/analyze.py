@@ -1131,6 +1131,35 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     else:
         score_2t = 0
 
+    # ── Score 1ère mi-temps plus prolifique ──────────────────────────────────
+    def _pct_1t_more(matches):
+        """% matchs où buts 1T > buts 2T, sur les matchs avec données HT."""
+        valid, wins = 0, 0
+        for m in matches:
+            ht_h = m.get("homeGoalsHt")
+            ht_a = m.get("awayGoalsHt")
+            ft_h = m.get("homeGoalsFt", m.get("homeGoals"))
+            ft_a = m.get("awayGoalsFt", m.get("awayGoals"))
+            if None in (ht_h, ht_a, ft_h, ft_a):
+                continue
+            goals_1t = int(ht_h) + int(ht_a)
+            goals_2t = int(ft_h) + int(ft_a) - goals_1t
+            valid += 1
+            if goals_1t > goals_2t:
+                wins += 1
+        return round(wins / valid * 100) if valid >= 3 else 0
+
+    pct_1t_dom = _pct_1t_more(recent_h_dom[:10])
+    pct_1t_ext = _pct_1t_more(recent_a_ext[:10])
+    if pct_1t_dom > 0 and pct_1t_ext > 0:
+        score_1t = round((pct_1t_dom + pct_1t_ext) / 2)
+    elif pct_1t_dom > 0:
+        score_1t = pct_1t_dom
+    elif pct_1t_ext > 0:
+        score_1t = pct_1t_ext
+    else:
+        score_1t = 0
+
     if is_batch:
         return {
             "team_a": team_a,
@@ -1177,6 +1206,9 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
             "score_2t": score_2t,
             "pct_2t_dom": pct_2t_dom,
             "pct_2t_ext": pct_2t_ext,
+            "score_1t": score_1t,
+            "pct_1t_dom": pct_1t_dom,
+            "pct_1t_ext": pct_1t_ext,
         }
 
 
