@@ -662,7 +662,7 @@ def main():
     # ── MOTEUR DE SÉLECTIONS ET COMBINÉS HYBRIDES (1T + 2T) ─────────────────
     used_2t = set()
     used_1t = set()
-    stake_sys = 1.50  # 1.50 € par combinaison -> 4.50 € par système 2/3
+    stake_sys = 1.00  # 1.00 € par combinaison -> 3.00 € par système 2/3 (Mise totale 3 €)
 
     MAX_SYS_B   = 6   # Systèmes 2/3 Type B [2x 1T + 1x 2T] (fort potentiel cotes @2.70+)
     MAX_SYS_A   = 6   # Systèmes 2/3 Type A [2x 2T + 1x 1T] (haute sécurité bases @1.95)
@@ -1472,7 +1472,7 @@ def main():
           <!-- SECTION 2 : SYSTÈMES MULTIPLES 2/3 HYBRIDES -->
           <div style="padding:12px 16px 10px 16px; background:#f5f3ff; border-top:2px solid #ddd6fe;">
             <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎟️ SYSTÈMES MULTIPLES 2/3 HYBRIDES &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 4.50€ · Remboursé dès 2/3)</span></span>
+              <span>🎟️ SYSTÈMES MULTIPLES 2/3 HYBRIDES &nbsp;<span style="font-size:12px; font-weight:600; color:#7c3aed;">(Mise 3.00€ · Remboursé dès 2/3)</span></span>
               <span style="font-size:11px; background:#ede9fe; color:#6d28d9; padding:2px 8px; border-radius:6px; font-weight:700;">{tot_sys} ticket(s)</span>
             </div>
             {systems_23_html}
@@ -1539,25 +1539,25 @@ def main():
     report = [
         "# ⚽ SÉLECTION SYSTÈMES 2/3 HYBRIDES & DOUBLÉS PROLIFIQUES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Systèmes 2/3 Hybrides** : Formules [2x 1T + 1x 2T] et [2x 2T + 1x 1T] · Mise 4.50 € (3 x 1.50 €)",
+        f"**Systèmes 2/3 Hybrides** : Formules [2x 1T + 1x 2T] et [2x 2T + 1x 1T] · Mise 3.00 € (3 x 1.00 €)",
         f"**Règle de remboursement** : Remboursé avec profit garanti dès 2 bons résultats sur 3 (Cotes combinées >= 3.50)\n",
     ]
 
     if systems_23_b:
-        report.append(f"## 🔥 Systèmes 2/3 Formule B (2x 1T + 1x 2T — {len(systems_23_b)} tickets — Mise 4.50 € / système)\n")
+        report.append(f"## 🔥 Systèmes 2/3 Formule B (2x 1T + 1x 2T — {len(systems_23_b)} tickets — Mise 3.00 € / système)\n")
         for idx_b, sb in enumerate(systems_23_b, 1):
             c1, c2, a = sb["c1"]["m"], sb["c2"]["m"], sb["a"]["m"]
-            report.append(f"### Système 2/3 Formule B #{idx_b} — {sb['day']} | Mise: 4.50 € → Gain Min (2/3): `{sb['min_gain']:.2f} €` | Gain Max (3/3): `{sb['max_gain']:.2f} €`")
+            report.append(f"### Système 2/3 Formule B #{idx_b} — {sb['day']} | Mise: 3.00 € → Gain Min (2/3): `{sb['min_gain']:.2f} €` | Gain Max (3/3): `{sb['max_gain']:.2f} €`")
             report.append(f"- **🟡 1ère MT #1** : `{c1['date_str']}` — **{c1['dom']} vs {c1['ext']}** (@`{sb['c1']['odds']:.2f}`) — Score 1T: {sb['c1']['score']}%")
             report.append(f"- **🟡 1ère MT #2** : `{c2['date_str']}` — **{c2['dom']} vs {c2['ext']}** (@`{sb['c2']['odds']:.2f}`) — Score 1T: {sb['c2']['score']}%")
             report.append(f"- **🔵 2ème MT** : `{a['date_str']}` — **{a['dom']} vs {a['ext']}** (@`{sb['a']['odds']:.2f}`) — Score 2T: {sb['a']['score']}%")
             report.append(f"- *Combinaisons* : 1T+1T: @`{sb['o_12']:.2f}` | 1T+2T: @`{sb['o_1a']:.2f}` | 1T+2T: @`{sb['o_2a']:.2f}`\n")
 
     if systems_23_a:
-        report.append(f"## 🛡️ Systèmes 2/3 Formule A (2x 2T + 1x 1T — {len(systems_23_a)} tickets — Mise 4.50 € / système)\n")
+        report.append(f"## 🛡️ Systèmes 2/3 Formule A (2x 2T + 1x 1T — {len(systems_23_a)} tickets — Mise 3.00 € / système)\n")
         for idx_a, sa in enumerate(systems_23_a, 1):
             a1, a2, c = sa["a1"]["m"], sa["a2"]["m"], sa["c"]["m"]
-            report.append(f"### Système 2/3 Formule A #{idx_a} — {sa['day']} | Mise: 4.50 € → Gain Min (2/3): `{sa['min_gain']:.2f} €` | Gain Max (3/3): `{sa['max_gain']:.2f} €`")
+            report.append(f"### Système 2/3 Formule A #{idx_a} — {sa['day']} | Mise: 3.00 € → Gain Min (2/3): `{sa['min_gain']:.2f} €` | Gain Max (3/3): `{sa['max_gain']:.2f} €`")
             report.append(f"- **🔵 2ème MT #1** : `{a1['date_str']}` — **{a1['dom']} vs {a1['ext']}** (@`{sa['a1']['odds']:.2f}`) — Score 2T: {sa['a1']['score']}%")
             report.append(f"- **🔵 2ème MT #2** : `{a2['date_str']}` — **{a2['dom']} vs {a2['ext']}** (@`{sa['a2']['odds']:.2f}`) — Score 2T: {sa['a2']['score']}%")
             report.append(f"- **🟡 1ère MT** : `{c['date_str']}` — **{c['dom']} vs {c['ext']}** (@`{sa['c']['odds']:.2f}`) — Score 1T: {sa['c']['score']}%")
