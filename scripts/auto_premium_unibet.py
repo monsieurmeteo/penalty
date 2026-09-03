@@ -742,6 +742,10 @@ def main():
         }
 
     # Grouper les pools par jour J
+    # ── MOTEUR DE SÉLECTIONS : OPTION B (STRICTE EXCLUSIVITÉ) ───────────────
+    # RÈGLE : 1 MATCH = 1 SEUL TICKET MAX (Zéro doublon garanti).
+    # Un match ne peut JAMAIS réapparaître dans un autre combiné.
+    used_all_matches = set()
     days_present = sorted(list(set([m["day"] for m in mt2_pool] + [m["day"] for m in mt1_pool])))
     all_systems = []
     sys_idx = 1
@@ -753,17 +757,15 @@ def main():
         # Au moins 3 matchs ce jour-là pour composer des combinés
         if len(p1) + len(p2) < 3:
             continue
-            
-        used_day = set()
 
         # 1. Formule B (2x 1T + 1x 2T) sur ce jour J
         while True:
-            avail_1 = [s for s in p1 if s["id"] not in used_day]
-            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            avail_1 = [s for s in p1 if s["id"] not in used_all_matches]
+            avail_2 = [s for s in p2 if s["id"] not in used_all_matches]
             if len(avail_1) >= 2 and len(avail_2) >= 1:
                 c1, c2 = avail_1[0], avail_1[1]
                 a = avail_2[0]
-                used_day.update([c1["id"], c2["id"], a["id"]])
+                used_all_matches.update([c1["id"], c2["id"], a["id"]])
                 all_systems.append(make_sys_ticket(c1, c2, a, sys_idx, day_k))
                 sys_idx += 1
             else:
@@ -771,12 +773,12 @@ def main():
 
         # 2. Formule A (2x 2T + 1x 1T) sur ce jour J
         while True:
-            avail_1 = [s for s in p1 if s["id"] not in used_day]
-            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            avail_1 = [s for s in p1 if s["id"] not in used_all_matches]
+            avail_2 = [s for s in p2 if s["id"] not in used_all_matches]
             if len(avail_2) >= 2 and len(avail_1) >= 1:
                 a1, a2 = avail_2[0], avail_2[1]
                 c = avail_1[0]
-                used_day.update([a1["id"], a2["id"], c["id"]])
+                used_all_matches.update([a1["id"], a2["id"], c["id"]])
                 all_systems.append(make_sys_ticket(a1, a2, c, sys_idx, day_k))
                 sys_idx += 1
             else:
@@ -784,10 +786,10 @@ def main():
 
         # 3. Triplets 2T restants (3x 2T) sur ce jour J
         while True:
-            avail_2 = [s for s in p2 if s["id"] not in used_day]
+            avail_2 = [s for s in p2 if s["id"] not in used_all_matches]
             if len(avail_2) >= 3:
                 a1, a2, a3 = avail_2[0], avail_2[1], avail_2[2]
-                used_day.update([a1["id"], a2["id"], a3["id"]])
+                used_all_matches.update([a1["id"], a2["id"], a3["id"]])
                 all_systems.append(make_sys_ticket(a1, a2, a3, sys_idx, day_k))
                 sys_idx += 1
             else:
@@ -795,34 +797,16 @@ def main():
 
         # 4. Triplets 1T restants (3x 1T) sur ce jour J
         while True:
-            avail_1 = [s for s in p1 if s["id"] not in used_day]
+            avail_1 = [s for s in p1 if s["id"] not in used_all_matches]
             if len(avail_1) >= 3:
                 c1, c2, c3 = avail_1[0], avail_1[1], avail_1[2]
-                used_day.update([c1["id"], c2["id"], c3["id"]])
+                used_all_matches.update([c1["id"], c2["id"], c3["id"]])
                 all_systems.append(make_sys_ticket(c1, c2, c3, sys_idx, day_k))
                 sys_idx += 1
             else:
                 break
 
-        # 5. Si 2 orphelins restent sur ce jour J, on les associe à la meilleure base du jour pour former un ticket
-        left_1 = [s for s in p1 if s["id"] not in used_day]
-        left_2 = [s for s in p2 if s["id"] not in used_day]
-        leftovers = left_1 + left_2
-        if len(leftovers) == 2 and p2:
-            anchor = [s for s in p2 if s["id"] not in [x["id"] for x in leftovers]]
-            if anchor:
-                m1, m2 = leftovers[0], leftovers[1]
-                used_day.update([m1["id"], m2["id"]])
-                all_systems.append(make_sys_ticket(m1, m2, anchor[0], sys_idx, day_k))
-                sys_idx += 1
-        elif len(leftovers) == 1 and len(p2) >= 2:
-            anchors = [s for s in p2 if s["id"] != leftovers[0]["id"]][:2]
-            if len(anchors) == 2:
-                used_day.add(leftovers[0]["id"])
-                all_systems.append(make_sys_ticket(leftovers[0], anchors[0], anchors[1], sys_idx, day_k))
-                sys_idx += 1
-
-    print(f"🎲 Total Systèmes 2/3 générés (Same-Day) : {len(all_systems)}")
+    print(f"🎲 Total Systèmes 2/3 générés (Option B Stricte Exclusivité) : {len(all_systems)}")
 
     combos_mixed = all_systems
     combos_hybrid = []
