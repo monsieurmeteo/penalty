@@ -131,6 +131,7 @@ def scan_unibet_match_details(game):
         over15, over25, under25 = None, None, None
         s22 = None
         btts_oui, btts_non = None, None
+        mt2_odds = None
         start_iso = ""
 
         for js in json_scripts:
@@ -150,12 +151,24 @@ def scan_unibet_match_details(game):
             for g in event.get("groupedMarkets", []):
                 for m in g.get("markets", []):
                     m_desc = (m.get("description") or "").lower()
+                    outcomes = m.get("outcomes", [])
 
-                    # Ignorer mi-temps
+                    # ── Cote "2nde mi-temps la plus prolifique" (depuis JSON) ──
+                    if mt2_odds is None and "prolif" in m_desc:
+                        for o in outcomes:
+                            o_desc = (o.get("description") or "").strip().lower()
+                            p_val_s = str(o.get("price") or o.get("currentPrice") or 0).replace(",", ".")
+                            try:
+                                p_val = float(p_val_s)
+                            except ValueError:
+                                p_val = 0.0
+                            if any(k in o_desc for k in ["2nde", "2ème", "2eme", "deuxième", "second"]) and p_val > 1.0:
+                                mt2_odds = p_val
+                                break
+
+                    # Ignorer mi-temps pour les autres marchés
                     if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
                         continue
-
-                    outcomes = m.get("outcomes", [])
 
                     # 1N2
                     if m_desc in ["1 n 2", "1n2", "résultat du match"] and c1 is None:
@@ -204,6 +217,7 @@ def scan_unibet_match_details(game):
                             if "les 2 équipes marquent" in o_desc or "les deux équipes marquent" in o_desc:
                                 btts_oui = p_val
 
+
             # Buteur le plus proche de la moyenne des cotes
             buteur_name = None
             buteur_cote = None
@@ -247,30 +261,6 @@ def scan_unibet_match_details(game):
             margin_o25 = ((1.0/over25) + (1.0/under25)) if (over25 and under25 and over25 > 0 and under25 > 0) else 1.12
             over25_fair = round(over25 * margin_o25, 2) if over25 else None
 
-
-            # ── Cote "2nde mi-temps la plus prolifique" (HTML statique) ──
-            mt2_odds = None
-            try:
-                page_url = game.get("url", "")
-                if page_url:
-                    rh = requests.get(f"https://www.unibet.fr{page_url}", headers=HEADERS, timeout=8)
-                    if rh.status_code == 200:
-                        idx = rh.text.lower().find("prolif")
-                        if idx >= 0:
-                            bloc = rh.text[idx - 50: idx + 1500]
-                            bs = BeautifulSoup(bloc, "html.parser")
-                            spans = [s.get_text(strip=True) for s in bs.find_all("span") if s.get_text(strip=True)]
-                            # spans attendus: ['1ère mi-temps', '@X.XX', '2nde mi-temps', '@X.XX', ...]
-                            for i, sp in enumerate(spans):
-                                if "2nde" in sp.lower() or "2ème" in sp.lower() or "deuxième" in sp.lower() or "second" in sp.lower():
-                                    if i + 1 < len(spans):
-                                        try:
-                                            mt2_odds = float(spans[i + 1].replace(",", "."))
-                                        except ValueError:
-                                            pass
-                                    break
-            except Exception:
-                pass
 
             return {
                 **game,
