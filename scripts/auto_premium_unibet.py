@@ -612,30 +612,38 @@ def main():
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
 
     # ── MOTEUR DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE ─────────────────────
-    # Critères : score_2t >= 60 + mt2_odds >= @1.85 (Unibet) + cote combinée >= 3.20
-    # Mise : 4€ (score_2t moyen 60-79) / 5€ (score_2t moyen >= 80)
-    MIN_2T_SCORE = 60
-    MIN_2T_ODDS  = 1.85   # Unibet → ~@1.80 réel tabac
-    MIN_2T_COMBO = 3.20   # cote combinée minimum
+    # Triple validation :
+    # 1. score_2t >= 65%  → historique solide 2T > 1T (AdamChoi)
+    # 2. total_goals >= 2.5 → match offensif (évite les 0-0 → 1-0 trompeurs)
+    # 3. mt2_odds entre @1.80 et @2.20 → valeur réelle, marché pas trop incertain
+    # Combo >= @3.20 | Mise 4€ (score_2t 65-79) / 5€ (score_2t >= 80)
+    MIN_2T_SCORE  = 65     # % matchs récents 2T > 1T
+    MIN_2T_GOALS  = 2.5    # buts moyens totaux (filtre matchs offensifs)
+    MIN_2T_ODDS   = 1.80   # Unibet → ~@1.75 réel tabac
+    MAX_2T_ODDS   = 2.20   # plafond : marché trop incertain au-delà
+    MIN_2T_COMBO  = 3.20   # cote combinée minimum
 
     mt2_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
-        s2t = m.get("score_2t", 0)
-        mt2 = m.get("mt2_odds")
-        if s2t >= MIN_2T_SCORE and mt2 and mt2 >= MIN_2T_ODDS:
+        s2t   = m.get("score_2t", 0)
+        mt2   = m.get("mt2_odds")
+        goals = m.get("total_goals_brut", 0.0)
+        if (s2t >= MIN_2T_SCORE
+                and goals >= MIN_2T_GOALS
+                and mt2 and MIN_2T_ODDS <= mt2 <= MAX_2T_ODDS):
             mt2_pool.append({"m": m, "id": m["id"], "dt": m_dt,
                              "day": get_day_key(m_dt), "odds": mt2, "score": s2t,
-                             "market": "🕐 2T Prolifique"})
+                             "goals": goals, "market": "🕐 2T Prolifique"})
 
     mt2_pool.sort(key=lambda x: x["dt"])
-    print(f"📊 Pool 2T prolifique (Score2T >= {MIN_2T_SCORE}, Cote >= @{MIN_2T_ODDS}) : {len(mt2_pool)}")
+    print(f"📊 Pool 2T prolifique (Score2T>={MIN_2T_SCORE}%, Goals>={MIN_2T_GOALS}, @{MIN_2T_ODDS}-@{MAX_2T_ODDS}) : {len(mt2_pool)}")
 
     combos_mixed = []
     used_2t = set()
     for d in sorted(set(s["day"] for s in mt2_pool)):
         day_pool = [s for s in mt2_pool if s["day"] == d and s["id"] not in used_2t]
-        day_pool_sorted = sorted(day_pool, key=lambda x: -x["odds"])
+        day_pool_sorted = sorted(day_pool, key=lambda x: (-x["score"], -x["odds"]))
         best_pair = None
         for i in range(len(day_pool_sorted)):
             for j in range(i + 1, len(day_pool_sorted)):
@@ -661,7 +669,7 @@ def main():
 
     combos_mixed.sort(key=lambda cb: cb["items"][0]["dt"])
     total_stake = sum(cb["stake"] for cb in combos_mixed)
-    print(f"✅ Doublés 2T Prolifique (Cote combinée >= @{MIN_2T_COMBO}, Mise 4-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
+    print(f"✅ Doublés 2T Prolifique (Combo>={MIN_2T_COMBO}, Mise 4-5€) : {len(combos_mixed)} tickets / Mise totale : {total_stake:.0f} €")
 
 
     def render_match_proof_html(m):
