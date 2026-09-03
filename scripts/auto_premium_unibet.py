@@ -611,12 +611,15 @@ def main():
     def get_day_key(m_dt):
         return m_dt.astimezone(timezone(timedelta(hours=2))).strftime("%Y-%m-%d")
 
+    # Fenêtre de sélection : uniquement les matchs dans les 36 prochaines heures
+    WINDOW_H = 36
+    window_end = now_utc + timedelta(hours=WINDOW_H)
+
     # ── MOTEUR 1 : DOUBLÉS 2ÈME MI-TEMPS LA PLUS PROLIFIQUE (Cote >= 3.20) ──
     # Triple validation :
     # 1. score_2t >= 55%  → majorité nette des matchs récents ont 2T > 1T
     # 2. total_goals >= 2.0 → match offensif minimal
     # 3. mt2_odds entre @1.80 et @2.20 → valeur réelle
-    # Combo >= @3.20 | Mise 4€ (score 55-74) / 5€ (score >= 75)
     MIN_2T_SCORE  = 55     # % matchs récents 2T > 1T
     MIN_2T_GOALS  = 2.0    # buts moyens totaux
     MIN_2T_ODDS   = 1.80   # Unibet → ~@1.75 réel tabac
@@ -626,6 +629,8 @@ def main():
     mt2_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        if m_dt > window_end:          # hors fenêtre 36h → ignoré
+            continue
         s2t   = m.get("score_2t", 0)
         mt2   = m.get("mt2_odds")
         goals = m.get("total_goals_brut", 0.0)
@@ -646,6 +651,8 @@ def main():
     mt1_pool = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
+        if m_dt > window_end:          # hors fenêtre 36h → ignoré
+            continue
         s1t   = m.get("score_1t", 0)
         mt1   = m.get("mt1_odds")
         goals = m.get("total_goals_brut", 0.0)
@@ -656,42 +663,57 @@ def main():
                              "day": get_day_key(m_dt), "odds": mt1, "score": s1t,
                              "goals": goals, "market": "⚡ 1T Prolifique"})
 
+    mt2_pool.sort(key=lambda x: (-x["score"], x["dt"]))
     mt1_pool.sort(key=lambda x: (-x["score"], -x["odds"]))
-    print(f"📊 Pool 2T: {len(mt2_pool)} matchs | Pool 1T: {len(mt1_pool)} matchs")
+    print(f"📊 Pool 2T: {len(mt2_pool)} matchs | Pool 1T: {len(mt1_pool)} matchs (fenêtre {WINDOW_H}h)")
 
     # ── MOTEUR DE SÉLECTIONS ET COMBINÉS HYBRIDES (1T + 2T) ─────────────────
-    used_2t = set()
-    used_1t = set()
+    # Les used_* sont par catégorie (B, A, Hybrides, 2T, 1T simples)
+    # Un match peut apparaître dans plusieurs catégories — pas de pool global épuisé.
+    # Les items de chaque ticket sont toujours triés par ordre chronologique (dt).
     stake_sys = 1.00  # 1.00 € par combinaison -> 3.00 € par système 2/3 (Mise totale 3 €)
 
-    MAX_SYS_B   = 6   # Systèmes 2/3 Type B [2x 1T + 1x 2T] (fort potentiel cotes @2.70+)
-    MAX_SYS_A   = 6   # Systèmes 2/3 Type A [2x 2T + 1x 1T] (haute sécurité bases @1.95)
-    MAX_HYB_DBL = 6   # Combinés Doublés Hybrides [1x 1T + 1x 2T] (Cotes @5.00+)
-    MAX_2T_DBL  = 8   # Combinés Doublés 2T Purs [2x 2T] (Cotes @3.50+)
-    MAX_1T_SMP  = 8   # Paris Simples 1T secs (pépites restantes)
+    MAX_SYS_B   = 6   # Systèmes 2/3 Type B [2x 1T + 1x 2T]
+    MAX_SYS_A   = 6   # Systèmes 2/3 Type A [2x 2T + 1x 1T]
+    MAX_HYB_DBL = 6   # Combinés Doublés Hybrides [1x 1T + 1x 2T]
+    MAX_2T_DBL  = 8   # Combinés Doublés 2T Purs [2x 2T]
+    MAX_1T_SMP  = 8   # Paris Simples 1T secs
+
+    def sorted_by_dt(items):
+        """Tri chronologique des items d'un ticket (heure de match croissante)."""
+        return sorted(items, key=lambda x: x["dt"])
 
     # 1. SYSTÈMES 2/3 HYBRIDES TYPE B (2 Matchs 1ère MT + 1 Match 2ème MT)
+    # Pool indépendant pour cette catégorie
+    used_b = set()
     systems_23_b = []
     for _ in range(MAX_SYS_B):
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_b]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_b]
         if len(rem_1t) >= 2 and len(rem_2t) >= 1:
             c1, c2 = rem_1t[0], rem_1t[1]
             avail_2t = [s for s in rem_2t if s["id"] not in (c1["id"], c2["id"])]
             if not avail_2t:
                 break
             a = avail_2t[0]
-            used_1t.update([c1["id"], c2["id"]])
-            used_2t.add(a["id"])
+            used_b.update([c1["id"], c2["id"], a["id"]])
             o_12 = round(c1["odds"] * c2["odds"], 2)
             o_1a = round(c1["odds"] * a["odds"], 2)
             o_2a = round(c2["odds"] * a["odds"], 2)
             min_g = round(stake_sys * min(o_12, o_1a, o_2a), 2)
             max_g = round(stake_sys * (o_12 + o_1a + o_2a), 2)
-            day_lbl = c1["day"] if c1["day"] == c2["day"] == a["day"] else f"{c1['day']} / {a['day']}"
+            all_days = sorted(set([c1["day"], c2["day"], a["day"]]))
+            day_lbl = " / ".join(all_days)
+            # Trier les 3 sélections dans l'ordre chronologique du match
+            items_chron = sorted_by_dt([c1, c2, a])
+            # Identifier les rôles dans l'ordre chronologique
+            c1_chron = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c1["id"])
+            c2_chron = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c2["id"])
+            a_chron  = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a["id"])
             systems_23_b.append({
                 "type": "2x 1T + 1x 2T", "day": day_lbl,
-                "c1": c1, "c2": c2, "a": a,
+                "c1": c1_chron, "c2": c2_chron, "a": a_chron,
+                "_items_chron": items_chron,  # liste ordonnée chron pour affichage
                 "o_12": o_12, "o_1a": o_1a, "o_2a": o_2a,
                 "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
                 "min_gain": min_g, "max_gain": max_g
@@ -700,27 +722,35 @@ def main():
             break
 
     # 2. SYSTÈMES 2/3 HYBRIDES TYPE A (2 Matchs 2ème MT + 1 Match 1ère MT)
+    # Pool indépendant pour cette catégorie
+    used_a = set()
     systems_23_a = []
     for _ in range(MAX_SYS_A):
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_a]
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_a]
         if len(rem_2t) >= 2 and len(rem_1t) >= 1:
             a1, a2 = rem_2t[0], rem_2t[1]
             avail_1t = [s for s in rem_1t if s["id"] not in (a1["id"], a2["id"])]
             if not avail_1t:
                 break
             c = avail_1t[0]
-            used_2t.update([a1["id"], a2["id"]])
-            used_1t.add(c["id"])
+            used_a.update([a1["id"], a2["id"], c["id"]])
             o_12 = round(a1["odds"] * a2["odds"], 2)
             o_1c = round(a1["odds"] * c["odds"], 2)
             o_2c = round(a2["odds"] * c["odds"], 2)
             min_g = round(stake_sys * min(o_12, o_1c, o_2c), 2)
             max_g = round(stake_sys * (o_12 + o_1c + o_2c), 2)
-            day_lbl = a1["day"] if a1["day"] == a2["day"] == c["day"] else f"{a1['day']} / {c['day']}"
+            all_days = sorted(set([a1["day"], a2["day"], c["day"]]))
+            day_lbl = " / ".join(all_days)
+            # Tri chronologique des 3 sélections
+            items_chron = sorted_by_dt([a1, a2, c])
+            a1_chron = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a1["id"])
+            a2_chron = next(x for x in items_chron if x["market"] == "🕐 2T Prolifique" and x["id"] == a2["id"])
+            c_chron  = next(x for x in items_chron if x["market"] == "⚡ 1T Prolifique" and x["id"] == c["id"])
             systems_23_a.append({
                 "type": "2x 2T + 1x 1T", "day": day_lbl,
-                "a1": a1, "a2": a2, "c": c,
+                "a1": a1_chron, "a2": a2_chron, "c": c_chron,
+                "_items_chron": items_chron,
                 "o_12": o_12, "o_1c": o_1c, "o_2c": o_2c,
                 "stake_line": stake_sys, "stake_tot": round(stake_sys * 3, 2),
                 "min_gain": min_g, "max_gain": max_g
@@ -729,40 +759,51 @@ def main():
             break
 
     # 3. COMBINÉS DOUBLÉS HYBRIDES (1 Match 1ère MT + 1 Match 2ème MT)
+    # Pool indépendant — chaque match peut aussi être dans un système 2/3
+    used_hyb = set()
     combos_hybrid = []
     for _ in range(MAX_HYB_DBL):
-        rem_1t = [s for s in mt1_pool if s["id"] not in used_1t]
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        rem_1t = [s for s in mt1_pool if s["id"] not in used_hyb]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_hyb]
         if len(rem_1t) >= 1 and len(rem_2t) >= 1:
             c = rem_1t[0]
             avail_2t = [s for s in rem_2t if s["id"] != c["id"]]
             if not avail_2t:
                 break
             a = avail_2t[0]
-            used_1t.add(c["id"])
-            used_2t.add(a["id"])
+            used_hyb.update([c["id"], a["id"]])
             comb_o = round(c["odds"] * a["odds"], 2)
-            day_lbl = c["day"] if c["day"] == a["day"] else f"{c['day']} / {a['day']}"
+            all_days = sorted(set([c["day"], a["day"]]))
+            day_lbl = " / ".join(all_days)
+            # Tri chronologique : afficher les 2 matchs dans l'ordre horaire
+            items_chron = sorted_by_dt([c, a])
             combos_hybrid.append({
                 "type": "Doublé Hybride (1T + 2T)", "day": day_lbl,
-                "items": [c, a], "comb_odds": comb_o, "stake": 3.0,
+                "items": items_chron,  # triés chronologiquement
+                "comb_odds": comb_o, "stake": 3.0,
                 "gain": round(3.0 * comb_o, 2), "profit": round(3.0 * comb_o - 3.0, 2)
             })
         else:
             break
 
     # 4. COMBINÉS DOUBLÉS 2T PURS (2 Matchs 2ème MT)
+    # Pool indépendant
+    used_2t_dbl = set()
     combos_2t_pure = []
     for _ in range(MAX_2T_DBL):
-        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t]
+        rem_2t = [s for s in mt2_pool if s["id"] not in used_2t_dbl]
         if len(rem_2t) >= 2:
             a1, a2 = rem_2t[0], rem_2t[1]
-            used_2t.update([a1["id"], a2["id"]])
+            used_2t_dbl.update([a1["id"], a2["id"]])
             comb_o = round(a1["odds"] * a2["odds"], 2)
-            day_lbl = a1["day"] if a1["day"] == a2["day"] else f"{a1['day']} / {a2['day']}"
+            all_days = sorted(set([a1["day"], a2["day"]]))
+            day_lbl = " / ".join(all_days)
+            # Tri chronologique des 2 matchs
+            items_chron = sorted_by_dt([a1, a2])
             combos_2t_pure.append({
                 "type": "Doublé 2T Prolifique", "day": day_lbl,
-                "items": [a1, a2], "comb_odds": comb_o, "stake": 4.0,
+                "items": items_chron,  # triés chronologiquement
+                "comb_odds": comb_o, "stake": 4.0,
                 "gain": round(4.0 * comb_o, 2), "profit": round(4.0 * comb_o - 4.0, 2)
             })
         else:
