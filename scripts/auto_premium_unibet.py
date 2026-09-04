@@ -442,8 +442,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 75/100 (méthode d'hier) ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
+    # ── Sélection 100% Score AdamChoi >= 85/100 ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 85/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -451,13 +451,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 75:
+        if ac_score >= 85:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 85)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -468,7 +468,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 85/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -589,23 +589,23 @@ def main():
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
         
-        # 1. Over 2.5 si Score >= 75
+        # 1. Over 2.5 si Score >= 85
         o25 = m.get("over25")
-        if m.get("ac_score", 0) >= 75 and o25:
+        if m.get("ac_score", 0) >= 85 and o25:
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟥 Over 2.5", "odds": o25,
                 "score": m.get("ac_score", 0)
             })
-        # 2. BTTS Oui si Score >= 75
-        elif m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
+        # 2. BTTS Oui si Score >= 85
+        elif m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
                 "score": m.get("score_btts", 0)
             })
-        # 3. Over 1.5 si Score >= 75
-        elif m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
+        # 3. Over 1.5 si Score >= 85
+        elif m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
             mixed_selections.append({
                 "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                 "market": "🟦 Over 1.5", "odds": m["over15"],
@@ -613,11 +613,11 @@ def main():
             })
 
     # ── DIAGNOSTIC : breakdown des filtres ──
-    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
-    n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
-    n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25") and not m.get("under25"))
-    n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 75 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
-    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
+    n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
+    n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and not m.get("under25"))
+    n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
+    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
     print(f"📊 Sélections brutes : Over2.5✅={n_o25_ok} | Over2.5❌filtre={n_o25_excl} | Over2.5❓no_under={n_o25_noc} | BTTS={n_btts} | Over1.5={n_o15}")
     print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
 
@@ -680,12 +680,12 @@ def main():
                 })
                 break
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 80) ──
-    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 80
+    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 85) ──
+    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 85
     pen_candidates = [
         m for m in scanned_results
         if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 80
+        and m.get("score_penalty", 0) >= 85
     ]
     pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
     pen_simples = pen_candidates
