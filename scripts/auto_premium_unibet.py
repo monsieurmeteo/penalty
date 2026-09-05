@@ -471,8 +471,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 75/100 ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
+    # ── Sélection 100% Score AdamChoi >= 70/100 ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 70/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -480,13 +480,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 75:
+        if ac_score >= 70:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 70)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -497,7 +497,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 70/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -617,7 +617,7 @@ def main():
     # Cote combinée minimum : >= 2.20
     TARGET_COMB = 2.20
 
-    pool_o25_all = []   # Over 2.5 — ac_score >= 75
+    pool_o25_all = []   # Over 2.5 — ac_score >= 70
     pool_fav_all = []   # Over 0.5 buts équipe favorite
 
     for m in scanned_results:
@@ -630,12 +630,12 @@ def main():
         home_o05 = m.get("home_over05")
         away_o05 = m.get("away_over05")
 
-        if m.get("ac_score", 0) >= 75 and o25:
+        if m.get("ac_score", 0) >= 70 and o25:
             pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
 
         # Favori = équipe avec la cote 1N2 la plus basse (ou plus basse cote Over 0.5)
-        if m.get("ac_score", 0) >= 75:
+        if m.get("ac_score", 0) >= 70:
             fav_name, fav_o05 = None, None
             if c1 and c2:
                 if c1 <= c2 and home_o05:
@@ -660,7 +660,7 @@ def main():
     mixed_selections = pool_o25_all + pool_fav_all  # used downstream for plan_rows
 
     # ── DIAGNOSTIC ──
-    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25"))
+    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 70 and m.get("over25"))
     n_fav = len(pool_fav_all)
     print(f"📊 Pool O25={len(pool_o25_all)} | Pool Fav-Over05={n_fav}")
     print(f"📊 Éligibles bruts : Over2.5={n_o25} | Fav-Over05={n_fav}")
@@ -1057,8 +1057,8 @@ def main():
         btts_v = m.get("score_btts", 0)
         
         # Badges scores
-        score_bg = "#dcfce7" if score_v >= 75 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
-        score_cl = "#15803d" if score_v >= 75 else ("#92400e" if score_v >= 50 else "#dc2626")
+        score_bg = "#dcfce7" if score_v >= 70 else ("#fef3c7" if score_v >= 50 else "#fee2e2")
+        score_cl = "#15803d" if score_v >= 70 else ("#92400e" if score_v >= 50 else "#dc2626")
         score_badge = f'<span style="background:{score_bg}; color:{score_cl}; font-weight:800; font-size:11px; padding:2px 7px; border-radius:5px;">{score_v}/100</span>'
 
         btts_bg = "#dcfce7" if btts_v >= 65 else ("#fef3c7" if btts_v >= 50 else "#f1f5f9")
