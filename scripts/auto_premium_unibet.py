@@ -583,12 +583,11 @@ def main():
         return sessions_dict
 
     # ── MOTEUR COMBINÉS STRICTS : 1 Over 2.5 + 1 Over 1.5 par doublé (cote cible ~2.20) ──
-    # Deux pools séparés par bloc horaire : un pool O25/BTTS et un pool O15.
-    # Chaque combiné = 1 match O25 + 1 match O15 DIFFÉRENTS, cote la plus proche de 2.20.
+    # Pas de BTTS — uniquement Over 2.5 et Over 1.5 purs.
     TARGET_COMB = 2.20
 
-    pool_o25_all = []  # Over 2.5 (ou BTTS) — score >= 85
-    pool_o15_all = []  # Over 1.5 — score >= 85
+    pool_o25_all = []  # Over 2.5 uniquement — ac_score >= 85
+    pool_o15_all = []  # Over 1.5 uniquement — score_o15 >= 85
 
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -600,9 +599,6 @@ def main():
         if m.get("ac_score", 0) >= 85 and o25:
             pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
-        elif m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
-            pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                                  "market": "🟩 BTTS Oui", "odds": m["btts_oui"], "score": m.get("score_btts", 0)})
 
         if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15:
             pool_o15_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
@@ -611,13 +607,10 @@ def main():
     mixed_selections = pool_o25_all + pool_o15_all  # used downstream for plan_rows
 
     # ── DIAGNOSTIC ──
-    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
-    n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
-    n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and not m.get("under25"))
-    n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
+    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25"))
     n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
-    print(f"📊 Sélections brutes : Over2.5✅={n_o25_ok} | Over2.5❌filtre={n_o25_excl} | Over2.5❓no_under={n_o25_noc} | BTTS={n_btts} | Over1.5={n_o15}")
-    print(f"📊 Pool O25/BTTS={len(pool_o25_all)} | Pool O15={len(pool_o15_all)}")
+    print(f"📊 Pool O25={len(pool_o25_all)} | Pool O15={len(pool_o15_all)}")
+    print(f"📊 Éligibles bruts : Over2.5={n_o25_ok} | Over1.5={n_o15}")
 
     # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 1.5, cote la plus proche de 2.20 ──
     blocks_o25 = {}
