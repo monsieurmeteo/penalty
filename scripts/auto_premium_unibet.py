@@ -1,4 +1,4 @@
-import os, sys, time, json, re, smtplib, unicodedata, requests
+﻿import os, sys, time, json, re, smtplib, unicodedata, requests
 from datetime import datetime, timezone, timedelta
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -442,8 +442,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 85/100 ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 85/100
+    # ── Sélection 100% Score AdamChoi >= 75/100 ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 75/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -451,13 +451,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 85:
+        if ac_score >= 75:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 85)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 75)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -468,7 +468,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 85/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 75/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -586,8 +586,8 @@ def main():
     # Pas de BTTS — uniquement Over 2.5 et Over 1.5 purs.
     TARGET_COMB = 2.20
 
-    pool_o25_all = []  # Over 2.5 uniquement — ac_score >= 85
-    pool_o15_all = []  # Over 1.5 uniquement — score_o15 >= 85
+    pool_o25_all = []  # Over 2.5 uniquement — ac_score >= 75
+    pool_o15_all = []  # Over 1.5 uniquement — score_o15 >= 75
 
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -596,19 +596,19 @@ def main():
         o25 = m.get("over25")
         o15 = m.get("over15")
 
-        if m.get("ac_score", 0) >= 85 and o25:
+        if m.get("ac_score", 0) >= 75 and o25:
             pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
 
-        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15:
+        if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and o15:
             pool_o15_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟦 Over 1.5", "odds": o15, "score": m.get("score_o15", 0)})
 
     mixed_selections = pool_o25_all + pool_o15_all  # used downstream for plan_rows
 
     # ── DIAGNOSTIC ──
-    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25"))
-    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
+    n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25"))
+    n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 75 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
     print(f"📊 Pool O25={len(pool_o25_all)} | Pool O15={len(pool_o15_all)}")
     print(f"📊 Éligibles bruts : Over2.5={n_o25_ok} | Over1.5={n_o15}")
 
@@ -1500,3 +1500,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
