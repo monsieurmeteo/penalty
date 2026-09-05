@@ -149,11 +149,13 @@ def scan_unibet_match_details(game):
             start_iso = event.get("parsedStart") or ""
 
             for g in event.get("groupedMarkets", []):
+                g_desc = (g.get("name") or g.get("description") or "").lower()
                 for m in g.get("markets", []):
                     m_desc = (m.get("description") or "").lower()
 
                     # Ignorer mi-temps
-                    if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
+                    if any(x in m_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]) or \
+                       any(x in g_desc for x in ["mi-temps", "1ère", "2ème", "quart", "période"]):
                         continue
 
                     outcomes = m.get("outcomes", [])
@@ -175,21 +177,29 @@ def scan_unibet_match_details(game):
                                 p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                                 if "plus" in o_desc: over15 = p_val
 
-                    # Over 0.5 buts équipe domicile
-                    if ("plus / moins 0.5" in m_desc or "plus / moins 0,5" in m_desc) and home_over05 is None:
-                        if dom.lower() in m_desc or "domicile" in m_desc:
-                            for o in outcomes:
-                                o_desc = (o.get("description") or "").lower()
-                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                                if "plus" in o_desc and p_val > 1.0: home_over05 = p_val
+                    # Over 0.5 buts équipe domicile / extérieure (ex: Plus / Moins But(s) - Marseille 0,5)
+                    # Présent dans le groupe 'Plus / Moins Buts Equipe - 90 Mins'
+                    if ("0,5" in m_desc or "0.5" in m_desc) and ("but" in m_desc or "buts equipe" in g_desc or "buts équipe" in g_desc):
+                        is_home = (dom.lower() in m_desc or "domicile" in m_desc)
+                        is_away = (ext.lower() in m_desc or "extérieur" in m_desc or "visiteur" in m_desc)
+                        if not is_home and not is_away:
+                            dom_w = [w for w in re.findall(r'\w+', dom.lower()) if len(w) >= 4]
+                            ext_w = [w for w in re.findall(r'\w+', ext.lower()) if len(w) >= 4]
+                            if dom_w and any(w in m_desc for w in dom_w): is_home = True
+                            elif ext_w and any(w in m_desc for w in ext_w): is_away = True
 
-                    # Over 0.5 buts équipe extérieure
-                    if ("plus / moins 0.5" in m_desc or "plus / moins 0,5" in m_desc) and away_over05 is None:
-                        if ext.lower() in m_desc or "extérieur" in m_desc or "visiteur" in m_desc:
+                        if is_home and home_over05 is None:
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").lower()
                                 p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
-                                if "plus" in o_desc and p_val > 1.0: away_over05 = p_val
+                                if "plus" in o_desc and p_val > 1.0:
+                                    home_over05 = p_val
+                        elif is_away and away_over05 is None:
+                            for o in outcomes:
+                                o_desc = (o.get("description") or "").lower()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if "plus" in o_desc and p_val > 1.0:
+                                    away_over05 = p_val
 
                     # Over 2.5
                     if ("plus / moins 2.5" in m_desc or "plus / moins 2,5" in m_desc) and over25 is None:
@@ -624,16 +634,26 @@ def main():
             pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
 
-        # Favori = équipe avec la cote 1N2 la plus basse, puis Over 0.5 buts de cette équipe
-        if m.get("ac_score", 0) >= 75 and c1 and c2:
-            if c1 <= c2:
-                fav_name  = m.get("dom", "Dom")
-                fav_o05   = home_o05
-            else:
-                fav_name  = m.get("ext", "Ext")
-                fav_o05   = away_o05
-            if fav_o05:  # cote Over 0.5 disponible pour le favori
-                fav_label = f"⚽ {fav_name} marque"
+        # Favori = équipe avec la cote 1N2 la plus basse (ou plus basse cote Over 0.5)
+        if m.get("ac_score", 0) >= 75:
+            fav_name, fav_o05 = None, None
+            if c1 and c2:
+                if c1 <= c2 and home_o05:
+                    fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
+                elif c2 < c1 and away_o05:
+                    fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
+            elif home_o05 and away_o05:
+                if home_o05 <= away_o05:
+                    fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
+                else:
+                    fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
+            elif home_o05:
+                fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
+            elif away_o05:
+                fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
+
+            if fav_name and fav_o05:
+                fav_label = f"⚽ {fav_name} marque (+0.5 but)"
                 pool_fav_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                       "market": fav_label, "odds": fav_o05, "score": m.get("ac_score", 0)})
 
@@ -645,7 +665,7 @@ def main():
     print(f"📊 Pool O25={len(pool_o25_all)} | Pool Fav-Over05={n_fav}")
     print(f"📊 Éligibles bruts : Over2.5={n_o25} | Fav-Over05={n_fav}")
 
-    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 0.5 favori, cote la plus proche de 2.20 ──
+    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 0.5 favori, cote >= 2.20 ──
     blocks_o25 = {}
     blocks_fav = {}
     for s in pool_o25_all:
@@ -669,16 +689,16 @@ def main():
                 if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
                     continue
                 comb = round(s_o25["odds"] * s_fav["odds"], 2)
+                if comb < TARGET_COMB:
+                    continue  # Strictement >= 2.20
                 diff = abs(comb - TARGET_COMB)
                 if diff < best_diff:
                     best_diff = diff
                     best_fav = s_fav
             if best_fav:
-                comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
-                if comb_odds < TARGET_COMB:
-                    continue  # cote combinée < 2.20 → rejeté
                 used_match_ids.add(s_o25["id"])
                 used_match_ids.add(best_fav["id"])
+                comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
                 items = sorted([s_o25, best_fav], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": b_key,
@@ -687,6 +707,37 @@ def main():
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
+
+    # Fallback pour sélections isolées non couplées dans leur bloc
+    unpaired_o25 = [s for s in pool_o25_all if s["id"] not in used_match_ids]
+    unpaired_fav = [s for s in pool_fav_all if s["id"] not in used_match_ids]
+    for s_o25 in unpaired_o25:
+        if s_o25["id"] in used_match_ids:
+            continue
+        best_fav = None
+        best_diff = 999.0
+        for s_fav in unpaired_fav:
+            if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
+                continue
+            comb = round(s_o25["odds"] * s_fav["odds"], 2)
+            if comb < TARGET_COMB:
+                continue
+            diff = abs(comb - TARGET_COMB)
+            if diff < best_diff:
+                best_diff = diff
+                best_fav = s_fav
+        if best_fav:
+            used_match_ids.add(s_o25["id"])
+            used_match_ids.add(best_fav["id"])
+            comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
+            items = sorted([s_o25, best_fav], key=lambda x: x["dt"])
+            combos_mixed.append({
+                "session": f"{s_o25['session']}-mixte",
+                "type": "Doublé Over 2.5 + Favori marque",
+                "items": items,
+                "comb_odds": comb_odds,
+                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
+            })
 
     print(f"📊 Combinés formés (Over 2.5 + Favori marque, cible @{TARGET_COMB}) : {len(combos_mixed)}")
 
@@ -1208,7 +1259,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combos Multi-Marchés (Cote >= 2.00) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Doublés Over 2.5 + Favori (Cote >= 2.20) · {len(pen_simples)} Penalty OUI"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
