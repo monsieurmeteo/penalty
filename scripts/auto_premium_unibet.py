@@ -641,9 +641,11 @@ def main():
                     best_diff = diff
                     best_o15 = s_o15
             if best_o15:
+                comb_odds = round(s_o25["odds"] * best_o15["odds"], 2)
+                if comb_odds < TARGET_COMB:
+                    continue  # cote combinée inférieure à 2.20 → on ignore cette paire
                 used_match_ids.add(s_o25["id"])
                 used_match_ids.add(best_o15["id"])
-                comb_odds = round(s_o25["odds"] * best_o15["odds"], 2)
                 items = sorted([s_o25, best_o15], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": b_key,
