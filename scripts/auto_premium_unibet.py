@@ -129,6 +129,7 @@ def scan_unibet_match_details(game):
 
         c1, cx, c2 = None, None, None
         over15, over25, under25 = None, None, None
+        home_over05, away_over05 = None, None
         s22 = None
         btts_oui, btts_non = None, None
         start_iso = ""
@@ -167,12 +168,28 @@ def scan_unibet_match_details(game):
                             elif "nul" in o_desc: cx = p_val
 
                     # Over 1.5
-                    if ("plus / moins 1.5" in m_desc or "plus / moins 1,5" in m_desc) and over15 is None:
+                    if (("plus / moins 1.5" in m_desc or "plus / moins 1,5" in m_desc) and over15 is None):
                         if not any(t in m_desc for t in [dom.lower(), ext.lower(), "équipe"]):
                             for o in outcomes:
                                 o_desc = (o.get("description") or "").lower()
                                 p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
                                 if "plus" in o_desc: over15 = p_val
+
+                    # Over 0.5 buts équipe domicile
+                    if ("plus / moins 0.5" in m_desc or "plus / moins 0,5" in m_desc) and home_over05 is None:
+                        if dom.lower() in m_desc or "domicile" in m_desc:
+                            for o in outcomes:
+                                o_desc = (o.get("description") or "").lower()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if "plus" in o_desc and p_val > 1.0: home_over05 = p_val
+
+                    # Over 0.5 buts équipe extérieure
+                    if ("plus / moins 0.5" in m_desc or "plus / moins 0,5" in m_desc) and away_over05 is None:
+                        if ext.lower() in m_desc or "extérieur" in m_desc or "visiteur" in m_desc:
+                            for o in outcomes:
+                                o_desc = (o.get("description") or "").lower()
+                                p_val = float(str(o.get("price") or o.get("currentPrice") or 0).replace(",", "."))
+                                if "plus" in o_desc and p_val > 1.0: away_over05 = p_val
 
                     # Over 2.5
                     if ("plus / moins 2.5" in m_desc or "plus / moins 2,5" in m_desc) and over25 is None:
@@ -255,6 +272,8 @@ def scan_unibet_match_details(game):
                 "start_iso": start_iso,
                 "date_str": format_french_date(start_iso),
                 "c1": c1, "cx": cx, "c2": c2,
+                "home_over05": home_over05,
+                "away_over05": away_over05,
                 "over15": over15 or (round(1.0 + (over25 - 1.0) * 0.45, 2) if over25 else 1.25),
                 "over25": over25, "under25": under25, "over25_fair": over25_fair,
                 "s22": s22,
@@ -582,13 +601,14 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR COMBINÉS STRICTS : 1 Over 2.5 + 1 Victoire Favori (1N2) ──
-    # Combo = 1 match Over 2.5 (ac_score >= 75) + 1 match Victoire Favori (c_fav disponible)
+    # ── MOTEUR COMBINÉS STRICTS : 1 Over 2.5 + 1 Over 0.5 buts équipe favorite ──
+    # Favori = équipe avec la cote 1N2 la plus basse (c1 ou c2)
+    # Leg 2 = cote "plus de 0.5 buts [équipe favorite]"
     # Cote combinée minimum : >= 2.20
     TARGET_COMB = 2.20
 
-    pool_o25_all  = []  # Over 2.5 — ac_score >= 75
-    pool_1n2_all  = []  # Victoire favori (1N2) — c1 ou c2 disponible, ac_score >= 75
+    pool_o25_all = []   # Over 2.5 — ac_score >= 75
+    pool_fav_all = []   # Over 0.5 buts équipe favorite
 
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -597,74 +617,78 @@ def main():
         o25 = m.get("over25")
         c1  = m.get("c1")
         c2  = m.get("c2")
+        home_o05 = m.get("home_over05")
+        away_o05 = m.get("away_over05")
 
         if m.get("ac_score", 0) >= 75 and o25:
             pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
 
-        # Favori = équipe avec la cote 1N2 la plus basse
+        # Favori = équipe avec la cote 1N2 la plus basse, puis Over 0.5 buts de cette équipe
         if m.get("ac_score", 0) >= 75 and c1 and c2:
             if c1 <= c2:
-                fav_label = f"🏆 {m['dom']} gagne"
-                fav_odds  = c1
+                fav_name  = m.get("dom", "Dom")
+                fav_o05   = home_o05
             else:
-                fav_label = f"🏆 {m['ext']} gagne"
-                fav_odds  = c2
-            pool_1n2_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                                  "market": fav_label, "odds": fav_odds, "score": m.get("ac_score", 0)})
+                fav_name  = m.get("ext", "Ext")
+                fav_o05   = away_o05
+            if fav_o05:  # cote Over 0.5 disponible pour le favori
+                fav_label = f"⚽ {fav_name} marque"
+                pool_fav_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                                      "market": fav_label, "odds": fav_o05, "score": m.get("ac_score", 0)})
 
-    mixed_selections = pool_o25_all + pool_1n2_all  # used downstream for plan_rows
+    mixed_selections = pool_o25_all + pool_fav_all  # used downstream for plan_rows
 
     # ── DIAGNOSTIC ──
     n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("over25"))
-    n_1n2 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 75 and m.get("c1") and m.get("c2"))
-    print(f"📊 Pool O25={len(pool_o25_all)} | Pool 1N2-Favori={len(pool_1n2_all)}")
-    print(f"📊 Éligibles bruts : Over2.5={n_o25} | 1N2-Favori={n_1n2}")
+    n_fav = len(pool_fav_all)
+    print(f"📊 Pool O25={len(pool_o25_all)} | Pool Fav-Over05={n_fav}")
+    print(f"📊 Éligibles bruts : Over2.5={n_o25} | Fav-Over05={n_fav}")
 
-    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Victoire Favori, cote la plus proche de 2.20 ──
+    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 0.5 favori, cote la plus proche de 2.20 ──
     blocks_o25 = {}
-    blocks_1n2 = {}
+    blocks_fav = {}
     for s in pool_o25_all:
         blocks_o25.setdefault(s["session"], []).append(s)
-    for s in pool_1n2_all:
-        blocks_1n2.setdefault(s["session"], []).append(s)
+    for s in pool_fav_all:
+        blocks_fav.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    for b_key in sorted(set(list(blocks_o25.keys()) + list(blocks_1n2.keys()))):
+    for b_key in sorted(set(list(blocks_o25.keys()) + list(blocks_fav.keys()))):
         avail_o25 = sorted([s for s in blocks_o25.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
-        avail_1n2 = sorted([s for s in blocks_1n2.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
+        avail_fav = sorted([s for s in blocks_fav.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
 
         for s_o25 in avail_o25:
             if s_o25["id"] in used_match_ids:
                 continue
-            best_1n2 = None
+            best_fav = None
             best_diff = 999.0
-            for s_1n2 in avail_1n2:
-                if s_1n2["id"] in used_match_ids or s_1n2["id"] == s_o25["id"]:
+            for s_fav in avail_fav:
+                if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
                     continue
-                comb = round(s_o25["odds"] * s_1n2["odds"], 2)
+                comb = round(s_o25["odds"] * s_fav["odds"], 2)
                 diff = abs(comb - TARGET_COMB)
                 if diff < best_diff:
                     best_diff = diff
-                    best_1n2 = s_1n2
-            if best_1n2:
-                comb_odds = round(s_o25["odds"] * best_1n2["odds"], 2)
+                    best_fav = s_fav
+            if best_fav:
+                comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
                 if comb_odds < TARGET_COMB:
                     continue  # cote combinée < 2.20 → rejeté
                 used_match_ids.add(s_o25["id"])
-                used_match_ids.add(best_1n2["id"])
-                items = sorted([s_o25, best_1n2], key=lambda x: x["dt"])
+                used_match_ids.add(best_fav["id"])
+                items = sorted([s_o25, best_fav], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": b_key,
-                    "type": "Doublé Over 2.5 + Victoire Favori",
+                    "type": "Doublé Over 2.5 + Favori marque",
                     "items": items,
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    print(f"📊 Combinés formés (Over 2.5 + Victoire Favori, cible @{TARGET_COMB}) : {len(combos_mixed)}")
+    print(f"📊 Combinés formés (Over 2.5 + Favori marque, cible @{TARGET_COMB}) : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 85) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 85
