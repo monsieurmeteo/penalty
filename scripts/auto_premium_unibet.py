@@ -582,103 +582,85 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR UNIFIÉ COMBINÉS MULTI-MARCHÉS (Bloc Journée + Nuit — Cote Min 2.00) ──
-    mixed_selections = []
-    
+    # ── MOTEUR COMBINÉS STRICTS : 1 Over 2.5 + 1 Over 1.5 par doublé (cote cible ~2.20) ──
+    # Deux pools séparés par bloc horaire : un pool O25/BTTS et un pool O15.
+    # Chaque combiné = 1 match O25 + 1 match O15 DIFFÉRENTS, cote la plus proche de 2.20.
+    TARGET_COMB = 2.20
+
+    pool_o25_all = []  # Over 2.5 (ou BTTS) — score >= 85
+    pool_o15_all = []  # Over 1.5 — score >= 85
+
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-        
-        # 1. Over 2.5 si Score >= 85
-        o25 = m.get("over25")
-        if m.get("ac_score", 0) >= 85 and o25:
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟥 Over 2.5", "odds": o25,
-                "score": m.get("ac_score", 0)
-            })
-        # 2. BTTS Oui si Score >= 85
-        elif m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟩 BTTS Oui", "odds": m["btts_oui"],
-                "score": m.get("score_btts", 0)
-            })
-        # 3. Over 1.5 si Score >= 85
-        elif m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"):
-            mixed_selections.append({
-                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                "market": "🟦 Over 1.5", "odds": m["over15"],
-                "score": m.get("score_o15", 0)
-            })
 
-    # ── DIAGNOSTIC : breakdown des filtres ──
+        o25 = m.get("over25")
+        o15 = m.get("over15")
+
+        if m.get("ac_score", 0) >= 85 and o25:
+            pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                                  "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
+        elif m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"):
+            pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                                  "market": "🟩 BTTS Oui", "odds": m["btts_oui"], "score": m.get("score_btts", 0)})
+
+        if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and o15:
+            pool_o15_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                                  "market": "🟦 Over 1.5", "odds": o15, "score": m.get("score_o15", 0)})
+
+    mixed_selections = pool_o25_all + pool_o15_all  # used downstream for plan_rows
+
+    # ── DIAGNOSTIC ──
     n_o25_ok   = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") < m.get("under25"))
     n_o25_excl = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and m.get("under25") and m.get("over25") >= m.get("under25"))
     n_o25_noc  = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 85 and m.get("over25") and not m.get("under25"))
     n_btts     = sum(1 for m in scanned_results if m.get("score_btts", 0) >= 85 and m.get("freq_btts", 0.0) >= 0.50 and m.get("btts_oui"))
     n_o15      = sum(1 for m in scanned_results if m.get("score_o15", 0) >= 85 and m.get("freq_o15", 0.0) >= 0.65 and m.get("over15"))
     print(f"📊 Sélections brutes : Over2.5✅={n_o25_ok} | Over2.5❌filtre={n_o25_excl} | Over2.5❓no_under={n_o25_noc} | BTTS={n_btts} | Over1.5={n_o15}")
-    print(f"📊 Total sélections dans les combinés : {len(mixed_selections)}")
+    print(f"📊 Pool O25/BTTS={len(pool_o25_all)} | Pool O15={len(pool_o15_all)}")
 
-    # Regroupement strict par Bloc [Journée + Nuit Suivante]
-    blocks_mixed = {}
-    for s in mixed_selections:
-        blocks_mixed.setdefault(s["session"], []).append(s)
+    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 1.5, cote la plus proche de 2.20 ──
+    blocks_o25 = {}
+    blocks_o15 = {}
+    for s in pool_o25_all:
+        blocks_o25.setdefault(s["session"], []).append(s)
+    for s in pool_o15_all:
+        blocks_o15.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    # Pour chaque Bloc [Journée + Nuit], appariement chronologique des matchs (Cote Min: 2.00 STRICT)
-    for b_key in sorted(blocks_mixed.keys()):
-        block_items = sorted(blocks_mixed[b_key], key=lambda x: x["dt"])
-        for i, s1 in enumerate(block_items):
-            if s1["id"] in used_match_ids: continue
+    for b_key in sorted(set(list(blocks_o25.keys()) + list(blocks_o15.keys()))):
+        avail_o25 = sorted([s for s in blocks_o25.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
+        avail_o15 = sorted([s for s in blocks_o15.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
 
-            best_partner = None
+        for s_o25 in avail_o25:
+            if s_o25["id"] in used_match_ids:
+                continue
+            best_o15 = None
             best_diff = 999.0
-
-            for s2 in block_items[i+1:]:
-                if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-
-                comb2 = round(s1["odds"] * s2["odds"], 2)
-                if comb2 >= 2.15:
-                    diff = abs(comb2 - 2.10)
-                    if diff < best_diff:
-                        best_diff = diff
-                        best_partner = s2
-
-            if best_partner:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(best_partner["id"])
-                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            for s_o15 in avail_o15:
+                if s_o15["id"] in used_match_ids or s_o15["id"] == s_o25["id"]:
+                    continue
+                comb = round(s_o25["odds"] * s_o15["odds"], 2)
+                diff = abs(comb - TARGET_COMB)
+                if diff < best_diff:
+                    best_diff = diff
+                    best_o15 = s_o15
+            if best_o15:
+                used_match_ids.add(s_o25["id"])
+                used_match_ids.add(best_o15["id"])
+                comb_odds = round(s_o25["odds"] * best_o15["odds"], 2)
+                items = sorted([s_o25, best_o15], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": b_key,
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, best_partner],
+                    "type": "Doublé Over 2.5 + Over 1.5",
+                    "items": items,
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
-    # Fallback pour sélections isolées non couplées dans leur bloc (Cote Min: 2.00 STRICT)
-    unpaired_selections = [s for s in mixed_selections if s["id"] not in used_match_ids]
-    unpaired_selections.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired_selections):
-        if s1["id"] in used_match_ids: continue
-        for s2 in unpaired_selections[i+1:]:
-            if s2["id"] in used_match_ids or s2["id"] == s1["id"]: continue
-            comb_odds = round(s1["odds"] * s2["odds"], 2)
-            if comb_odds >= 2.15:
-                used_match_ids.add(s1["id"])
-                used_match_ids.add(s2["id"])
-                combos_mixed.append({
-                    "session": f"{s1['session']}-mixte",
-                    "type": "Doublé 2 Matchs",
-                    "items": [s1, s2],
-                    "comb_odds": comb_odds,
-                    "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-                })
-                break
+    print(f"📊 Combinés formés (1 Over 2.5 + 1 Over 1.5, cible @{TARGET_COMB}) : {len(combos_mixed)}")
 
     # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 85) ──
     # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 85
