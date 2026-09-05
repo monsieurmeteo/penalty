@@ -471,8 +471,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 80/100 & Cote Over 2.5 >= 1.40 ──
-    # Critères : ac_score >= 80/100 ET over25 >= 1.40
+    # ── Sélection 100% Score AdamChoi >= 80/100 & Cote Over 2.5 >= 1.55 ──
+    # Critères : ac_score >= 80/100 ET over25 >= 1.55
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -481,7 +481,7 @@ def main():
         ac_score = r.get("ac_score", 0)
         o25 = r.get("over25")
 
-        if ac_score >= 80 and o25 is not None and o25 >= 1.40:
+        if ac_score >= 80 and o25 is not None and o25 >= 1.55:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
@@ -493,8 +493,8 @@ def main():
                     r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             elif o25 is None:
                 r["rejection_reason"] = "Cote Over 2.5 non disponible"
-            elif o25 < 1.40:
-                r["rejection_reason"] = f"Cote Over 2.5 trop basse ({o25:.2f} < 1.40)"
+            elif o25 < 1.55:
+                r["rejection_reason"] = f"Cote Over 2.5 trop basse ({o25:.2f} < 1.55)"
             else:
                 r["rejection_reason"] = "Non éligible"
             rejected_matches.append(r)
@@ -505,7 +505,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score >= 80/100, Cote O2.5 >= 1.40) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score >= 80/100, Cote O2.5 >= 1.55) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -619,11 +619,11 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR COMBINÉS 100% OVER 2.5 BUTS (Cote Min: 2.20, Score >= 80, Cote O2.5 >= 1.40) ──
-    # ponytail: Combinés 2 matchs Over 2.5 uniquement, pas d'Over 1.5, pas de Penalty. Cote indiv >= 1.40, combinée >= 2.20.
+    # ── MOTEUR COMBINÉS 100% OVER 2.5 BUTS (Cote Min: 2.20, Score >= 80, Cote O2.5 >= 1.55) ──
+    # ponytail: Combinés 2 matchs Over 2.5 uniquement, pas d'Over 1.5, pas de Penalty. Cote indiv >= 1.55, combinée >= 2.20.
     TARGET_COMB    = 2.20
     MIN_COMB_ODDS  = 2.20
-    MIN_O25_ODDS   = 1.40
+    MIN_O25_ODDS   = 1.55
 
     pool_o25 = []
     for m in scanned_results:
@@ -638,7 +638,7 @@ def main():
 
     mixed_selections = pool_o25  # used downstream for plan_rows
 
-    print(f"📊 Pool Over 2.5 (Score >= 80/100, Cote >= 1.40) : {len(pool_o25)} matchs")
+    print(f"📊 Pool Over 2.5 (Score >= 80/100, Cote >= 1.55) : {len(pool_o25)} matchs")
 
     # Regroupement strict par Bloc [Journée + Nuit]
     blocks_o25 = {}
@@ -992,7 +992,7 @@ def main():
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
                 <td style="padding:0 4px;"><div style="background:#fee2e2; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#b91c1c;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#b91c1c;">COMBINÉS O2.5</div><div style="font-size:10px; color:#ef4444;">Cote ≥ 2.20</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{len(s3_matches)}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">MATCHS RETENUS</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 80 · Cote ≥ 1.40</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{len(s3_matches)}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">MATCHS RETENUS</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 80 · Cote ≥ 1.55</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Unibet France</div></div></td>
               </tr>
             </table>
@@ -1025,7 +1025,7 @@ def main():
           <!-- SECTION 2 : COMBINÉS OVER 2.5 BUTS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎟️ COMBINÉS OVER 2.5 BUTS &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score AdamChoi ≥ 80/100 · Cote O2.5 ≥ 1.40 · Cote Min 2.20 · Mise 4€)</span></span>
+              <span>🎟️ COMBINÉS OVER 2.5 BUTS &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score AdamChoi ≥ 80/100 · Cote O2.5 ≥ 1.55 · Cote Min 2.20 · Mise 4€)</span></span>
               <span style="font-size:11px; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} combiné(s)</span>
             </div>
             {combos_mixed_html}
@@ -1065,7 +1065,7 @@ def main():
     report = [
         "# ⚽ SÉLECTION 100% OVER 2.5 — JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : Score AdamChoi ≥ 80/100  ET  Cote Over 2.5 ≥ 1.40  ET  Cote combinée ≥ 2.20\n",
+        f"**Critères** : Score AdamChoi ≥ 80/100  ET  Cote Over 2.5 ≥ 1.55  ET  Cote combinée ≥ 2.20\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
@@ -1119,7 +1119,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combinés Over 2.5 (Cote >= 2.20) · {nb_s3} Matchs Retenus (Score >= 80, Cote >= 1.40)"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combinés Over 2.5 (Cote >= 2.20) · {nb_s3} Matchs Retenus (Score >= 80, Cote >= 1.55)"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
