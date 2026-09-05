@@ -637,19 +637,39 @@ def main():
         blocks_o25.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
+    used_teams = set()
     combos_mixed = []
 
-    # Appariement au sein de chaque bloc (2 matchs Over 2.5 distincts, comb_odds >= 2.20)
+    def get_match_teams(m_dict):
+        d = (m_dict.get("dom") or "").strip().lower()
+        e = (m_dict.get("ext") or "").strip().lower()
+        return {x for x in [d, e] if x}
+
+    # Appariement STRICT au sein de chaque bloc [Journée + Nuit]
+    # Règle absolue : aucun match ni aucune équipe en double, aucun mélange Samedi / Dimanche.
     for b_key in sorted(blocks_o25.keys()):
-        block_items = sorted([s for s in blocks_o25[b_key] if s["id"] not in used_match_ids], key=lambda x: x["dt"])
+        block_items = sorted(
+            [s for s in blocks_o25[b_key] if s["id"] not in used_match_ids and not (get_match_teams(s["m"]) & used_teams)],
+            key=lambda x: x["dt"]
+        )
         for i, s1 in enumerate(block_items):
             if s1["id"] in used_match_ids:
                 continue
+            t1 = get_match_teams(s1["m"])
+            if t1 & used_teams:
+                continue
+
             best_partner = None
             best_diff = 999.0
+            best_t2 = None
+
             for s2 in block_items[i+1:]:
                 if s2["id"] in used_match_ids or s2["id"] == s1["id"]:
                     continue
+                t2 = get_match_teams(s2["m"])
+                if (t2 & used_teams) or (t1 & t2):
+                    continue  # Aucune équipe en commun, ni déjà utilisée
+
                 comb = round(s1["odds"] * s2["odds"], 2)
                 if comb < MIN_COMB_ODDS:
                     continue  # Strictement >= 2.20
@@ -657,9 +677,13 @@ def main():
                 if diff < best_diff:
                     best_diff = diff
                     best_partner = s2
-            if best_partner:
+                    best_t2 = t2
+
+            if best_partner and best_t2:
                 used_match_ids.add(s1["id"])
                 used_match_ids.add(best_partner["id"])
+                used_teams.update(t1)
+                used_teams.update(best_t2)
                 comb_odds = round(s1["odds"] * best_partner["odds"], 2)
                 items = sorted([s1, best_partner], key=lambda x: x["dt"])
                 combos_mixed.append({
@@ -669,37 +693,6 @@ def main():
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
-
-    # Fallback pour sélections isolées non couplées dans leur bloc
-    unpaired = [s for s in pool_o25 if s["id"] not in used_match_ids]
-    unpaired.sort(key=lambda x: x["dt"])
-    for i, s1 in enumerate(unpaired):
-        if s1["id"] in used_match_ids:
-            continue
-        best_partner = None
-        best_diff = 999.0
-        for s2 in unpaired[i+1:]:
-            if s2["id"] in used_match_ids or s2["id"] == s1["id"]:
-                continue
-            comb = round(s1["odds"] * s2["odds"], 2)
-            if comb < MIN_COMB_ODDS:
-                continue
-            diff = abs(comb - TARGET_COMB)
-            if diff < best_diff:
-                best_diff = diff
-                best_partner = s2
-        if best_partner:
-            used_match_ids.add(s1["id"])
-            used_match_ids.add(best_partner["id"])
-            comb_odds = round(s1["odds"] * best_partner["odds"], 2)
-            items = sorted([s1, best_partner], key=lambda x: x["dt"])
-            combos_mixed.append({
-                "session": f"{s1['session']}-mixte",
-                "type": "Doublé Over 2.5",
-                "items": items,
-                "comb_odds": comb_odds,
-                "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
-            })
 
     print(f"📊 Combinés Over 2.5 formés (Cote >= {MIN_COMB_ODDS}) : {len(combos_mixed)}")
 
