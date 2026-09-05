@@ -471,8 +471,8 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Sélection 100% Score AdamChoi >= 70/100 ──
-    # Seul critère : ac_score (barème composite AdamChoi) >= 70/100
+    # ── Sélection 100% Score AdamChoi >= 65/100 ──
+    # Seul critère : ac_score (barème composite AdamChoi) >= 65/100
     # Les Red Flags sont informatifs uniquement — ne rejettent pas.
     s3_matches = []
     rejected_matches = []
@@ -480,13 +480,13 @@ def main():
     for r in scanned_results:
         ac_score = r.get("ac_score", 0)
 
-        if ac_score >= 70:
+        if ac_score >= 65:
             r["double_confirm"] = True
             r["triple_confirm"] = True
             s3_matches.append(r)
         else:
             if ac_score > 0:
-                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 70)"
+                r["rejection_reason"] = f"Score AdamChoi insuffisant ({ac_score}/100 < 65)"
             else:
                 r["rejection_reason"] = "Équipe non trouvée sur AdamChoi"
             rejected_matches.append(r)
@@ -497,7 +497,7 @@ def main():
     nb_triple = len(s3_matches)
     nb_double = 0
     nb_simple = 0
-    print(f"⭐ Matchs validés (Score AdamChoi >= 70/100) : {len(s3_matches)} / {len(scanned_results)}")
+    print(f"⭐ Matchs validés (Score AdamChoi >= 65/100) : {len(s3_matches)} / {len(scanned_results)}")
     print(f"🚫 Matchs rejetés : {len(rejected_matches)}")
 
     all_o25 = [m["over25"] for m in scanned_results if m.get("over25") is not None]
@@ -611,159 +611,102 @@ def main():
     def upgrade_sessions_to_day(sessions_dict):
         return sessions_dict
 
-    # ── MOTEUR COMBINÉS STRICTS : 1 Over 2.5 + 1 Over 0.5 buts équipe favorite ──
-    # Favori = équipe avec la cote 1N2 la plus basse (c1 ou c2)
-    # Leg 2 = cote "plus de 0.5 buts [équipe favorite]"
-    # Cote combinée minimum : >= 2.20
-    TARGET_COMB  = 2.20
-    MIN_ODDS_O05 = 1.20  # Cote Over 0.5 minimale stricte >= 1.20
+    # ── MOTEUR COMBINÉS 100% OVER 2.5 BUTS (Cote Min: 2.20, Score >= 65) ──
+    # ponytail: Combinés 2 matchs Over 2.5 uniquement, pas d'Over 1.5, pas de Penalty. Cote >= 2.20.
+    TARGET_COMB   = 2.20
+    MIN_COMB_ODDS = 2.20
 
-    pool_o25_all = []   # Over 2.5 — ac_score >= 70
-    pool_fav_all = []   # Over 0.5 buts équipe favorite — cote >= 1.20
-
+    pool_o25 = []
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
         block_key = get_betting_session_key(m_dt)
-
         o25 = m.get("over25")
-        c1  = m.get("c1")
-        c2  = m.get("c2")
-        home_o05 = m.get("home_over05")
-        away_o05 = m.get("away_over05")
+        if m.get("ac_score", 0) >= 65 and o25:
+            pool_o25.append({
+                "m": m, "id": m["id"], "dt": m_dt, "session": block_key,
+                "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)
+            })
 
-        if m.get("ac_score", 0) >= 70 and o25:
-            pool_o25_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                                  "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
+    mixed_selections = pool_o25  # used downstream for plan_rows
 
-        # Favori = équipe avec la cote 1N2 la plus basse (ou plus basse cote Over 0.5)
-        # Condition stricte : cote Over 0.5 >= 1.20
-        if m.get("ac_score", 0) >= 70:
-            fav_name, fav_o05 = None, None
-            if c1 and c2:
-                if c1 <= c2 and home_o05:
-                    fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
-                elif c2 < c1 and away_o05:
-                    fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
-            elif home_o05 and away_o05:
-                if home_o05 <= away_o05:
-                    fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
-                else:
-                    fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
-            elif home_o05:
-                fav_name, fav_o05 = m.get("dom", "Dom"), home_o05
-            elif away_o05:
-                fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
+    print(f"📊 Pool Over 2.5 (Score >= 65/100) : {len(pool_o25)} matchs")
 
-            if fav_name and fav_o05 and fav_o05 >= MIN_ODDS_O05:
-                fav_label = f"⚽ {fav_name} marque (+0.5 but)"
-                pool_fav_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
-                                      "market": fav_label, "odds": fav_o05, "score": m.get("ac_score", 0)})
-
-    mixed_selections = pool_o25_all + pool_fav_all  # used downstream for plan_rows
-
-    # ── DIAGNOSTIC ──
-    n_o25 = sum(1 for m in scanned_results if m.get("ac_score", 0) >= 70 and m.get("over25"))
-    n_fav = len(pool_fav_all)
-    print(f"📊 Pool O25={len(pool_o25_all)} | Pool Fav-Over05={n_fav}")
-    print(f"📊 Éligibles bruts : Over2.5={n_o25} | Fav-Over05={n_fav}")
-
-    # ── APPARIEMENT PAR BLOC : 1 Over 2.5 + 1 Over 0.5 favori, cote >= 2.20 ──
+    # Regroupement strict par Bloc [Journée + Nuit]
     blocks_o25 = {}
-    blocks_fav = {}
-    for s in pool_o25_all:
+    for s in pool_o25:
         blocks_o25.setdefault(s["session"], []).append(s)
-    for s in pool_fav_all:
-        blocks_fav.setdefault(s["session"], []).append(s)
 
     used_match_ids = set()
     combos_mixed = []
 
-    for b_key in sorted(set(list(blocks_o25.keys()) + list(blocks_fav.keys()))):
-        avail_o25 = sorted([s for s in blocks_o25.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
-        avail_fav = sorted([s for s in blocks_fav.get(b_key, []) if s["id"] not in used_match_ids], key=lambda x: x["dt"])
-
-        for s_o25 in avail_o25:
-            if s_o25["id"] in used_match_ids:
+    # Appariement au sein de chaque bloc (2 matchs Over 2.5 distincts, comb_odds >= 2.20)
+    for b_key in sorted(blocks_o25.keys()):
+        block_items = sorted([s for s in blocks_o25[b_key] if s["id"] not in used_match_ids], key=lambda x: x["dt"])
+        for i, s1 in enumerate(block_items):
+            if s1["id"] in used_match_ids:
                 continue
-            best_fav = None
+            best_partner = None
             best_diff = 999.0
-            for s_fav in avail_fav:
-                if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
+            for s2 in block_items[i+1:]:
+                if s2["id"] in used_match_ids or s2["id"] == s1["id"]:
                     continue
-                if s_fav["odds"] < MIN_ODDS_O05:
-                    continue  # Cote Over 0.5 >= 1.20 obligatoire
-                comb = round(s_o25["odds"] * s_fav["odds"], 2)
-                if comb < TARGET_COMB:
+                comb = round(s1["odds"] * s2["odds"], 2)
+                if comb < MIN_COMB_ODDS:
                     continue  # Strictement >= 2.20
                 diff = abs(comb - TARGET_COMB)
                 if diff < best_diff:
                     best_diff = diff
-                    best_fav = s_fav
-            if best_fav:
-                used_match_ids.add(s_o25["id"])
-                used_match_ids.add(best_fav["id"])
-                comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
-                items = sorted([s_o25, best_fav], key=lambda x: x["dt"])
+                    best_partner = s2
+            if best_partner:
+                used_match_ids.add(s1["id"])
+                used_match_ids.add(best_partner["id"])
+                comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+                items = sorted([s1, best_partner], key=lambda x: x["dt"])
                 combos_mixed.append({
                     "session": b_key,
-                    "type": "Doublé Over 2.5 + Favori marque",
+                    "type": "Doublé Over 2.5",
                     "items": items,
                     "comb_odds": comb_odds,
                     "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
                 })
 
     # Fallback pour sélections isolées non couplées dans leur bloc
-    unpaired_o25 = [s for s in pool_o25_all if s["id"] not in used_match_ids]
-    unpaired_fav = [s for s in pool_fav_all if s["id"] not in used_match_ids]
-    for s_o25 in unpaired_o25:
-        if s_o25["id"] in used_match_ids:
+    unpaired = [s for s in pool_o25 if s["id"] not in used_match_ids]
+    unpaired.sort(key=lambda x: x["dt"])
+    for i, s1 in enumerate(unpaired):
+        if s1["id"] in used_match_ids:
             continue
-        best_fav = None
+        best_partner = None
         best_diff = 999.0
-        for s_fav in unpaired_fav:
-            if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
+        for s2 in unpaired[i+1:]:
+            if s2["id"] in used_match_ids or s2["id"] == s1["id"]:
                 continue
-            if s_fav["odds"] < MIN_ODDS_O05:
-                continue  # Cote Over 0.5 >= 1.20 obligatoire
-            comb = round(s_o25["odds"] * s_fav["odds"], 2)
-            if comb < TARGET_COMB:
+            comb = round(s1["odds"] * s2["odds"], 2)
+            if comb < MIN_COMB_ODDS:
                 continue
             diff = abs(comb - TARGET_COMB)
             if diff < best_diff:
                 best_diff = diff
-                best_fav = s_fav
-        if best_fav:
-            used_match_ids.add(s_o25["id"])
-            used_match_ids.add(best_fav["id"])
-            comb_odds = round(s_o25["odds"] * best_fav["odds"], 2)
-            items = sorted([s_o25, best_fav], key=lambda x: x["dt"])
+                best_partner = s2
+        if best_partner:
+            used_match_ids.add(s1["id"])
+            used_match_ids.add(best_partner["id"])
+            comb_odds = round(s1["odds"] * best_partner["odds"], 2)
+            items = sorted([s1, best_partner], key=lambda x: x["dt"])
             combos_mixed.append({
-                "session": f"{s_o25['session']}-mixte",
-                "type": "Doublé Over 2.5 + Favori marque",
+                "session": f"{s1['session']}-mixte",
+                "type": "Doublé Over 2.5",
                 "items": items,
                 "comb_odds": comb_odds,
                 "stake": 4.0, "gain": round(4.0 * comb_odds, 2), "profit": round(4.0 * comb_odds - 4.0, 2)
             })
 
-    print(f"📊 Combinés formés (Over 2.5 + Favori marque, cible @{TARGET_COMB}) : {len(combos_mixed)}")
+    print(f"📊 Combinés Over 2.5 formés (Cote >= {MIN_COMB_ODDS}) : {len(combos_mixed)}")
 
-    # ── 4. SELECTION PENALTY OUI — PARIS SIMPLES (Validé PENO + Score ≥ 85) ──
-    # Matchs validés par la compétence PENO (>= 2 pen/10m Dom & Ext) ET score_penalty >= 85
-    pen_candidates = [
-        m for m in scanned_results
-        if m.get("peno_status") in ["VALIDE", "DOUBLE_SIGNAL"]
-        and m.get("score_penalty", 0) >= 85
-    ]
-    pen_candidates.sort(key=lambda x: (x.get("peno_status") == "DOUBLE_SIGNAL", x.get("score_penalty", 0)), reverse=True)
-    pen_simples = pen_candidates
-
-    # Matchs éliminés spécifiquement par la compétence PENO (< 2 pen/10m) pour information transparente
-    pen_rejected = [
-        m for m in scanned_results
-        if m.get("score_penalty", 0) >= 55
-        and m.get("peno_status") == "REJET"
-    ]
-    pen_rejected.sort(key=lambda x: x.get("score_penalty", 0), reverse=True)
+    # ── PENALTY ENLEVÉ (Demande utilisateur : 100% Over 2.5) ──
+    pen_candidates = []
+    pen_simples = []
+    pen_rejected = []
 
 
 
@@ -927,65 +870,17 @@ def main():
               </div>
             </div>'''
     else:
-        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné multi-marchés disponible (moins de 2 sélections éligibles).</div>'
+        combos_mixed_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun combiné Over 2.5 disponible (moins de 2 sélections éligibles).</div>'
 
-    # ── HTML Paris Simples Penalty OUI ────────────────────────────────────────
+    # ── Section Penalty retirée (méthode 100% Over 2.5) ──────────────────────
     pen_simples_html = ""
-    for idx_ps, m in enumerate(pen_simples, 1):
-        ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
-        sp  = m.get("score_penalty", 0)
-        avg_b = m.get("avg_booking", 0.0)
-        sot_c = m.get("sot_comb", 0.0)
-        sp_bg = "#dc2626" if sp >= 80 else ("#f59e0b" if sp >= 70 else "#6366f1")
-        peno_b = m.get("peno_badge") or ""
-        peno_badge_html = f'<div style="margin-top:3px; margin-bottom:3px;"><span style="background:#fef3c7; color:#92400e; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px; border:1px solid #fde68a;">{peno_b}</span></div>' if peno_b else ""
-        pen_simples_html += f'''
-        <div style="background:#faf5ff; border:1px solid #c4b5fd; border-left:4px solid #7c3aed; border-radius:8px; padding:12px 14px; margin-bottom:10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-weight:900; color:#0f172a; font-size:13px;">⚡ #{idx_ps} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:{sp_bg}; color:#fff; font-weight:800; font-size:12px; padding:3px 10px; border-radius:6px;">Penalty Score: {sp}/100</span>
-          </div>
-          <div style="font-size:12px; color:#334155; line-height:1.9;">
-            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b; font-size:11px;">{m["league"]}</span><br>
-            {ref_status_str}<br>
-            {peno_badge_html}
-            <span style="color:#64748b; font-size:11px;">📊 Cartons H2H: {avg_b:.0f} pts &nbsp;|&nbsp; Tirs cadrés moy: {sot_c:.1f}/m</span>
-          </div>
-          <div style="margin-top:8px; background:#ede9fe; border-radius:5px; padding:5px 10px; font-size:11px; font-weight:700; color:#5b21b6; text-align:center;">
-            🎯 PARI SIMPLE — Jouer <b>Penalty Accordé OUI</b> sur Unibet
-          </div>
-        </div>'''
-    if not pen_simples_html:
-        pen_simples_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:10px;">Aucun match Penalty OUI (arbitre non encore désigné ou score insuffisant).</div>'
-
-    # ── HTML Matchs Éliminés par la Compétence PENO ─────────────────────────────
     pen_rejected_html = ""
-    for idx_pr, m in enumerate(pen_rejected, 1):
-        ref = m.get("ref_name", "Inconnu")
-        ref_status_str = m.get("ref_status") or f"👨‍⚖️ Arbitre {ref}"
-        sp  = m.get("score_penalty", 0)
-        p_dom = m.get("p_dom_10m", 0)
-        p_ext = m.get("p_ext_10m", 0)
-        pen_rejected_html += f'''
-        <div style="background:#fff1f2; border:1px solid #fecdd3; border-left:4px solid #e11d48; border-radius:8px; padding:10px 12px; margin-bottom:8px; opacity:0.95;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-            <span style="font-weight:800; color:#881337; font-size:12px;">🚫 #{idx_pr} — {m["dom"]} vs {m["ext"]}</span>
-            <span style="background:#ffe4e6; color:#9f1239; font-weight:700; font-size:11px; padding:2px 7px; border-radius:5px;">Score Brut: {sp}/100</span>
-          </div>
-          <div style="font-size:11px; color:#4c0519; line-height:1.7;">
-            🕒 <b>{m["date_str"]}</b> &nbsp;•&nbsp; <span style="color:#64748b;">{m["league"]}</span> &nbsp;•&nbsp; {ref_status_str}<br>
-            <span style="color:#e11d48; font-weight:800;">🛑 ÉLIMINÉ PAR LA COMPÉTENCE PENO</span> : Moins de 2 pénaltys/10m (Dom: <b>{p_dom}</b> / Ext: <b>{p_ext}</b>)
-          </div>
-        </div>'''
-    if not pen_rejected_html:
-        pen_rejected_html = '<div style="color:#94a3b8; font-style:italic; text-align:center; padding:6px; font-size:11px;">Aucun match éliminé par la compétence PENO sur ce scan.</div>'
 
     # ── Tableau chronologique de tous les matchs à jouer ─────────────────────
     plan_rows = []
     seen_plan = set()
 
-    # Combinés multi-marchés
+    # Combinés Over 2.5
     for idx_cb, cb in enumerate(combos_mixed, 1):
         c_type = cb["type"]
         for item in cb["items"]:
@@ -1002,28 +897,10 @@ def main():
                     "score_label": f"{item['score']}/100",
                     "score_val": item["score"],
                     "type_label": f"COMBINÉ #{idx_cb}",
-                    "bg_market": "#dbeafe" if "Over 2.5" in item["market"] else ("#fef3c7" if "BTTS" in item["market"] else "#d1fae5"),
-                    "cl_market": "#1e40af" if "Over 2.5" in item["market"] else ("#92400e" if "BTTS" in item["market"] else "#065f46"),
+                    "bg_market": "#fee2e2",
+                    "cl_market": "#b91c1c",
                 })
                 seen_plan.add(key)
-
-    # Penalty simples
-    for m in pen_simples:
-        key = (m["id"], "PENALTY")
-        if key not in seen_plan:
-            plan_rows.append({
-                "dt": m.get("dt_obj", now_utc),
-                "date_str": m.get("date_str", ""),
-                "match": f"{m['dom']} vs {m['ext']}",
-                "league": m.get("league", ""),
-                "market": "⚡ Penalty OUI",
-                "cote": "SIMPLE",
-                "score_label": f"{m.get('score_penalty', 0)}/100",
-                "score_val": m.get("score_penalty", 0),
-                "type_label": "PARI SIMPLE",
-                "bg_market": "#ede9fe", "cl_market": "#5b21b6",
-            })
-            seen_plan.add(key)
 
     plan_rows.sort(key=lambda x: x["dt"])
 
@@ -1112,9 +989,9 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">COMBINÉS</div><div style="font-size:10px; color:#3b82f6;">Cote ≥ 2.00</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#ede9fe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#5b21b6;">{nb_pen}</div><div style="font-size:10px; font-weight:700; color:#5b21b6;">PENALTY OUI</div><div style="font-size:10px; color:#7c3aed;">Paris simples</div></div></td>
-                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Jour + Nuit</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#fee2e2; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#b91c1c;">{nb_mixed}</div><div style="font-size:10px; font-weight:700; color:#b91c1c;">COMBINÉS O2.5</div><div style="font-size:10px; color:#ef4444;">Cote ≥ 2.20</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{len(s3_matches)}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">MATCHS RETENUS</div><div style="font-size:10px; color:#3b82f6;">Score ≥ 65/100</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{len(scanned_results)}</div><div style="font-size:10px; font-weight:700; color:#15803d;">SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Unibet France</div></div></td>
               </tr>
             </table>
           </div>
@@ -1143,37 +1020,13 @@ def main():
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
 
-          <!-- SECTION 2 : COMBINÉS MULTI-MARCHÉS -->
+          <!-- SECTION 2 : COMBINÉS OVER 2.5 BUTS -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
             <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🚀 1. COMBINÉS MULTI-MARCHÉS CHRONOLOGIQUES &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Over 2.5, Over 1.5, BTTS — Cote min 2.00)</span></span>
-              <span style="font-size:11px; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} ticket(s)</span>
+              <span>🎟️ COMBINÉS OVER 2.5 BUTS &nbsp;<span style="font-size:12px; font-weight:600; color:#64748b;">(Score AdamChoi ≥ 65/100 · Cote Min 2.20 · Mise 4€)</span></span>
+              <span style="font-size:11px; background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:6px; font-weight:700;">{len(combos_mixed)} combiné(s)</span>
             </div>
             {combos_mixed_html}
-          </div>
-
-          <!-- SECTION 3 : PENALTY OUI PARIS SIMPLES -->
-          <div style="padding:12px 16px 10px 16px; background:#faf5ff; border-top:2px solid #e2e8f0;">
-            <div style="font-size:14px; font-weight:800; color:#5b21b6; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>⚡ 2. PENALTY OUI — PARIS SIMPLES</span>
-              <span style="font-size:11px; background:#ede9fe; color:#5b21b6; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_simples)} pari(s)</span>
-            </div>
-            <div style="font-size:11px; color:#5b21b6; background:#ede9fe; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              🚫 <b>Pas de combiné sur les penalties</b> — Chaque match = 1 pari sec <b>Penalty Accordé OUI</b> · Arbitre désigné obligatoire
-            </div>
-            {pen_simples_html}
-          </div>
-
-          <!-- SECTION 5b : MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO -->
-          <div style="padding:12px 16px 10px 16px; background:#fff5f5; border-top:2px solid #fecdd3;">
-            <div style="font-size:13px; font-weight:800; color:#9f1239; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🛡️ MATCHS NEUTRALISÉS PAR LA COMPÉTENCE PENO</span>
-              <span style="font-size:11px; background:#ffe4e6; color:#9f1239; padding:2px 8px; border-radius:6px; font-weight:700;">{len(pen_rejected)} neutralisé(s)</span>
-            </div>
-            <div style="font-size:11px; color:#9f1239; background:#ffe4e6; border-radius:5px; padding:6px 10px; margin-bottom:10px;">
-              💡 <b>Information transparente</b> : Ces matchs avaient un bon score AdamChoi (≥ 55/100) et un arbitre nommé, mais la compétence PENO vous évite de parier car au moins une équipe a &lt; 2 pénaltys sur ses 10 derniers matchs.
-            </div>
-            {pen_rejected_html}
           </div>
 
           <!-- SECTION 5 : TOUS LES MATCHS ANALYSÉS -->
@@ -1208,14 +1061,13 @@ def main():
 
     # ── report.md ────────────────────────────────────────────────────────────
     report = [
-        "# ⚽ SÉLECTION OVER 2.5 & BTTS — JOURNÉES & NUITS SUIVANTES",
+        "# ⚽ SÉLECTION 100% OVER 2.5 — JOURNÉES & NUITS SUIVANTES",
         f"**Généré le** : {now_str}  |  **Matchs scannés** : {len(scanned_results)}",
-        f"**Critères** : BTTS OUI < BTTS NON  ET  Over 2.5 < Under 2.5\n",
+        f"**Critères** : Score AdamChoi ≥ 65/100  ET  Cote combinée ≥ 2.20\n",
         f"### 📈 Statistiques Moyennes du Marché (Unibet France)",
         f"- **Cote Over 2.5 moyenne globale (Tous matchs)** : `{avg_all_o25:.2f}` *(Matchs retenus : `{avg_sel_o25:.2f}`)*",
-        f"- **Cote BTTS Oui moyenne globale (Tous matchs)** : `{avg_all_btts:.2f}` *(Matchs retenus : `{avg_sel_btts:.2f}`)*",
         f"- **Total retenus** : {len(s3_matches)} / {len(scanned_results)}\n",
-        f"## 🎯 Combinés Multi-Marchés Recommandés (Cote Min: 2.00 — Mise 4,00 € / ticket)\n",
+        f"## 🎯 Combinés Over 2.5 Recommandés (Cote Min: 2.20 — Mise 4,00 € / ticket)\n",
     ]
 
     if combos_mixed:
@@ -1265,7 +1117,7 @@ def main():
     nb_s3 = len(s3_matches)
     now_dt = datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m %Hh%M')
-    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Doublés Over 2.5 + Favori (Cote >= 2.20) · {len(pen_simples)} Penalty OUI"
+    raw_subject = f"⚽ Football {subject_date} — {len(combos_mixed)} Combinés Over 2.5 (Cote >= 2.20) · {nb_s3} Matchs Retenus (Score >= 65)"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
     clean_subject = unicodedata.normalize('NFKD', raw_subject).encode('ASCII', 'ignore').decode('ASCII')
