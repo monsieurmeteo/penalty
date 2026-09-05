@@ -615,10 +615,11 @@ def main():
     # Favori = équipe avec la cote 1N2 la plus basse (c1 ou c2)
     # Leg 2 = cote "plus de 0.5 buts [équipe favorite]"
     # Cote combinée minimum : >= 2.20
-    TARGET_COMB = 2.20
+    TARGET_COMB  = 2.20
+    MIN_ODDS_O05 = 1.20  # Cote Over 0.5 minimale stricte >= 1.20
 
     pool_o25_all = []   # Over 2.5 — ac_score >= 70
-    pool_fav_all = []   # Over 0.5 buts équipe favorite
+    pool_fav_all = []   # Over 0.5 buts équipe favorite — cote >= 1.20
 
     for m in scanned_results:
         m_dt = m.get("dt_obj") or (datetime.fromisoformat(m["start_iso"].replace("Z", "+00:00")) if m.get("start_iso") else now_utc)
@@ -635,6 +636,7 @@ def main():
                                   "market": "🟥 Over 2.5", "odds": o25, "score": m.get("ac_score", 0)})
 
         # Favori = équipe avec la cote 1N2 la plus basse (ou plus basse cote Over 0.5)
+        # Condition stricte : cote Over 0.5 >= 1.20
         if m.get("ac_score", 0) >= 70:
             fav_name, fav_o05 = None, None
             if c1 and c2:
@@ -652,7 +654,7 @@ def main():
             elif away_o05:
                 fav_name, fav_o05 = m.get("ext", "Ext"), away_o05
 
-            if fav_name and fav_o05:
+            if fav_name and fav_o05 and fav_o05 >= MIN_ODDS_O05:
                 fav_label = f"⚽ {fav_name} marque (+0.5 but)"
                 pool_fav_all.append({"m": m, "id": m["id"], "dt": m_dt, "session": block_key,
                                       "market": fav_label, "odds": fav_o05, "score": m.get("ac_score", 0)})
@@ -688,6 +690,8 @@ def main():
             for s_fav in avail_fav:
                 if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
                     continue
+                if s_fav["odds"] < MIN_ODDS_O05:
+                    continue  # Cote Over 0.5 >= 1.20 obligatoire
                 comb = round(s_o25["odds"] * s_fav["odds"], 2)
                 if comb < TARGET_COMB:
                     continue  # Strictement >= 2.20
@@ -719,6 +723,8 @@ def main():
         for s_fav in unpaired_fav:
             if s_fav["id"] in used_match_ids or s_fav["id"] == s_o25["id"]:
                 continue
+            if s_fav["odds"] < MIN_ODDS_O05:
+                continue  # Cote Over 0.5 >= 1.20 obligatoire
             comb = round(s_o25["odds"] * s_fav["odds"], 2)
             if comb < TARGET_COMB:
                 continue
