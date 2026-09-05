@@ -500,6 +500,9 @@ def main():
             rejected_matches.append(r)
 
     s3_matches.sort(key=lambda x: x.get("ac_score", 0), reverse=True)
+    # ponytail: garde-fou absolu — échec immédiat si un seul match retenu viole les seuils
+    assert all(m.get("ac_score", 0) >= 80 for m in s3_matches), "ERREUR: Match retenu avec Score < 80"
+    assert all(m.get("over25", 0) >= 1.55 for m in s3_matches), "ERREUR: Match retenu avec Cote < 1.55"
 
     hybrid_option_b_matches = s3_matches
     nb_triple = len(s3_matches)
@@ -704,6 +707,11 @@ def main():
                 })
 
     print(f"📊 Combinés Over 2.5 formés (Cote >= {MIN_COMB_ODDS}) : {len(combos_mixed)}")
+    # ponytail: garde-fou absolu sur chaque ticket de combiné formé
+    for cb in combos_mixed:
+        assert all(it["score"] >= 80 for it in cb["items"]), f"ERREUR: Combiné avec Score < 80 ({cb})"
+        assert all(it["odds"] >= MIN_O25_ODDS for it in cb["items"]), f"ERREUR: Combiné avec Cote < {MIN_O25_ODDS} ({cb})"
+        assert cb["comb_odds"] >= MIN_COMB_ODDS, f"ERREUR: Combiné avec Cote Totale < {MIN_COMB_ODDS} ({cb})"
 
     # ── PENALTY ENLEVÉ (Demande utilisateur : 100% Over 2.5) ──
     pen_candidates = []
@@ -1077,21 +1085,23 @@ def main():
             report.append(f"### Ticket #{idx} ({cb['type']}) — Cote Totale: `{cb['comb_odds']:.2f}` | Mise 4.00 € → Gain Max: `{cb['gain']:.2f} €` *(+{cb['profit']:.2f} € net)*")
             for item in cb["items"]:
                 m = item["m"]
-                report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}`) — *{m['league']}*")
+                sc = item.get("score", m.get("ac_score", 0))
+                report.append(f"- **{item['market']}** : `{m['date_str']}` — **{m['dom']} vs {m['ext']}** (@`{item['odds']:.2f}` · **Score : {sc}/100**) — *{m['league']}*")
             report.append("")
     else:
         report.append("Aucun combiné multi-marchés disponible.\n")
 
     report.append("## ✅ Matchs Sélectionnés Individuellement")
-    report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Buteur Moyenne |")
-    report.append("| :---: | :--- | :--- | :---: | :---: | :--- |")
+    report.append("| Date | Ligue | Match | Score AdamChoi | Over 2.5 | BTTS (Oui/Non) | Buteur Moyenne |")
+    report.append("| :---: | :--- | :--- | :---: | :---: | :---: | :--- |")
     for m in s3_matches:
+        sc = m.get("ac_score", 0)
         o25 = m.get("over25", "N/A")
         b_oui = m.get("btts_oui")
         b_non = m.get("btts_non")
         btts_cell = f"{b_oui:.2f} / {b_non:.2f}" if (b_oui and b_non) else (f"{b_oui:.2f}" if b_oui else "N/A")
         but = f"{m['buteur_name']} (@{m['buteur_cote']})" if m.get("buteur_name") else "N/A"
-        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{btts_cell}** | **{o25}** | {but} |")
+        report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{sc}/100** | **{o25}** | {btts_cell} | {but} |")
 
     report.append(f"\n## 🚫 Matchs Non Sélectionnés et Raisons de Rejet ({len(rejected_matches)})\n")
     report.append("| Date | Ligue | Match | BTTS (Oui/Non) | Over 2.5 | Raison du Rejet |")
