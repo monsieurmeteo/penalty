@@ -9,7 +9,7 @@
     "win_rate": 60.0,
     "profit_units": -2.93,
     "roi_pct": -9.77,
-    "last_updated": "2026-09-06T19:47:05.414496+00:00"
+    "last_updated": "2026-09-06T19:52:55.454405+00:00"
   },
   "matches_today": [
     {
@@ -642,10 +642,10 @@
       "win_pct_historical": 70,
       "status": "LIVE",
       "selection_status": "IN_PROGRESS",
-      "score_display": "1 - 1",
-      "home_score": 1,
+      "score_display": "2 - 1",
+      "home_score": 2,
       "away_score": 1,
-      "minute": "85'",
+      "minute": "90+2'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -667,7 +667,7 @@
       "score_display": "1 - 1",
       "home_score": 1,
       "away_score": 1,
-      "minute": "45+1'",
+      "minute": "Mi-temps",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -689,7 +689,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "45+2'",
+      "minute": "Mi-temps",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -711,7 +711,7 @@
       "score_display": "3 - 1",
       "home_score": 3,
       "away_score": 1,
-      "minute": "45+1'",
+      "minute": "Mi-temps",
       "is_live": true,
       "is_finished": false,
       "profit": 0.38
@@ -1430,8 +1430,8 @@
         "fav_team": "Györ ETO FC",
         "fav_side": "dom",
         "odds": 1.82,
-        "score_display": "1 - 1",
-        "minute": "85'",
+        "score_display": "2 - 1",
+        "minute": "90+2'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Hongrie • D2 Hongrie",
@@ -1457,7 +1457,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "1 - 1",
-        "minute": "45+1'",
+        "minute": "Mi-temps",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1473,7 +1473,7 @@
         "fav_side": "dom",
         "odds": 1.56,
         "score_display": "2 - 1",
-        "minute": "45+2'",
+        "minute": "Mi-temps",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Paraguay • D1 Paraguay",
@@ -1499,7 +1499,7 @@
         "fav_side": "dom",
         "odds": 1.38,
         "score_display": "3 - 1",
-        "minute": "45+1'",
+        "minute": "Mi-temps",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Espagne • Laliga 2",
