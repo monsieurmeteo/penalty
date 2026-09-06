@@ -9,7 +9,7 @@
     "win_rate": 60.0,
     "profit_units": -2.93,
     "roi_pct": -9.77,
-    "last_updated": "2026-09-06T19:52:55.454405+00:00"
+    "last_updated": "2026-09-06T19:54:32.275802+00:00"
   },
   "matches_today": [
     {
@@ -642,10 +642,10 @@
       "win_pct_historical": 70,
       "status": "LIVE",
       "selection_status": "IN_PROGRESS",
-      "score_display": "2 - 1",
+      "score_display": "2 - 2",
       "home_score": 2,
-      "away_score": 1,
-      "minute": "90+2'",
+      "away_score": 2,
+      "minute": "90+4'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1430,8 +1430,8 @@
         "fav_team": "Györ ETO FC",
         "fav_side": "dom",
         "odds": 1.82,
-        "score_display": "2 - 1",
-        "minute": "90+2'",
+        "score_display": "2 - 2",
+        "minute": "90+4'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Hongrie • D2 Hongrie",
