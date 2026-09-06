@@ -9,7 +9,7 @@
     "win_rate": 64.5,
     "profit_units": -0.55,
     "roi_pct": -1.77,
-    "last_updated": "2026-09-06T20:27:47.467173+00:00"
+    "last_updated": "2026-09-06T20:29:35.967384+00:00"
   },
   "matches_today": [
     {
@@ -667,7 +667,7 @@
       "score_display": "1 - 1",
       "home_score": 1,
       "away_score": 1,
-      "minute": "63'",
+      "minute": "65'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -686,10 +686,10 @@
       "win_pct_historical": 70,
       "status": "LIVE",
       "selection_status": "WON_LEAD2",
-      "score_display": "3 - 1",
-      "home_score": 3,
+      "score_display": "4 - 1",
+      "home_score": 4,
       "away_score": 1,
-      "minute": "68'",
+      "minute": "70'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.56
@@ -711,7 +711,7 @@
       "score_display": "3 - 1",
       "home_score": 3,
       "away_score": 1,
-      "minute": "65'",
+      "minute": "67'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.38
@@ -733,7 +733,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "25'",
+      "minute": "29'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1469,7 +1469,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "1 - 1",
-        "minute": "63'",
+        "minute": "65'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1484,8 +1484,8 @@
         "fav_team": "Libertad",
         "fav_side": "dom",
         "odds": 1.56,
-        "score_display": "3 - 1",
-        "minute": "68'",
+        "score_display": "4 - 1",
+        "minute": "70'",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Paraguay • D1 Paraguay",
@@ -1511,7 +1511,7 @@
         "fav_side": "dom",
         "odds": 1.38,
         "score_display": "3 - 1",
-        "minute": "65'",
+        "minute": "67'",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Espagne • Laliga 2",
@@ -1527,7 +1527,7 @@
         "fav_side": "ext",
         "odds": 1.5,
         "score_display": "0 - 0",
-        "minute": "25'",
+        "minute": "29'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Chili • D1 Chili",
