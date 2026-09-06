@@ -56,17 +56,23 @@ def sync():
         is_fav_home = (fav_team == dom)
         odds_val = m.get("odds", 1.50)
 
+        # ponytail: Ignorer les matchs futurs (lundi, mardi...) pour ne pas matcher avec les matchs du dimanche
+        m_time = m.get("time", "")
+        if any(day in m_time for day in ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."]):
+            continue
+
         best_ev = None
         best_sim = 0.0
         for ev in events:
             s1 = sim_score(dom, ev["home"])
             s2 = sim_score(ext, ev["away"])
-            sim = (s1 + s2) / 2.0
-            if sim > best_sim:
-                best_sim = sim
-                best_ev = ev
+            if s1 >= 0.65 and s2 >= 0.65:
+                sim = (s1 + s2) / 2.0
+                if sim > best_sim:
+                    best_sim = sim
+                    best_ev = ev
 
-        if best_ev and best_sim >= 0.55 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
+        if best_ev and best_sim >= 0.75 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
             h_sc = best_ev["h_sc"]
             a_sc = best_ev["a_sc"]
             eps = best_ev["eps"]

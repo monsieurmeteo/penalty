@@ -738,11 +738,15 @@
                     `;
                 }
 
+                const titleTag = c.email_ticket_num 
+                    ? `🎟️ TICKET #${c.email_ticket_num} DU MAIL (#${c.ticket_num})` 
+                    : `🎟️ COMBINÉ #${c.ticket_num}`;
+
                 return `
                 <div class="${cardClass}">
                     <div class="combo-header">
                         <div class="combo-title-wrap">
-                            <span class="combo-tag">🎟️ COMBINÉ #${c.ticket_num}</span>
+                            <span class="combo-tag">${titleTag}</span>
                             <span class="combo-cote-badge">Cote @${c.odds.toFixed(2)}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:8px;">
@@ -769,7 +773,7 @@
                     fullHtml += liveItems.map(renderCard).join('');
                 }
                 if (upcomingItems.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ COMBINÉS DU MAIL (TICKETS #12 À #16) (${upcomingItems.length})</span><span>Favoris de l'e-mail combinés 2 par 2</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ LES 8 COMBINÉS DU DERNIER E-MAIL (TICKETS #1 À #8 DU MAIL) (${upcomingItems.length})</span><span>8 tickets officiels reçus par e-mail &bull; Mise : 3,00 €</span></div>`;
                     fullHtml += upcomingItems.map(renderCard).join('');
                 }
                 if (finishedItems.length > 0) {
@@ -891,7 +895,7 @@
                     fullHtml += liveM.map(renderMatchCard).join('');
                 }
                 if (upcomingM.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ MATCHS SIMPLES RETENUS DU DERNIER E-MAIL (${upcomingM.length})</span><span>11 favoris retenus par le barème</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ LES 16 MATCHS SIMPLES DES 8 COMBINÉS DU MAIL (${upcomingM.length})</span><span>16 favoris retenus dans vos 8 tickets de l'e-mail</span></div>`;
                     fullHtml += upcomingM.map(renderMatchCard).join('');
                 }
                 if (finishedM.length > 0) {
@@ -903,7 +907,7 @@
                     <div style="margin-top:24px; border:1px solid var(--border); border-radius:12px; background:rgba(15,23,42,0.6); overflow:hidden;">
                         <details style="padding:14px 16px;">
                             <summary style="cursor:pointer; font-weight:700; font-size:13px; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
-                                <span>⚠️ 41 Favoris Analysés & Écartés par le Barème dans l'E-mail (Cliquez pour voir)</span>
+                                <span>⚠️ ${globalData.matches_discarded.length} Favoris Analysés & Écartés par le Barème dans l'E-mail (Cliquez pour voir)</span>
                                 <span style="font-size:11px; background:rgba(239,68,68,0.15); color:#ef4444; padding:2px 8px; border-radius:6px; font-weight:800;">ÉCARTÉS (${globalData.matches_discarded.length})</span>
                             </summary>
                             <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
