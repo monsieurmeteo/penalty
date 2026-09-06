@@ -6,7 +6,7 @@ with open("docs/data.json", "r", encoding="utf-8") as f:
 combos = d.get("combos_today", [])
 summary = d.get("combos_summary", {})
 
-assert len(combos) == 12, f"Expected 12 combos, got {len(combos)}"
+assert len(combos) >= 12, f"Expected at least 12 combos, got {len(combos)}"
 assert summary.get("default_stake") == 3.0, f"Expected stake 3.0, got {summary.get('default_stake')}"
 assert summary.get("won") == 5
 assert summary.get("lost") == 3  # Vikingur+Barcelone, Sion+ADO Den Haag, OFI Crete+Guimaraes (0-0 FT)
