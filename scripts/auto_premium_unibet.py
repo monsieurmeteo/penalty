@@ -1320,18 +1320,24 @@ def main():
                     }
                     existing_matches_map[key] = item
 
+                # ponytail: Ignorer les matchs futurs (lundi, mardi...) pour LiveScore aujourd'hui
+                m_time = item.get("time", "")
+                if any(day in m_time for day in ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."]):
+                    continue
+
                 # Match with LiveScore
                 best_ev = None
                 best_sim = 0.0
                 for ev in ls_events:
                     s1 = sim_score(dom, ev["home"])
                     s2 = sim_score(ext, ev["away"])
-                    score = (s1 + s2) / 2.0
-                    if score > best_sim:
-                        best_sim = score
-                        best_ev = ev
+                    if s1 >= 0.65 and s2 >= 0.65:
+                        score = (s1 + s2) / 2.0
+                        if score > best_sim:
+                            best_sim = score
+                            best_ev = ev
 
-                if best_ev and best_sim >= 0.58 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
+                if best_ev and best_sim >= 0.75 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
                     h_sc = best_ev["h_sc"]
                     a_sc = best_ev["a_sc"]
                     eps = best_ev["eps"]
@@ -1456,32 +1462,80 @@ def main():
 
                 combos_today.append(c)
 
-            # Find new upcoming matches not already in any ticket
-            new_upcoming = [
-                m for m in all_today_matches
-                if m.get("status") == "UPCOMING" and _clean_team_key(m.get("home", "")) not in used_teams
-            ]
+            # ponytail: Utiliser directement combos_retained pour garantir une parite stricte a 100% avec l'e-mail
+            for cr in combos_retained:
+                m1_raw = cr["m1"]
+                m2_raw = cr["m2"]
+                k1 = _clean_team_key(m1_raw.get("dom", ""))
+                k2 = _clean_team_key(m2_raw.get("dom", ""))
+                if k1 in used_teams or k2 in used_teams:
+                    continue
+                used_teams.add(k1)
+                used_teams.add(k2)
+                c_idx = len(combos_today) + 1
 
-            c_idx = len(combos_today) + 1
-            for i in range(0, len(new_upcoming) - 1, 2):
-                m1 = new_upcoming[i]
-                m2 = new_upcoming[i+1]
-                o1 = m1.get("odds", 1.50)
-                o2 = m2.get("odds", 1.50)
-                comb_odds = round(o1 * o2, 2)
+                fi1 = m1_raw.get("fav_info", {})
+                fi2 = m2_raw.get("fav_info", {})
+
+                m1_clean = {
+                    "id": str(m1_raw.get("id", f"m_{k1}")),
+                    "time": m1_raw.get("date_str", "À venir"),
+                    "league": m1_raw.get("league", "Football"),
+                    "home": m1_raw.get("dom", ""),
+                    "away": m1_raw.get("ext", ""),
+                    "fav_team": fi1.get("fav_team", m1_raw.get("dom", "")),
+                    "fav_side": fi1.get("fav_side", "dom"),
+                    "odds": cr["c1"],
+                    "domination_score": fi1.get("fav_score", 60),
+                    "badge_tier": fi1.get("fav_badge", "🥉 BRONZE"),
+                    "win_pct_historical": fi1.get("pct_fav_success", 50),
+                    "status": "UPCOMING",
+                    "selection_status": "PENDING",
+                    "score_display": "vs",
+                    "home_score": 0,
+                    "away_score": 0,
+                    "minute": "À venir",
+                    "is_live": False,
+                    "is_finished": False,
+                    "profit": 0.0
+                }
+
+                m2_clean = {
+                    "id": str(m2_raw.get("id", f"m_{k2}")),
+                    "time": m2_raw.get("date_str", "À venir"),
+                    "league": m2_raw.get("league", "Football"),
+                    "home": m2_raw.get("dom", ""),
+                    "away": m2_raw.get("ext", ""),
+                    "fav_team": fi2.get("fav_team", m2_raw.get("dom", "")),
+                    "fav_side": fi2.get("fav_side", "dom"),
+                    "odds": cr["c2"],
+                    "domination_score": fi2.get("fav_score", 60),
+                    "badge_tier": fi2.get("fav_badge", "🥉 BRONZE"),
+                    "win_pct_historical": fi2.get("pct_fav_success", 50),
+                    "status": "UPCOMING",
+                    "selection_status": "PENDING",
+                    "score_display": "vs",
+                    "home_score": 0,
+                    "away_score": 0,
+                    "minute": "À venir",
+                    "is_live": False,
+                    "is_finished": False,
+                    "profit": 0.0
+                }
+
                 combos_today.append({
                     "id": f"combo_{c_idx}",
                     "ticket_num": c_idx,
-                    "odds": comb_odds,
+                    "email_ticket_num": cr["ticket_num"],
+                    "odds": cr["odds"],
                     "default_stake": combo_stake,
                     "ticket_status": "PENDING",
                     "profit_unit": 0.0,
-                    "gain_eur": round(comb_odds * combo_stake, 2),
+                    "gain_eur": round(cr["odds"] * combo_stake, 2),
                     "profit_eur": 0.0,
-                    "m1": m1,
-                    "m2": m2
+                    "m1": m1_clean,
+                    "m2": m2_clean
                 })
-                c_idx += 1
 
             c_won = sum(1 for c in combos_today if c["ticket_status"] == "WON")
             c_lost = sum(1 for c in combos_today if c["ticket_status"] == "LOST")
@@ -1506,6 +1560,23 @@ def main():
                 "roi_pct": c_roi
             }
             existing_docs["combos_today"] = combos_today
+
+            # Export des favoris ecartes pour transparence totale sur le site
+            discarded_list = []
+            for rf in rejected_favs:
+                fi = rf.get("fav_info", {})
+                c_val = f"@{fi['p2_fav_odds']:.2f}" if fi.get("p2_fav_odds") else f"@{fi.get('fav_odds', 1.50):.2f}"
+                discarded_list.append({
+                    "time": rf.get("date_str", ""),
+                    "league": rf.get("league", ""),
+                    "match": f"{rf.get('dom', '')} vs {rf.get('ext', '')}",
+                    "fav_team": fi.get("fav_team", ""),
+                    "odds": c_val,
+                    "domination_score": f"{fi.get('fav_score', 0)}/100",
+                    "reussite": f"{fi.get('pct_fav_success', 0)}%",
+                    "status": "ÉCARTÉ"
+                })
+            existing_docs["matches_discarded"] = discarded_list
 
 
             os.makedirs(os.path.dirname(docs_data_path), exist_ok=True)
