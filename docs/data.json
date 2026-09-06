@@ -9,7 +9,7 @@
     "win_rate": 60.7,
     "profit_units": -2.31,
     "roi_pct": -8.25,
-    "last_updated": "2026-09-06T19:39:35.575126+00:00"
+    "last_updated": "2026-09-06T19:40:09.442081+00:00"
   },
   "matches_today": [
     {
@@ -620,9 +620,9 @@
       "win_pct_historical": 50,
       "status": "LIVE",
       "selection_status": "IN_PROGRESS",
-      "score_display": "1 - 0",
+      "score_display": "1 - 1",
       "home_score": 1,
-      "away_score": 0,
+      "away_score": 1,
       "minute": "90+3'",
       "is_live": true,
       "is_finished": false,
@@ -667,7 +667,7 @@
       "score_display": "1 - 1",
       "home_score": 1,
       "away_score": 1,
-      "minute": "38'",
+      "minute": "39'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -711,7 +711,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "39'",
+      "minute": "40'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1414,7 +1414,7 @@
         "fav_team": "RosarioCentral",
         "fav_side": "dom",
         "odds": 1.48,
-        "score_display": "1 - 0",
+        "score_display": "1 - 1",
         "minute": "90+3'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
@@ -1457,7 +1457,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "1 - 1",
-        "minute": "38'",
+        "minute": "39'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1499,7 +1499,7 @@
         "fav_side": "dom",
         "odds": 1.38,
         "score_display": "2 - 1",
-        "minute": "39'",
+        "minute": "40'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Espagne • Laliga 2",
