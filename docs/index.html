@@ -151,6 +151,32 @@
 
         /* Footer */
         footer { text-align: center; font-size: 11px; color: #64748b; margin-top: 30px; line-height: 1.6; }
+
+        /* Goal Banner Toast */
+        #goal-toast {
+            position: fixed;
+            top: 75px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: #ffffff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 900;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.45);
+            z-index: 1000;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            pointer-events: none;
+            border: 2px solid #34d399;
+        }
+        #goal-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
     </style>
 </head>
 <body>
@@ -170,6 +196,8 @@
                     <div class="pulse-dot"></div>
                     <span id="countdown-text">LIVE 30s</span>
                 </div>
+                <button class="refresh-btn" id="sound-btn" onclick="toggleSound()" title="Activer / Couper la sonnerie de but" style="color:#34d399;">🔔 Son : ON</button>
+                <button class="refresh-btn" onclick="testSound()" title="Tester la sonnerie">🔊 Test</button>
                 <button class="refresh-btn" onclick="fetchData(true)">🔄</button>
             </div>
         </div>
@@ -264,6 +292,114 @@
     </div>
 
     <script>
+
+        let soundEnabled = true;
+        let audioCtx = null;
+        let previousScores = {};
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playGoalSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                // Joyful 4-tone stadium fanfare
+                const notes = [
+                    { f: 523.25, start: 0.00, dur: 0.12 }, // C5
+                    { f: 659.25, start: 0.12, dur: 0.12 }, // E5
+                    { f: 783.99, start: 0.24, dur: 0.35 }, // G5
+                    { f: 1046.50, start: 0.38, dur: 0.55 } // C6
+                ];
+
+                notes.forEach(n => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(n.f, now + n.start);
+                    gain.gain.setValueAtTime(0.28, now + n.start);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + n.start + n.dur);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + n.start);
+                    osc.stop(now + n.start + n.dur);
+                });
+            } catch (e) {
+                console.warn('Audio error:', e);
+            }
+        }
+
+        function toggleSound() {
+            initAudio();
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('sound-btn');
+            btn.textContent = soundEnabled ? '🔔 Son : ON' : '🔕 Son : OFF';
+            btn.style.color = soundEnabled ? '#34d399' : '#94a3b8';
+            if (soundEnabled) playGoalSound();
+        }
+
+        function testSound() {
+            initAudio();
+            if (!soundEnabled) {
+                soundEnabled = true;
+                const btn = document.getElementById('sound-btn');
+                btn.textContent = '🔔 Son : ON';
+                btn.style.color = '#34d399';
+            }
+            playGoalSound();
+            showGoalToast('⚽ BUT ! Sonnerie active et prête pour vos matchs en direct !');
+        }
+
+        function showGoalToast(text) {
+            let toast = document.getElementById('goal-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'goal-toast';
+                document.body.appendChild(toast);
+            }
+            toast.textContent = text;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4500);
+        }
+
+        function checkForGoals(data) {
+            if (!data) return;
+            const matches = data.matches_today || [];
+            let goalFound = false;
+            let goalDesc = '';
+
+            matches.forEach(m => {
+                const key = m.home + '_' + m.away;
+                const h = m.home_score;
+                const a = m.away_score;
+                if (h !== null && a !== null) {
+                    const total = h + a;
+                    if (previousScores[key] !== undefined && total > previousScores[key]) {
+                        goalFound = true;
+                        goalDesc = `⚽ BUT ! ${m.home} ${h} - ${a} ${m.away}`;
+                        if (m.selection_status === 'WON_LEAD2') {
+                            goalDesc += ` (👑 +2 BUTS GAGNÉ !)`;
+                        }
+                    }
+                    previousScores[key] = total;
+                }
+            });
+
+            if (goalFound) {
+                playGoalSound();
+                showGoalToast(goalDesc);
+            }
+        }
+
         let currentStakeCombos = 3;
         let currentStakeSimples = 10;
         let currentFilter = 'ALL';
@@ -332,6 +468,7 @@
                 const res = await fetch('data.json?_t=' + Date.now());
                 if (res.ok) {
                     globalData = await res.json();
+                    checkForGoals(globalData);
                     updateKPIs();
                     if (currentTab === 'combos') renderCombos();
                     else if (currentTab === 'today') renderMatches();
