@@ -2,14 +2,14 @@
   "summary": {
     "total_matches": 49,
     "decided_matches": 31,
-    "won": 20,
-    "lost": 11,
+    "won": 21,
+    "lost": 10,
     "live": 4,
     "upcoming": 16,
-    "win_rate": 64.5,
-    "profit_units": -0.55,
-    "roi_pct": -1.77,
-    "last_updated": "2026-09-06T20:36:26.575072+00:00"
+    "win_rate": 67.7,
+    "profit_units": 1.24,
+    "roi_pct": 4.0,
+    "last_updated": "2026-09-06T20:45:22.083014+00:00"
   },
   "matches_today": [
     {
@@ -416,7 +416,7 @@
       "away": "Kfum Oslo",
       "fav_team": "Molde",
       "fav_side": "dom",
-      "odds": 1.26,
+      "odds": 1.23,
       "domination_score": 73,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 70,
@@ -428,7 +428,7 @@
       "minute": "Terminé",
       "is_live": false,
       "is_finished": true,
-      "profit": 0.26
+      "profit": 0.23
     },
     {
       "id": "m_20",
@@ -438,19 +438,19 @@
       "away": "Vålerenga",
       "fav_team": "Sarpsborg 08",
       "fav_side": "dom",
-      "odds": 1.9,
+      "odds": 1.82,
       "domination_score": 57,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
       "status": "FINISHED",
-      "selection_status": "LOST",
+      "selection_status": "WON_LEAD2",
       "score_display": "2 - 2",
       "home_score": 2,
       "away_score": 2,
       "minute": "Terminé",
       "is_live": false,
       "is_finished": true,
-      "profit": -1.0
+      "profit": 0.82
     },
     {
       "id": "m_21",
@@ -667,7 +667,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "72'",
+      "minute": "81'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -689,7 +689,7 @@
       "score_display": "4 - 1",
       "home_score": 4,
       "away_score": 1,
-      "minute": "75'",
+      "minute": "86'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.56
@@ -711,7 +711,7 @@
       "score_display": "3 - 1",
       "home_score": 3,
       "away_score": 1,
-      "minute": "74'",
+      "minute": "83'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.38
@@ -733,7 +733,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "36'",
+      "minute": "44'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1061,17 +1061,17 @@
   ],
   "history": [],
   "combos_summary": {
-    "total_combos": 19,
-    "decided_combos": 9,
-    "won": 5,
+    "total_combos": 20,
+    "decided_combos": 10,
+    "won": 6,
     "lost": 4,
     "live": 2,
     "upcoming": 8,
     "default_stake": 3.0,
-    "win_rate": 55.6,
-    "profit_units": 1.65,
-    "profit_eur": 4.95,
-    "roi_pct": 18.33
+    "win_rate": 60.0,
+    "profit_units": 2.89,
+    "profit_eur": 8.67,
+    "roi_pct": 28.9
   },
   "combos_today": [
     {
@@ -1285,8 +1285,60 @@
       }
     },
     {
-      "id": "combo_6",
       "ticket_num": 6,
+      "odds": 2.24,
+      "default_stake": 3.0,
+      "ticket_status": "WON",
+      "profit_unit": 1.24,
+      "gain_eur": 6.7,
+      "profit_eur": 3.72,
+      "m1": {
+        "time": "Dim. 06/09 à 17h00",
+        "home": "Sarpsborg 08",
+        "away": "Vålerenga",
+        "league": "Norvege • D1 Norvege",
+        "odds": 1.82,
+        "fav_team": "Sarpsborg 08",
+        "fav_side": "dom",
+        "domination_score": 62,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 60,
+        "status": "FINISHED",
+        "score_display": "2 - 2",
+        "home_score": 2,
+        "away_score": 2,
+        "minute": "Terminé",
+        "is_live": false,
+        "is_finished": true,
+        "selection_status": "WON_LEAD2",
+        "profit": 0.82
+      },
+      "m2": {
+        "time": "Dim. 06/09 à 17h00",
+        "home": "Molde",
+        "away": "Kfum Oslo",
+        "league": "Norvege • D1 Norvege",
+        "odds": 1.23,
+        "fav_team": "Molde",
+        "fav_side": "dom",
+        "domination_score": 73,
+        "badge_tier": "🥈 ARGENT",
+        "win_pct_historical": 70,
+        "status": "FINISHED",
+        "score_display": "2 - 0",
+        "home_score": 2,
+        "away_score": 0,
+        "minute": "Terminé",
+        "is_live": false,
+        "is_finished": true,
+        "selection_status": "WON_LEAD2",
+        "profit": 0.23
+      },
+      "id": "combo_6"
+    },
+    {
+      "id": "combo_7",
+      "ticket_num": 7,
       "odds": 2.22,
       "default_stake": 3.0,
       "ticket_status": "WON",
@@ -1327,8 +1379,8 @@
       }
     },
     {
-      "id": "combo_7",
-      "ticket_num": 7,
+      "id": "combo_8",
+      "ticket_num": 8,
       "odds": 2.11,
       "default_stake": 3.0,
       "ticket_status": "WON",
@@ -1369,8 +1421,8 @@
       }
     },
     {
-      "id": "combo_8",
-      "ticket_num": 8,
+      "id": "combo_9",
+      "ticket_num": 9,
       "odds": 2.74,
       "default_stake": 3.0,
       "ticket_status": "LOST",
@@ -1411,8 +1463,8 @@
       }
     },
     {
-      "id": "combo_9",
-      "ticket_num": 9,
+      "id": "combo_10",
+      "ticket_num": 10,
       "odds": 2.69,
       "default_stake": 3.0,
       "ticket_status": "LOST",
@@ -1453,8 +1505,8 @@
       }
     },
     {
-      "id": "combo_10",
-      "ticket_num": 10,
+      "id": "combo_11",
+      "ticket_num": 11,
       "odds": 1.73,
       "default_stake": 3.0,
       "ticket_status": "LIVE",
@@ -1469,7 +1521,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "2 - 1",
-        "minute": "72'",
+        "minute": "81'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1485,7 +1537,7 @@
         "fav_side": "dom",
         "odds": 1.56,
         "score_display": "4 - 1",
-        "minute": "75'",
+        "minute": "86'",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Paraguay • D1 Paraguay",
@@ -1495,8 +1547,8 @@
       }
     },
     {
-      "id": "combo_11",
-      "ticket_num": 11,
+      "id": "combo_12",
+      "ticket_num": 12,
       "odds": 2.07,
       "default_stake": 3.0,
       "ticket_status": "LIVE",
@@ -1511,7 +1563,7 @@
         "fav_side": "dom",
         "odds": 1.38,
         "score_display": "3 - 1",
-        "minute": "74'",
+        "minute": "83'",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Espagne • Laliga 2",
@@ -1527,7 +1579,7 @@
         "fav_side": "ext",
         "odds": 1.5,
         "score_display": "0 - 0",
-        "minute": "36'",
+        "minute": "44'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Chili • D1 Chili",
@@ -1537,7 +1589,7 @@
       }
     },
     {
-      "ticket_num": 12,
+      "ticket_num": 13,
       "email_ticket_num": 1,
       "odds": 2.35,
       "default_stake": 3.0,
@@ -1583,10 +1635,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_12"
+      "id": "combo_13"
     },
     {
-      "ticket_num": 13,
+      "ticket_num": 14,
       "email_ticket_num": 2,
       "odds": 2.1,
       "default_stake": 3.0,
@@ -1632,10 +1684,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_13"
+      "id": "combo_14"
     },
     {
-      "ticket_num": 14,
+      "ticket_num": 15,
       "email_ticket_num": 3,
       "odds": 3.82,
       "default_stake": 3.0,
@@ -1681,10 +1733,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_14"
+      "id": "combo_15"
     },
     {
-      "ticket_num": 15,
+      "ticket_num": 16,
       "email_ticket_num": 4,
       "odds": 2.19,
       "default_stake": 3.0,
@@ -1730,10 +1782,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_15"
+      "id": "combo_16"
     },
     {
-      "ticket_num": 16,
+      "ticket_num": 17,
       "email_ticket_num": 5,
       "odds": 2.85,
       "default_stake": 3.0,
@@ -1779,10 +1831,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_16"
+      "id": "combo_17"
     },
     {
-      "ticket_num": 17,
+      "ticket_num": 18,
       "email_ticket_num": 6,
       "odds": 2.35,
       "default_stake": 3.0,
@@ -1828,10 +1880,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_17"
+      "id": "combo_18"
     },
     {
-      "ticket_num": 18,
+      "ticket_num": 19,
       "email_ticket_num": 7,
       "odds": 2.64,
       "default_stake": 3.0,
@@ -1877,10 +1929,10 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_18"
+      "id": "combo_19"
     },
     {
-      "ticket_num": 19,
+      "ticket_num": 20,
       "email_ticket_num": 8,
       "odds": 2.84,
       "default_stake": 3.0,
@@ -1926,7 +1978,7 @@
         "selection_status": "PENDING",
         "profit": 0.0
       },
-      "id": "combo_19"
+      "id": "combo_20"
     }
   ],
   "matches_discarded": [
