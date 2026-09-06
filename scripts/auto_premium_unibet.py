@@ -1170,8 +1170,175 @@ def main():
             with open(dash_path, "w", encoding="utf-8") as f:
                 json.dump(dash_data, f, ensure_ascii=False, indent=2)
             print(f"✅ DASHBOARD JSON EXPORTÉ AVEC SUCCÈS (Alignement 100% Email) : {dash_path}")
-        else:
-            print("ℹ️ Export Dashboard JSON ignoré (environnement non-Windows — GHA runner)")
+
+        # ── Export GitHub Pages (docs/data.json) avec synchronisation LiveScore ──
+        docs_data_path = os.path.join("docs", "data.json")
+        try:
+            existing_docs = {"summary": {}, "matches_today": [], "history": []}
+            if os.path.exists(docs_data_path):
+                try:
+                    with open(docs_data_path, "r", encoding="utf-8") as f_in:
+                        existing_docs = json.load(f_in)
+                except Exception:
+                    pass
+
+            # Fetch LiveScore for today to update scores and statuses
+            ls_events = []
+            try:
+                today_date_str = datetime.now().strftime("%Y%m%d")
+                ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{today_date_str}/0"
+                r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
+                if r_ls.status_code == 200:
+                    for st in r_ls.json().get("Stages", []):
+                        st_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
+                        for m_ev in st.get("Events", []):
+                            eps = str(m_ev.get("Eps", ""))
+                            h_sc = int(m_ev.get("Tr1", 0) or 0) if str(m_ev.get("Tr1", "")).isdigit() else None
+                            a_sc = int(m_ev.get("Tr2", 0) or 0) if str(m_ev.get("Tr2", "")).isdigit() else None
+                            ls_events.append({
+                                "home": m_ev.get("T1", [{}])[0].get("Nm", ""),
+                                "away": m_ev.get("T2", [{}])[0].get("Nm", ""),
+                                "league": st_name,
+                                "eps": eps,
+                                "h_sc": h_sc,
+                                "a_sc": a_sc
+                            })
+            except Exception as e_ls:
+                print(f"⚠️ Sync LiveScore: {e_ls}")
+
+            def sim_score(a, b):
+                from difflib import SequenceMatcher
+                def clean_n(x): return re.sub(r'[^a-z0-9]', '', (x or '').lower())
+                return SequenceMatcher(None, clean_n(a), clean_n(b)).ratio()
+
+            # Index existing matches by unique key
+            existing_matches_map = {
+                (m.get("home", ""), m.get("away", "")): m
+                for m in existing_docs.get("matches_today", [])
+            }
+
+            for m in retained_favs:
+                fi = m.get("fav_info", {})
+                dom = m.get("dom", "")
+                ext = m.get("ext", "")
+                fav_team = fi.get("fav_team", dom)
+                key = (dom, ext)
+                existing_item = existing_matches_map.get(key)
+
+                odds_val = fi.get("p2_fav_odds") or fi.get("fav_odds") or 1.50
+                sc_val = fi.get("fav_score", 0)
+                badge_tier = fi.get("fav_badge", "🥉 BRONZE")
+
+                if existing_item:
+                    item = existing_item
+                    item["odds"] = odds_val
+                    item["domination_score"] = sc_val
+                    item["badge_tier"] = badge_tier
+                else:
+                    item = {
+                        "id": str(m.get("id", f"m_{len(existing_matches_map)+1}")),
+                        "time": m.get("date_str", "À venir"),
+                        "league": m.get("league", "Football"),
+                        "home": dom,
+                        "away": ext,
+                        "fav_team": fav_team,
+                        "fav_side": fi.get("fav_side", "dom"),
+                        "odds": odds_val,
+                        "domination_score": sc_val,
+                        "badge_tier": badge_tier,
+                        "win_pct_historical": fi.get("pct_fav_success", 0),
+                        "status": "UPCOMING",
+                        "selection_status": "PENDING",
+                        "score_display": "VS",
+                        "home_score": None,
+                        "away_score": None,
+                        "minute": m.get("date_str", "À venir"),
+                        "is_live": False,
+                        "is_finished": False,
+                        "profit": 0.0
+                    }
+                    existing_matches_map[key] = item
+
+                # Match with LiveScore
+                best_ev = None
+                best_sim = 0.0
+                for ev in ls_events:
+                    s1 = sim_score(dom, ev["home"])
+                    s2 = sim_score(ext, ev["away"])
+                    score = (s1 + s2) / 2.0
+                    if score > best_sim:
+                        best_sim = score
+                        best_ev = ev
+
+                if best_ev and best_sim >= 0.58 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
+                    h_sc = best_ev["h_sc"]
+                    a_sc = best_ev["a_sc"]
+                    eps = best_ev["eps"]
+                    item["home_score"] = h_sc
+                    item["away_score"] = a_sc
+                    item["score_display"] = f"{h_sc} - {a_sc}"
+
+                    is_fav_home = (fav_team == dom)
+                    fav_goals = h_sc if is_fav_home else a_sc
+                    dog_goals = a_sc if is_fav_home else h_sc
+                    lead2 = (fav_goals - dog_goals >= 2)
+                    win = (fav_goals > dog_goals)
+
+                    if eps in ["FT", "AET", "AP"]:
+                        item["status"] = "FINISHED"
+                        item["is_finished"] = True
+                        item["minute"] = "Terminé"
+                        if lead2:
+                            item["selection_status"] = "WON_LEAD2"
+                            item["profit"] = round(odds_val - 1.0, 2)
+                        elif win:
+                            item["selection_status"] = "WON_FINAL"
+                            item["profit"] = round(odds_val - 1.0, 2)
+                        else:
+                            item["selection_status"] = "LOST"
+                            item["profit"] = -1.0
+                    elif eps not in ["NS", "CANC", "POST", "DEFD", "INT"]:
+                        item["status"] = "LIVE"
+                        item["is_live"] = True
+                        item["minute"] = eps + ("'" if eps.isdigit() else "")
+                        if lead2:
+                            item["selection_status"] = "WON_LEAD2"
+                            item["profit"] = round(odds_val - 1.0, 2)
+                        else:
+                            item["selection_status"] = "IN_PROGRESS"
+                            item["profit"] = 0.0
+
+            all_today_matches = list(existing_matches_map.values())
+            # Calculate summary stats
+            won_c = sum(1 for x in all_today_matches if x.get("selection_status", "").startswith("WON"))
+            lost_c = sum(1 for x in all_today_matches if x.get("selection_status") == "LOST")
+            live_c = sum(1 for x in all_today_matches if x.get("status") == "LIVE")
+            upc_c = sum(1 for x in all_today_matches if x.get("status") == "UPCOMING")
+            profit_u = sum(x.get("profit", 0.0) for x in all_today_matches)
+            decided_c = won_c + lost_c
+            wr = round((won_c / decided_c * 100), 1) if decided_c > 0 else 0.0
+            roi = round((profit_u / decided_c * 100), 2) if decided_c > 0 else 0.0
+
+            existing_docs["summary"] = {
+                "total_matches": len(all_today_matches),
+                "decided_matches": decided_c,
+                "won": won_c,
+                "lost": lost_c,
+                "live": live_c,
+                "upcoming": upc_c,
+                "win_rate": wr,
+                "profit_units": round(profit_u, 2),
+                "roi_pct": roi,
+                "last_updated": datetime.now(timezone.utc).isoformat()
+            }
+            existing_docs["matches_today"] = all_today_matches
+
+            os.makedirs(os.path.dirname(docs_data_path), exist_ok=True)
+            with open(docs_data_path, "w", encoding="utf-8") as f_out:
+                json.dump(existing_docs, f_out, ensure_ascii=False, indent=2)
+            print(f"✅ GITHUB PAGES docs/data.json EXPORTÉ : {len(all_today_matches)} matchs (Gagnés: {won_c}, Perdus: {lost_c})")
+        except Exception as e_docs:
+            print(f"⚠️ Erreur export docs/data.json : {e_docs}")
     except Exception as e:
         print(f"⚠️ Erreur d'export Dashboard JSON : {e}")
 
