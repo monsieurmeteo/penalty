@@ -9,7 +9,7 @@
     "win_rate": 61.3,
     "profit_units": -2.11,
     "roi_pct": -6.81,
-    "last_updated": "2026-09-06T20:02:01.038549+00:00"
+    "last_updated": "2026-09-06T20:12:06.078345+00:00"
   },
   "matches_today": [
     {
@@ -667,7 +667,7 @@
       "score_display": "1 - 1",
       "home_score": 1,
       "away_score": 1,
-      "minute": "Mi-temps",
+      "minute": "47'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -689,7 +689,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "Mi-temps",
+      "minute": "53'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -711,7 +711,7 @@
       "score_display": "3 - 1",
       "home_score": 3,
       "away_score": 1,
-      "minute": "Mi-temps",
+      "minute": "50'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.38
@@ -733,7 +733,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "1'",
+      "minute": "11'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1457,7 +1457,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "1 - 1",
-        "minute": "Mi-temps",
+        "minute": "47'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1473,7 +1473,7 @@
         "fav_side": "dom",
         "odds": 1.56,
         "score_display": "2 - 1",
-        "minute": "Mi-temps",
+        "minute": "53'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Paraguay • D1 Paraguay",
@@ -1499,7 +1499,7 @@
         "fav_side": "dom",
         "odds": 1.38,
         "score_display": "3 - 1",
-        "minute": "Mi-temps",
+        "minute": "50'",
         "selection_status": "WON_LEAD2",
         "status": "LIVE",
         "league": "Espagne • Laliga 2",
@@ -1515,7 +1515,7 @@
         "fav_side": "ext",
         "odds": 1.5,
         "score_display": "0 - 0",
-        "minute": "1'",
+        "minute": "11'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Chili • D1 Chili",
