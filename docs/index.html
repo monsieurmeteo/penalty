@@ -184,6 +184,29 @@
         .list-section-header.upcoming-header { border-left-color: var(--blue); background: rgba(59, 130, 246, 0.08); color: #60a5fa; }
         .list-section-header.finished-header { border-left-color: #64748b; background: rgba(100, 116, 139, 0.08); color: #94a3b8; }
 
+
+        /* Goal Pulsing Badge (25s) */
+        .goal-badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 900;
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-left: 6px;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.9);
+            animation: pulse-goal 0.8s infinite;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        @keyframes pulse-goal {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 12px rgba(239, 68, 68, 0.9); }
+            50% { transform: scale(1.1); box-shadow: 0 0 20px rgba(239, 68, 68, 1); }
+        }
+
     </style>
 </head>
 <body>
@@ -304,6 +327,24 @@
         let audioCtx = null;
         let previousScores = {};
 
+        let activeGoals = {}; // maps clean team key to expiration timestamp
+
+        function cleanTeamKey(team) {
+            return (team || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function isGoalActive(team) {
+            if (!team) return false;
+            const k = cleanTeamKey(team);
+            return activeGoals[k] && Date.now() < activeGoals[k];
+        }
+
+        function triggerGoalForTeam(team, durationMs = 25000) {
+            const k = cleanTeamKey(team);
+            activeGoals[k] = Date.now() + durationMs;
+        }
+
+
         function initAudio() {
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -360,8 +401,17 @@
                 btn.textContent = '🔔 Son : ON';
                 btn.style.color = '#34d399';
             }
+            if (globalData && globalData.matches_today) {
+                const liveM = globalData.matches_today.find(m => m.status === 'LIVE') || globalData.matches_today[0];
+                if (liveM) {
+                    triggerGoalForTeam(liveM.home, 25000);
+                    triggerGoalForTeam(liveM.away, 25000);
+                }
+            }
             playGoalSound();
-            showGoalToast('⚽ BUT ! Sonnerie active et prête pour vos matchs en direct !');
+            showGoalToast('⚽ BUT ! Fanfare + badge rouge BUT (25s) activé !');
+            if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'today') renderMatches();
         }
 
         function showGoalToast(text) {
@@ -392,6 +442,8 @@
                     const total = h + a;
                     if (previousScores[key] !== undefined && total > previousScores[key]) {
                         goalFound = true;
+                        triggerGoalForTeam(m.home, 25000);
+                        triggerGoalForTeam(m.away, 25000);
                         goalDesc = `⚽ BUT ! ${m.home} ${h} - ${a} ${m.away}`;
                         if (m.selection_status === 'WON_LEAD2') {
                             goalDesc += ` (👑 +2 BUTS GAGNÉ !)`;
@@ -404,6 +456,8 @@
             if (goalFound) {
                 playGoalSound();
                 showGoalToast(goalDesc);
+                if (currentTab === 'combos') renderCombos();
+                else if (currentTab === 'today') renderMatches();
             }
         }
 
@@ -674,7 +728,7 @@
                             <span class="leg-fav">👑 ${m.fav_team} @${m.odds.toFixed(2)}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:6px;">
-                            <span class="leg-score">${m.score_display || 'VS'}</span>
+                            ${(isGoalActive(m.home) || isGoalActive(m.away)) ? '<span class="goal-badge-live">⚽ BUT !</span>' : ''}<span class="leg-score">${m.score_display || 'VS'}</span>
                             ${legBadge}
                         </div>
                     </div>
@@ -800,7 +854,7 @@
                             ${m.fav_side === 'dom' ? '<span class="team-fav-tag">👑 FAVORI</span>' : ''}
                         </div>
                         <div class="score-box">
-                            <div class="score-val">${m.score_display}</div>
+                            <div class="score-val">${m.score_display} ${(isGoalActive(m.home) || isGoalActive(m.away)) ? '<span class="goal-badge-live">⚽ BUT !</span>' : ''}</div>
                             <div class="${minClass}">${m.minute}</div>
                         </div>
                         <div class="team-col away">
@@ -886,6 +940,12 @@
         // Live countdown timer (30s)
         setInterval(() => {
             countdown--;
+            // Auto re-render if active goals expired
+            const hasActiveGoal = Object.values(activeGoals).some(ts => ts > Date.now());
+            if (hasActiveGoal) {
+                if (currentTab === 'combos') renderCombos();
+                else if (currentTab === 'today') renderMatches();
+            }
             if (countdown <= 0) {
                 fetchData();
             } else {
