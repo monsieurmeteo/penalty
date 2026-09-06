@@ -234,7 +234,7 @@ def sync():
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print(f"Sync complete. Updated {updated_count} matches. Combos: {c_won}W {c_lost}L {c_live}LIVE {c_upc}UPC.")
-    return True
+    return True, updated_count
 
 if __name__ == "__main__":
     sync()
