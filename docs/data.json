@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 49,
-    "decided_matches": 31,
-    "won": 21,
+    "decided_matches": 32,
+    "won": 22,
     "lost": 10,
-    "live": 2,
+    "live": 1,
     "upcoming": 16,
-    "win_rate": 67.7,
-    "profit_units": 1.24,
-    "roi_pct": 4.0,
-    "last_updated": "2026-09-06T20:58:20.190829+00:00"
+    "win_rate": 68.8,
+    "profit_units": 1.35,
+    "roi_pct": 4.22,
+    "last_updated": "2026-09-06T21:02:01.643287+00:00"
   },
   "matches_today": [
     {
@@ -662,15 +662,15 @@
       "domination_score": 74,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
-      "status": "LIVE",
-      "selection_status": "IN_PROGRESS",
+      "status": "FINISHED",
+      "selection_status": "WON_FINAL",
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "90+4'",
+      "minute": "Terminé",
       "is_live": true,
-      "is_finished": false,
-      "profit": 0.0
+      "is_finished": true,
+      "profit": 0.11
     },
     {
       "id": "m_31",
@@ -1062,16 +1062,16 @@
   "history": [],
   "combos_summary": {
     "total_combos": 20,
-    "decided_combos": 10,
-    "won": 6,
+    "decided_combos": 11,
+    "won": 7,
     "lost": 4,
-    "live": 2,
+    "live": 1,
     "upcoming": 8,
     "default_stake": 3.0,
-    "win_rate": 60.0,
-    "profit_units": 2.89,
-    "profit_eur": 8.67,
-    "roi_pct": 28.9
+    "win_rate": 63.6,
+    "profit_units": 3.62,
+    "profit_eur": 10.86,
+    "roi_pct": 32.91
   },
   "combos_today": [
     {
@@ -1509,10 +1509,10 @@
       "ticket_num": 11,
       "odds": 1.73,
       "default_stake": 3.0,
-      "ticket_status": "LIVE",
-      "profit_unit": 0.0,
+      "ticket_status": "WON",
+      "profit_unit": 0.73,
       "gain_eur": 5.2,
-      "profit_eur": 0.0,
+      "profit_eur": 2.19,
       "m1": {
         "unibet_num": 4508,
         "home": "Vojvodina",
@@ -1521,9 +1521,9 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "2 - 1",
-        "minute": "90+4'",
-        "selection_status": "IN_PROGRESS",
-        "status": "LIVE",
+        "minute": "Terminé",
+        "selection_status": "WON_FINAL",
+        "status": "FINISHED",
         "league": "Serbie • D1 Serbie",
         "time": "Dim. 06/09 à 21h00",
         "badge_tier": "🥈 ARGENT",
