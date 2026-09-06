@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 47,
-    "decided_matches": 30,
-    "won": 18,
+    "decided_matches": 31,
+    "won": 19,
     "lost": 12,
-    "live": 5,
+    "live": 4,
     "upcoming": 13,
-    "win_rate": 60.0,
-    "profit_units": -2.93,
-    "roi_pct": -9.77,
-    "last_updated": "2026-09-06T20:01:27.415826+00:00"
+    "win_rate": 61.3,
+    "profit_units": -2.11,
+    "roi_pct": -6.81,
+    "last_updated": "2026-09-06T20:02:01.038549+00:00"
   },
   "matches_today": [
     {
@@ -640,15 +640,15 @@
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
-      "status": "LIVE",
-      "selection_status": "IN_PROGRESS",
+      "status": "FINISHED",
+      "selection_status": "WON_FINAL",
       "score_display": "3 - 2",
       "home_score": 3,
       "away_score": 2,
-      "minute": "90+10'",
+      "minute": "Terminé",
       "is_live": true,
-      "is_finished": false,
-      "profit": 0.0
+      "is_finished": true,
+      "profit": 0.82
     },
     {
       "id": "m_30",
@@ -1431,9 +1431,9 @@
         "fav_side": "dom",
         "odds": 1.82,
         "score_display": "3 - 2",
-        "minute": "90+10'",
-        "selection_status": "IN_PROGRESS",
-        "status": "LIVE",
+        "minute": "Terminé",
+        "selection_status": "WON_FINAL",
+        "status": "FINISHED",
         "league": "Hongrie • D2 Hongrie",
         "time": "Dim. 06/09 à 20h00",
         "badge_tier": "🥉 BRONZE",
