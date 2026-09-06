@@ -177,6 +177,13 @@
             transform: translateX(-50%) translateY(0);
         }
 
+
+        /* Section Dividers */
+        .list-section-header { display: flex; align-items: center; justify-content: space-between; margin: 16px 0 8px 0; padding: 6px 12px; background: rgba(30, 41, 59, 0.6); border-radius: 8px; border-left: 4px solid var(--blue); font-size: 12px; font-weight: 800; color: #f8fafc; }
+        .list-section-header.live-header { border-left-color: var(--amber); background: rgba(245, 158, 11, 0.08); color: #fbbf24; }
+        .list-section-header.upcoming-header { border-left-color: var(--blue); background: rgba(59, 130, 246, 0.08); color: #60a5fa; }
+        .list-section-header.finished-header { border-left-color: #64748b; background: rgba(100, 116, 139, 0.08); color: #94a3b8; }
+
     </style>
 </head>
 <body>
@@ -600,7 +607,7 @@
             }
         }
 
-        function renderCombos() {
+                function renderCombos() {
             if (!globalData || !globalData.combos_today) return;
             const container = document.getElementById('combos-container');
             const combos = globalData.combos_today;
@@ -618,7 +625,7 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(c => {
+            function renderCard(c) {
                 const isWon = (c.ticket_status === 'WON');
                 const isLost = (c.ticket_status === 'LOST');
                 const isLive = (c.ticket_status === 'LIVE');
@@ -692,10 +699,33 @@
                     </div>
                 </div>
                 `;
-            }).join('');
+            }
+
+            if (currentFilter === 'ALL') {
+                const liveItems = filtered.filter(c => c.ticket_status === 'LIVE');
+                const upcomingItems = filtered.filter(c => c.ticket_status === 'PENDING');
+                const finishedItems = filtered.filter(c => c.ticket_status === 'WON' || c.ticket_status === 'LOST');
+
+                let fullHtml = '';
+                if (liveItems.length > 0) {
+                    fullHtml += `<div class="list-section-header live-header"><span>🟢 EN DIRECT EN CE MOMENT (${liveItems.length})</span><span>En cours</span></div>`;
+                    fullHtml += liveItems.map(renderCard).join('');
+                }
+                if (upcomingItems.length > 0) {
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ COMBINÉS À VENIR CE SOIR & CETTE NUIT (${upcomingItems.length})</span><span>Prochains coups d'envoi</span></div>`;
+                    fullHtml += upcomingItems.map(renderCard).join('');
+                }
+                if (finishedItems.length > 0) {
+                    fullHtml += `<div class="list-section-header finished-header"><span>📁 COMBINÉS TERMINÉS (${finishedItems.length})</span><span>Résultats validés</span></div>`;
+                    fullHtml += finishedItems.map(renderCard).join('');
+                }
+                container.innerHTML = fullHtml;
+            } else {
+                container.innerHTML = filtered.map(renderCard).join('');
+            }
         }
 
-        function renderMatches() {
+                function renderMatches() {
             if (!globalData || !globalData.matches_today) return;
             const container = document.getElementById('matches-container');
             const matches = globalData.matches_today;
@@ -713,7 +743,7 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(m => {
+            function renderMatchCard(m) {
                 const isWon = m.selection_status.startsWith('WON');
                 const isLost = m.selection_status === 'LOST';
                 const isLive = (m.status === 'LIVE');
@@ -791,7 +821,30 @@
                     </div>
                 </div>
                 `;
-            }).join('');
+            }
+
+            if (currentFilter === 'ALL') {
+                const liveM = filtered.filter(m => m.status === 'LIVE');
+                const upcomingM = filtered.filter(m => m.status === 'UPCOMING');
+                const finishedM = filtered.filter(m => m.status === 'FINISHED');
+
+                let fullHtml = '';
+                if (liveM.length > 0) {
+                    fullHtml += `<div class="list-section-header live-header"><span>🟢 EN DIRECT EN CE MOMENT (${liveM.length})</span><span>En cours</span></div>`;
+                    fullHtml += liveM.map(renderMatchCard).join('');
+                }
+                if (upcomingM.length > 0) {
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ MATCHS SIMPLES À VENIR (${upcomingM.length})</span><span>Prochains coups d'envoi</span></div>`;
+                    fullHtml += upcomingM.map(renderMatchCard).join('');
+                }
+                if (finishedM.length > 0) {
+                    fullHtml += `<div class="list-section-header finished-header"><span>📁 MATCHS TERMINÉS (${finishedM.length})</span><span>Résultats finaux</span></div>`;
+                    fullHtml += finishedM.map(renderMatchCard).join('');
+                }
+                container.innerHTML = fullHtml;
+            } else {
+                container.innerHTML = filtered.map(renderMatchCard).join('');
+            }
         }
 
         function renderStats() {

@@ -6,7 +6,7 @@ with open("docs/data.json", "r", encoding="utf-8") as f:
 combos = d.get("combos_today", [])
 summary = d.get("combos_summary", {})
 
-assert len(combos) == 11, f"Expected 11 combos, got {len(combos)}"
+assert len(combos) == 12, f"Expected 12 combos, got {len(combos)}"
 assert summary.get("default_stake") == 3.0, f"Expected stake 3.0, got {summary.get('default_stake')}"
 assert summary.get("won") == 5
 assert summary.get("lost") == 2
@@ -26,4 +26,11 @@ assert "ADO Den Haag" in t4["m2"]["home"]
 assert t4["ticket_status"] == "LOST"
 assert t4["odds"] == 2.88
 
-print("✅ TOUS LES TESTS ASSERTIONS 11 TICKETS PASSENT AVEC SUCCÈS (100% Validé) !")
+# Verify Ticket #12: Corinthians + Palestino (PENDING/UPCOMING)
+t12 = combos[11]
+assert "Corinthians" in t12["m1"]["home"]
+assert "Palestino" in t12["m2"]["home"]
+assert t12["ticket_status"] == "PENDING"
+assert t12["odds"] == 2.08
+
+print("✅ TOUS LES TESTS ASSERTIONS 12 TICKETS PASSENT AVEC SUCCÈS (100% Validé) !")
