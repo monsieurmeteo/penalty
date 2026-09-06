@@ -1394,41 +1394,90 @@ def main():
             }
             existing_docs["matches_today"] = all_today_matches
             # ── Calcul et Export des Combinés dans docs/data.json ──
-            combos_today = []
-            c_idx = 1
+            existing_combos = existing_docs.get("combos_today", [])
             combo_stake = 3.0
-            for i in range(0, len(all_today_matches) - 1, 2):
-                m1 = all_today_matches[i]
-                m2 = all_today_matches[i+1]
-                o1 = m1.get("odds", 1.50)
-                o2 = m2.get("odds", 1.50)
-                comb_odds = round(o1 * o2, 2)
+
+            # Map matches by clean home team key for quick lookup
+            match_by_key = {
+                _clean_team_key(m.get("home", "")): m
+                for m in all_today_matches
+            }
+
+            # Update existing combos with latest match states
+            used_teams = set()
+            combos_today = []
+            for c in existing_combos:
+                m1 = c.get("m1", {})
+                m2 = c.get("m2", {})
+                k1 = _clean_team_key(m1.get("home", ""))
+                k2 = _clean_team_key(m2.get("home", ""))
+                used_teams.add(k1)
+                used_teams.add(k2)
+
+                if k1 in match_by_key:
+                    src = match_by_key[k1]
+                    m1["score_display"] = src.get("score_display", m1.get("score_display"))
+                    m1["minute"] = src.get("minute", m1.get("minute"))
+                    m1["status"] = src.get("status", m1.get("status"))
+                    m1["selection_status"] = src.get("selection_status", m1.get("selection_status"))
+                if k2 in match_by_key:
+                    src = match_by_key[k2]
+                    m2["score_display"] = src.get("score_display", m2.get("score_display"))
+                    m2["minute"] = src.get("minute", m2.get("minute"))
+                    m2["status"] = src.get("status", m2.get("status"))
+                    m2["selection_status"] = src.get("selection_status", m2.get("selection_status"))
+
                 s1 = m1.get("selection_status", "PENDING")
                 s2 = m2.get("selection_status", "PENDING")
                 w1 = s1.startswith("WON")
                 w2 = s2.startswith("WON")
                 l1 = (s1 == "LOST")
                 l2 = (s2 == "LOST")
+                st1 = m1.get("status")
+                st2 = m2.get("status")
+                comb_odds = c.get("odds", 2.0)
+
                 if w1 and w2:
-                    c_status = "WON"
-                    c_profit_u = round(comb_odds - 1.0, 2)
+                    c["ticket_status"] = "WON"
+                    c["profit_unit"] = round(comb_odds - 1.0, 2)
+                    c["profit_eur"] = round(c["profit_unit"] * combo_stake, 2)
                 elif l1 or l2:
-                    c_status = "LOST"
-                    c_profit_u = -1.0
-                elif m1.get("status") == "LIVE" or m2.get("status") == "LIVE":
-                    c_status = "LIVE"
-                    c_profit_u = 0.0
+                    c["ticket_status"] = "LOST"
+                    c["profit_unit"] = -1.0
+                    c["profit_eur"] = -combo_stake
+                elif st1 == "LIVE" or st2 == "LIVE" or s1 == "IN_PROGRESS" or s2 == "IN_PROGRESS":
+                    c["ticket_status"] = "LIVE"
+                    c["profit_unit"] = 0.0
+                    c["profit_eur"] = 0.0
                 else:
-                    c_status = "PENDING"
-                    c_profit_u = 0.0
-                
+                    c["ticket_status"] = "PENDING"
+                    c["profit_unit"] = 0.0
+                    c["profit_eur"] = 0.0
+
+                combos_today.append(c)
+
+            # Find new upcoming matches not already in any ticket
+            new_upcoming = [
+                m for m in all_today_matches
+                if m.get("status") == "UPCOMING" and _clean_team_key(m.get("home", "")) not in used_teams
+            ]
+
+            c_idx = len(combos_today) + 1
+            for i in range(0, len(new_upcoming) - 1, 2):
+                m1 = new_upcoming[i]
+                m2 = new_upcoming[i+1]
+                o1 = m1.get("odds", 1.50)
+                o2 = m2.get("odds", 1.50)
+                comb_odds = round(o1 * o2, 2)
                 combos_today.append({
                     "id": f"combo_{c_idx}",
                     "ticket_num": c_idx,
                     "odds": comb_odds,
                     "default_stake": combo_stake,
-                    "ticket_status": c_status,
-                    "profit_unit": c_profit_u,
+                    "ticket_status": "PENDING",
+                    "profit_unit": 0.0,
+                    "gain_eur": round(comb_odds * combo_stake, 2),
+                    "profit_eur": 0.0,
                     "m1": m1,
                     "m2": m2
                 })
