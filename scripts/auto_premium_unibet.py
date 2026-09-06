@@ -9,7 +9,7 @@ from email.mime.multipart import MIMEMultipart
 
 # ── Seuils Stratégie Favoris Win & 2 Buts d'Avance (Early Payout) ───────────
 MAX_COTE_FAV           = 2.20  # Cote maximale du favori Unibet 1N2
-MIN_SCORE_FAV_RETAINED = 65    # Score AdamChoi minimal pour être retenu (Argent / Or / Platine)
+MIN_SCORE_FAV_RETAINED = 55    # Score AdamChoi minimal pour être retenu (Bronze / Argent / Or / Platine)
 MIN_SCORE_FAV_SOLID    = 75    # Score AdamChoi pour être qualifié Favori Solide (Or / Platine)
 
 H = {
@@ -136,6 +136,9 @@ def evaluate_favorite_domination(m):
     elif total_score >= 65:
         badge = "🥈 ARGENT"
         classe = "Supérieur (Avantage net)"
+    elif total_score >= 55:
+        badge = "🥉 BRONZE"
+        classe = "Favorable (Bonne rentabilité)"
     else:
         badge = "⚠️ RISQUÉ"
         classe = "Incertain (Historique mitigé)"
@@ -693,7 +696,7 @@ def main():
     all_favs_chrono = sorted(fav_matches, key=lambda x: x.get("dt_obj", now_utc))
 
     # ponytail: garde-fous absolus sur les matchs retenus
-    assert all(m["fav_info"]["fav_score"] >= MIN_SCORE_FAV_RETAINED for m in retained_favs), "ERREUR: Match retenu avec Score < 65"
+    assert all(m["fav_info"]["fav_score"] >= MIN_SCORE_FAV_RETAINED for m in retained_favs), "ERREUR: Match retenu avec Score < 55"
     assert all(m["fav_info"]["fav_odds"] <= MAX_COTE_FAV for m in retained_favs), "ERREUR: Match retenu avec Cote > 2.20"
     for i in range(len(retained_favs) - 1):
         t1 = retained_favs[i].get("dt_obj", now_utc)
@@ -703,11 +706,12 @@ def main():
     nb_platine = sum(1 for m in retained_favs if m["fav_info"]["fav_score"] >= 85)
     nb_or = sum(1 for m in retained_favs if 75 <= m["fav_info"]["fav_score"] < 85)
     nb_argent = sum(1 for m in retained_favs if 65 <= m["fav_info"]["fav_score"] < 75)
+    nb_bronze = sum(1 for m in retained_favs if 55 <= m["fav_info"]["fav_score"] < 65)
     nb_risqued = len(rejected_favs)
 
     print(f"🏆 Favoris analysés (Cote <= 2.20) : {len(fav_matches)} / {len(scanned_results)}")
-    print(f"⭐ Favoris Retenus (Score >= 65, tri chronologique) : {len(retained_favs)} (💎 Platine: {nb_platine}, 🥇 Or: {nb_or}, 🥈 Argent: {nb_argent})")
-    print(f"⚠️ Favoris Écartés (Score < 65) : {len(rejected_favs)}")
+    print(f"⭐ Favoris Retenus (Score >= 55, tri chronologique) : {len(retained_favs)} (💎 Platine: {nb_platine}, 🥇 Or: {nb_or}, 🥈 Argent: {nb_argent}, 🥉 Bronze: {nb_bronze})")
+    print(f"⚠️ Favoris Écartés (Score < 55) : {len(rejected_favs)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
@@ -939,7 +943,7 @@ def main():
           <div style="background:#f8fafc; border-bottom:1px solid #e2e8f0; padding:14px 16px;">
             <table style="width:100%; border-collapse:collapse; text-align:center;">
               <tr>
-                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_retained}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">FAVORIS RETENUS</div><div style="font-size:10px; color:#3b82f6;">Score Domination ≥ 65/100</div></div></td>
+                <td style="padding:0 4px;"><div style="background:#dbeafe; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#1d4ed8;">{nb_retained}</div><div style="font-size:10px; font-weight:700; color:#1d4ed8;">FAVORIS RETENUS</div><div style="font-size:10px; color:#3b82f6;">Score Domination ≥ 55/100</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#fef3c7; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#b45309;">{nb_all_favs}</div><div style="font-size:10px; font-weight:700; color:#b45309;">FAVORIS ÉTUDIÉS</div><div style="font-size:10px; color:#d97706;">Cote 1N2 ≤ 2.20</div></div></td>
                 <td style="padding:0 4px;"><div style="background:#f0fdf4; border-radius:8px; padding:10px;"><div style="font-size:24px; font-weight:900; color:#15803d;">{nb_scanned}</div><div style="font-size:10px; font-weight:700; color:#15803d;">MATCHS SCANNÉS</div><div style="font-size:10px; color:#16a34a;">Unibet France</div></div></td>
               </tr>
