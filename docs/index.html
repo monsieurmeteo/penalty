@@ -8,6 +8,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="+2 Gagnant">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -283,7 +286,7 @@
                 🎟️ Combinés 2 Matchs <span class="tab-badge" id="badge-combos">0</span>
             </button>
             <button class="tab" onclick="switchTab('today')">
-                ⚡ Matchs Simples (+2b) <span class="tab-badge" id="badge-today">0</span>
+                ⚡ Matchs Simples du Mail (+2b) <span class="tab-badge" id="badge-today">0</span>
             </button>
             <button class="tab" onclick="switchTab('stats')">
                 📊 Analyse par Palier
@@ -766,7 +769,7 @@
                     fullHtml += liveItems.map(renderCard).join('');
                 }
                 if (upcomingItems.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ COMBINÉS À VENIR CE SOIR & CETTE NUIT (${upcomingItems.length})</span><span>Prochains coups d'envoi</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ COMBINÉS DU MAIL (TICKETS #12 À #16) (${upcomingItems.length})</span><span>Favoris de l'e-mail combinés 2 par 2</span></div>`;
                     fullHtml += upcomingItems.map(renderCard).join('');
                 }
                 if (finishedItems.length > 0) {
@@ -888,12 +891,36 @@
                     fullHtml += liveM.map(renderMatchCard).join('');
                 }
                 if (upcomingM.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ MATCHS SIMPLES À VENIR (${upcomingM.length})</span><span>Prochains coups d'envoi</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ MATCHS SIMPLES RETENUS DU DERNIER E-MAIL (${upcomingM.length})</span><span>11 favoris retenus par le barème</span></div>`;
                     fullHtml += upcomingM.map(renderMatchCard).join('');
                 }
                 if (finishedM.length > 0) {
                     fullHtml += `<div class="list-section-header finished-header"><span>📁 MATCHS TERMINÉS (${finishedM.length})</span><span>Résultats finaux</span></div>`;
                     fullHtml += finishedM.map(renderMatchCard).join('');
+                }
+                if (globalData.matches_discarded && globalData.matches_discarded.length > 0) {
+                    fullHtml += `
+                    <div style="margin-top:24px; border:1px solid var(--border); border-radius:12px; background:rgba(15,23,42,0.6); overflow:hidden;">
+                        <details style="padding:14px 16px;">
+                            <summary style="cursor:pointer; font-weight:700; font-size:13px; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
+                                <span>⚠️ 41 Favoris Analysés & Écartés par le Barème dans l'E-mail (Cliquez pour voir)</span>
+                                <span style="font-size:11px; background:rgba(239,68,68,0.15); color:#ef4444; padding:2px 8px; border-radius:6px; font-weight:800;">ÉCARTÉS (${globalData.matches_discarded.length})</span>
+                            </summary>
+                            <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">
+                                ${globalData.matches_discarded.map(d => `
+                                    <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-base); padding:10px 12px; border-radius:8px; border:1px solid var(--border); font-size:12px;">
+                                        <div>
+                                            <span style="color:#94a3b8; font-size:10px;">⏰ ${d.time} &bull; ${d.league}</span>
+                                            <div style="font-weight:700; color:#fff; margin-top:2px;">${d.match}</div>
+                                            <div style="color:#f59e0b; font-size:11px;">Favori : <b>${d.fav_team}</b> (${d.odds}) &bull; Score : <b>${d.domination_score}</b> &bull; ${d.reussite}</div>
+                                        </div>
+                                        <span style="background:rgba(239,68,68,0.2); color:#ef4444; padding:4px 8px; border-radius:6px; font-weight:800; font-size:10px;">⚠️ ÉCARTÉ</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </details>
+                    </div>
+                    `;
                 }
                 container.innerHTML = fullHtml;
             } else {
