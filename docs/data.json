@@ -9,7 +9,7 @@
     "win_rate": 60.7,
     "profit_units": -2.31,
     "roi_pct": -8.25,
-    "last_updated": "2026-09-06T19:26:43.914748+00:00"
+    "last_updated": "2026-09-06T19:27:49.444087+00:00"
   },
   "matches_today": [
     {
@@ -623,7 +623,7 @@
       "score_display": "1 - 0",
       "home_score": 1,
       "away_score": 0,
-      "minute": "80'",
+      "minute": "81'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -642,10 +642,10 @@
       "win_pct_historical": 70,
       "status": "LIVE",
       "selection_status": "IN_PROGRESS",
-      "score_display": "0 - 0",
-      "home_score": 0,
+      "score_display": "1 - 0",
+      "home_score": 1,
       "away_score": 0,
-      "minute": "65'",
+      "minute": "67'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -667,7 +667,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "25'",
+      "minute": "26'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -689,7 +689,7 @@
       "score_display": "1 - 0",
       "home_score": 1,
       "away_score": 0,
-      "minute": "27'",
+      "minute": "28'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1415,7 +1415,7 @@
         "fav_side": "dom",
         "odds": 1.48,
         "score_display": "1 - 0",
-        "minute": "80'",
+        "minute": "81'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Argentine • D1 Argentine",
@@ -1430,8 +1430,8 @@
         "fav_team": "Györ ETO FC",
         "fav_side": "dom",
         "odds": 1.82,
-        "score_display": "0 - 0",
-        "minute": "65'",
+        "score_display": "1 - 0",
+        "minute": "67'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Hongrie • D2 Hongrie",
@@ -1457,7 +1457,7 @@
         "fav_side": "dom",
         "odds": 1.11,
         "score_display": "0 - 1",
-        "minute": "25'",
+        "minute": "26'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Serbie • D1 Serbie",
@@ -1473,7 +1473,7 @@
         "fav_side": "dom",
         "odds": 1.56,
         "score_display": "1 - 0",
-        "minute": "27'",
+        "minute": "28'",
         "selection_status": "IN_PROGRESS",
         "status": "LIVE",
         "league": "Paraguay • D1 Paraguay",
