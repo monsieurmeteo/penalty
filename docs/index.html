@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚽ +2 Gagnant Live Tracker & Archives</title>
+    <title>⚽ +2 Gagnant Live Tracker & Combinés</title>
     <meta name="theme-color" content="#090d16">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -67,7 +67,7 @@
         .stake-bar { background: rgba(30, 41, 59, 0.5); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .stake-label { font-size: 12px; font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 6px; }
         .stake-btns { display: flex; gap: 4px; }
-        .stake-btn { background: #0f172a; border: 1px solid var(--border); color: #94a3b8; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
+        .stake-btn { background: #0f172a; border: 1px solid var(--border); color: #94a3b8; font-size: 11px; font-weight: 800; padding: 5px 12px; border-radius: 6px; cursor: pointer; transition: all 0.15s; }
         .stake-btn.active { background: #2563eb; border-color: #3b82f6; color: #fff; box-shadow: 0 0 10px rgba(37, 99, 235, 0.4); }
 
         /* Rule Explanatory Alert */
@@ -76,10 +76,11 @@
 
         /* Navigation Tabs */
         .tabs { display: flex; gap: 6px; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px; overflow-x: auto; }
-        .tab { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-size: 12px; font-weight: 800; padding: 7px 14px; border-radius: 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+        .tab { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-size: 12px; font-weight: 800; padding: 8px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
         .tab:hover { color: #fff; background: rgba(255,255,255,0.03); }
         .tab.active { background: #1e293b; border-color: var(--border-highlight); color: #fff; }
         .tab-badge { background: #334155; color: #f8fafc; font-size: 10px; padding: 1px 6px; border-radius: 10px; font-weight: 800; }
+        .tab.active .tab-badge { background: #3b82f6; color: #fff; }
 
         /* Filters */
         .filters-row { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
@@ -120,6 +121,31 @@
         .res-pending { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; }
         .card-profit { font-weight: 900; }
 
+        /* Combo Card Styling */
+        .combo-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; position: relative; transition: all 0.2s; }
+        .combo-card:hover { border-color: var(--border-highlight); }
+        .combo-card.is-won { border-left: 4px solid var(--green); background: linear-gradient(90deg, rgba(16, 185, 129, 0.05) 0%, var(--bg-card) 40%); }
+        .combo-card.is-lost { border-left: 4px solid var(--red); background: linear-gradient(90deg, rgba(239, 68, 68, 0.03) 0%, var(--bg-card) 40%); }
+        .combo-card.is-live { border-left: 4px solid var(--amber); }
+
+        .combo-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+        .combo-title-wrap { display: flex; align-items: center; gap: 8px; }
+        .combo-tag { background: #0f172a; border: 1px solid #334155; color: #fff; font-weight: 900; font-size: 12px; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.3px; }
+        .combo-cote-badge { background: #1d4ed8; color: #fff; font-weight: 900; font-size: 13px; padding: 3px 9px; border-radius: 6px; }
+
+        .combo-legs { display: flex; flex-direction: column; gap: 8px; }
+        .combo-leg { background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.04); border-radius: 8px; padding: 8px 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .leg-left { display: flex; align-items: center; gap: 8px; }
+        .leg-time { font-size: 10px; font-weight: 800; background: #1e293b; color: #94a3b8; padding: 2px 6px; border-radius: 4px; }
+        .leg-teams { font-size: 12px; font-weight: 700; color: #f8fafc; }
+        .leg-fav { color: #38bdf8; font-weight: 800; font-size: 11px; margin-left: 4px; }
+        .leg-score { font-size: 12px; font-weight: 900; color: #fff; background: #090d16; padding: 2px 8px; border-radius: 4px; border: 1px solid #1e293b; }
+        .leg-badge { font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+        .leg-won { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .leg-lost { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .leg-live { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .leg-pending { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+
         /* Empty state */
         .empty-state { text-align: center; padding: 40px 10px; color: var(--text-muted); font-size: 13px; }
 
@@ -135,7 +161,7 @@
             <div class="brand">
                 <div class="brand-logo">⚽</div>
                 <div>
-                    <div class="brand-title">+2 GAGNANT LIVE</div>
+                    <div class="brand-title">+2 GAGNANT LIVE & COMBINÉS</div>
                     <div class="brand-sub">Stratégie Officielle Unibet & AdamChoi</div>
                 </div>
             </div>
@@ -153,33 +179,33 @@
 
         <!-- Banner Explicatif -->
         <div class="rule-alert">
-            💡 <b>RÈGLE OFFICIELLE GAGNANTE (+2 BUTS) :</b> Dès que votre favori mène de <b>2 buts d'écart (2-0, 3-1...)</b> à n'importe quelle minute, le pari est <b>PAYÉ GAGNANT IMMÉDIATEMENT</b> (même si 2-2 à la 90e). Si l'équipe gagne simplement <b>1-0 ou 2-1</b>, le gain est également validé au coup de sifflet final !
+            💡 <b>RÈGLE OFFICIELLE GAGNANTE (+2 BUTS) :</b> Dès que votre favori mène de <b>2 buts d'écart (2-0, 3-1...)</b> à n'importe quel moment, le pari est <b>PAYÉ GAGNANT IMMÉDIATEMENT</b> (même si 2-2 à la 90e). Si l'équipe gagne simplement <b>1-0 ou 2-1</b>, le gain est également validé ! Pour les <b>combinés de 2 matchs chronologiques</b>, les deux sélections doivent valider la condition pour empocher la cote combinée totale.
         </div>
 
         <!-- Stake Selector Bar -->
         <div class="stake-bar">
             <div class="stake-label">
-                <span>💰 Simulateur de Mise Réelle :</span>
+                <span id="stake-title">💰 Simulateur de Mise (Combinés 2 Matchs) :</span>
             </div>
-            <div class="stake-btns">
+            <div class="stake-btns" id="stake-buttons-container">
+                <button class="stake-btn active" onclick="setStake(3)">3 €</button>
                 <button class="stake-btn" onclick="setStake(5)">5 €</button>
-                <button class="stake-btn active" onclick="setStake(10)">10 €</button>
+                <button class="stake-btn" onclick="setStake(10)">10 €</button>
                 <button class="stake-btn" onclick="setStake(20)">20 €</button>
-                <button class="stake-btn" onclick="setStake(50)">50 €</button>
             </div>
         </div>
 
         <!-- KPI Grid -->
         <div class="kpi-grid">
             <div class="kpi-card kpi-win">
-                <div class="kpi-label">🏆 Matchs Gagnés</div>
+                <div class="kpi-label" id="kpi-title-won">🏆 Combinés Gagnés</div>
                 <div class="kpi-val" id="stat-won" style="color:#10b981;">0</div>
                 <div class="kpi-sub" id="stat-finished">sur 0 terminés</div>
             </div>
             <div class="kpi-card kpi-rate">
-                <div class="kpi-label">🎯 Taux de Réussite</div>
+                <div class="kpi-label" id="kpi-title-rate">🎯 Taux de Réussite</div>
                 <div class="kpi-val" id="stat-rate" style="color:#f59e0b;">0.0%</div>
-                <div class="kpi-sub" id="stat-pending">0 en cours / à venir</div>
+                <div class="kpi-sub" id="stat-pending">0 en direct · 0 à venir</div>
             </div>
             <div class="kpi-card kpi-profit">
                 <div class="kpi-label">💵 Bénéfice Net</div>
@@ -189,14 +215,17 @@
             <div class="kpi-card">
                 <div class="kpi-label">📈 ROI Global</div>
                 <div class="kpi-val" id="stat-roi">0.0%</div>
-                <div class="kpi-sub" id="stat-total">Total: 0 matchs</div>
+                <div class="kpi-sub" id="stat-total">Total: 0 tickets</div>
             </div>
         </div>
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab active" onclick="switchTab('today')">
-                ⚡ Aujourd'hui & En Direct <span class="tab-badge" id="badge-today">0</span>
+            <button class="tab active" onclick="switchTab('combos')">
+                🎟️ Combinés 2 Matchs <span class="tab-badge" id="badge-combos">0</span>
+            </button>
+            <button class="tab" onclick="switchTab('today')">
+                ⚡ Matchs Simples (+2b) <span class="tab-badge" id="badge-today">0</span>
             </button>
             <button class="tab" onclick="switchTab('stats')">
                 📊 Analyse par Palier
@@ -212,12 +241,17 @@
             <button class="filter-btn" onclick="setFilter('UPCOMING')">⏳ À Venir (0)</button>
         </div>
 
-        <!-- Matches List -->
-        <div class="matches-list" id="matches-container">
+        <!-- Combos List (Default tab) -->
+        <div class="matches-list" id="combos-container">
+            <div class="empty-state">Chargement des combinés en direct...</div>
+        </div>
+
+        <!-- Matches List (Single matches tab) -->
+        <div class="matches-list" id="matches-container" style="display:none;">
             <div class="empty-state">Chargement des matchs en direct...</div>
         </div>
 
-        <!-- Tab 2: Stats Breakdown (hidden by default) -->
+        <!-- Tab 3: Stats Breakdown -->
         <div id="stats-container" style="display:none;">
             <!-- Rendered dynamically -->
         </div>
@@ -230,19 +264,35 @@
     </div>
 
     <script>
-        let currentStake = 10;
+        let currentStakeCombos = 3;
+        let currentStakeSimples = 10;
         let currentFilter = 'ALL';
-        let currentTab = 'today';
+        let currentTab = 'combos';
         let globalData = null;
         let countdown = 30;
 
         function setStake(amount) {
-            currentStake = amount;
-            document.querySelectorAll('.stake-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.trim().startsWith(amount));
-            });
+            if (currentTab === 'combos') {
+                currentStakeCombos = amount;
+            } else {
+                currentStakeSimples = amount;
+            }
+            renderStakeButtons();
             updateKPIs();
-            renderMatches();
+            if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'today') renderMatches();
+        }
+
+        function renderStakeButtons() {
+            const activeStake = (currentTab === 'combos') ? currentStakeCombos : currentStakeSimples;
+            const options = (currentTab === 'combos') ? [3, 5, 10, 20] : [5, 10, 20, 50];
+            const title = (currentTab === 'combos') ? '💰 Mise Combiné (Par Ticket) :' : '💰 Mise Match Simple :';
+            document.getElementById('stake-title').textContent = title;
+
+            const html = options.map(opt => `
+                <button class="stake-btn ${opt === activeStake ? 'active' : ''}" onclick="setStake(${opt})">${opt} €</button>
+            `).join('');
+            document.getElementById('stake-buttons-container').innerHTML = html;
         }
 
         function setFilter(f) {
@@ -250,7 +300,8 @@
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.getAttribute('onclick').includes(f));
             });
-            renderMatches();
+            if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'today') renderMatches();
         }
 
         function switchTab(t) {
@@ -258,10 +309,17 @@
             document.querySelectorAll('.tab').forEach(b => {
                 b.classList.toggle('active', b.getAttribute('onclick').includes(t));
             });
+
+            document.getElementById('combos-container').style.display = (t === 'combos') ? 'flex' : 'none';
             document.getElementById('matches-container').style.display = (t === 'today') ? 'flex' : 'none';
-            document.getElementById('filters-container').style.display = (t === 'today') ? 'flex' : 'none';
+            document.getElementById('filters-container').style.display = (t === 'combos' || t === 'today') ? 'flex' : 'none';
             document.getElementById('stats-container').style.display = (t === 'stats') ? 'block' : 'none';
-            if (t === 'stats') renderStats();
+
+            renderStakeButtons();
+            updateKPIs();
+            if (t === 'combos') renderCombos();
+            else if (t === 'today') renderMatches();
+            else if (t === 'stats') renderStats();
         }
 
         async function fetchData(manual = false) {
@@ -275,9 +333,12 @@
                 if (res.ok) {
                     globalData = await res.json();
                     updateKPIs();
-                    if (currentTab === 'today') renderMatches();
+                    if (currentTab === 'combos') renderCombos();
+                    else if (currentTab === 'today') renderMatches();
                     else renderStats();
-                    document.getElementById('sync-time').textContent = new Date(globalData.summary.last_updated).toLocaleTimeString('fr-FR');
+                    if (globalData.summary && globalData.summary.last_updated) {
+                        document.getElementById('sync-time').textContent = new Date(globalData.summary.last_updated).toLocaleTimeString('fr-FR');
+                    }
                 }
             } catch (err) {
                 console.warn('Error fetching data.json:', err);
@@ -286,58 +347,215 @@
         }
 
         function updateKPIs() {
-            if (!globalData || !globalData.matches_today) return;
-            const matches = globalData.matches_today;
+            if (!globalData) return;
 
-            let won = 0, lost = 0, live = 0, upcoming = 0;
-            let profitUnits = 0.0;
+            if (currentTab === 'combos') {
+                const combos = globalData.combos_today || [];
+                let won = 0, lost = 0, live = 0, upcoming = 0;
+                let profitUnits = 0.0;
 
-            matches.forEach(m => {
-                if (m.selection_status.startsWith('WON')) {
-                    won++;
-                    profitUnits += (m.odds - 1.0);
-                } else if (m.selection_status === 'LOST') {
-                    lost++;
-                    profitUnits -= 1.0;
-                } else if (m.status === 'LIVE') {
-                    live++;
-                } else {
-                    upcoming++;
+                combos.forEach(c => {
+                    if (c.ticket_status === 'WON') {
+                        won++;
+                        profitUnits += (c.odds - 1.0);
+                    } else if (c.ticket_status === 'LOST') {
+                        lost++;
+                        profitUnits -= 1.0;
+                    } else if (c.ticket_status === 'LIVE') {
+                        live++;
+                    } else {
+                        upcoming++;
+                    }
+                });
+
+                const decided = won + lost;
+                const winRate = decided > 0 ? ((won / decided) * 100).toFixed(1) : '0.0';
+                const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
+                const profitEur = (profitUnits * currentStakeCombos).toFixed(2);
+
+                document.getElementById('kpi-title-won').textContent = '🏆 Combinés Gagnés';
+                document.getElementById('stat-won').textContent = won;
+                document.getElementById('stat-finished').textContent = `sur ${decided} combinés terminés`;
+
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite Combinés';
+                document.getElementById('stat-rate').textContent = `${winRate}%`;
+                document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
+
+                const profitEl = document.getElementById('stat-profit');
+                profitEl.textContent = (profitEur >= 0 ? '+' : '') + profitEur + ' €';
+                profitEl.style.color = profitEur >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-units').textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' U';
+
+                const roiEl = document.getElementById('stat-roi');
+                roiEl.textContent = (roiPct >= 0 ? '+' : '') + roiPct + '%';
+                roiEl.style.color = roiPct >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-total').textContent = `Total: ${combos.length} combinés`;
+                document.getElementById('badge-combos').textContent = combos.length;
+                if (globalData.matches_today) document.getElementById('badge-today').textContent = globalData.matches_today.length;
+
+                // Update filter buttons
+                const btns = document.querySelectorAll('.filter-btn');
+                if (btns.length >= 5) {
+                    btns[0].textContent = `Tous (${combos.length})`;
+                    btns[1].textContent = `🟢 En Direct (${live})`;
+                    btns[2].textContent = `✅ Gagnés (${won})`;
+                    btns[3].textContent = `❌ Perdus (${lost})`;
+                    btns[4].textContent = `⏳ À Venir (${upcoming})`;
                 }
+            } else {
+                // Tab Matchs Simples
+                const matches = globalData.matches_today || [];
+                let won = 0, lost = 0, live = 0, upcoming = 0;
+                let profitUnits = 0.0;
+
+                matches.forEach(m => {
+                    if (m.selection_status.startsWith('WON')) {
+                        won++;
+                        profitUnits += (m.odds - 1.0);
+                    } else if (m.selection_status === 'LOST') {
+                        lost++;
+                        profitUnits -= 1.0;
+                    } else if (m.status === 'LIVE') {
+                        live++;
+                    } else {
+                        upcoming++;
+                    }
+                });
+
+                const decided = won + lost;
+                const winRate = decided > 0 ? ((won / decided) * 100).toFixed(1) : '0.0';
+                const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
+                const profitEur = (profitUnits * currentStakeSimples).toFixed(2);
+
+                document.getElementById('kpi-title-won').textContent = '🏆 Matchs Gagnés';
+                document.getElementById('stat-won').textContent = won;
+                document.getElementById('stat-finished').textContent = `sur ${decided} matchs terminés`;
+
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite';
+                document.getElementById('stat-rate').textContent = `${winRate}%`;
+                document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
+
+                const profitEl = document.getElementById('stat-profit');
+                profitEl.textContent = (profitEur >= 0 ? '+' : '') + profitEur + ' €';
+                profitEl.style.color = profitEur >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-units').textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' U';
+
+                const roiEl = document.getElementById('stat-roi');
+                roiEl.textContent = (roiPct >= 0 ? '+' : '') + roiPct + '%';
+                roiEl.style.color = roiPct >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-total').textContent = `Total: ${matches.length} matchs`;
+                document.getElementById('badge-today').textContent = matches.length;
+                if (globalData.combos_today) document.getElementById('badge-combos').textContent = globalData.combos_today.length;
+
+                // Update filter buttons
+                const btns = document.querySelectorAll('.filter-btn');
+                if (btns.length >= 5) {
+                    btns[0].textContent = `Tous (${matches.length})`;
+                    btns[1].textContent = `🟢 En Direct (${live})`;
+                    btns[2].textContent = `✅ Gagnés (${won})`;
+                    btns[3].textContent = `❌ Perdus (${lost})`;
+                    btns[4].textContent = `⏳ À Venir (${upcoming})`;
+                }
+            }
+        }
+
+        function renderCombos() {
+            if (!globalData || !globalData.combos_today) return;
+            const container = document.getElementById('combos-container');
+            const combos = globalData.combos_today;
+
+            let filtered = combos.filter(c => {
+                if (currentFilter === 'LIVE') return c.ticket_status === 'LIVE';
+                if (currentFilter === 'WON') return c.ticket_status === 'WON';
+                if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
+                if (currentFilter === 'UPCOMING') return c.ticket_status === 'PENDING';
+                return true;
             });
 
-            const decided = won + lost;
-            const winRate = decided > 0 ? ((won / decided) * 100).toFixed(1) : '0.0';
-            const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
-            const profitEur = (profitUnits * currentStake).toFixed(2);
-
-            document.getElementById('stat-won').textContent = won;
-            document.getElementById('stat-finished').textContent = `sur ${decided} terminés`;
-            document.getElementById('stat-rate').textContent = `${winRate}%`;
-            document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
-
-            const profitEl = document.getElementById('stat-profit');
-            profitEl.textContent = (profitEur >= 0 ? '+' : '') + profitEur + ' €';
-            profitEl.style.color = profitEur >= 0 ? '#10b981' : '#ef4444';
-
-            document.getElementById('stat-units').textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' U';
-            
-            const roiEl = document.getElementById('stat-roi');
-            roiEl.textContent = (roiPct >= 0 ? '+' : '') + roiPct + '%';
-            roiEl.style.color = roiPct >= 0 ? '#10b981' : '#ef4444';
-
-            document.getElementById('stat-total').textContent = `Total: ${matches.length} matchs`;
-            document.getElementById('badge-today').textContent = matches.length;
-
-            // Update filter counts
-            const btns = document.querySelectorAll('.filter-btn');
-            if (btns.length >= 5) {
-                btns[0].textContent = `Tous (${matches.length})`;
-                btns[1].textContent = `🟢 En Direct (${live})`;
-                btns[2].textContent = `✅ Gagnés (${won})`;
-                btns[3].textContent = `❌ Perdus (${lost})`;
-                btns[4].textContent = `⏳ À Venir (${upcoming})`;
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state">Aucun combiné dans cette catégorie.</div>';
+                return;
             }
+
+            container.innerHTML = filtered.map(c => {
+                const isWon = (c.ticket_status === 'WON');
+                const isLost = (c.ticket_status === 'LOST');
+                const isLive = (c.ticket_status === 'LIVE');
+
+                let cardClass = 'combo-card';
+                if (isWon) cardClass += ' is-won';
+                else if (isLost) cardClass += ' is-lost';
+                else if (isLive) cardClass += ' is-live';
+
+                let resBadge = '';
+                let profitBadge = '';
+
+                if (isWon) {
+                    resBadge = `<span class="bet-result res-won">✅ TICKET GAGNÉ</span>`;
+                    const p = ((c.odds - 1.0) * currentStakeCombos).toFixed(2);
+                    profitBadge = `<span class="card-profit" style="color:#10b981; font-size:13px;">+${p} €</span>`;
+                } else if (isLost) {
+                    resBadge = `<span class="bet-result res-lost">❌ NON VALIDÉ</span>`;
+                    profitBadge = `<span class="card-profit" style="color:#ef4444; font-size:13px;">-${currentStakeCombos.toFixed(2)} €</span>`;
+                } else if (isLive) {
+                    resBadge = `<span class="bet-result res-pending">🟢 EN DIRECT</span>`;
+                    profitBadge = `<span class="card-profit" style="color:#f59e0b; font-size:13px;">En cours</span>`;
+                } else {
+                    resBadge = `<span class="bet-result res-pending">⏳ À VENIR</span>`;
+                    const pot = (c.odds * currentStakeCombos).toFixed(2);
+                    profitBadge = `<span class="card-profit" style="color:#38bdf8; font-size:12px;">Gain pot. : ${pot} €</span>`;
+                }
+
+                function renderLeg(m) {
+                    const legWon = m.selection_status.startsWith('WON');
+                    const legLost = (m.selection_status === 'LOST');
+                    const legLive = (m.status === 'LIVE');
+
+                    let legBadge = '';
+                    if (m.selection_status === 'WON_LEAD2') legBadge = '<span class="leg-badge leg-won">👑 +2b Gagné</span>';
+                    else if (m.selection_status === 'WON_FINAL') legBadge = '<span class="leg-badge leg-won">✅ Victoire</span>';
+                    else if (legLost) legBadge = '<span class="leg-badge leg-lost">❌ Perdu</span>';
+                    else if (legLive) legBadge = `<span class="leg-badge leg-live">🟢 ${m.minute}</span>`;
+                    else legBadge = '<span class="leg-badge leg-pending">⏳ À venir</span>';
+
+                    return `
+                    <div class="combo-leg">
+                        <div class="leg-left">
+                            <span class="leg-time">${m.time.split('à')[1] ? m.time.split('à')[1].trim() : m.time}</span>
+                            <span class="leg-teams">${m.home} vs ${m.away}</span>
+                            <span class="leg-fav">👑 ${m.fav_team} @${m.odds.toFixed(2)}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span class="leg-score">${m.score_display || 'VS'}</span>
+                            ${legBadge}
+                        </div>
+                    </div>
+                    `;
+                }
+
+                return `
+                <div class="${cardClass}">
+                    <div class="combo-header">
+                        <div class="combo-title-wrap">
+                            <span class="combo-tag">🎟️ COMBINÉ #${c.ticket_num}</span>
+                            <span class="combo-cote-badge">Cote @${c.odds.toFixed(2)}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            ${resBadge}
+                            ${profitBadge}
+                        </div>
+                    </div>
+                    <div class="combo-legs">
+                        ${renderLeg(c.m1)}
+                        ${renderLeg(c.m2)}
+                    </div>
+                </div>
+                `;
+            }).join('');
         }
 
         function renderMatches() {
@@ -373,15 +591,15 @@
 
                 if (m.selection_status === 'WON_LEAD2') {
                     resBadge = `<span class="bet-result res-won">👑 GAGNÉ (+2 BUTS)</span>`;
-                    const p = ((m.odds - 1.0) * currentStake).toFixed(2);
+                    const p = ((m.odds - 1.0) * currentStakeSimples).toFixed(2);
                     profitBadge = `<span class="card-profit" style="color:#10b981;">+${p} €</span>`;
                 } else if (m.selection_status === 'WON_FINAL') {
                     resBadge = `<span class="bet-result res-won">✅ GAGNÉ AU FINAL</span>`;
-                    const p = ((m.odds - 1.0) * currentStake).toFixed(2);
+                    const p = ((m.odds - 1.0) * currentStakeSimples).toFixed(2);
                     profitBadge = `<span class="card-profit" style="color:#10b981;">+${p} €</span>`;
                 } else if (isLost) {
                     resBadge = `<span class="bet-result res-lost">❌ NON VALIDÉ</span>`;
-                    profitBadge = `<span class="card-profit" style="color:#ef4444;">-${currentStake.toFixed(2)} €</span>`;
+                    profitBadge = `<span class="card-profit" style="color:#ef4444;">-${currentStakeSimples.toFixed(2)} €</span>`;
                 } else if (isLive) {
                     resBadge = `<span class="bet-result res-pending">🟢 EN DIRECT</span>`;
                     profitBadge = `<span class="card-profit" style="color:#f59e0b;">En cours</span>`;
@@ -466,7 +684,7 @@
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">Matchs analysés : <b>${sub.length}</b></div>
                     <div style="font-size:12px; color:var(--text-muted); margin-bottom:4px;">Gagnés : <b style="color:#10b981;">${won}</b> / Perdus : <b style="color:#ef4444;">${lost}</b></div>
                     <div style="font-size:13px; font-weight:800; margin-top:8px;">Taux Réussite : <span style="color:#f59e0b;">${wr}%</span></div>
-                    <div style="font-size:13px; font-weight:800;">Bénéfice : <span style="color:${profit >= 0 ? '#10b981' : '#ef4444'};">${profit >= 0 ? '+' : ''}${(profit * currentStake).toFixed(2)} €</span></div>
+                    <div style="font-size:13px; font-weight:800;">Bénéfice : <span style="color:${profit >= 0 ? '#10b981' : '#ef4444'};">${profit >= 0 ? '+' : ''}${(profit * currentStakeSimples).toFixed(2)} €</span></div>
                 </div>
                 `;
             });
@@ -485,7 +703,8 @@
             }
         }, 1000);
 
-        // Initial fetch
+        // Initial setup & fetch
+        renderStakeButtons();
         fetchData();
     </script>
 </body>

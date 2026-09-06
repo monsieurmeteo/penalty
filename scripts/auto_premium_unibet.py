@@ -827,6 +827,55 @@ def main():
     if not plan_rows_html:
         plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun favori retenu sur le créneau à venir.</td></tr>'
 
+    # ── Construction des Combinés Chronologiques de 2 Matchs (Mise 3€) ──────
+    combos_html = ""
+    combos_retained = []
+    combo_idx = 1
+    default_combo_stake = 3.0
+
+    for i in range(0, len(retained_favs) - 1, 2):
+        m1 = retained_favs[i]
+        m2 = retained_favs[i+1]
+        fi1 = m1.get("fav_info", {})
+        fi2 = m2.get("fav_info", {})
+        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
+        c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
+        comb_odds = round(c1 * c2, 2)
+        pot_win = round(default_combo_stake * comb_odds, 2)
+        net_profit = round(default_combo_stake * (comb_odds - 1.0), 2)
+
+        combos_retained.append({
+            "ticket_num": combo_idx,
+            "odds": comb_odds,
+            "stake": default_combo_stake,
+            "m1": m1,
+            "m2": m2,
+            "c1": c1,
+            "c2": c2
+        })
+
+        combos_html += f'''
+        <div style="background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #2563eb; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="background:#0f172a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🎟️ TICKET #{combo_idx}</span>
+              <span style="background:#1d4ed8; color:#ffffff; font-weight:900; font-size:12px; padding:2px 8px; border-radius:5px;">Cote @{comb_odds:.2f}</span>
+            </div>
+            <div style="font-size:11px; font-weight:800; color:#15803d;">
+              Mise : <b>3,00 €</b> &bull; Gain Potentiel : <b>{pot_win:.2f} €</b> (+{net_profit:.2f} € net)
+            </div>
+          </div>
+          <div style="font-size:11px; color:#334155; line-height:1.5;">
+            <div style="padding:2px 0;">1️⃣ <b>{m1.get('date_str', '')}</b> : {m1.get('dom')} vs {m1.get('ext')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fi1.get('fav_team')}</span> @{c1:.2f}</div>
+            <div style="padding:2px 0;">2️⃣ <b>{m2.get('date_str', '')}</b> : {m2.get('dom')} vs {m2.get('ext')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fi2.get('fav_team')}</span> @{c2:.2f}</div>
+          </div>
+        </div>
+        '''
+        combo_idx += 1
+
+    if not combos_html:
+        combos_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:12px;">Pas assez de favoris retenus pour former un combiné de 2 matchs.</div>'
+
     # ── Section 2 : Fiches détaillées des matchs par ordre chronologique ─────
     fav_cards_html = ""
     if retained_favs:
@@ -973,6 +1022,18 @@ def main():
 
           <!-- EVOLUTIONS -->
           <div style="padding:0 16px 8px 16px;">{evo_html}</div>
+
+          <!-- SECTION COMBINÉS DE 2 MATCHS (CHRONOLOGIQUE · MISE 3€) -->
+          <div style="padding:14px 16px 8px 16px; background:#f1f5f9; border-top:2px solid #e2e8f0;">
+            <div style="font-size:14px; font-weight:900; color:#0f172a; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🎟️ VOS COMBINÉS DE 2 MATCHS (CHRONOLOGIQUE)</span>
+              <span style="font-size:11px; background:#2563eb; color:#ffffff; font-weight:700; padding:2px 8px; border-radius:6px;">Mise : 3,00 € par ticket</span>
+            </div>
+            <div style="font-size:11px; color:#64748b; margin-bottom:10px;">
+              Paires chronologiques consécutives selon l'ordre officiel de coup d'envoi. Dès qu'une équipe mène de 2 buts, sa sélection est payée immédiatement.
+            </div>
+            {combos_html}
+          </div>
 
           <!-- SECTION 2 : FICHES D'ANALYSE DÉTAILLÉES -->
           <div style="padding:12px 16px 10px 16px; background:#f8fafc; border-top:2px solid #e2e8f0;">
@@ -1332,6 +1393,71 @@ def main():
                 "last_updated": datetime.now(timezone.utc).isoformat()
             }
             existing_docs["matches_today"] = all_today_matches
+            # ── Calcul et Export des Combinés dans docs/data.json ──
+            combos_today = []
+            c_idx = 1
+            combo_stake = 3.0
+            for i in range(0, len(all_today_matches) - 1, 2):
+                m1 = all_today_matches[i]
+                m2 = all_today_matches[i+1]
+                o1 = m1.get("odds", 1.50)
+                o2 = m2.get("odds", 1.50)
+                comb_odds = round(o1 * o2, 2)
+                s1 = m1.get("selection_status", "PENDING")
+                s2 = m2.get("selection_status", "PENDING")
+                w1 = s1.startswith("WON")
+                w2 = s2.startswith("WON")
+                l1 = (s1 == "LOST")
+                l2 = (s2 == "LOST")
+                if w1 and w2:
+                    c_status = "WON"
+                    c_profit_u = round(comb_odds - 1.0, 2)
+                elif l1 or l2:
+                    c_status = "LOST"
+                    c_profit_u = -1.0
+                elif m1.get("status") == "LIVE" or m2.get("status") == "LIVE":
+                    c_status = "LIVE"
+                    c_profit_u = 0.0
+                else:
+                    c_status = "PENDING"
+                    c_profit_u = 0.0
+                
+                combos_today.append({
+                    "id": f"combo_{c_idx}",
+                    "ticket_num": c_idx,
+                    "odds": comb_odds,
+                    "default_stake": combo_stake,
+                    "ticket_status": c_status,
+                    "profit_unit": c_profit_u,
+                    "m1": m1,
+                    "m2": m2
+                })
+                c_idx += 1
+
+            c_won = sum(1 for c in combos_today if c["ticket_status"] == "WON")
+            c_lost = sum(1 for c in combos_today if c["ticket_status"] == "LOST")
+            c_live = sum(1 for c in combos_today if c["ticket_status"] == "LIVE")
+            c_upc = sum(1 for c in combos_today if c["ticket_status"] == "PENDING")
+            c_dec = c_won + c_lost
+            c_profit_u = sum(c["profit_unit"] for c in combos_today)
+            c_wr = round((c_won / c_dec * 100), 1) if c_dec > 0 else 0.0
+            c_roi = round((c_profit_u / c_dec * 100), 2) if c_dec > 0 else 0.0
+
+            existing_docs["combos_summary"] = {
+                "total_combos": len(combos_today),
+                "decided_combos": c_dec,
+                "won": c_won,
+                "lost": c_lost,
+                "live": c_live,
+                "upcoming": c_upc,
+                "default_stake": combo_stake,
+                "win_rate": c_wr,
+                "profit_units": round(c_profit_u, 2),
+                "profit_eur": round(c_profit_u * combo_stake, 2),
+                "roi_pct": c_roi
+            }
+            existing_docs["combos_today"] = combos_today
+
 
             os.makedirs(os.path.dirname(docs_data_path), exist_ok=True)
             with open(docs_data_path, "w", encoding="utf-8") as f_out:
