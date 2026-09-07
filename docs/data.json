@@ -9,7 +9,7 @@
     "win_rate": 63.4,
     "profit_units": -0.5,
     "roi_pct": -1.22,
-    "last_updated": "2026-09-07T18:35:41.563193+00:00"
+    "last_updated": "2026-09-07T18:37:22.461839+00:00"
   },
   "matches_today": [
     {
@@ -902,7 +902,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "80'",
+      "minute": "82'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -924,7 +924,7 @@
       "score_display": "1 - 4",
       "home_score": 1,
       "away_score": 4,
-      "minute": "75'",
+      "minute": "76'",
       "selection_status": "WON_LEAD2",
       "profit": 1.05,
       "id": "m_aris_limassol",
@@ -943,10 +943,10 @@
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
       "status": "LIVE",
-      "score_display": "0 - 0",
-      "home_score": 0,
+      "score_display": "1 - 0",
+      "home_score": 1,
       "away_score": 0,
-      "minute": "46'",
+      "minute": "48'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_uni.craiova",
@@ -968,7 +968,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "34'",
+      "minute": "36'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_al_hilal",
@@ -987,10 +987,10 @@
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "LIVE",
-      "score_display": "0 - 0",
-      "home_score": 0,
+      "score_display": "1 - 0",
+      "home_score": 1,
       "away_score": 0,
-      "minute": "5'",
+      "minute": "7'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_sabadell",
@@ -1012,7 +1012,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "4'",
+      "minute": "6'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_palerme",
@@ -1272,7 +1272,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "78'",
+      "minute": "80'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1995,7 +1995,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "1 - 4",
-        "minute": "75'",
+        "minute": "76'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2023,7 +2023,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "80'",
+        "minute": "82'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2039,8 +2039,8 @@
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 80,
         "status": "LIVE",
-        "score_display": "0 - 0",
-        "minute": "46'",
+        "score_display": "1 - 0",
+        "minute": "48'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2068,7 +2068,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "34'",
+        "minute": "36'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2084,8 +2084,8 @@
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 60,
         "status": "LIVE",
-        "score_display": "0 - 0",
-        "minute": "5'",
+        "score_display": "1 - 0",
+        "minute": "7'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2113,7 +2113,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "4'",
+        "minute": "6'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
