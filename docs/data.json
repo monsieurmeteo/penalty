@@ -4,12 +4,12 @@
     "decided_matches": 41,
     "won": 26,
     "lost": 15,
-    "live": 5,
-    "upcoming": 13,
+    "live": 6,
+    "upcoming": 12,
     "win_rate": 63.4,
     "profit_units": -0.5,
     "roi_pct": -1.22,
-    "last_updated": "2026-09-07T18:26:17.341151+00:00"
+    "last_updated": "2026-09-07T18:31:14.479451+00:00"
   },
   "matches_today": [
     {
@@ -902,7 +902,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "71'",
+      "minute": "76'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -968,7 +968,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "25'",
+      "minute": "30'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_al_hilal",
@@ -986,14 +986,16 @@
       "domination_score": 61,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
-      "status": "UPCOMING",
-      "score_display": "vs",
+      "status": "LIVE",
+      "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "À venir",
-      "selection_status": "PENDING",
+      "minute": "1'",
+      "selection_status": "IN_PROGRESS",
       "profit": 0.0,
-      "id": "m_sabadell"
+      "id": "m_sabadell",
+      "is_live": true,
+      "is_finished": false
     },
     {
       "time": "Lun. 07/09 à 20h30",
@@ -1268,7 +1270,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "69'",
+      "minute": "74'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -2019,7 +2021,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "71'",
+        "minute": "76'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2064,7 +2066,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "25'",
+        "minute": "30'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2079,10 +2081,10 @@
         "domination_score": 61,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 60,
-        "status": "UPCOMING",
-        "score_display": "vs",
-        "minute": "À venir",
-        "selection_status": "PENDING",
+        "status": "LIVE",
+        "score_display": "0 - 0",
+        "minute": "1'",
+        "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
     },
