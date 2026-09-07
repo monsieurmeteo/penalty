@@ -1,5 +1,15 @@
 {
   "favs": {
+    "3372601": {
+      "match": "D. Limache - Cobresal",
+      "league": "Chili • D1 Chili",
+      "date_str": "Mar. 08/09 à 01h00",
+      "fav_team": "D. Limache",
+      "fav_odds": 1.46,
+      "p2_fav_odds": null,
+      "fav_score": 65,
+      "fav_badge": "🥈 ARGENT"
+    },
     "3372596": {
       "match": "Vitoria BA - Gremio",
       "league": "Bresil • D1 Bresil",
@@ -10,22 +20,12 @@
       "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
     },
-    "3372601": {
-      "match": "D. Limache - Cobresal",
-      "league": "Chili • D1 Chili",
-      "date_str": "Mar. 08/09 à 01h00",
-      "fav_team": "D. Limache",
-      "fav_odds": 1.5,
-      "p2_fav_odds": null,
-      "fav_score": 65,
-      "fav_badge": "🥈 ARGENT"
-    },
     "3377436": {
       "match": "Emelec - Manta FC",
       "league": "Equateur • D1 Equateur",
       "date_str": "Mar. 08/09 à 02h00",
       "fav_team": "Emelec",
-      "fav_odds": 1.51,
+      "fav_odds": 1.56,
       "p2_fav_odds": null,
       "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
@@ -45,7 +45,7 @@
       "league": "Estonie • D1 Estonie",
       "date_str": "Mar. 08/09 à 16h30",
       "fav_team": "FC Flora",
-      "fav_odds": 1.51,
+      "fav_odds": 1.5,
       "p2_fav_odds": null,
       "fav_score": 73,
       "fav_badge": "🥈 ARGENT"
@@ -75,9 +75,19 @@
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Mar. 08/09 à 20h00",
       "fav_team": "Al Ittihad FC",
-      "fav_odds": 1.38,
+      "fav_odds": 1.36,
       "p2_fav_odds": null,
       "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376744": {
+      "match": "Southampton - Swansea",
+      "league": "Angleterre • Championship",
+      "date_str": "Mar. 08/09 à 20h45",
+      "fav_team": "Southampton",
+      "fav_odds": 1.78,
+      "p2_fav_odds": null,
+      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3378053": {
@@ -90,14 +100,14 @@
       "fav_score": 66,
       "fav_badge": "🥈 ARGENT"
     },
-    "3376744": {
-      "match": "Southampton - Swansea",
-      "league": "Angleterre • Championship",
-      "date_str": "Mar. 08/09 à 20h45",
-      "fav_team": "Southampton",
-      "fav_odds": 1.78,
+    "3375764": {
+      "match": "Dortmund - Villarreal",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Mar. 08/09 à 21h00",
+      "fav_team": "Dortmund",
+      "fav_odds": 1.72,
       "p2_fav_odds": null,
-      "fav_score": 60,
+      "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
     "3375766": {
@@ -108,16 +118,6 @@
       "fav_odds": 1.56,
       "p2_fav_odds": null,
       "fav_score": 58,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375764": {
-      "match": "Dortmund - Villarreal",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Dortmund",
-      "fav_odds": 1.7,
-      "p2_fav_odds": null,
-      "fav_score": 59,
       "fav_badge": "🥉 BRONZE"
     }
   }
