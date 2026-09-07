@@ -20069,5 +20069,326 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3376744",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Southampton vs Swansea",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Southampton",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 60,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.76,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375703",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Bournemouth vs Lincoln",
+    "league": "Angleterre • Efl Cup",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Bournemouth",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.25,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376745",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Watford vs Preston",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Watford",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.91,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375704",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Leyton Orient vs Bradford",
+    "league": "Angleterre • Efl Cup",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Bradford",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376746",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Wrexham vs Burnley",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Wrexham",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 38,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.89,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376743",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Cardiff vs Stoke City",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Cardiff",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375699",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Crystal Palace vs Middlesbrough",
+    "league": "Angleterre • Efl Cup",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Crystal Palace",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.6,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376741",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Blackburn vs Sheffield Utd",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Sheffield Utd",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375705",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Sunderland vs Hull City",
+    "league": "Angleterre • Efl Cup",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "Sunderland",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.61,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375766",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Real Madrid vs Inter Milan",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "Real Madrid",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 57,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.57,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375693",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Millwall vs Newcastle",
+    "league": "Angleterre • Efl Cup",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "Newcastle",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.48,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375764",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Dortmund vs Villarreal",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "Dortmund",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 59,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.7,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375763",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "FC Porto vs Man. City",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "Man. City",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 37,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.68,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375770",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Lille vs Betis Séville",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "Lille",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 35,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376742",
+    "timestamp_utc": "2026-09-07T08:03:14.285996+00:00",
+    "match": "Bolton vs West Ham",
+    "league": "Angleterre • Championship",
+    "date_str": "Mar. 08/09 à 21h00",
+    "fav_team": "West Ham",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 26,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.53,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
