@@ -1,15 +1,15 @@
 {
   "summary": {
-    "total_matches": 50,
+    "total_matches": 52,
     "decided_matches": 33,
     "won": 22,
     "lost": 11,
     "live": 0,
-    "upcoming": 17,
+    "upcoming": 19,
     "win_rate": 66.7,
     "profit_units": 0.35,
     "roi_pct": 1.06,
-    "last_updated": "2026-09-07T02:03:04.127226+00:00"
+    "last_updated": "2026-09-07T04:03:11.149270+00:00"
   },
   "matches_today": [
     {
@@ -843,7 +843,7 @@
       "home": "Asteras T.",
       "away": "PO Triglias",
       "league": "Grece • D1 Grece",
-      "odds": 1.82,
+      "odds": 1.81,
       "fav_team": "Asteras T.",
       "fav_side": "dom",
       "domination_score": 59,
@@ -943,7 +943,7 @@
       "home": "Al Hilal",
       "away": "Neom SC",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "odds": 1.18,
+      "odds": 1.14,
       "fav_team": "Al Hilal",
       "fav_side": "dom",
       "domination_score": 67,
@@ -1023,7 +1023,7 @@
       "home": "Vitoria BA",
       "away": "Gremio",
       "league": "Bresil • D1 Bresil",
-      "odds": 2.05,
+      "odds": 2.0,
       "fav_team": "Vitoria BA",
       "fav_side": "dom",
       "domination_score": 62,
@@ -1043,7 +1043,7 @@
       "home": "Emelec",
       "away": "Manta FC",
       "league": "Equateur • D1 Equateur",
-      "odds": 1.41,
+      "odds": 1.4,
       "fav_team": "Emelec",
       "fav_side": "dom",
       "domination_score": 63,
@@ -1079,16 +1079,60 @@
       "is_live": false,
       "is_finished": false,
       "profit": 0.0
+    },
+    {
+      "id": "3377763",
+      "time": "Mar. 08/09 à 16h30",
+      "league": "Estonie • D1 Estonie",
+      "home": "FC Narva",
+      "away": "FC Flora",
+      "fav_team": "FC Flora",
+      "fav_side": "ext",
+      "odds": 1.65,
+      "domination_score": 72,
+      "badge_tier": "🥈 ARGENT",
+      "win_pct_historical": 80,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Mar. 08/09 à 16h30",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3374518",
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Estonie • D1 Estonie",
+      "home": "Nomme Kalju",
+      "away": "FC Nomme Unite",
+      "fav_team": "Nomme Kalju",
+      "fav_side": "dom",
+      "odds": 1.45,
+      "domination_score": 62,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 50,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Mar. 08/09 à 17h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
     }
   ],
   "history": [],
   "combos_summary": {
-    "total_combos": 20,
+    "total_combos": 21,
     "decided_combos": 12,
     "won": 7,
     "lost": 5,
     "live": 0,
-    "upcoming": 8,
+    "upcoming": 9,
     "default_stake": 3.0,
     "win_rate": 58.3,
     "profit_units": 2.62,
@@ -2001,6 +2045,61 @@
         "profit": 0.0
       },
       "id": "combo_20"
+    },
+    {
+      "id": "combo_21",
+      "ticket_num": 21,
+      "email_ticket_num": 6,
+      "odds": 3.27,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 9.81,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3372372",
+        "time": "Mar. 08/09 à 12h30",
+        "league": "Coree Du Sud • D1 Coree Du Sud",
+        "home": "Ulsan",
+        "away": "FC Seoul",
+        "fav_team": "FC Seoul",
+        "fav_side": "ext",
+        "odds": 1.98,
+        "domination_score": 58,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 70,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "vs",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3377763",
+        "time": "Mar. 08/09 à 16h30",
+        "league": "Estonie • D1 Estonie",
+        "home": "FC Narva",
+        "away": "FC Flora",
+        "fav_team": "FC Flora",
+        "fav_side": "ext",
+        "odds": 1.65,
+        "domination_score": 72,
+        "badge_tier": "🥈 ARGENT",
+        "win_pct_historical": 80,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "vs",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      }
     }
   ],
   "matches_discarded": [
@@ -2026,6 +2125,16 @@
     },
     {
       "time": "Lun. 07/09 à 18h00",
+      "league": "Pologne • D1 Pologne",
+      "match": "Wieczysta vs Zaglebie Lubin",
+      "fav_team": "Wieczysta",
+      "odds": "@1.92",
+      "domination_score": "45/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h00",
       "league": "Chypre • D1 Chypre",
       "match": "Pafos FC vs Olymp.Nicosie",
       "fav_team": "Pafos FC",
@@ -2035,21 +2144,11 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Lun. 07/09 à 18h00",
-      "league": "Pologne • D1 Pologne",
-      "match": "Wieczysta vs Zaglebie Lubin",
-      "fav_team": "Wieczysta",
-      "odds": "@1.95",
-      "domination_score": "45/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
       "time": "Lun. 07/09 à 18h30",
       "league": "Italie • Serie A",
       "match": "Cagliari vs Lecce",
       "fav_team": "Cagliari",
-      "odds": "@1.92",
+      "odds": "@1.93",
       "domination_score": "43/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -2066,6 +2165,26 @@
     },
     {
       "time": "Lun. 07/09 à 19h00",
+      "league": "Portugal • D2 Portugal",
+      "match": "Lusitania vs AVS Futebol",
+      "fav_team": "Lusitania",
+      "odds": "@2.05",
+      "domination_score": "44/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Suede • D1 Suede",
+      "match": "Malmö vs AIK Solna",
+      "fav_team": "Malmö",
+      "odds": "@1.58",
+      "domination_score": "35/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
       "league": "Suede • D1 Suede",
       "match": "Kalmar FF vs Djurgårdens",
       "fav_team": "Djurgårdens",
@@ -2076,12 +2195,12 @@
     },
     {
       "time": "Lun. 07/09 à 19h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "Lusitania vs AVS Futebol",
-      "fav_team": "Lusitania",
-      "odds": "@2.05",
-      "domination_score": "44/100",
-      "reussite": "50%",
+      "league": "Danemark • D1 Danemark",
+      "match": "Midtjylland vs Nordsjaelland",
+      "fav_team": "Midtjylland",
+      "odds": "@1.85",
+      "domination_score": "47/100",
+      "reussite": "60%",
       "status": "ÉCARTÉ"
     },
     {
@@ -2097,30 +2216,10 @@
     {
       "time": "Lun. 07/09 à 19h00",
       "league": "Suede • D1 Suede",
-      "match": "Malmö vs AIK Solna",
-      "fav_team": "Malmö",
-      "odds": "@1.58",
-      "domination_score": "35/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Lun. 07/09 à 19h00",
-      "league": "Danemark • D1 Danemark",
-      "match": "Midtjylland vs Nordsjaelland",
-      "fav_team": "Midtjylland",
-      "odds": "@1.85",
-      "domination_score": "47/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Lun. 07/09 à 19h00",
-      "league": "Suede • D1 Suede",
       "match": "Mjällby vs IFK Göteborg",
       "fav_team": "Mjällby",
-      "odds": "@2.15",
-      "domination_score": "51/100",
+      "odds": "@2.10",
+      "domination_score": "52/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -2156,22 +2255,22 @@
     },
     {
       "time": "Lun. 07/09 à 21h00",
-      "league": "Paraguay • D1 Paraguay",
-      "match": "Guarani vs CD Recoleta",
-      "fav_team": "Guarani",
-      "odds": "@1.87",
-      "domination_score": "54/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Lun. 07/09 à 21h00",
       "league": "Canada • D1 Canada",
       "match": "HFX Wanderers vs Cavalry",
       "fav_team": "Cavalry",
       "odds": "@1.72",
       "domination_score": "49/100",
       "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 21h00",
+      "league": "Paraguay • D1 Paraguay",
+      "match": "Guarani vs CD Recoleta",
+      "fav_team": "Guarani",
+      "odds": "@1.82",
+      "domination_score": "54/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -2209,8 +2308,18 @@
       "league": "Argentine • D1 Argentine",
       "match": "Barracas Cent. vs Argentinos Jrs",
       "fav_team": "Argentinos Jrs",
-      "odds": "@1.93",
-      "domination_score": "39/100",
+      "odds": "@1.89",
+      "domination_score": "40/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 02h00",
+      "league": "Equateur • D1 Equateur",
+      "match": "Mushuc Runa vs FC Leones",
+      "fav_team": "Mushuc Runa",
+      "odds": "@1.83",
+      "domination_score": "46/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -2225,16 +2334,6 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Mar. 08/09 à 02h00",
-      "league": "Equateur • D1 Equateur",
-      "match": "Mushuc Runa vs FC Leones",
-      "fav_team": "Mushuc Runa",
-      "odds": "@1.83",
-      "domination_score": "46/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
       "time": "Mar. 08/09 à 12h30",
       "league": "Coree Du Sud • D1 Coree Du Sud",
       "match": "Incheon FC vs Bucheon FC",
@@ -2242,6 +2341,66 @@
       "odds": "@1.68",
       "domination_score": "40/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "VPS Vaasan vs AC Oulu",
+      "fav_team": "VPS Vaasan",
+      "odds": "@2.00",
+      "domination_score": "33/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "Ilves vs FF Jaro",
+      "fav_team": "Ilves",
+      "odds": "@1.43",
+      "domination_score": "41/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "FC Lahti vs Mariehamn",
+      "fav_team": "FC Lahti",
+      "odds": "@1.47",
+      "domination_score": "43/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h30",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Ettifaq vs Al Faisaly",
+      "fav_team": "Al Ettifaq",
+      "odds": "@1.77",
+      "domination_score": "49/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h55",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Hazem vs Al Taawon",
+      "fav_team": "Al Taawon",
+      "odds": "@2.05",
+      "domination_score": "28/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 18h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "IF Gnistan vs Kups",
+      "fav_team": "Kups",
+      "odds": "@1.85",
+      "domination_score": "29/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     }
   ]

@@ -5,19 +5,9 @@
       "league": "Grece • D1 Grece",
       "date_str": "Lun. 07/09 à 17h00",
       "fav_team": "Asteras T.",
-      "fav_odds": 1.82,
+      "fav_odds": 1.81,
       "p2_fav_odds": null,
       "fav_score": 59,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3363777": {
-      "match": "Rizespor - Alanyaspor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Lun. 07/09 à 19h00",
-      "fav_team": "Rizespor",
-      "fav_odds": 1.77,
-      "p2_fav_odds": null,
-      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
     "3372030": {
@@ -29,6 +19,16 @@
       "p2_fav_odds": null,
       "fav_score": 66,
       "fav_badge": "🥈 ARGENT"
+    },
+    "3363777": {
+      "match": "Rizespor - Alanyaspor",
+      "league": "Turquie • D1 Turquie",
+      "date_str": "Lun. 07/09 à 19h00",
+      "fav_team": "Rizespor",
+      "fav_odds": 1.77,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
     },
     "3367189": {
       "match": "Uni.Craiova - Universit Cluj",
@@ -45,7 +45,7 @@
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Lun. 07/09 à 20h00",
       "fav_team": "Al Hilal",
-      "fav_odds": 1.18,
+      "fav_odds": 1.14,
       "p2_fav_odds": null,
       "fav_score": 67,
       "fav_badge": "🥈 ARGENT"
@@ -70,6 +70,16 @@
       "fav_score": 69,
       "fav_badge": "🥈 ARGENT"
     },
+    "3372596": {
+      "match": "Vitoria BA - Gremio",
+      "league": "Bresil • D1 Bresil",
+      "date_str": "Mar. 08/09 à 01h00",
+      "fav_team": "Vitoria BA",
+      "fav_odds": 2.0,
+      "p2_fav_odds": null,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3372601": {
       "match": "D. Limache - Cobresal",
       "league": "Chili • D1 Chili",
@@ -80,22 +90,12 @@
       "fav_score": 64,
       "fav_badge": "🥉 BRONZE"
     },
-    "3372596": {
-      "match": "Vitoria BA - Gremio",
-      "league": "Bresil • D1 Bresil",
-      "date_str": "Mar. 08/09 à 01h00",
-      "fav_team": "Vitoria BA",
-      "fav_odds": 2.05,
-      "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3377436": {
       "match": "Emelec - Manta FC",
       "league": "Equateur • D1 Equateur",
       "date_str": "Mar. 08/09 à 02h00",
       "fav_team": "Emelec",
-      "fav_odds": 1.41,
+      "fav_odds": 1.4,
       "p2_fav_odds": null,
       "fav_score": 63,
       "fav_badge": "🥉 BRONZE"
@@ -108,6 +108,26 @@
       "fav_odds": 1.98,
       "p2_fav_odds": null,
       "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3377763": {
+      "match": "FC Narva - FC Flora",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Mar. 08/09 à 16h30",
+      "fav_team": "FC Flora",
+      "fav_odds": 1.65,
+      "p2_fav_odds": null,
+      "fav_score": 72,
+      "fav_badge": "🥈 ARGENT"
+    },
+    "3374518": {
+      "match": "Nomme Kalju - FC Nomme Unite",
+      "league": "Estonie • D1 Estonie",
+      "date_str": "Mar. 08/09 à 17h00",
+      "fav_team": "Nomme Kalju",
+      "fav_odds": 1.45,
+      "p2_fav_odds": null,
+      "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
     }
   }

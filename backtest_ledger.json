@@ -19809,5 +19809,177 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3377763",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "FC Narva vs FC Flora",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Mar. 08/09 à 16h30",
+    "fav_team": "FC Flora",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 72,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.65,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377460",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "VPS Vaasan vs AC Oulu",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Mar. 08/09 à 17h00",
+    "fav_team": "VPS Vaasan",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374518",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "Nomme Kalju vs FC Nomme Unite",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Mar. 08/09 à 17h00",
+    "fav_team": "Nomme Kalju",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.45,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377461",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "Ilves vs FF Jaro",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Mar. 08/09 à 17h00",
+    "fav_team": "Ilves",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.43,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377450",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "FC Lahti vs Mariehamn",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Mar. 08/09 à 17h00",
+    "fav_team": "FC Lahti",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.47,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367025",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "Al Ettifaq vs Al Faisaly",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mar. 08/09 à 17h30",
+    "fav_team": "Al Ettifaq",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.77,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367028",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "Al Hazem vs Al Taawon",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mar. 08/09 à 17h55",
+    "fav_team": "Al Taawon",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 28,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377462",
+    "timestamp_utc": "2026-09-07T04:03:11.159758+00:00",
+    "match": "IF Gnistan vs Kups",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Mar. 08/09 à 18h00",
+    "fav_team": "Kups",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 29,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
