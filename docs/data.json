@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 58,
-    "decided_matches": 45,
-    "won": 29,
+    "decided_matches": 46,
+    "won": 30,
     "lost": 16,
     "live": 4,
     "upcoming": 11,
-    "win_rate": 64.4,
-    "profit_units": 0.47,
-    "roi_pct": 1.04,
-    "last_updated": "2026-09-07T18:57:19.554120+00:00"
+    "win_rate": 65.2,
+    "profit_units": 0.96,
+    "roi_pct": 2.09,
+    "last_updated": "2026-09-07T19:05:40.328050+00:00"
   },
   "matches_today": [
     {
@@ -946,7 +946,7 @@
       "score_display": "3 - 0",
       "home_score": 3,
       "away_score": 0,
-      "minute": "67'",
+      "minute": "76'",
       "selection_status": "WON_LEAD2",
       "profit": 0.5,
       "id": "m_uni.craiova",
@@ -990,7 +990,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "27'",
+      "minute": "35'",
       "selection_status": "WON_LEAD2",
       "profit": 0.98,
       "id": "m_sabadell",
@@ -1009,12 +1009,12 @@
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 90,
       "status": "LIVE",
-      "score_display": "1 - 0",
-      "home_score": 1,
+      "score_display": "2 - 0",
+      "home_score": 2,
       "away_score": 0,
-      "minute": "25'",
-      "selection_status": "IN_PROGRESS",
-      "profit": 0.0,
+      "minute": "34'",
+      "selection_status": "WON_LEAD2",
+      "profit": 0.49,
       "id": "m_palerme",
       "is_live": true,
       "is_finished": false
@@ -2040,7 +2040,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "3 - 0",
-        "minute": "67'",
+        "minute": "76'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2085,7 +2085,7 @@
         "win_pct_historical": 60,
         "status": "LIVE",
         "score_display": "2 - 1",
-        "minute": "27'",
+        "minute": "35'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2112,9 +2112,9 @@
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 90,
         "status": "LIVE",
-        "score_display": "1 - 0",
-        "minute": "25'",
-        "selection_status": "IN_PROGRESS",
+        "score_display": "2 - 0",
+        "minute": "34'",
+        "selection_status": "WON_LEAD2",
         "profit": 0.0
       },
       "m2": {
