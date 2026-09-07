@@ -19744,5 +19744,70 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3371150",
+    "timestamp_utc": "2026-09-07T00:02:44.462213+00:00",
+    "match": "Cerro Porteno vs Nac.Asuncion",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Lun. 07/09 à 23h30",
+    "fav_team": "Cerro Porteno",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372372",
+    "timestamp_utc": "2026-09-07T00:02:44.462213+00:00",
+    "match": "Ulsan vs FC Seoul",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mar. 08/09 à 12h30",
+    "fav_team": "FC Seoul",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372370",
+    "timestamp_utc": "2026-09-07T00:02:44.462213+00:00",
+    "match": "Incheon FC vs Bucheon FC",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mar. 08/09 à 12h30",
+    "fav_team": "Incheon FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.68,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
