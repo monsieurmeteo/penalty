@@ -4,12 +4,12 @@
     "decided_matches": 39,
     "won": 25,
     "lost": 14,
-    "live": 1,
-    "upcoming": 18,
+    "live": 2,
+    "upcoming": 17,
     "win_rate": 64.1,
     "profit_units": -0.55,
     "roi_pct": -1.41,
-    "last_updated": "2026-09-07T16:56:05.559299+00:00"
+    "last_updated": "2026-09-07T17:00:31.456449+00:00"
   },
   "matches_today": [
     {
@@ -898,14 +898,16 @@
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
-      "status": "UPCOMING",
-      "score_display": "vs",
+      "status": "LIVE",
+      "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "À venir",
-      "selection_status": "PENDING",
+      "minute": "1'",
+      "selection_status": "IN_PROGRESS",
       "profit": 0.0,
-      "id": "m_rizespor"
+      "id": "m_rizespor",
+      "is_live": true,
+      "is_finished": false
     },
     {
       "time": "Lun. 07/09 à 19h00",
@@ -1272,8 +1274,8 @@
     "decided_combos": 16,
     "won": 8,
     "lost": 8,
-    "live": 0,
-    "upcoming": 8,
+    "live": 1,
+    "upcoming": 7,
     "default_stake": 3.0,
     "win_rate": 50.0,
     "profit_units": 0.72,
@@ -1994,7 +1996,7 @@
       "email_ticket_num": 2,
       "odds": 2.61,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
+      "ticket_status": "LIVE",
       "profit_unit": 0.0,
       "gain_eur": 7.83,
       "profit_eur": 0.0,
@@ -2009,10 +2011,10 @@
         "domination_score": 56,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 70,
-        "status": "UPCOMING",
-        "score_display": "vs",
-        "minute": "À venir",
-        "selection_status": "PENDING",
+        "status": "LIVE",
+        "score_display": "0 - 0",
+        "minute": "1'",
+        "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
       "m2": {
