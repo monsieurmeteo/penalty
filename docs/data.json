@@ -9,7 +9,7 @@
     "win_rate": 65.8,
     "profit_units": 0.45,
     "roi_pct": 1.18,
-    "last_updated": "2026-09-07T09:04:37.353896+00:00"
+    "last_updated": "2026-09-07T10:02:46.643892+00:00"
   },
   "matches_today": [
     {
@@ -1008,7 +1008,7 @@
       "home": "D. Limache",
       "away": "Cobresal",
       "league": "Chili • D1 Chili",
-      "odds": 1.54,
+      "odds": 1.49,
       "fav_team": "D. Limache",
       "fav_side": "dom",
       "domination_score": 65,
@@ -1225,8 +1225,8 @@
       "away": "Inter Milan",
       "fav_team": "Real Madrid",
       "fav_side": "dom",
-      "odds": 1.57,
-      "domination_score": 57,
+      "odds": 1.56,
+      "domination_score": 58,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -2323,5 +2323,436 @@
       }
     }
   ],
-  "matches_discarded": []
+  "matches_discarded": [
+    {
+      "time": "Lun. 07/09 à 17h30",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Khaleej vs Al Riyadh",
+      "fav_team": "Al Khaleej",
+      "odds": "@2.05",
+      "domination_score": "39/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h00",
+      "league": "Lettonie • D1 Lettonie",
+      "match": "FK RFS vs FK Liepaja",
+      "fav_team": "FK RFS",
+      "odds": "@1.28",
+      "domination_score": "52/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h00",
+      "league": "Pologne • D1 Pologne",
+      "match": "Wieczysta vs Zaglebie Lubin",
+      "fav_team": "Wieczysta",
+      "odds": "@1.96",
+      "domination_score": "45/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h00",
+      "league": "Chypre • D1 Chypre",
+      "match": "Pafos FC vs Olymp.Nicosie",
+      "fav_team": "Pafos FC",
+      "odds": "@1.33",
+      "domination_score": "52/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h30",
+      "league": "Italie • Serie A",
+      "match": "Cagliari vs Lecce",
+      "fav_team": "Cagliari",
+      "odds": "@2.05",
+      "domination_score": "43/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 18h45",
+      "league": "Israel • D1 Israel",
+      "match": "Mac.Netanya vs Hapoel Haifa",
+      "fav_team": "Mac.Netanya",
+      "odds": "@1.79",
+      "domination_score": "49/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Suede • D1 Suede",
+      "match": "Mjällby vs IFK Göteborg",
+      "fav_team": "Mjällby",
+      "odds": "@2.10",
+      "domination_score": "52/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Danemark • D1 Danemark",
+      "match": "Midtjylland vs Nordsjaelland",
+      "fav_team": "Midtjylland",
+      "odds": "@1.85",
+      "domination_score": "47/100",
+      "reussite": "60%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Turquie • D1 Turquie",
+      "match": "Göztepe AS vs Gaziantep Spor",
+      "fav_team": "Göztepe AS",
+      "odds": "@1.83",
+      "domination_score": "50/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Suede • D1 Suede",
+      "match": "Malmö vs AIK Solna",
+      "fav_team": "Malmö",
+      "odds": "@1.61",
+      "domination_score": "35/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Suede • D1 Suede",
+      "match": "Kalmar FF vs Djurgårdens",
+      "fav_team": "Djurgårdens",
+      "odds": "@1.58",
+      "domination_score": "54/100",
+      "reussite": "70%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Portugal • D2 Portugal",
+      "match": "Lusitania vs AVS Futebol",
+      "fav_team": "Lusitania",
+      "odds": "@2.05",
+      "domination_score": "44/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 20h00",
+      "league": "Serbie • D1 Serbie",
+      "match": "OFK Belgrade vs IMT N.Belgrade",
+      "fav_team": "OFK Belgrade",
+      "odds": "@2.20",
+      "domination_score": "24/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 20h30",
+      "league": "Pologne • D1 Pologne",
+      "match": "Pogon Szczecin vs Wisla Plock",
+      "fav_team": "Pogon Szczecin",
+      "odds": "@1.83",
+      "domination_score": "53/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 20h45",
+      "league": "France • Ligue 2 Bkt",
+      "match": "Nantes vs Nancy",
+      "fav_team": "Nantes",
+      "odds": "@1.84",
+      "domination_score": "42/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 21h00",
+      "league": "Paraguay • D1 Paraguay",
+      "match": "Guarani vs CD Recoleta",
+      "fav_team": "Guarani",
+      "odds": "@1.87",
+      "domination_score": "54/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 21h00",
+      "league": "Canada • D1 Canada",
+      "match": "HFX Wanderers vs Cavalry",
+      "fav_team": "Cavalry",
+      "odds": "@1.70",
+      "domination_score": "50/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 21h15",
+      "league": "Portugal • Liga Portugal",
+      "match": "Estoril Praia vs Arouca",
+      "fav_team": "Estoril Praia",
+      "odds": "@2.20",
+      "domination_score": "34/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 21h30",
+      "league": "Espagne • Laliga",
+      "match": "Elche vs Real Sociedad",
+      "fav_team": "Real Sociedad",
+      "odds": "@2.05",
+      "domination_score": "26/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 00h00",
+      "league": "Argentine • D1 Argentine",
+      "match": "Barracas Cent. vs Argentinos Jrs",
+      "fav_team": "Argentinos Jrs",
+      "odds": "@1.89",
+      "domination_score": "40/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 02h00",
+      "league": "Equateur • D1 Equateur",
+      "match": "Orense SC vs Guayaquil FC",
+      "fav_team": "Orense SC",
+      "odds": "@1.81",
+      "domination_score": "36/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 02h00",
+      "league": "Equateur • D1 Equateur",
+      "match": "Mushuc Runa vs FC Leones",
+      "fav_team": "Mushuc Runa",
+      "odds": "@1.90",
+      "domination_score": "45/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 12h30",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "match": "Incheon FC vs Bucheon FC",
+      "fav_team": "Incheon FC",
+      "odds": "@1.68",
+      "domination_score": "40/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "VPS Vaasan vs AC Oulu",
+      "fav_team": "VPS Vaasan",
+      "odds": "@2.00",
+      "domination_score": "33/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "FC Lahti vs Mariehamn",
+      "fav_team": "FC Lahti",
+      "odds": "@1.47",
+      "domination_score": "43/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "Ilves vs FF Jaro",
+      "fav_team": "Ilves",
+      "odds": "@1.43",
+      "domination_score": "41/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h30",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Ettifaq vs Al Faisaly",
+      "fav_team": "Al Ettifaq",
+      "odds": "@1.78",
+      "domination_score": "49/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 17h55",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Hazem vs Al Taawon",
+      "fav_team": "Al Taawon",
+      "odds": "@2.05",
+      "domination_score": "28/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 18h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "IF Gnistan vs Kups",
+      "fav_team": "Kups",
+      "odds": "@1.82",
+      "domination_score": "29/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 18h45",
+      "league": "Pays Bas • D1 Pays Bas",
+      "match": "NEC Nimègue vs Exce.Rotterdam",
+      "fav_team": "NEC Nimègue",
+      "odds": "@1.46",
+      "domination_score": "32/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h00",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Qadisiya vs Al Ahli SC",
+      "fav_team": "Al Qadisiya",
+      "odds": "@1.78",
+      "domination_score": "54/100",
+      "reussite": "60%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Efl Cup",
+      "match": "Sunderland vs Hull City",
+      "fav_team": "Sunderland",
+      "odds": "@1.61",
+      "domination_score": "46/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Efl Cup",
+      "match": "Crystal Palace vs Middlesbrough",
+      "fav_team": "Crystal Palace",
+      "odds": "@1.60",
+      "domination_score": "46/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Efl Cup",
+      "match": "Leyton Orient vs Bradford",
+      "fav_team": "Bradford",
+      "odds": "@2.10",
+      "domination_score": "48/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Championship",
+      "match": "Wrexham vs Burnley",
+      "fav_team": "Wrexham",
+      "odds": "@1.89",
+      "domination_score": "38/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Championship",
+      "match": "Cardiff vs Stoke City",
+      "fav_team": "Cardiff",
+      "odds": "@2.00",
+      "domination_score": "48/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Championship",
+      "match": "Blackburn vs Sheffield Utd",
+      "fav_team": "Sheffield Utd",
+      "odds": "@2.05",
+      "domination_score": "39/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Efl Cup",
+      "match": "Bournemouth vs Lincoln",
+      "fav_team": "Bournemouth",
+      "odds": "@1.25",
+      "domination_score": "33/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 20h45",
+      "league": "Angleterre • Championship",
+      "match": "Watford vs Preston",
+      "fav_team": "Watford",
+      "odds": "@1.91",
+      "domination_score": "42/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 21h00",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "match": "FC Porto vs Man. City",
+      "fav_team": "Man. City",
+      "odds": "@1.68",
+      "domination_score": "37/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 21h00",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "match": "Lille vs Betis Séville",
+      "fav_team": "Lille",
+      "odds": "@2.15",
+      "domination_score": "35/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 21h00",
+      "league": "Angleterre • Efl Cup",
+      "match": "Millwall vs Newcastle",
+      "fav_team": "Newcastle",
+      "odds": "@1.48",
+      "domination_score": "34/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mar. 08/09 à 21h00",
+      "league": "Angleterre • Championship",
+      "match": "Bolton vs West Ham",
+      "fav_team": "West Ham",
+      "odds": "@1.53",
+      "domination_score": "26/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    }
+  ]
 }
