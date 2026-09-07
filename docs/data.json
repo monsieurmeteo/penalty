@@ -9,7 +9,7 @@
     "win_rate": 63.4,
     "profit_units": -0.5,
     "roi_pct": -1.22,
-    "last_updated": "2026-09-07T18:09:40.385501+00:00"
+    "last_updated": "2026-09-07T18:14:38.423242+00:00"
   },
   "matches_today": [
     {
@@ -902,7 +902,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "54'",
+      "minute": "59'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -921,10 +921,10 @@
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 90,
       "status": "LIVE",
-      "score_display": "0 - 2",
-      "home_score": 0,
+      "score_display": "1 - 2",
+      "home_score": 1,
       "away_score": 2,
-      "minute": "46'",
+      "minute": "54'",
       "selection_status": "WON_LEAD2",
       "profit": 1.05,
       "id": "m_aris_limassol",
@@ -946,7 +946,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "37'",
+      "minute": "39'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_uni.craiova",
@@ -968,7 +968,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "8'",
+      "minute": "13'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_al_hilal",
@@ -1268,7 +1268,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "52'",
+      "minute": "57'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1990,8 +1990,8 @@
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 90,
         "status": "LIVE",
-        "score_display": "0 - 2",
-        "minute": "46'",
+        "score_display": "1 - 2",
+        "minute": "54'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2019,7 +2019,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "54'",
+        "minute": "59'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2036,7 +2036,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "37'",
+        "minute": "39'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2064,7 +2064,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "8'",
+        "minute": "13'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
