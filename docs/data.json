@@ -4,12 +4,12 @@
     "decided_matches": 47,
     "won": 30,
     "lost": 17,
-    "live": 1,
+    "live": 0,
     "upcoming": 12,
     "win_rate": 63.8,
     "profit_units": -0.04,
     "roi_pct": -0.09,
-    "last_updated": "2026-09-07T20:32:44.713395+00:00"
+    "last_updated": "2026-09-07T20:35:29.792816+00:00"
   },
   "matches_today": [
     {
@@ -986,16 +986,16 @@
       "domination_score": 61,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
-      "status": "LIVE",
+      "status": "FINISHED",
       "score_display": "3 - 2",
       "home_score": 3,
       "away_score": 2,
-      "minute": "90+8'",
+      "minute": "Terminé",
       "selection_status": "WON_LEAD2",
       "profit": 0.98,
       "id": "m_sabadell",
       "is_live": true,
-      "is_finished": false
+      "is_finished": true
     },
     {
       "time": "Lun. 07/09 à 20h30",
@@ -2105,9 +2105,9 @@
         "domination_score": 61,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 60,
-        "status": "LIVE",
+        "status": "FINISHED",
         "score_display": "3 - 2",
-        "minute": "90+8'",
+        "minute": "Terminé",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
