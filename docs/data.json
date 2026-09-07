@@ -4,12 +4,12 @@
     "decided_matches": 38,
     "won": 25,
     "lost": 13,
-    "live": 0,
-    "upcoming": 20,
+    "live": 1,
+    "upcoming": 19,
     "win_rate": 65.8,
     "profit_units": 0.45,
     "roi_pct": 1.18,
-    "last_updated": "2026-09-07T14:03:39.791262+00:00"
+    "last_updated": "2026-09-07T15:25:20.723864+00:00"
   },
   "matches_today": [
     {
@@ -854,14 +854,16 @@
       "domination_score": 59,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
-      "status": "UPCOMING",
-      "score_display": "vs",
+      "status": "LIVE",
+      "score_display": "0 - 1",
       "home_score": 0,
-      "away_score": 0,
-      "minute": "À venir",
-      "selection_status": "PENDING",
+      "away_score": 1,
+      "minute": "23'",
+      "selection_status": "IN_PROGRESS",
       "profit": 0.0,
-      "id": "m_asteras_t."
+      "id": "m_asteras_t.",
+      "is_live": true,
+      "is_finished": false
     },
     {
       "time": "Lun. 07/09 à 18h00",
@@ -1268,8 +1270,8 @@
     "decided_combos": 15,
     "won": 8,
     "lost": 7,
-    "live": 0,
-    "upcoming": 9,
+    "live": 1,
+    "upcoming": 8,
     "default_stake": 3.0,
     "win_rate": 53.3,
     "profit_units": 1.72,
@@ -1945,7 +1947,7 @@
       "email_ticket_num": 1,
       "odds": 3.53,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
+      "ticket_status": "LIVE",
       "profit_unit": 0.0,
       "gain_eur": 10.59,
       "profit_eur": 0.0,
@@ -1960,10 +1962,10 @@
         "domination_score": 59,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 50,
-        "status": "UPCOMING",
-        "score_display": "vs",
-        "minute": "À venir",
-        "selection_status": "PENDING",
+        "status": "LIVE",
+        "score_display": "0 - 1",
+        "minute": "23'",
+        "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
       "m2": {

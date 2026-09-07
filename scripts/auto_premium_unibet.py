@@ -565,10 +565,39 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         except Exception as e_ls:
             print(f"⚠️ Sync LiveScore ({d_str}): {e_ls}")
 
+    TEAM_ALIASES = {
+        "potriglias": ["iraklis", "triglias", "potrigliasiraklis"],
+        "iraklis": ["potriglias", "triglias"],
+        "unicraiova": ["craiova", "csuniversitateacraiova", "ucraiova"],
+        "universitcluj": ["universitateacluj", "ucluj"],
+        "fcnarva": ["narvatrans", "transnarva", "narva"],
+        "palerme": ["palermo"],
+        "dlimache": ["deporteslimache", "limache"],
+        "vitoriaba": ["vitoria"],
+        "mantafc": ["manta"],
+        "nommeunite": ["nommeunited"],
+        "aekathenes": ["aekathens", "aek"],
+        "intermilan": ["inter"],
+    }
+    STOPWORDS = {'fc', 'cf', 'sc', 'cd', 'cs', 'de', 'la', 'le', 'el', 'club', 'deportes', 'real', 'city', 'united', 'athletic', 'sporting'}
+
     def clean_n(x): return re.sub(r'[^a-z0-9]', '', (x or '').lower())
     def sim_score(a, b):
         ca, cb = clean_n(a), clean_n(b)
+        if not ca or not cb: return 0.0
+        if ca == cb: return 1.0
         if ca in cb or cb in ca: return 0.90
+        for k, alias_list in TEAM_ALIASES.items():
+            if k in ca or ca in k:
+                for al in alias_list:
+                    if al in cb or cb in al: return 0.92
+            if k in cb or cb in k:
+                for al in alias_list:
+                    if al in ca or ca in al: return 0.92
+        words_a = [w for w in re.split(r'[^a-z0-9]+', str(a).lower()) if len(w) >= 4 and w not in STOPWORDS]
+        words_b = [w for w in re.split(r'[^a-z0-9]+', str(b).lower()) if len(w) >= 4 and w not in STOPWORDS]
+        if set(words_a).intersection(set(words_b)):
+            return 0.85
         return SequenceMatcher(None, ca, cb).ratio()
 
     # Index existing matches by unique team key

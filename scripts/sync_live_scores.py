@@ -3,13 +3,48 @@ from datetime import datetime, timezone
 import requests
 from difflib import SequenceMatcher
 
+TEAM_ALIASES = {
+    "potriglias": ["iraklis", "triglias", "potrigliasiraklis"],
+    "iraklis": ["potriglias", "triglias"],
+    "unicraiova": ["craiova", "csuniversitateacraiova", "ucraiova"],
+    "universitcluj": ["universitateacluj", "ucluj"],
+    "fcnarva": ["narvatrans", "transnarva", "narva"],
+    "palerme": ["palermo"],
+    "dlimache": ["deporteslimache", "limache"],
+    "vitoriaba": ["vitoria"],
+    "mantafc": ["manta"],
+    "nommeunite": ["nommeunited"],
+    "aekathenes": ["aekathens", "aek"],
+    "intermilan": ["inter"],
+}
+
+STOPWORDS = {'fc', 'cf', 'sc', 'cd', 'cs', 'de', 'la', 'le', 'el', 'club', 'deportes', 'real', 'city', 'united', 'athletic', 'sporting'}
+
 def clean_name(x):
     if not x: return ""
     return re.sub(r'[^a-z0-9]', '', x.lower())
 
 def sim_score(a, b):
     ca, cb = clean_name(a), clean_name(b)
+    if not ca or not cb: return 0.0
+    if ca == cb: return 1.0
     if ca in cb or cb in ca: return 0.90
+    
+    # Check aliases
+    for k, alias_list in TEAM_ALIASES.items():
+        if k in ca or ca in k:
+            for al in alias_list:
+                if al in cb or cb in al: return 0.92
+        if k in cb or cb in k:
+            for al in alias_list:
+                if al in ca or ca in al: return 0.92
+
+    # Distinctive keyword token match (words with 4+ letters)
+    words_a = [w for w in re.split(r'[^a-z0-9]+', str(a).lower()) if len(w) >= 4 and w not in STOPWORDS]
+    words_b = [w for w in re.split(r'[^a-z0-9]+', str(b).lower()) if len(w) >= 4 and w not in STOPWORDS]
+    if set(words_a).intersection(set(words_b)):
+        return 0.85
+
     return SequenceMatcher(None, ca, cb).ratio()
 
 def sync():
