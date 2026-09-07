@@ -4,12 +4,12 @@
     "decided_matches": 46,
     "won": 30,
     "lost": 16,
-    "live": 4,
+    "live": 3,
     "upcoming": 11,
     "win_rate": 65.2,
     "profit_units": 0.96,
     "roi_pct": 2.09,
-    "last_updated": "2026-09-07T19:07:20.573080+00:00"
+    "last_updated": "2026-09-07T19:23:44.991102+00:00"
   },
   "matches_today": [
     {
@@ -942,16 +942,16 @@
       "domination_score": 69,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
-      "status": "LIVE",
+      "status": "FINISHED",
       "score_display": "4 - 0",
       "home_score": 4,
       "away_score": 0,
-      "minute": "77'",
+      "minute": "Terminé",
       "selection_status": "WON_LEAD2",
       "profit": 0.5,
       "id": "m_uni.craiova",
       "is_live": true,
-      "is_finished": false
+      "is_finished": true
     },
     {
       "time": "Lun. 07/09 à 20h00",
@@ -968,7 +968,7 @@
       "score_display": "0 - 2",
       "home_score": 0,
       "away_score": 2,
-      "minute": "Mi-temps",
+      "minute": "61'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_al_hilal",
@@ -990,7 +990,7 @@
       "score_display": "2 - 1",
       "home_score": 2,
       "away_score": 1,
-      "minute": "36'",
+      "minute": "Mi-temps",
       "selection_status": "WON_LEAD2",
       "profit": 0.98,
       "id": "m_sabadell",
@@ -1012,7 +1012,7 @@
       "score_display": "2 - 0",
       "home_score": 2,
       "away_score": 0,
-      "minute": "35'",
+      "minute": "Mi-temps",
       "selection_status": "WON_LEAD2",
       "profit": 0.49,
       "id": "m_palerme",
@@ -2038,9 +2038,9 @@
         "domination_score": 69,
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 80,
-        "status": "LIVE",
+        "status": "FINISHED",
         "score_display": "4 - 0",
-        "minute": "77'",
+        "minute": "Terminé",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2068,7 +2068,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 2",
-        "minute": "Mi-temps",
+        "minute": "61'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2085,7 +2085,7 @@
         "win_pct_historical": 60,
         "status": "LIVE",
         "score_display": "2 - 1",
-        "minute": "36'",
+        "minute": "Mi-temps",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2113,7 +2113,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "2 - 0",
-        "minute": "35'",
+        "minute": "Mi-temps",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       },
