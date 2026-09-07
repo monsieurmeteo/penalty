@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 58,
-    "decided_matches": 38,
+    "decided_matches": 39,
     "won": 25,
-    "lost": 13,
-    "live": 2,
+    "lost": 14,
+    "live": 1,
     "upcoming": 18,
-    "win_rate": 65.8,
-    "profit_units": 0.45,
-    "roi_pct": 1.18,
-    "last_updated": "2026-09-07T16:38:26.690384+00:00"
+    "win_rate": 64.1,
+    "profit_units": -0.55,
+    "roi_pct": -1.41,
+    "last_updated": "2026-09-07T16:56:05.559299+00:00"
   },
   "matches_today": [
     {
@@ -854,16 +854,16 @@
       "domination_score": 59,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
-      "status": "LIVE",
+      "status": "FINISHED",
       "score_display": "0 - 2",
       "home_score": 0,
       "away_score": 2,
-      "minute": "78'",
-      "selection_status": "IN_PROGRESS",
-      "profit": 0.0,
+      "minute": "Terminé",
+      "selection_status": "LOST",
+      "profit": -1.0,
       "id": "m_asteras_t.",
       "is_live": true,
-      "is_finished": false
+      "is_finished": true
     },
     {
       "time": "Lun. 07/09 à 18h00",
@@ -880,7 +880,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "37'",
+      "minute": "Mi-temps",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_riga_fc",
@@ -1269,16 +1269,16 @@
   "history": [],
   "combos_summary": {
     "total_combos": 24,
-    "decided_combos": 15,
+    "decided_combos": 16,
     "won": 8,
-    "lost": 7,
-    "live": 1,
+    "lost": 8,
+    "live": 0,
     "upcoming": 8,
     "default_stake": 3.0,
-    "win_rate": 53.3,
-    "profit_units": 1.72,
-    "profit_eur": 5.16,
-    "roi_pct": 11.47
+    "win_rate": 50.0,
+    "profit_units": 0.72,
+    "profit_eur": 2.16,
+    "roi_pct": 4.5
   },
   "combos_today": [
     {
@@ -1949,10 +1949,10 @@
       "email_ticket_num": 1,
       "odds": 3.53,
       "default_stake": 3.0,
-      "ticket_status": "LIVE",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 10.59,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "time": "Lun. 07/09 à 17h00",
         "home": "Asteras T.",
@@ -1964,10 +1964,10 @@
         "domination_score": 59,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 50,
-        "status": "LIVE",
+        "status": "FINISHED",
         "score_display": "0 - 2",
-        "minute": "78'",
-        "selection_status": "IN_PROGRESS",
+        "minute": "Terminé",
+        "selection_status": "LOST",
         "profit": 0.0
       },
       "m2": {
