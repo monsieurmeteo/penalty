@@ -1,25 +1,5 @@
 {
   "favs": {
-    "3370816": {
-      "match": "SD Aucas - Barcelona SC",
-      "league": "Equateur • D1 Equateur",
-      "date_str": "Lun. 07/09 à 02h00",
-      "fav_team": "SD Aucas",
-      "fav_odds": 1.66,
-      "p2_fav_odds": null,
-      "fav_score": 60,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3377764": {
-      "match": "Dep. Toluca - Monterrey",
-      "league": "Amerique • Leagues Cup",
-      "date_str": "Lun. 07/09 à 03h15",
-      "fav_team": "Dep. Toluca",
-      "fav_odds": 2.05,
-      "p2_fav_odds": null,
-      "fav_score": 57,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3374303": {
       "match": "Asteras T. - PO Triglias",
       "league": "Grece • D1 Grece",
@@ -28,6 +8,16 @@
       "fav_odds": 1.82,
       "p2_fav_odds": null,
       "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3363777": {
+      "match": "Rizespor - Alanyaspor",
+      "league": "Turquie • D1 Turquie",
+      "date_str": "Lun. 07/09 à 19h00",
+      "fav_team": "Rizespor",
+      "fav_odds": 1.77,
+      "p2_fav_odds": null,
+      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
     "3372030": {
@@ -39,16 +29,6 @@
       "p2_fav_odds": null,
       "fav_score": 66,
       "fav_badge": "🥈 ARGENT"
-    },
-    "3363777": {
-      "match": "Rizespor - Alanyaspor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Lun. 07/09 à 19h00",
-      "fav_team": "Rizespor",
-      "fav_odds": 1.77,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
     },
     "3367189": {
       "match": "Uni.Craiova - Universit Cluj",
@@ -65,19 +45,9 @@
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Lun. 07/09 à 20h00",
       "fav_team": "Al Hilal",
-      "fav_odds": 1.19,
+      "fav_odds": 1.18,
       "p2_fav_odds": null,
       "fav_score": 67,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3369044": {
-      "match": "Palerme - Sampdoria",
-      "league": "Italie • Serie B",
-      "date_str": "Lun. 07/09 à 20h30",
-      "fav_team": "Palerme",
-      "fav_odds": 1.68,
-      "p2_fav_odds": null,
-      "fav_score": 69,
       "fav_badge": "🥈 ARGENT"
     },
     "3360635": {
@@ -85,10 +55,20 @@
       "league": "Espagne • Laliga 2",
       "date_str": "Lun. 07/09 à 20h30",
       "fav_team": "Sabadell",
-      "fav_odds": 1.96,
+      "fav_odds": 1.92,
       "p2_fav_odds": null,
       "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
+    },
+    "3369044": {
+      "match": "Palerme - Sampdoria",
+      "league": "Italie • Serie B",
+      "date_str": "Lun. 07/09 à 20h30",
+      "fav_team": "Palerme",
+      "fav_odds": 1.65,
+      "p2_fav_odds": null,
+      "fav_score": 69,
+      "fav_badge": "🥈 ARGENT"
     },
     "3372601": {
       "match": "D. Limache - Cobresal",
@@ -115,7 +95,7 @@
       "league": "Equateur • D1 Equateur",
       "date_str": "Mar. 08/09 à 02h00",
       "fav_team": "Emelec",
-      "fav_odds": 1.42,
+      "fav_odds": 1.41,
       "p2_fav_odds": null,
       "fav_score": 63,
       "fav_badge": "🥉 BRONZE"

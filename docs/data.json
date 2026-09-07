@@ -9,7 +9,7 @@
     "win_rate": 66.7,
     "profit_units": 0.35,
     "roi_pct": 1.06,
-    "last_updated": "2026-09-07T00:02:44.452362+00:00"
+    "last_updated": "2026-09-07T02:03:04.127226+00:00"
   },
   "matches_today": [
     {
@@ -943,7 +943,7 @@
       "home": "Al Hilal",
       "away": "Neom SC",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "odds": 1.19,
+      "odds": 1.18,
       "fav_team": "Al Hilal",
       "fav_side": "dom",
       "domination_score": 67,
@@ -963,7 +963,7 @@
       "home": "Sabadell",
       "away": "Cordoba",
       "league": "Espagne • Laliga 2",
-      "odds": 1.96,
+      "odds": 1.92,
       "fav_team": "Sabadell",
       "fav_side": "dom",
       "domination_score": 61,
@@ -983,7 +983,7 @@
       "home": "Palerme",
       "away": "Sampdoria",
       "league": "Italie • Serie B",
-      "odds": 1.68,
+      "odds": 1.65,
       "fav_team": "Palerme",
       "fav_side": "dom",
       "domination_score": 69,
@@ -1043,7 +1043,7 @@
       "home": "Emelec",
       "away": "Manta FC",
       "league": "Equateur • D1 Equateur",
-      "odds": 1.42,
+      "odds": 1.41,
       "fav_team": "Emelec",
       "fav_side": "dom",
       "domination_score": 63,
@@ -2005,16 +2005,6 @@
   ],
   "matches_discarded": [
     {
-      "time": "Lun. 07/09 à 02h30",
-      "league": "Argentine • D1 Argentine",
-      "match": "Racing Club vs Tucuman",
-      "fav_team": "Racing Club",
-      "odds": "@1.86",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
       "time": "Lun. 07/09 à 17h30",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "match": "Al Khaleej vs Al Riyadh",
@@ -2026,12 +2016,12 @@
     },
     {
       "time": "Lun. 07/09 à 18h00",
-      "league": "Pologne • D1 Pologne",
-      "match": "Wieczysta vs Zaglebie Lubin",
-      "fav_team": "Wieczysta",
-      "odds": "@1.95",
-      "domination_score": "45/100",
-      "reussite": "50%",
+      "league": "Lettonie • D1 Lettonie",
+      "match": "FK RFS vs FK Liepaja",
+      "fav_team": "FK RFS",
+      "odds": "@1.27",
+      "domination_score": "52/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -2046,12 +2036,12 @@
     },
     {
       "time": "Lun. 07/09 à 18h00",
-      "league": "Lettonie • D1 Lettonie",
-      "match": "FK RFS vs FK Liepaja",
-      "fav_team": "FK RFS",
-      "odds": "@1.27",
-      "domination_score": "52/100",
-      "reussite": "40%",
+      "league": "Pologne • D1 Pologne",
+      "match": "Wieczysta vs Zaglebie Lubin",
+      "fav_team": "Wieczysta",
+      "odds": "@1.95",
+      "domination_score": "45/100",
+      "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
@@ -2096,16 +2086,6 @@
     },
     {
       "time": "Lun. 07/09 à 19h00",
-      "league": "Suede • D1 Suede",
-      "match": "Mjällby vs IFK Göteborg",
-      "fav_team": "Mjällby",
-      "odds": "@2.15",
-      "domination_score": "51/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Lun. 07/09 à 19h00",
       "league": "Turquie • D1 Turquie",
       "match": "Göztepe AS vs Gaziantep Spor",
       "fav_team": "Göztepe AS",
@@ -2119,7 +2099,7 @@
       "league": "Suede • D1 Suede",
       "match": "Malmö vs AIK Solna",
       "fav_team": "Malmö",
-      "odds": "@1.61",
+      "odds": "@1.58",
       "domination_score": "35/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -2129,9 +2109,19 @@
       "league": "Danemark • D1 Danemark",
       "match": "Midtjylland vs Nordsjaelland",
       "fav_team": "Midtjylland",
-      "odds": "@1.88",
+      "odds": "@1.85",
       "domination_score": "47/100",
       "reussite": "60%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Lun. 07/09 à 19h00",
+      "league": "Suede • D1 Suede",
+      "match": "Mjällby vs IFK Göteborg",
+      "fav_team": "Mjällby",
+      "odds": "@2.15",
+      "domination_score": "51/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
