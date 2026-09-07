@@ -1252,20 +1252,57 @@ def main():
         fav1 = m1.get("fav_team", m1.get("home", ""))
         fav2 = m2.get("fav_team", m2.get("home", ""))
 
+        def _get_leg_status_html(m):
+            sel_st = m.get("selection_status", "PENDING")
+            st = m.get("status", "UPCOMING")
+            sc = m.get("score_display", "")
+            if sel_st == "WON_LEAD2":
+                return f'<span style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; border:1px solid #86efac;">👑 +2b GAGNÉ ({sc})</span>'
+            elif sel_st == "WON_FINAL":
+                return f'<span style="background:#dcfce7; color:#15803d; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; border:1px solid #86efac;">✅ VICTOIRE ({sc})</span>'
+            elif sel_st == "LOST":
+                return f'<span style="background:#fee2e2; color:#b91c1c; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; border:1px solid #fca5a5;">❌ PERDU ({sc})</span>'
+            elif st == "LIVE":
+                min_str = m.get("minute", "En cours")
+                return f'<span style="background:#fef3c7; color:#b45309; font-weight:800; font-size:10px; padding:2px 6px; border-radius:4px; border:1px solid #fde68a;">🟢 EN DIRECT {min_str} ({sc})</span>'
+            else:
+                return f'<span style="background:#f1f5f9; color:#64748b; font-weight:700; font-size:10px; padding:2px 6px; border-radius:4px;">⏳ À venir</span>'
+
+        s1 = m1.get("selection_status", "PENDING")
+        s2 = m2.get("selection_status", "PENDING")
+        w1 = s1.startswith("WON")
+        w2 = s2.startswith("WON")
+        st1 = m1.get("status")
+        st2 = m2.get("status")
+
+        if (w1 and not w2) or (w2 and not w1):
+            live_ticket_badge = '<span style="background:#15803d; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🔥 1/2 VALIDÉ !</span>'
+        elif st1 == "LIVE" or st2 == "LIVE":
+            live_ticket_badge = '<span style="background:#d97706; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🟢 EN COURS</span>'
+        else:
+            live_ticket_badge = ''
+
         combos_html += f'''
         <div style="background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #2563eb; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <span style="background:#0f172a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🎟️ TICKET #{c_num}</span>
               <span style="background:#1d4ed8; color:#ffffff; font-weight:900; font-size:12px; padding:2px 8px; border-radius:5px;">Cote @{comb_odds:.2f}</span>
+              {live_ticket_badge}
             </div>
             <div style="font-size:11px; font-weight:800; color:#15803d;">
               Mise : <b>3,00 €</b> &bull; Gain Potentiel : <b>{pot_win:.2f} €</b> (+{net_profit:.2f} € net)
             </div>
           </div>
           <div style="font-size:11px; color:#334155; line-height:1.5;">
-            <div style="padding:2px 0;">1️⃣ <b>{m1.get('time', '')}</b> : {m1.get('home')} vs {m1.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav1}</span> @{c1:.2f}</div>
-            <div style="padding:2px 0;">2️⃣ <b>{m2.get('time', '')}</b> : {m2.get('home')} vs {m2.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav2}</span> @{c2:.2f}</div>
+            <div style="padding:3px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+              <span>1️⃣ <b>{m1.get('time', '')}</b> : {m1.get('home')} vs {m1.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav1}</span> @{c1:.2f}</span>
+              {_get_leg_status_html(m1)}
+            </div>
+            <div style="padding:3px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+              <span>2️⃣ <b>{m2.get('time', '')}</b> : {m2.get('home')} vs {m2.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav2}</span> @{c2:.2f}</span>
+              {_get_leg_status_html(m2)}
+            </div>
           </div>
         </div>
         '''
