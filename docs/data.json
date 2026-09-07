@@ -4,12 +4,12 @@
     "decided_matches": 40,
     "won": 25,
     "lost": 15,
-    "live": 4,
-    "upcoming": 14,
+    "live": 5,
+    "upcoming": 13,
     "win_rate": 62.5,
     "profit_units": -1.55,
     "roi_pct": -3.88,
-    "last_updated": "2026-09-07T17:50:25.281430+00:00"
+    "last_updated": "2026-09-07T18:02:30.347155+00:00"
   },
   "matches_today": [
     {
@@ -902,7 +902,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "Mi-temps",
+      "minute": "47'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -946,7 +946,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "18'",
+      "minute": "31'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_uni.craiova",
@@ -964,14 +964,16 @@
       "domination_score": 67,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 70,
-      "status": "UPCOMING",
-      "score_display": "vs",
+      "status": "LIVE",
+      "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "À venir",
-      "selection_status": "PENDING",
+      "minute": "1'",
+      "selection_status": "IN_PROGRESS",
       "profit": 0.0,
-      "id": "m_al_hilal"
+      "id": "m_al_hilal",
+      "is_live": true,
+      "is_finished": false
     },
     {
       "time": "Lun. 07/09 à 20h30",
@@ -1278,8 +1280,8 @@
     "decided_combos": 16,
     "won": 8,
     "lost": 8,
-    "live": 1,
-    "upcoming": 7,
+    "live": 2,
+    "upcoming": 6,
     "default_stake": 3.0,
     "win_rate": 50.0,
     "profit_units": 0.72,
@@ -2017,7 +2019,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "Mi-temps",
+        "minute": "47'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2034,7 +2036,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "18'",
+        "minute": "31'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2045,7 +2047,7 @@
       "email_ticket_num": 3,
       "odds": 2.17,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
+      "ticket_status": "LIVE",
       "profit_unit": 0.0,
       "gain_eur": 6.51,
       "profit_eur": 0.0,
@@ -2060,10 +2062,10 @@
         "domination_score": 67,
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 70,
-        "status": "UPCOMING",
-        "score_display": "vs",
-        "minute": "À venir",
-        "selection_status": "PENDING",
+        "status": "LIVE",
+        "score_display": "0 - 0",
+        "minute": "1'",
+        "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
       "m2": {
