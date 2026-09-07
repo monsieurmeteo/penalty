@@ -9,7 +9,7 @@
     "win_rate": 64.4,
     "profit_units": 0.47,
     "roi_pct": 1.04,
-    "last_updated": "2026-09-07T18:54:01.052054+00:00"
+    "last_updated": "2026-09-07T18:57:19.554120+00:00"
   },
   "matches_today": [
     {
@@ -946,7 +946,7 @@
       "score_display": "3 - 0",
       "home_score": 3,
       "away_score": 0,
-      "minute": "64'",
+      "minute": "67'",
       "selection_status": "WON_LEAD2",
       "profit": 0.5,
       "id": "m_uni.craiova",
@@ -987,10 +987,10 @@
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "LIVE",
-      "score_display": "2 - 0",
+      "score_display": "2 - 1",
       "home_score": 2,
-      "away_score": 0,
-      "minute": "24'",
+      "away_score": 1,
+      "minute": "27'",
       "selection_status": "WON_LEAD2",
       "profit": 0.98,
       "id": "m_sabadell",
@@ -1012,7 +1012,7 @@
       "score_display": "1 - 0",
       "home_score": 1,
       "away_score": 0,
-      "minute": "22'",
+      "minute": "25'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_palerme",
@@ -2040,7 +2040,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "3 - 0",
-        "minute": "64'",
+        "minute": "67'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2084,8 +2084,8 @@
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 60,
         "status": "LIVE",
-        "score_display": "2 - 0",
-        "minute": "24'",
+        "score_display": "2 - 1",
+        "minute": "27'",
         "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
@@ -2113,7 +2113,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "1 - 0",
-        "minute": "22'",
+        "minute": "25'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
