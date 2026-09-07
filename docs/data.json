@@ -9,7 +9,7 @@
     "win_rate": 64.1,
     "profit_units": -0.55,
     "roi_pct": -1.41,
-    "last_updated": "2026-09-07T17:02:54.954645+00:00"
+    "last_updated": "2026-09-07T17:07:52.264434+00:00"
   },
   "matches_today": [
     {
@@ -880,7 +880,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "46'",
+      "minute": "50'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_riga_fc",
@@ -902,7 +902,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "3'",
+      "minute": "8'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -921,10 +921,10 @@
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 90,
       "status": "LIVE",
-      "score_display": "0 - 0",
+      "score_display": "0 - 1",
       "home_score": 0,
-      "away_score": 0,
-      "minute": "1'",
+      "away_score": 1,
+      "minute": "6'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_aris_limassol",
@@ -1264,7 +1264,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "1'",
+      "minute": "6'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1986,8 +1986,8 @@
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 90,
         "status": "LIVE",
-        "score_display": "0 - 0",
-        "minute": "1'",
+        "score_display": "0 - 1",
+        "minute": "6'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2015,7 +2015,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "3'",
+        "minute": "8'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
