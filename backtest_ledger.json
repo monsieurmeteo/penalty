@@ -19981,5 +19981,93 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3374805",
+    "timestamp_utc": "2026-09-07T06:03:13.190881+00:00",
+    "match": "NEC Nimègue vs Exce.Rotterdam",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Mar. 08/09 à 18h45",
+    "fav_team": "NEC Nimègue",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 32,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.44,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375761",
+    "timestamp_utc": "2026-09-07T06:03:13.190881+00:00",
+    "match": "AEK Athènes vs Lask Linz",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mar. 08/09 à 18h45",
+    "fav_team": "AEK Athènes",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 68,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.76,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367029",
+    "timestamp_utc": "2026-09-07T06:03:13.190881+00:00",
+    "match": "Al Qadisiya vs Al Ahli SC",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mar. 08/09 à 20h00",
+    "fav_team": "Al Qadisiya",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.78,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367022",
+    "timestamp_utc": "2026-09-07T06:03:13.190881+00:00",
+    "match": "Al Ittihad FC vs Al Feiha",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mar. 08/09 à 20h00",
+    "fav_team": "Al Ittihad FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.37,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
