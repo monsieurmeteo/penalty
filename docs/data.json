@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 58,
-    "decided_matches": 39,
+    "decided_matches": 40,
     "won": 25,
-    "lost": 14,
-    "live": 5,
+    "lost": 15,
+    "live": 4,
     "upcoming": 14,
-    "win_rate": 64.1,
-    "profit_units": -0.55,
-    "roi_pct": -1.41,
-    "last_updated": "2026-09-07T17:34:30.759429+00:00"
+    "win_rate": 62.5,
+    "profit_units": -1.55,
+    "roi_pct": -3.88,
+    "last_updated": "2026-09-07T17:50:25.281430+00:00"
   },
   "matches_today": [
     {
@@ -876,16 +876,16 @@
       "domination_score": 74,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
-      "status": "LIVE",
+      "status": "FINISHED",
       "score_display": "1 - 1",
       "home_score": 1,
       "away_score": 1,
-      "minute": "78'",
-      "selection_status": "IN_PROGRESS",
-      "profit": 0.0,
+      "minute": "Terminé",
+      "selection_status": "LOST",
+      "profit": -1.0,
       "id": "m_riga_fc",
       "is_live": true,
-      "is_finished": false
+      "is_finished": true
     },
     {
       "time": "Lun. 07/09 à 19h00",
@@ -902,7 +902,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "35'",
+      "minute": "Mi-temps",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -924,7 +924,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "32'",
+      "minute": "Mi-temps",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_aris_limassol",
@@ -946,7 +946,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "1'",
+      "minute": "18'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_uni.craiova",
@@ -1266,7 +1266,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "33'",
+      "minute": "Mi-temps",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1989,7 +1989,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "32'",
+        "minute": "Mi-temps",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2017,7 +2017,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "35'",
+        "minute": "Mi-temps",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2034,7 +2034,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "1'",
+        "minute": "18'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
