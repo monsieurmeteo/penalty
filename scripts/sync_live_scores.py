@@ -13,41 +13,53 @@ def sim_score(a, b):
     return SequenceMatcher(None, ca, cb).ratio()
 
 def sync():
-    data_path = r"C:\Users\grego\Documents\DEV_DIVERS\penalty\docs\data.json"
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    data_path = os.path.join(base_dir, "docs", "data.json")
     with open(data_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    today_str = datetime.now().strftime("%Y%m%d")
-    ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{today_str}/0"
-    print(f"Fetching LiveScore for {today_str}...")
-    r = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
-    if r.status_code != 200:
-        print(f"Error LiveScore HTTP {r.status_code}")
-        return False
-
-    ls_json = r.json()
+    from datetime import timedelta
+    now = datetime.now()
+    dates_to_check = [
+        (now - timedelta(days=1)).strftime("%Y%m%d"),
+        now.strftime("%Y%m%d")
+    ]
     events = []
-    for st in ls_json.get("Stages", []):
-        for m_ev in st.get("Events", []):
-            eps = str(m_ev.get("Eps", ""))
-            tr1 = m_ev.get("Tr1")
-            tr2 = m_ev.get("Tr2")
-            h_sc = int(tr1) if tr1 is not None and str(tr1).isdigit() else None
-            a_sc = int(tr2) if tr2 is not None and str(tr2).isdigit() else None
-            t1 = m_ev.get("T1", [{}])[0].get("Nm", "")
-            t2 = m_ev.get("T2", [{}])[0].get("Nm", "")
-            events.append({
-                "home": t1,
-                "away": t2,
-                "eps": eps,
-                "h_sc": h_sc,
-                "a_sc": a_sc
-            })
+    for d_str in dates_to_check:
+        ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{d_str}/0"
+        print(f"Fetching LiveScore for {d_str}...")
+        try:
+            r = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
+            if r.status_code == 200:
+                for st in r.json().get("Stages", []):
+                    for m_ev in st.get("Events", []):
+                        eps = str(m_ev.get("Eps", ""))
+                        tr1 = m_ev.get("Tr1")
+                        tr2 = m_ev.get("Tr2")
+                        h_sc = int(tr1) if tr1 is not None and str(tr1).isdigit() else None
+                        a_sc = int(tr2) if tr2 is not None and str(tr2).isdigit() else None
+                        t1 = m_ev.get("T1", [{}])[0].get("Nm", "")
+                        t2 = m_ev.get("T2", [{}])[0].get("Nm", "")
+                        events.append({
+                            "home": t1,
+                            "away": t2,
+                            "eps": eps,
+                            "h_sc": h_sc,
+                            "a_sc": a_sc
+                        })
+        except Exception as e:
+            print(f"Error fetching LiveScore {d_str}: {e}")
 
     print(f"Loaded {len(events)} LiveScore events.")
 
     matches = data.get("matches_today", [])
     updated_count = 0
+
+    # ponytail: Jours éligibles dynamiques (veille + aujourd'hui) pour couvrir les matchs de nuit sans matcher le futur
+    DAYS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+    today_day = DAYS_FR[now.weekday()]
+    yesterday_day = DAYS_FR[(now.weekday() - 1) % 7]
+    eligible_days = [yesterday_day, today_day]
 
     for m in matches:
         dom = m.get("home", "")
@@ -56,9 +68,9 @@ def sync():
         is_fav_home = (fav_team == dom)
         odds_val = m.get("odds", 1.50)
 
-        # ponytail: Ignorer les matchs futurs (lundi, mardi...) pour ne pas matcher avec les matchs du dimanche
         m_time = m.get("time", "")
-        if any(day in m_time for day in ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."]):
+        has_day = any(d in m_time for d in DAYS_FR)
+        if has_day and not any(d in m_time for d in eligible_days):
             continue
 
         best_ev = None

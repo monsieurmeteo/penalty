@@ -1,16 +1,18 @@
 import os, sys, time, subprocess
 from sync_live_scores import sync
 
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 print("🚀 Démarrage du Watcher Live Scores (Rafraîchissement toutes les 30s)...")
 while True:
     try:
         success, updated = sync()
         if success and updated > 0:
             print(f"⚡ {updated} mise(s) à jour détectée(s) ! Push vers GitHub Pages...")
-            subprocess.run(["git", "add", "docs/data.json"], check=False)
-            commit_res = subprocess.run(["git", "commit", "-m", "live(scores): maj scores en direct [skip ci]"], capture_output=True, text=True)
+            subprocess.run(["git", "pull", "--rebase", "origin", "master"], cwd=base_dir, check=False)
+            subprocess.run(["git", "add", "docs/data.json"], cwd=base_dir, check=False)
+            commit_res = subprocess.run(["git", "commit", "-m", "live(scores): maj scores en direct [skip ci]"], cwd=base_dir, capture_output=True, text=True)
             if commit_res.returncode == 0:
-                push_res = subprocess.run(["git", "push", "origin", "master"], capture_output=True, text=True)
+                push_res = subprocess.run(["git", "push", "origin", "master"], cwd=base_dir, capture_output=True, text=True)
                 if push_res.returncode == 0:
                     print("✅ GitHub Pages mis à jour avec succès en direct !")
                 else:

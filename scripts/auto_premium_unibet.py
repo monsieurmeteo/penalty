@@ -1108,8 +1108,17 @@ def main():
     smtp_user      = os.environ.get("SMTP_USER", "gregory.langlet@sfr.fr")
     smtp_pass      = os.environ.get("SMTP_PASS", "6#P31LcrCX9!")
 
-    now_dt = datetime.now(timezone.utc)
-    subject_date = now_dt.strftime('%d/%m %Hh%M')
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    from email.utils import make_msgid, formatdate
+
+    try:
+        from zoneinfo import ZoneInfo
+        now_dt = datetime.now(ZoneInfo("Europe/Paris"))
+    except Exception:
+        now_dt = datetime.now(timezone.utc)
+
+    subject_date = now_dt.strftime('%d/%m à %Hh%M')
     raw_subject = f"⚽ +2 Gagnant {subject_date} — {nb_retained} Favoris Retenus (Mène de 2 Buts ou Gagne · Chronologique)"
     
     # Nettoyage ASCII du sujet pour compatibilité maximale MTA
@@ -1117,24 +1126,30 @@ def main():
     if not clean_subject.strip():
         clean_subject = f"Rapport +2 Gagnant du {subject_date} - {nb_retained} favoris"
 
-    msg = EmailMessage(policy=email.policy.SMTPUTF8)
+    msg = MIMEMultipart('alternative')
     msg["Subject"] = clean_subject
     msg["From"] = f"Gregory LANGLET <{gmail_email}>"
     msg["To"] = ", ".join(recipients)
-    msg.set_content(html_body, subtype="html", charset="utf-8")
+    msg["Date"] = formatdate(localtime=True)
+    msg["Message-ID"] = make_msgid()
+    msg["X-Mailer"] = "Python/smtplib"
+
+    plain_fallback = f"Rapport +2 Gagnant du {subject_date} - {nb_retained} favoris retenus. Consultez la version HTML pour les details complets."
+    msg.attach(MIMEText(plain_fallback, 'plain', 'utf-8'))
+    msg.attach(MIMEText(html_body, 'html', 'utf-8'))
 
     sent_success = False
 
-    # Tentative Gmail SMTP prioritaire avec as_bytes() (Règle GitHub-Actions)
+    # Tentative Gmail SMTP prioritaire (Standard MIME RFC 5322)
     if gmail_password:
         try:
-            print(f"Sending email to {recipients} via Gmail SMTP (SMTPUTF8)...")
+            print(f"Sending email to {recipients} via Gmail SMTP (Standard MIME)...")
             with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
                 server.ehlo()
                 server.starttls()
                 server.ehlo()
                 server.login(gmail_email, gmail_password)
-                server.sendmail(gmail_email, recipients, msg.as_bytes())
+                server.sendmail(gmail_email, recipients, msg.as_string())
             print("SUCCESS! Email sent via Gmail SMTP.")
             sent_success = True
         except Exception as e:
@@ -1143,24 +1158,29 @@ def main():
     # Fallback SFR SMTP si configuré
     if not sent_success and smtp_host and smtp_user and smtp_pass:
         try:
-            msg_sfr = EmailMessage(policy=email.policy.SMTPUTF8)
+            msg_sfr = MIMEMultipart('alternative')
             msg_sfr["Subject"] = clean_subject
             msg_sfr["From"] = f"Gregory LANGLET <{smtp_user}>"
             msg_sfr["To"] = ", ".join(recipients)
-            msg_sfr.set_content(html_body, subtype="html", charset="utf-8")
+            msg_sfr["Date"] = formatdate(localtime=True)
+            msg_sfr["Message-ID"] = make_msgid()
+            msg_sfr.attach(MIMEText(plain_fallback, 'plain', 'utf-8'))
+            msg_sfr.attach(MIMEText(html_body, 'html', 'utf-8'))
+
+            sfr_auth_user = smtp_user.split("@")[0] if "@" in smtp_user else smtp_user
 
             print(f"Sending email to {recipients} via {smtp_host}:{smtp_port}...")
             if smtp_port == 465:
                 with smtplib.SMTP_SSL(smtp_host, smtp_port, timeout=30) as server:
-                    server.login(smtp_user, smtp_pass)
-                    server.sendmail(smtp_user, recipients, msg_sfr.as_bytes())
+                    server.login(sfr_auth_user, smtp_pass)
+                    server.sendmail(smtp_user, recipients, msg_sfr.as_string())
             else:
                 with smtplib.SMTP(smtp_host, smtp_port, timeout=30) as server:
                     server.ehlo()
                     server.starttls()
                     server.ehlo()
-                    server.login(smtp_user, smtp_pass)
-                    server.sendmail(smtp_user, recipients, msg_sfr.as_bytes())
+                    server.login(sfr_auth_user, smtp_pass)
+                    server.sendmail(smtp_user, recipients, msg_sfr.as_string())
             print(f"SUCCESS! Email sent via {smtp_host}.")
             sent_success = True
         except Exception as e:
@@ -1243,29 +1263,35 @@ def main():
                 except Exception:
                     pass
 
-            # Fetch LiveScore for today to update scores and statuses
+            # Fetch LiveScore for yesterday and today to update scores and statuses
             ls_events = []
-            try:
-                today_date_str = datetime.now().strftime("%Y%m%d")
-                ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{today_date_str}/0"
-                r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
-                if r_ls.status_code == 200:
-                    for st in r_ls.json().get("Stages", []):
-                        st_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
-                        for m_ev in st.get("Events", []):
-                            eps = str(m_ev.get("Eps", ""))
-                            h_sc = int(m_ev.get("Tr1", 0) or 0) if str(m_ev.get("Tr1", "")).isdigit() else None
-                            a_sc = int(m_ev.get("Tr2", 0) or 0) if str(m_ev.get("Tr2", "")).isdigit() else None
-                            ls_events.append({
-                                "home": m_ev.get("T1", [{}])[0].get("Nm", ""),
-                                "away": m_ev.get("T2", [{}])[0].get("Nm", ""),
-                                "league": st_name,
-                                "eps": eps,
-                                "h_sc": h_sc,
-                                "a_sc": a_sc
-                            })
-            except Exception as e_ls:
-                print(f"⚠️ Sync LiveScore: {e_ls}")
+            from datetime import timedelta
+            now_ls = datetime.now()
+            dates_to_check = [
+                (now_ls - timedelta(days=1)).strftime("%Y%m%d"),
+                now_ls.strftime("%Y%m%d")
+            ]
+            for d_str in dates_to_check:
+                try:
+                    ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{d_str}/0"
+                    r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
+                    if r_ls.status_code == 200:
+                        for st in r_ls.json().get("Stages", []):
+                            st_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
+                            for m_ev in st.get("Events", []):
+                                eps = str(m_ev.get("Eps", ""))
+                                h_sc = int(m_ev.get("Tr1", 0) or 0) if str(m_ev.get("Tr1", "")).isdigit() else None
+                                a_sc = int(m_ev.get("Tr2", 0) or 0) if str(m_ev.get("Tr2", "")).isdigit() else None
+                                ls_events.append({
+                                    "home": m_ev.get("T1", [{}])[0].get("Nm", ""),
+                                    "away": m_ev.get("T2", [{}])[0].get("Nm", ""),
+                                    "league": st_name,
+                                    "eps": eps,
+                                    "h_sc": h_sc,
+                                    "a_sc": a_sc
+                                })
+                except Exception as e_ls:
+                    print(f"⚠️ Sync LiveScore ({d_str}): {e_ls}")
 
             def sim_score(a, b):
                 from difflib import SequenceMatcher
@@ -1277,6 +1303,12 @@ def main():
                 (m.get("home", ""), m.get("away", "")): m
                 for m in existing_docs.get("matches_today", [])
             }
+
+            # ponytail: Jours éligibles dynamiques (veille + aujourd'hui)
+            DAYS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+            today_day = DAYS_FR[now_ls.weekday()]
+            yesterday_day = DAYS_FR[(now_ls.weekday() - 1) % 7]
+            eligible_days = [yesterday_day, today_day]
 
             for m in retained_favs:
                 fi = m.get("fav_info", {})
@@ -1320,9 +1352,9 @@ def main():
                     }
                     existing_matches_map[key] = item
 
-                # ponytail: Ignorer les matchs futurs (lundi, mardi...) pour LiveScore aujourd'hui
                 m_time = item.get("time", "")
-                if any(day in m_time for day in ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven."]):
+                has_day = any(d in m_time for d in DAYS_FR)
+                if has_day and not any(d in m_time for d in eligible_days):
                     continue
 
                 # Match with LiveScore

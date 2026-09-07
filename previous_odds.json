@@ -1,5 +1,45 @@
 {
   "favs": {
+    "3367844": {
+      "match": "River Plate - Ind. Rivadavia",
+      "league": "Argentine • D1 Argentine",
+      "date_str": "Lun. 07/09 à 00h15",
+      "fav_team": "River Plate",
+      "fav_odds": 1.62,
+      "p2_fav_odds": null,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3372364": {
+      "match": "CD Palestino - Uni.Concepcion",
+      "league": "Chili • D1 Chili",
+      "date_str": "Lun. 07/09 à 00h30",
+      "fav_team": "CD Palestino",
+      "fav_odds": 1.69,
+      "p2_fav_odds": null,
+      "fav_score": 60,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3377435": {
+      "match": "Dep.Cuenca - Libertad Loja",
+      "league": "Equateur • D1 Equateur",
+      "date_str": "Lun. 07/09 à 02h00",
+      "fav_team": "Dep.Cuenca",
+      "fav_odds": 1.65,
+      "p2_fav_odds": null,
+      "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3377764": {
+      "match": "Dep. Toluca - Monterrey",
+      "league": "Amerique • Leagues Cup",
+      "date_str": "Lun. 07/09 à 03h15",
+      "fav_team": "Dep. Toluca",
+      "fav_odds": 2.1,
+      "p2_fav_odds": null,
+      "fav_score": 57,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3374303": {
       "match": "Asteras T. - PO Triglias",
       "league": "Grece • D1 Grece",
@@ -7,7 +47,27 @@
       "fav_team": "Asteras T.",
       "fav_odds": 1.82,
       "p2_fav_odds": null,
-      "fav_score": 59,
+      "fav_score": 60,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376538": {
+      "match": "Riga FC - BFC Daugavpils",
+      "league": "Lettonie • D1 Lettonie",
+      "date_str": "Lun. 07/09 à 18h00",
+      "fav_team": "Riga FC",
+      "fav_odds": 1.24,
+      "p2_fav_odds": null,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3374200": {
+      "match": "Hap.Tel Aviv - Hap.Ramat Gan",
+      "league": "Israel • D1 Israel",
+      "date_str": "Lun. 07/09 à 19h00",
+      "fav_team": "Hap.Tel Aviv",
+      "fav_odds": 1.34,
+      "p2_fav_odds": null,
+      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3372030": {
@@ -15,49 +75,19 @@
       "league": "Chypre • D1 Chypre",
       "date_str": "Lun. 07/09 à 19h00",
       "fav_team": "Omonia Nicosie",
-      "fav_odds": 1.97,
+      "fav_odds": 1.91,
       "p2_fav_odds": null,
       "fav_score": 66,
       "fav_badge": "🥈 ARGENT"
-    },
-    "3363777": {
-      "match": "Rizespor - Alanyaspor",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Lun. 07/09 à 19h00",
-      "fav_team": "Rizespor",
-      "fav_odds": 1.74,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
     },
     "3367189": {
       "match": "Uni.Craiova - Universit Cluj",
       "league": "Roumanie • D1 Roumanie",
       "date_str": "Lun. 07/09 à 19h30",
       "fav_team": "Uni.Craiova",
-      "fav_odds": 1.5,
+      "fav_odds": 1.49,
       "p2_fav_odds": null,
-      "fav_score": 69,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3367021": {
-      "match": "Al Hilal - Neom SC",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Lun. 07/09 à 20h00",
-      "fav_team": "Al Hilal",
-      "fav_odds": 1.13,
-      "p2_fav_odds": null,
-      "fav_score": 67,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3360635": {
-      "match": "Sabadell - Cordoba",
-      "league": "Espagne • Laliga 2",
-      "date_str": "Lun. 07/09 à 20h30",
-      "fav_team": "Sabadell",
-      "fav_odds": 1.92,
-      "p2_fav_odds": null,
-      "fav_score": 61,
+      "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
     },
     "3369044": {
@@ -65,19 +95,9 @@
       "league": "Italie • Serie B",
       "date_str": "Lun. 07/09 à 20h30",
       "fav_team": "Palerme",
-      "fav_odds": 1.58,
+      "fav_odds": 1.68,
       "p2_fav_odds": null,
-      "fav_score": 69,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3372601": {
-      "match": "D. Limache - Cobresal",
-      "league": "Chili • D1 Chili",
-      "date_str": "Mar. 08/09 à 01h00",
-      "fav_team": "D. Limache",
-      "fav_odds": 1.59,
-      "p2_fav_odds": null,
-      "fav_score": 64,
+      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3372596": {
@@ -87,97 +107,7 @@
       "fav_team": "Vitoria BA",
       "fav_odds": 2.0,
       "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3377436": {
-      "match": "Emelec - Manta FC",
-      "league": "Equateur • D1 Equateur",
-      "date_str": "Mar. 08/09 à 02h00",
-      "fav_team": "Emelec",
-      "fav_odds": 1.4,
-      "p2_fav_odds": null,
-      "fav_score": 63,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3372372": {
-      "match": "Ulsan - FC Seoul",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Mar. 08/09 à 12h30",
-      "fav_team": "FC Seoul",
-      "fav_odds": 1.98,
-      "p2_fav_odds": null,
-      "fav_score": 58,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3377763": {
-      "match": "FC Narva - FC Flora",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Mar. 08/09 à 16h30",
-      "fav_team": "FC Flora",
-      "fav_odds": 1.65,
-      "p2_fav_odds": null,
-      "fav_score": 72,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3374518": {
-      "match": "Nomme Kalju - FC Nomme Unite",
-      "league": "Estonie • D1 Estonie",
-      "date_str": "Mar. 08/09 à 17h00",
-      "fav_team": "Nomme Kalju",
-      "fav_odds": 1.45,
-      "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375761": {
-      "match": "AEK Athènes - Lask Linz",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 18h45",
-      "fav_team": "AEK Athènes",
-      "fav_odds": 1.74,
-      "p2_fav_odds": null,
-      "fav_score": 68,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3367022": {
-      "match": "Al Ittihad FC - Al Feiha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Mar. 08/09 à 20h00",
-      "fav_team": "Al Ittihad FC",
-      "fav_odds": 1.37,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3376744": {
-      "match": "Southampton - Swansea",
-      "league": "Angleterre • Championship",
-      "date_str": "Mar. 08/09 à 20h45",
-      "fav_team": "Southampton",
-      "fav_odds": 1.76,
-      "p2_fav_odds": null,
-      "fav_score": 60,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375766": {
-      "match": "Real Madrid - Inter Milan",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Real Madrid",
-      "fav_odds": 1.57,
-      "p2_fav_odds": null,
-      "fav_score": 57,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375764": {
-      "match": "Dortmund - Villarreal",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Dortmund",
-      "fav_odds": 1.7,
-      "p2_fav_odds": null,
-      "fav_score": 59,
+      "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
     }
   }
