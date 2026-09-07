@@ -6,6 +6,12 @@ import email.policy
 from email.message import EmailMessage
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.utils import make_msgid, formatdate
+
+try:
+    from zoneinfo import ZoneInfo
+except Exception:
+    ZoneInfo = None
 
 # ── Seuils Stratégie Favoris Win & 2 Buts d'Avance (Early Payout) ───────────
 MAX_COTE_FAV           = 2.20  # Cote maximale du favori Unibet 1N2
@@ -1108,16 +1114,7 @@ def main():
     smtp_user      = os.environ.get("SMTP_USER", "gregory.langlet@sfr.fr")
     smtp_pass      = os.environ.get("SMTP_PASS", "6#P31LcrCX9!")
 
-    from email.mime.multipart import MIMEMultipart
-    from email.mime.text import MIMEText
-    from email.utils import make_msgid, formatdate
-
-    try:
-        from zoneinfo import ZoneInfo
-        now_dt = datetime.now(ZoneInfo("Europe/Paris"))
-    except Exception:
-        now_dt = datetime.now(timezone.utc)
-
+    now_dt = datetime.now(ZoneInfo("Europe/Paris")) if ZoneInfo else datetime.now(timezone.utc)
     subject_date = now_dt.strftime('%d/%m à %Hh%M')
     raw_subject = f"⚽ +2 Gagnant {subject_date} — {nb_retained} Favoris Retenus (Mène de 2 Buts ou Gagne · Chronologique)"
     
@@ -1265,7 +1262,6 @@ def main():
 
             # Fetch LiveScore for yesterday and today to update scores and statuses
             ls_events = []
-            from datetime import timedelta
             now_ls = datetime.now()
             dates_to_check = [
                 (now_ls - timedelta(days=1)).strftime("%Y%m%d"),
