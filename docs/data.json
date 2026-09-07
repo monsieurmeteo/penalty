@@ -1,15 +1,15 @@
 {
   "summary": {
     "total_matches": 58,
-    "decided_matches": 42,
-    "won": 27,
+    "decided_matches": 43,
+    "won": 28,
     "lost": 15,
     "live": 7,
     "upcoming": 11,
-    "win_rate": 64.3,
-    "profit_units": 0.48,
-    "roi_pct": 1.14,
-    "last_updated": "2026-09-07T18:41:46.974586+00:00"
+    "win_rate": 65.1,
+    "profit_units": 0.98,
+    "roi_pct": 2.28,
+    "last_updated": "2026-09-07T18:42:22.264830+00:00"
   },
   "matches_today": [
     {
@@ -902,7 +902,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "86'",
+      "minute": "87'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_rizespor",
@@ -943,12 +943,12 @@
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
       "status": "LIVE",
-      "score_display": "1 - 0",
-      "home_score": 1,
+      "score_display": "2 - 0",
+      "home_score": 2,
       "away_score": 0,
-      "minute": "50'",
-      "selection_status": "IN_PROGRESS",
-      "profit": 0.0,
+      "minute": "53'",
+      "selection_status": "WON_LEAD2",
+      "profit": 0.5,
       "id": "m_uni.craiova",
       "is_live": true,
       "is_finished": false
@@ -968,7 +968,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "40'",
+      "minute": "41'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_al_hilal",
@@ -1012,7 +1012,7 @@
       "score_display": "1 - 0",
       "home_score": 1,
       "away_score": 0,
-      "minute": "10'",
+      "minute": "11'",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_palerme",
@@ -1272,7 +1272,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "84'",
+      "minute": "85'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -2023,7 +2023,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "86'",
+        "minute": "87'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2039,9 +2039,9 @@
         "badge_tier": "🥈 ARGENT",
         "win_pct_historical": 80,
         "status": "LIVE",
-        "score_display": "1 - 0",
-        "minute": "50'",
-        "selection_status": "IN_PROGRESS",
+        "score_display": "2 - 0",
+        "minute": "53'",
+        "selection_status": "WON_LEAD2",
         "profit": 0.0
       }
     },
@@ -2068,7 +2068,7 @@
         "win_pct_historical": 70,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "40'",
+        "minute": "41'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2113,7 +2113,7 @@
         "win_pct_historical": 90,
         "status": "LIVE",
         "score_display": "1 - 0",
-        "minute": "10'",
+        "minute": "11'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
