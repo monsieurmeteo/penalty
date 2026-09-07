@@ -726,7 +726,7 @@
                     return `
                     <div class="combo-leg">
                         <div class="leg-left">
-                            <span class="leg-time">${m.time.split('à')[1] ? m.time.split('à')[1].trim() : m.time}</span>
+                            <span class="leg-time">${m.time ? m.time.replace(' à ', ' ') : ''}</span>
                             <span class="leg-teams">${m.home} vs ${m.away}</span>
                             <span class="leg-fav">👑 ${m.fav_team} @${m.odds.toFixed(2)}</span>
                         </div>
@@ -739,7 +739,7 @@
                 }
 
                 const titleTag = c.email_ticket_num 
-                    ? `🎟️ TICKET #${c.email_ticket_num} DU MAIL (#${c.ticket_num})` 
+                    ? `🎟️ TICKET #${c.email_ticket_num} DU MAIL` 
                     : `🎟️ COMBINÉ #${c.ticket_num}`;
 
                 return `
@@ -773,7 +773,7 @@
                     fullHtml += liveItems.map(renderCard).join('');
                 }
                 if (upcomingItems.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ LES 8 COMBINÉS DU DERNIER E-MAIL (TICKETS #1 À #8 DU MAIL) (${upcomingItems.length})</span><span>8 tickets officiels reçus par e-mail &bull; Mise : 3,00 €</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header"><span>⏳ LES ${upcomingItems.length} COMBINÉS DU DERNIER E-MAIL (TICKETS #1 À #${upcomingItems.length})</span><span>${upcomingItems.length} tickets officiels reçus par e-mail &bull; Mise : 3,00 €</span></div>`;
                     fullHtml += upcomingItems.map(renderCard).join('');
                 }
                 if (finishedItems.length > 0) {

@@ -510,7 +510,407 @@ def scan_unibet_match_details(game):
     except Exception as e:
         print(f"❌ ERROR scanning {game.get('url')}: {e}")
         return None
-    return None
+def sync_and_update_docs_data(retained_favs, rejected_favs):
+    """
+    ponytail: Source Unique de Vérité (docs/data.json).
+    Synchronise les scores réels via LiveScore, met à jour les statuts (+2 buts / victoires),
+    préserve l'intégrité des combinés existants et ajoute chronologiquement les nouveaux favoris non encore combinés.
+    Garantit 100% de parité stricte entre l'e-mail envoyé et le site GitHub Pages.
+    """
+    from difflib import SequenceMatcher
+    docs_data_path = os.path.join("docs", "data.json")
+    existing_docs = {
+        "summary": {},
+        "matches_today": [],
+        "history": [],
+        "combos_summary": {},
+        "combos_today": [],
+        "matches_discarded": []
+    }
+    if os.path.exists(docs_data_path):
+        try:
+            with open(docs_data_path, "r", encoding="utf-8") as f_in:
+                existing_docs = json.load(f_in)
+        except Exception as e_load:
+            print(f"⚠️ Erreur chargement docs/data.json: {e_load}")
+
+    # 1. Fetch LiveScore for yesterday and today to update scores and statuses
+    ls_events = []
+    now_ls = datetime.now()
+    dates_to_check = [
+        (now_ls - timedelta(days=1)).strftime("%Y%m%d"),
+        now_ls.strftime("%Y%m%d")
+    ]
+    for d_str in dates_to_check:
+        try:
+            ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{d_str}/0"
+            r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
+            if r_ls.status_code == 200:
+                for st in r_ls.json().get("Stages", []):
+                    st_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
+                    for m_ev in st.get("Events", []):
+                        eps = str(m_ev.get("Eps", ""))
+                        tr1 = m_ev.get("Tr1")
+                        tr2 = m_ev.get("Tr2")
+                        h_sc = int(tr1) if tr1 is not None and str(tr1).isdigit() else None
+                        a_sc = int(tr2) if tr2 is not None and str(tr2).isdigit() else None
+                        ls_events.append({
+                            "home": m_ev.get("T1", [{}])[0].get("Nm", ""),
+                            "away": m_ev.get("T2", [{}])[0].get("Nm", ""),
+                            "league": st_name,
+                            "eps": eps,
+                            "h_sc": h_sc,
+                            "a_sc": a_sc
+                        })
+        except Exception as e_ls:
+            print(f"⚠️ Sync LiveScore ({d_str}): {e_ls}")
+
+    def clean_n(x): return re.sub(r'[^a-z0-9]', '', (x or '').lower())
+    def sim_score(a, b):
+        ca, cb = clean_n(a), clean_n(b)
+        if ca in cb or cb in ca: return 0.90
+        return SequenceMatcher(None, ca, cb).ratio()
+
+    # Index existing matches by unique team key
+    existing_matches_map = {
+        (_clean_team_key(m.get("home", "")), _clean_team_key(m.get("away", ""))): m
+        for m in existing_docs.get("matches_today", [])
+    }
+
+    DAYS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
+    today_day = DAYS_FR[now_ls.weekday()]
+    yesterday_day = DAYS_FR[(now_ls.weekday() - 1) % 7]
+    eligible_days = [yesterday_day, today_day]
+
+    # Add or update retained_favs in matches_today
+    for m in retained_favs:
+        fi = m.get("fav_info", {})
+        dom = m.get("dom", "")
+        ext = m.get("ext", "")
+        fav_team = fi.get("fav_team", dom)
+        key = (_clean_team_key(dom), _clean_team_key(ext))
+        existing_item = existing_matches_map.get(key)
+
+        odds_val = fi.get("p2_fav_odds") or fi.get("fav_odds") or 1.50
+        sc_val = fi.get("fav_score", 0)
+        badge_tier = fi.get("fav_badge", "🥉 BRONZE")
+
+        if existing_item:
+            item = existing_item
+            item["odds"] = odds_val
+            item["domination_score"] = sc_val
+            item["badge_tier"] = badge_tier
+        else:
+            item = {
+                "id": str(m.get("id", f"m_{len(existing_matches_map)+1}")),
+                "time": m.get("date_str", "À venir"),
+                "league": m.get("league", "Football"),
+                "home": dom,
+                "away": ext,
+                "fav_team": fav_team,
+                "fav_side": fi.get("fav_side", "dom"),
+                "odds": odds_val,
+                "domination_score": sc_val,
+                "badge_tier": badge_tier,
+                "win_pct_historical": fi.get("pct_fav_success", 0),
+                "status": "UPCOMING",
+                "selection_status": "PENDING",
+                "score_display": "VS",
+                "home_score": None,
+                "away_score": None,
+                "minute": m.get("date_str", "À venir"),
+                "is_live": False,
+                "is_finished": False,
+                "profit": 0.0
+            }
+            existing_matches_map[key] = item
+
+    # Update matches with LiveScore
+    for item in existing_matches_map.values():
+        dom = item.get("home", "")
+        ext = item.get("away", "")
+        fav_team = item.get("fav_team", dom)
+        odds_val = item.get("odds", 1.50)
+
+        m_time = item.get("time", "")
+        has_day = any(d in m_time for d in DAYS_FR)
+        if has_day and not any(d in m_time for d in eligible_days):
+            continue
+
+        best_ev = None
+        best_sim = 0.0
+        for ev in ls_events:
+            s1 = sim_score(dom, ev["home"])
+            s2 = sim_score(ext, ev["away"])
+            if s1 >= 0.65 and s2 >= 0.65:
+                score = (s1 + s2) / 2.0
+                if score > best_sim:
+                    best_sim = score
+                    best_ev = ev
+
+        if best_ev and best_sim >= 0.75 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
+            h_sc = best_ev["h_sc"]
+            a_sc = best_ev["a_sc"]
+            eps = best_ev["eps"]
+            item["home_score"] = h_sc
+            item["away_score"] = a_sc
+            item["score_display"] = f"{h_sc} - {a_sc}"
+
+            is_fav_home = (fav_team == dom)
+            fav_goals = h_sc if is_fav_home else a_sc
+            dog_goals = a_sc if is_fav_home else h_sc
+            lead2 = (fav_goals - dog_goals >= 2)
+            win = (fav_goals > dog_goals)
+            was_lead2 = (item.get("selection_status") == "WON_LEAD2")
+            if was_lead2:
+                lead2 = True
+
+            if eps in ["FT", "AET", "AP"]:
+                item["status"] = "FINISHED"
+                item["is_finished"] = True
+                item["minute"] = "Terminé"
+                if lead2 or was_lead2:
+                    item["selection_status"] = "WON_LEAD2"
+                    item["profit"] = round(odds_val - 1.0, 2)
+                elif win:
+                    item["selection_status"] = "WON_FINAL"
+                    item["profit"] = round(odds_val - 1.0, 2)
+                else:
+                    item["selection_status"] = "LOST"
+                    item["profit"] = -1.0
+            elif eps not in ["NS", "CANC", "POST", "DEFD", "INT"]:
+                item["status"] = "LIVE"
+                item["is_live"] = True
+                item["minute"] = eps + ("'" if eps.isdigit() else "")
+                if lead2:
+                    item["selection_status"] = "WON_LEAD2"
+                    item["profit"] = round(odds_val - 1.0, 2)
+                else:
+                    item["selection_status"] = "IN_PROGRESS"
+                    item["profit"] = 0.0
+
+    all_today_matches = list(existing_matches_map.values())
+    won_c = sum(1 for x in all_today_matches if x.get("selection_status", "").startswith("WON"))
+    lost_c = sum(1 for x in all_today_matches if x.get("selection_status") == "LOST")
+    live_c = sum(1 for x in all_today_matches if x.get("status") == "LIVE")
+    upc_c = sum(1 for x in all_today_matches if x.get("status") == "UPCOMING")
+    profit_u = sum(x.get("profit", 0.0) for x in all_today_matches)
+    decided_c = won_c + lost_c
+    wr = round((won_c / decided_c * 100), 1) if decided_c > 0 else 0.0
+    roi = round((profit_u / decided_c * 100), 2) if decided_c > 0 else 0.0
+
+    existing_docs["summary"] = {
+        "total_matches": len(all_today_matches),
+        "decided_matches": decided_c,
+        "won": won_c,
+        "lost": lost_c,
+        "live": live_c,
+        "upcoming": upc_c,
+        "win_rate": wr,
+        "profit_units": round(profit_u, 2),
+        "roi_pct": roi,
+        "last_updated": datetime.now(timezone.utc).isoformat()
+    }
+    existing_docs["matches_today"] = all_today_matches
+
+    # 2. Update existing combos in combos_today
+    existing_combos = existing_docs.get("combos_today", [])
+    combo_stake = 3.0
+    match_by_key = {
+        _clean_team_key(m.get("home", "")): m
+        for m in all_today_matches
+    }
+
+    used_teams = set()
+    combos_today = []
+    for c in existing_combos:
+        m1 = c.get("m1", {})
+        m2 = c.get("m2", {})
+        k1 = _clean_team_key(m1.get("home", ""))
+        k2 = _clean_team_key(m2.get("home", ""))
+        if k1: used_teams.add(k1)
+        if k2: used_teams.add(k2)
+        if m1.get("away"): used_teams.add(_clean_team_key(m1.get("away")))
+        if m2.get("away"): used_teams.add(_clean_team_key(m2.get("away")))
+
+        if k1 in match_by_key:
+            src = match_by_key[k1]
+            m1["score_display"] = src.get("score_display", m1.get("score_display"))
+            m1["minute"] = src.get("minute", m1.get("minute"))
+            m1["status"] = src.get("status", m1.get("status"))
+            m1["selection_status"] = src.get("selection_status", m1.get("selection_status"))
+        if k2 in match_by_key:
+            src = match_by_key[k2]
+            m2["score_display"] = src.get("score_display", m2.get("score_display"))
+            m2["minute"] = src.get("minute", m2.get("minute"))
+            m2["status"] = src.get("status", m2.get("status"))
+            m2["selection_status"] = src.get("selection_status", m2.get("selection_status"))
+
+        s1 = m1.get("selection_status", "PENDING")
+        s2 = m2.get("selection_status", "PENDING")
+        w1 = s1.startswith("WON")
+        w2 = s2.startswith("WON")
+        l1 = (s1 == "LOST")
+        l2 = (s2 == "LOST")
+        st1 = m1.get("status")
+        st2 = m2.get("status")
+        comb_odds = c.get("odds", 2.0)
+
+        if w1 and w2:
+            c["ticket_status"] = "WON"
+            c["profit_unit"] = round(comb_odds - 1.0, 2)
+            c["profit_eur"] = round(c["profit_unit"] * combo_stake, 2)
+        elif l1 or l2:
+            c["ticket_status"] = "LOST"
+            c["profit_unit"] = -1.0
+            c["profit_eur"] = -combo_stake
+        elif st1 == "LIVE" or st2 == "LIVE" or s1 == "IN_PROGRESS" or s2 == "IN_PROGRESS":
+            c["ticket_status"] = "LIVE"
+            c["profit_unit"] = 0.0
+            c["profit_eur"] = 0.0
+        else:
+            c["ticket_status"] = "PENDING"
+            c["profit_unit"] = 0.0
+            c["profit_eur"] = 0.0
+
+        combos_today.append(c)
+
+    # 3. Pair any newly found matches from retained_favs that are not yet in combos
+    unassigned_favs = []
+    for m in retained_favs:
+        k_dom = _clean_team_key(m.get("dom", ""))
+        k_ext = _clean_team_key(m.get("ext", ""))
+        if k_dom not in used_teams and k_ext not in used_teams:
+            unassigned_favs.append(m)
+
+    for i in range(0, len(unassigned_favs) - 1, 2):
+        m1_raw = unassigned_favs[i]
+        m2_raw = unassigned_favs[i+1]
+        k1 = _clean_team_key(m1_raw.get("dom", ""))
+        k2 = _clean_team_key(m2_raw.get("dom", ""))
+        used_teams.add(k1)
+        used_teams.add(k2)
+
+        c_idx = len(combos_today) + 1
+        fi1 = m1_raw.get("fav_info", {})
+        fi2 = m2_raw.get("fav_info", {})
+        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
+        c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
+        comb_odds = round(c1 * c2, 2)
+
+        m1_clean = {
+            "id": str(m1_raw.get("id", f"m_{k1}")),
+            "time": m1_raw.get("date_str", "À venir"),
+            "league": m1_raw.get("league", "Football"),
+            "home": m1_raw.get("dom", ""),
+            "away": m1_raw.get("ext", ""),
+            "fav_team": fi1.get("fav_team", m1_raw.get("dom", "")),
+            "fav_side": fi1.get("fav_side", "dom"),
+            "odds": c1,
+            "domination_score": fi1.get("fav_score", 60),
+            "badge_tier": fi1.get("fav_badge", "🥉 BRONZE"),
+            "win_pct_historical": fi1.get("pct_fav_success", 50),
+            "status": "UPCOMING",
+            "selection_status": "PENDING",
+            "score_display": "VS",
+            "home_score": 0,
+            "away_score": 0,
+            "minute": "À venir",
+            "is_live": False,
+            "is_finished": False,
+            "profit": 0.0
+        }
+
+        m2_clean = {
+            "id": str(m2_raw.get("id", f"m_{k2}")),
+            "time": m2_raw.get("date_str", "À venir"),
+            "league": m2_raw.get("league", "Football"),
+            "home": m2_raw.get("dom", ""),
+            "away": m2_raw.get("ext", ""),
+            "fav_team": fi2.get("fav_team", m2_raw.get("dom", "")),
+            "fav_side": fi2.get("fav_side", "dom"),
+            "odds": c2,
+            "domination_score": fi2.get("fav_score", 60),
+            "badge_tier": fi2.get("fav_badge", "🥉 BRONZE"),
+            "win_pct_historical": fi2.get("pct_fav_success", 50),
+            "status": "UPCOMING",
+            "selection_status": "PENDING",
+            "score_display": "VS",
+            "home_score": 0,
+            "away_score": 0,
+            "minute": "À venir",
+            "is_live": False,
+            "is_finished": False,
+            "profit": 0.0
+        }
+
+        combos_today.append({
+            "id": f"combo_{c_idx}",
+            "ticket_num": c_idx,
+            "email_ticket_num": None,
+            "odds": comb_odds,
+            "default_stake": combo_stake,
+            "ticket_status": "PENDING",
+            "profit_unit": 0.0,
+            "gain_eur": round(comb_odds * combo_stake, 2),
+            "profit_eur": 0.0,
+            "m1": m1_clean,
+            "m2": m2_clean
+        })
+
+    # 4. Number active/pending combos chronologically for the email
+    active_combos = [c for c in combos_today if c.get("ticket_status") in ["PENDING", "LIVE"]]
+    for idx, c in enumerate(active_combos, 1):
+        c["email_ticket_num"] = idx
+
+    # 5. Combos summary
+    c_won = sum(1 for c in combos_today if c["ticket_status"] == "WON")
+    c_lost = sum(1 for c in combos_today if c["ticket_status"] == "LOST")
+    c_live = sum(1 for c in combos_today if c["ticket_status"] == "LIVE")
+    c_upc = sum(1 for c in combos_today if c["ticket_status"] == "PENDING")
+    c_dec = c_won + c_lost
+    c_profit_u = sum(c["profit_unit"] for c in combos_today)
+    c_wr = round((c_won / c_dec * 100), 1) if c_dec > 0 else 0.0
+    c_roi = round((c_profit_u / c_dec * 100), 2) if c_dec > 0 else 0.0
+
+    existing_docs["combos_summary"] = {
+        "total_combos": len(combos_today),
+        "decided_combos": c_dec,
+        "won": c_won,
+        "lost": c_lost,
+        "live": c_live,
+        "upcoming": c_upc,
+        "default_stake": combo_stake,
+        "win_rate": c_wr,
+        "profit_units": round(c_profit_u, 2),
+        "profit_eur": round(c_profit_u * combo_stake, 2),
+        "roi_pct": c_roi
+    }
+    existing_docs["combos_today"] = combos_today
+
+    # 6. Discarded matches
+    discarded_list = []
+    for rf in rejected_favs:
+        fi = rf.get("fav_info", {})
+        c_val = f"@{fi['p2_fav_odds']:.2f}" if fi.get("p2_fav_odds") else f"@{fi.get('fav_odds', 1.50):.2f}"
+        discarded_list.append({
+            "time": rf.get("date_str", ""),
+            "league": rf.get("league", ""),
+            "match": f"{rf.get('dom', '')} vs {rf.get('ext', '')}",
+            "fav_team": fi.get("fav_team", ""),
+            "odds": c_val,
+            "domination_score": f"{fi.get('fav_score', 0)}/100",
+            "reussite": f"{fi.get('pct_fav_success', 0)}%",
+            "status": "ÉCARTÉ"
+        })
+    existing_docs["matches_discarded"] = discarded_list
+
+    os.makedirs(os.path.dirname(docs_data_path), exist_ok=True)
+    with open(docs_data_path, "w", encoding="utf-8") as f_out:
+        json.dump(existing_docs, f_out, ensure_ascii=False, indent=2)
+    print(f"✅ GITHUB PAGES docs/data.json EXPORTÉ & SYNCHRONISÉ : {len(combos_today)} combinés ({len(active_combos)} actifs)")
+
+    return existing_docs, active_combos
 
 def main():
     print("=== AUTOMATISATION UNIBET — MÉTHODE FOOTBALL MULTI-MARCHÉS (3 JOURNÉES + NUITS) ===")
@@ -834,37 +1234,29 @@ def main():
         plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun favori retenu sur le créneau à venir.</td></tr>'
 
     # ── Construction des Combinés Chronologiques de 2 Matchs (Mise 3€) ──────
+    # ponytail: Source Unique de Vérité (docs/data.json). 100% de parité stricte Email & GitHub Pages.
+    existing_docs, active_combos = sync_and_update_docs_data(retained_favs, rejected_favs)
+
     combos_html = ""
-    combos_retained = []
-    combo_idx = 1
     default_combo_stake = 3.0
 
-    for i in range(0, len(retained_favs) - 1, 2):
-        m1 = retained_favs[i]
-        m2 = retained_favs[i+1]
-        fi1 = m1.get("fav_info", {})
-        fi2 = m2.get("fav_info", {})
-        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
-        c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
-        comb_odds = round(c1 * c2, 2)
-        pot_win = round(default_combo_stake * comb_odds, 2)
-        net_profit = round(default_combo_stake * (comb_odds - 1.0), 2)
-
-        combos_retained.append({
-            "ticket_num": combo_idx,
-            "odds": comb_odds,
-            "stake": default_combo_stake,
-            "m1": m1,
-            "m2": m2,
-            "c1": c1,
-            "c2": c2
-        })
+    for c in active_combos:
+        c_num = c.get("email_ticket_num", c.get("ticket_num", 1))
+        comb_odds = c.get("odds", 2.0)
+        pot_win = c.get("gain_eur", round(default_combo_stake * comb_odds, 2))
+        net_profit = round(pot_win - default_combo_stake, 2)
+        m1 = c["m1"]
+        m2 = c["m2"]
+        c1 = m1.get("odds", 1.50)
+        c2 = m2.get("odds", 1.50)
+        fav1 = m1.get("fav_team", m1.get("home", ""))
+        fav2 = m2.get("fav_team", m2.get("home", ""))
 
         combos_html += f'''
         <div style="background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #2563eb; border-radius:8px; padding:10px 12px; margin-bottom:10px; box-shadow:0 1px 4px rgba(0,0,0,0.04);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
             <div style="display:flex; align-items:center; gap:8px;">
-              <span style="background:#0f172a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🎟️ TICKET #{combo_idx}</span>
+              <span style="background:#0f172a; color:#ffffff; font-weight:800; font-size:11px; padding:3px 8px; border-radius:5px;">🎟️ TICKET #{c_num}</span>
               <span style="background:#1d4ed8; color:#ffffff; font-weight:900; font-size:12px; padding:2px 8px; border-radius:5px;">Cote @{comb_odds:.2f}</span>
             </div>
             <div style="font-size:11px; font-weight:800; color:#15803d;">
@@ -872,12 +1264,11 @@ def main():
             </div>
           </div>
           <div style="font-size:11px; color:#334155; line-height:1.5;">
-            <div style="padding:2px 0;">1️⃣ <b>{m1.get('date_str', '')}</b> : {m1.get('dom')} vs {m1.get('ext')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fi1.get('fav_team')}</span> @{c1:.2f}</div>
-            <div style="padding:2px 0;">2️⃣ <b>{m2.get('date_str', '')}</b> : {m2.get('dom')} vs {m2.get('ext')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fi2.get('fav_team')}</span> @{c2:.2f}</div>
+            <div style="padding:2px 0;">1️⃣ <b>{m1.get('time', '')}</b> : {m1.get('home')} vs {m1.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav1}</span> @{c1:.2f}</div>
+            <div style="padding:2px 0;">2️⃣ <b>{m2.get('time', '')}</b> : {m2.get('home')} vs {m2.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav2}</span> @{c2:.2f}</div>
           </div>
         </div>
         '''
-        combo_idx += 1
 
     if not combos_html:
         combos_html = '<div style="color:#64748b; font-style:italic; text-align:center; padding:12px;">Pas assez de favoris retenus pour former un combiné de 2 matchs.</div>'
@@ -1249,370 +1640,9 @@ def main():
                 json.dump(dash_data, f, ensure_ascii=False, indent=2)
             print(f"✅ DASHBOARD JSON EXPORTÉ AVEC SUCCÈS (Alignement 100% Email) : {dash_path}")
 
-        # ── Export GitHub Pages (docs/data.json) avec synchronisation LiveScore ──
-        docs_data_path = os.path.join("docs", "data.json")
-        try:
-            existing_docs = {"summary": {}, "matches_today": [], "history": []}
-            if os.path.exists(docs_data_path):
-                try:
-                    with open(docs_data_path, "r", encoding="utf-8") as f_in:
-                        existing_docs = json.load(f_in)
-                except Exception:
-                    pass
-
-            # Fetch LiveScore for yesterday and today to update scores and statuses
-            ls_events = []
-            now_ls = datetime.now()
-            dates_to_check = [
-                (now_ls - timedelta(days=1)).strftime("%Y%m%d"),
-                now_ls.strftime("%Y%m%d")
-            ]
-            for d_str in dates_to_check:
-                try:
-                    ls_url = f"https://prod-public-api.livescore.com/v1/api/app/date/soccer/{d_str}/0"
-                    r_ls = requests.get(ls_url, headers={"User-Agent": "Mozilla/5.0"}, timeout=8)
-                    if r_ls.status_code == 200:
-                        for st in r_ls.json().get("Stages", []):
-                            st_name = (st.get("Cnm", "") + " • " + st.get("Snm", "")).strip()
-                            for m_ev in st.get("Events", []):
-                                eps = str(m_ev.get("Eps", ""))
-                                h_sc = int(m_ev.get("Tr1", 0) or 0) if str(m_ev.get("Tr1", "")).isdigit() else None
-                                a_sc = int(m_ev.get("Tr2", 0) or 0) if str(m_ev.get("Tr2", "")).isdigit() else None
-                                ls_events.append({
-                                    "home": m_ev.get("T1", [{}])[0].get("Nm", ""),
-                                    "away": m_ev.get("T2", [{}])[0].get("Nm", ""),
-                                    "league": st_name,
-                                    "eps": eps,
-                                    "h_sc": h_sc,
-                                    "a_sc": a_sc
-                                })
-                except Exception as e_ls:
-                    print(f"⚠️ Sync LiveScore ({d_str}): {e_ls}")
-
-            def sim_score(a, b):
-                from difflib import SequenceMatcher
-                def clean_n(x): return re.sub(r'[^a-z0-9]', '', (x or '').lower())
-                return SequenceMatcher(None, clean_n(a), clean_n(b)).ratio()
-
-            # Index existing matches by unique key
-            existing_matches_map = {
-                (m.get("home", ""), m.get("away", "")): m
-                for m in existing_docs.get("matches_today", [])
-            }
-
-            # ponytail: Jours éligibles dynamiques (veille + aujourd'hui)
-            DAYS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
-            today_day = DAYS_FR[now_ls.weekday()]
-            yesterday_day = DAYS_FR[(now_ls.weekday() - 1) % 7]
-            eligible_days = [yesterday_day, today_day]
-
-            for m in retained_favs:
-                fi = m.get("fav_info", {})
-                dom = m.get("dom", "")
-                ext = m.get("ext", "")
-                fav_team = fi.get("fav_team", dom)
-                key = (dom, ext)
-                existing_item = existing_matches_map.get(key)
-
-                odds_val = fi.get("p2_fav_odds") or fi.get("fav_odds") or 1.50
-                sc_val = fi.get("fav_score", 0)
-                badge_tier = fi.get("fav_badge", "🥉 BRONZE")
-
-                if existing_item:
-                    item = existing_item
-                    item["odds"] = odds_val
-                    item["domination_score"] = sc_val
-                    item["badge_tier"] = badge_tier
-                else:
-                    item = {
-                        "id": str(m.get("id", f"m_{len(existing_matches_map)+1}")),
-                        "time": m.get("date_str", "À venir"),
-                        "league": m.get("league", "Football"),
-                        "home": dom,
-                        "away": ext,
-                        "fav_team": fav_team,
-                        "fav_side": fi.get("fav_side", "dom"),
-                        "odds": odds_val,
-                        "domination_score": sc_val,
-                        "badge_tier": badge_tier,
-                        "win_pct_historical": fi.get("pct_fav_success", 0),
-                        "status": "UPCOMING",
-                        "selection_status": "PENDING",
-                        "score_display": "VS",
-                        "home_score": None,
-                        "away_score": None,
-                        "minute": m.get("date_str", "À venir"),
-                        "is_live": False,
-                        "is_finished": False,
-                        "profit": 0.0
-                    }
-                    existing_matches_map[key] = item
-
-                m_time = item.get("time", "")
-                has_day = any(d in m_time for d in DAYS_FR)
-                if has_day and not any(d in m_time for d in eligible_days):
-                    continue
-
-                # Match with LiveScore
-                best_ev = None
-                best_sim = 0.0
-                for ev in ls_events:
-                    s1 = sim_score(dom, ev["home"])
-                    s2 = sim_score(ext, ev["away"])
-                    if s1 >= 0.65 and s2 >= 0.65:
-                        score = (s1 + s2) / 2.0
-                        if score > best_sim:
-                            best_sim = score
-                            best_ev = ev
-
-                if best_ev and best_sim >= 0.75 and best_ev["h_sc"] is not None and best_ev["a_sc"] is not None:
-                    h_sc = best_ev["h_sc"]
-                    a_sc = best_ev["a_sc"]
-                    eps = best_ev["eps"]
-                    item["home_score"] = h_sc
-                    item["away_score"] = a_sc
-                    item["score_display"] = f"{h_sc} - {a_sc}"
-
-                    is_fav_home = (fav_team == dom)
-                    fav_goals = h_sc if is_fav_home else a_sc
-                    dog_goals = a_sc if is_fav_home else h_sc
-                    lead2 = (fav_goals - dog_goals >= 2)
-                    win = (fav_goals > dog_goals)
-
-                    if eps in ["FT", "AET", "AP"]:
-                        item["status"] = "FINISHED"
-                        item["is_finished"] = True
-                        item["minute"] = "Terminé"
-                        if lead2:
-                            item["selection_status"] = "WON_LEAD2"
-                            item["profit"] = round(odds_val - 1.0, 2)
-                        elif win:
-                            item["selection_status"] = "WON_FINAL"
-                            item["profit"] = round(odds_val - 1.0, 2)
-                        else:
-                            item["selection_status"] = "LOST"
-                            item["profit"] = -1.0
-                    elif eps not in ["NS", "CANC", "POST", "DEFD", "INT"]:
-                        item["status"] = "LIVE"
-                        item["is_live"] = True
-                        item["minute"] = eps + ("'" if eps.isdigit() else "")
-                        if lead2:
-                            item["selection_status"] = "WON_LEAD2"
-                            item["profit"] = round(odds_val - 1.0, 2)
-                        else:
-                            item["selection_status"] = "IN_PROGRESS"
-                            item["profit"] = 0.0
-
-            all_today_matches = list(existing_matches_map.values())
-            # Calculate summary stats
-            won_c = sum(1 for x in all_today_matches if x.get("selection_status", "").startswith("WON"))
-            lost_c = sum(1 for x in all_today_matches if x.get("selection_status") == "LOST")
-            live_c = sum(1 for x in all_today_matches if x.get("status") == "LIVE")
-            upc_c = sum(1 for x in all_today_matches if x.get("status") == "UPCOMING")
-            profit_u = sum(x.get("profit", 0.0) for x in all_today_matches)
-            decided_c = won_c + lost_c
-            wr = round((won_c / decided_c * 100), 1) if decided_c > 0 else 0.0
-            roi = round((profit_u / decided_c * 100), 2) if decided_c > 0 else 0.0
-
-            existing_docs["summary"] = {
-                "total_matches": len(all_today_matches),
-                "decided_matches": decided_c,
-                "won": won_c,
-                "lost": lost_c,
-                "live": live_c,
-                "upcoming": upc_c,
-                "win_rate": wr,
-                "profit_units": round(profit_u, 2),
-                "roi_pct": roi,
-                "last_updated": datetime.now(timezone.utc).isoformat()
-            }
-            existing_docs["matches_today"] = all_today_matches
-            # ── Calcul et Export des Combinés dans docs/data.json ──
-            existing_combos = existing_docs.get("combos_today", [])
-            combo_stake = 3.0
-
-            # Map matches by clean home team key for quick lookup
-            match_by_key = {
-                _clean_team_key(m.get("home", "")): m
-                for m in all_today_matches
-            }
-
-            # Update existing combos with latest match states
-            used_teams = set()
-            combos_today = []
-            for c in existing_combos:
-                m1 = c.get("m1", {})
-                m2 = c.get("m2", {})
-                k1 = _clean_team_key(m1.get("home", ""))
-                k2 = _clean_team_key(m2.get("home", ""))
-                used_teams.add(k1)
-                used_teams.add(k2)
-
-                if k1 in match_by_key:
-                    src = match_by_key[k1]
-                    m1["score_display"] = src.get("score_display", m1.get("score_display"))
-                    m1["minute"] = src.get("minute", m1.get("minute"))
-                    m1["status"] = src.get("status", m1.get("status"))
-                    m1["selection_status"] = src.get("selection_status", m1.get("selection_status"))
-                if k2 in match_by_key:
-                    src = match_by_key[k2]
-                    m2["score_display"] = src.get("score_display", m2.get("score_display"))
-                    m2["minute"] = src.get("minute", m2.get("minute"))
-                    m2["status"] = src.get("status", m2.get("status"))
-                    m2["selection_status"] = src.get("selection_status", m2.get("selection_status"))
-
-                s1 = m1.get("selection_status", "PENDING")
-                s2 = m2.get("selection_status", "PENDING")
-                w1 = s1.startswith("WON")
-                w2 = s2.startswith("WON")
-                l1 = (s1 == "LOST")
-                l2 = (s2 == "LOST")
-                st1 = m1.get("status")
-                st2 = m2.get("status")
-                comb_odds = c.get("odds", 2.0)
-
-                if w1 and w2:
-                    c["ticket_status"] = "WON"
-                    c["profit_unit"] = round(comb_odds - 1.0, 2)
-                    c["profit_eur"] = round(c["profit_unit"] * combo_stake, 2)
-                elif l1 or l2:
-                    c["ticket_status"] = "LOST"
-                    c["profit_unit"] = -1.0
-                    c["profit_eur"] = -combo_stake
-                elif st1 == "LIVE" or st2 == "LIVE" or s1 == "IN_PROGRESS" or s2 == "IN_PROGRESS":
-                    c["ticket_status"] = "LIVE"
-                    c["profit_unit"] = 0.0
-                    c["profit_eur"] = 0.0
-                else:
-                    c["ticket_status"] = "PENDING"
-                    c["profit_unit"] = 0.0
-                    c["profit_eur"] = 0.0
-
-                combos_today.append(c)
-
-            # ponytail: Utiliser directement combos_retained pour garantir une parite stricte a 100% avec l'e-mail
-            for cr in combos_retained:
-                m1_raw = cr["m1"]
-                m2_raw = cr["m2"]
-                k1 = _clean_team_key(m1_raw.get("dom", ""))
-                k2 = _clean_team_key(m2_raw.get("dom", ""))
-                if k1 in used_teams or k2 in used_teams:
-                    continue
-                used_teams.add(k1)
-                used_teams.add(k2)
-                c_idx = len(combos_today) + 1
-
-                fi1 = m1_raw.get("fav_info", {})
-                fi2 = m2_raw.get("fav_info", {})
-
-                m1_clean = {
-                    "id": str(m1_raw.get("id", f"m_{k1}")),
-                    "time": m1_raw.get("date_str", "À venir"),
-                    "league": m1_raw.get("league", "Football"),
-                    "home": m1_raw.get("dom", ""),
-                    "away": m1_raw.get("ext", ""),
-                    "fav_team": fi1.get("fav_team", m1_raw.get("dom", "")),
-                    "fav_side": fi1.get("fav_side", "dom"),
-                    "odds": cr["c1"],
-                    "domination_score": fi1.get("fav_score", 60),
-                    "badge_tier": fi1.get("fav_badge", "🥉 BRONZE"),
-                    "win_pct_historical": fi1.get("pct_fav_success", 50),
-                    "status": "UPCOMING",
-                    "selection_status": "PENDING",
-                    "score_display": "vs",
-                    "home_score": 0,
-                    "away_score": 0,
-                    "minute": "À venir",
-                    "is_live": False,
-                    "is_finished": False,
-                    "profit": 0.0
-                }
-
-                m2_clean = {
-                    "id": str(m2_raw.get("id", f"m_{k2}")),
-                    "time": m2_raw.get("date_str", "À venir"),
-                    "league": m2_raw.get("league", "Football"),
-                    "home": m2_raw.get("dom", ""),
-                    "away": m2_raw.get("ext", ""),
-                    "fav_team": fi2.get("fav_team", m2_raw.get("dom", "")),
-                    "fav_side": fi2.get("fav_side", "dom"),
-                    "odds": cr["c2"],
-                    "domination_score": fi2.get("fav_score", 60),
-                    "badge_tier": fi2.get("fav_badge", "🥉 BRONZE"),
-                    "win_pct_historical": fi2.get("pct_fav_success", 50),
-                    "status": "UPCOMING",
-                    "selection_status": "PENDING",
-                    "score_display": "vs",
-                    "home_score": 0,
-                    "away_score": 0,
-                    "minute": "À venir",
-                    "is_live": False,
-                    "is_finished": False,
-                    "profit": 0.0
-                }
-
-                combos_today.append({
-                    "id": f"combo_{c_idx}",
-                    "ticket_num": c_idx,
-                    "email_ticket_num": cr["ticket_num"],
-                    "odds": cr["odds"],
-                    "default_stake": combo_stake,
-                    "ticket_status": "PENDING",
-                    "profit_unit": 0.0,
-                    "gain_eur": round(cr["odds"] * combo_stake, 2),
-                    "profit_eur": 0.0,
-                    "m1": m1_clean,
-                    "m2": m2_clean
-                })
-
-            c_won = sum(1 for c in combos_today if c["ticket_status"] == "WON")
-            c_lost = sum(1 for c in combos_today if c["ticket_status"] == "LOST")
-            c_live = sum(1 for c in combos_today if c["ticket_status"] == "LIVE")
-            c_upc = sum(1 for c in combos_today if c["ticket_status"] == "PENDING")
-            c_dec = c_won + c_lost
-            c_profit_u = sum(c["profit_unit"] for c in combos_today)
-            c_wr = round((c_won / c_dec * 100), 1) if c_dec > 0 else 0.0
-            c_roi = round((c_profit_u / c_dec * 100), 2) if c_dec > 0 else 0.0
-
-            existing_docs["combos_summary"] = {
-                "total_combos": len(combos_today),
-                "decided_combos": c_dec,
-                "won": c_won,
-                "lost": c_lost,
-                "live": c_live,
-                "upcoming": c_upc,
-                "default_stake": combo_stake,
-                "win_rate": c_wr,
-                "profit_units": round(c_profit_u, 2),
-                "profit_eur": round(c_profit_u * combo_stake, 2),
-                "roi_pct": c_roi
-            }
-            existing_docs["combos_today"] = combos_today
-
-            # Export des favoris ecartes pour transparence totale sur le site
-            discarded_list = []
-            for rf in rejected_favs:
-                fi = rf.get("fav_info", {})
-                c_val = f"@{fi['p2_fav_odds']:.2f}" if fi.get("p2_fav_odds") else f"@{fi.get('fav_odds', 1.50):.2f}"
-                discarded_list.append({
-                    "time": rf.get("date_str", ""),
-                    "league": rf.get("league", ""),
-                    "match": f"{rf.get('dom', '')} vs {rf.get('ext', '')}",
-                    "fav_team": fi.get("fav_team", ""),
-                    "odds": c_val,
-                    "domination_score": f"{fi.get('fav_score', 0)}/100",
-                    "reussite": f"{fi.get('pct_fav_success', 0)}%",
-                    "status": "ÉCARTÉ"
-                })
-            existing_docs["matches_discarded"] = discarded_list
-
-
-            os.makedirs(os.path.dirname(docs_data_path), exist_ok=True)
-            with open(docs_data_path, "w", encoding="utf-8") as f_out:
-                json.dump(existing_docs, f_out, ensure_ascii=False, indent=2)
-            print(f"✅ GITHUB PAGES docs/data.json EXPORTÉ : {len(all_today_matches)} matchs (Gagnés: {won_c}, Perdus: {lost_c})")
-        except Exception as e_docs:
-            print(f"⚠️ Erreur export docs/data.json : {e_docs}")
+        # ── Export GitHub Pages (docs/data.json) ──
+        # Déjà exporté et synchronisé en amont par sync_and_update_docs_data (Source Unique de Vérité)
+        print("✅ GITHUB PAGES docs/data.json déjà synchronisé et aligné avec l'e-mail.")
     except Exception as e:
         print(f"⚠️ Erreur d'export Dashboard JSON : {e}")
 
