@@ -4,12 +4,12 @@
     "decided_matches": 38,
     "won": 25,
     "lost": 13,
-    "live": 1,
-    "upcoming": 19,
+    "live": 2,
+    "upcoming": 18,
     "win_rate": 65.8,
     "profit_units": 0.45,
     "roi_pct": 1.18,
-    "last_updated": "2026-09-07T15:25:20.723864+00:00"
+    "last_updated": "2026-09-07T16:01:31.743789+00:00"
   },
   "matches_today": [
     {
@@ -858,7 +858,7 @@
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "23'",
+      "minute": "Mi-temps",
       "selection_status": "IN_PROGRESS",
       "profit": 0.0,
       "id": "m_asteras_t.",
@@ -876,14 +876,16 @@
       "domination_score": 74,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 80,
-      "status": "UPCOMING",
-      "score_display": "vs",
+      "status": "LIVE",
+      "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "À venir",
-      "selection_status": "PENDING",
+      "minute": "1'",
+      "selection_status": "IN_PROGRESS",
       "profit": 0.0,
-      "id": "m_riga_fc"
+      "id": "m_riga_fc",
+      "is_live": true,
+      "is_finished": false
     },
     {
       "time": "Lun. 07/09 à 19h00",
@@ -1964,7 +1966,7 @@
         "win_pct_historical": 50,
         "status": "LIVE",
         "score_display": "0 - 1",
-        "minute": "23'",
+        "minute": "Mi-temps",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
