@@ -20569,5 +20569,28 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378053",
+    "timestamp_utc": "2026-09-07T20:02:54.710191+00:00",
+    "match": "FC Larne vs Bangor FC",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Mar. 08/09 à 20h45",
+    "fav_team": "FC Larne",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 66,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
