@@ -21265,5 +21265,26 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3371407",
+    "timestamp_utc": "2026-09-08T18:13:58.985854+00:00",
+    "match": "FK Zeljeznicar vs FK Sarajevo",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Mer. 09/09 à 18h00",
+    "fav_team": "FK Sarajevo",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.89,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]

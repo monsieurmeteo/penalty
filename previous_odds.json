@@ -1,24 +1,14 @@
 {
   "favs": {
-    "3375761": {
-      "match": "AEK Athènes - Lask Linz",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 18h45",
-      "fav_team": "AEK Athènes",
-      "fav_odds": 1.65,
+    "3378053": {
+      "match": "FC Larne - Bangor FC",
+      "league": "Irlande Du Nord • D1 Irlande Nord",
+      "date_str": "Mar. 08/09 à 20h45",
+      "fav_team": "FC Larne",
+      "fav_odds": 1.07,
       "p2_fav_odds": null,
-      "fav_score": 69,
+      "fav_score": 66,
       "fav_badge": "🥈 ARGENT"
-    },
-    "3367022": {
-      "match": "Al Ittihad FC - Al Feiha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Mar. 08/09 à 20h00",
-      "fav_team": "Al Ittihad FC",
-      "fav_odds": 1.32,
-      "p2_fav_odds": null,
-      "fav_score": 57,
-      "fav_badge": "🥉 BRONZE"
     },
     "3376744": {
       "match": "Southampton - Swansea",
@@ -30,26 +20,6 @@
       "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
-    "3378053": {
-      "match": "FC Larne - Bangor FC",
-      "league": "Irlande Du Nord • D1 Irlande Nord",
-      "date_str": "Mar. 08/09 à 20h45",
-      "fav_team": "FC Larne",
-      "fav_odds": 1.11,
-      "p2_fav_odds": null,
-      "fav_score": 66,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3375764": {
-      "match": "Dortmund - Villarreal",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Dortmund",
-      "fav_odds": 1.75,
-      "p2_fav_odds": null,
-      "fav_score": 58,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3375766": {
       "match": "Real Madrid - Inter Milan",
       "league": "Coupes D Europe • Ligue Des Champions",
@@ -58,6 +28,16 @@
       "fav_odds": 1.54,
       "p2_fav_odds": null,
       "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3375764": {
+      "match": "Dortmund - Villarreal",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Mar. 08/09 à 21h00",
+      "fav_team": "Dortmund",
+      "fav_odds": 1.68,
+      "p2_fav_odds": null,
+      "fav_score": 59,
       "fav_badge": "🥉 BRONZE"
     },
     "3372375": {
@@ -85,7 +65,7 @@
       "league": "Estonie • D1 Estonie",
       "date_str": "Mer. 09/09 à 18h00",
       "fav_team": "FC Levadia",
-      "fav_odds": 1.08,
+      "fav_odds": 1.09,
       "p2_fav_odds": null,
       "fav_score": 64,
       "fav_badge": "🥉 BRONZE"
@@ -105,7 +85,7 @@
       "league": "Afrique Du Sud • D1 Afrique Du Sud",
       "date_str": "Mer. 09/09 à 19h30",
       "fav_team": "Mamelodi",
-      "fav_odds": 1.18,
+      "fav_odds": 1.19,
       "p2_fav_odds": null,
       "fav_score": 72,
       "fav_badge": "🥈 ARGENT"
@@ -115,7 +95,7 @@
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Mer. 09/09 à 20h00",
       "fav_team": "Diriyah Club",
-      "fav_odds": 1.82,
+      "fav_odds": 1.8,
       "p2_fav_odds": null,
       "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
@@ -125,7 +105,7 @@
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
       "date_str": "Mer. 09/09 à 20h00",
       "fav_team": "Al Nassr",
-      "fav_odds": 1.15,
+      "fav_odds": 1.16,
       "p2_fav_odds": null,
       "fav_score": 85,
       "fav_badge": "💎 PLATINE"
