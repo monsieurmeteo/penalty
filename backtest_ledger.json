@@ -21177,5 +21177,28 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3368006",
+    "timestamp_utc": "2026-09-08T10:03:32.616438+00:00",
+    "match": "Mamelodi vs Siwelele",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Mer. 09/09 à 19h30",
+    "fav_team": "Mamelodi",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 71,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 70
+    },
+    "odds": {
+      "fav_odds": 1.28,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
