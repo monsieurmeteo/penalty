@@ -21286,5 +21286,131 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373234",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "Palmeiras vs LDU Quito",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Jeu. 10/09 à 00h00",
+    "fav_team": "Palmeiras",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 35,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.21,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373233",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "Santos vs Atletico MG",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Jeu. 10/09 à 00h00",
+    "fav_team": "Santos",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 31,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357699",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "CF Montreal vs Charlotte FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 01h30",
+    "fav_team": "CF Montreal",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357703",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "Atlanta Utd vs Orlando City",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 01h30",
+    "fav_team": "Atlanta Utd",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 52,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357702",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "Toronto FC vs Nashville SC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 01h30",
+    "fav_team": "Nashville SC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357704",
+    "timestamp_utc": "2026-09-08T20:04:51.917483+00:00",
+    "match": "Philadelphia vs FC Cincinnati",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 01h45",
+    "fav_team": "Philadelphia",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]

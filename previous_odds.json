@@ -1,45 +1,5 @@
 {
   "favs": {
-    "3378053": {
-      "match": "FC Larne - Bangor FC",
-      "league": "Irlande Du Nord • D1 Irlande Nord",
-      "date_str": "Mar. 08/09 à 20h45",
-      "fav_team": "FC Larne",
-      "fav_odds": 1.07,
-      "p2_fav_odds": null,
-      "fav_score": 66,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3376744": {
-      "match": "Southampton - Swansea",
-      "league": "Angleterre • Championship",
-      "date_str": "Mar. 08/09 à 20h45",
-      "fav_team": "Southampton",
-      "fav_odds": 1.73,
-      "p2_fav_odds": null,
-      "fav_score": 60,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375766": {
-      "match": "Real Madrid - Inter Milan",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Real Madrid",
-      "fav_odds": 1.54,
-      "p2_fav_odds": null,
-      "fav_score": 58,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3375764": {
-      "match": "Dortmund - Villarreal",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mar. 08/09 à 21h00",
-      "fav_team": "Dortmund",
-      "fav_odds": 1.68,
-      "p2_fav_odds": null,
-      "fav_score": 59,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3372375": {
       "match": "Gwangju FC - Jeju",
       "league": "Coree Du Sud • D1 Coree Du Sud",
@@ -55,7 +15,7 @@
       "league": "Rep Tcheque • D1 Rep Tcheque",
       "date_str": "Mer. 09/09 à 17h00",
       "fav_team": "FK Jablonec",
-      "fav_odds": 1.82,
+      "fav_odds": 1.85,
       "p2_fav_odds": null,
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
@@ -90,6 +50,16 @@
       "fav_score": 72,
       "fav_badge": "🥈 ARGENT"
     },
+    "3367027": {
+      "match": "Al Nassr - Abha",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "date_str": "Mer. 09/09 à 20h00",
+      "fav_team": "Al Nassr",
+      "fav_odds": 1.14,
+      "p2_fav_odds": null,
+      "fav_score": 85,
+      "fav_badge": "💎 PLATINE"
+    },
     "3367026": {
       "match": "Al Fateh - Diriyah Club",
       "league": "Arabie Saoudite • D1 Arabie Saoudite",
@@ -100,22 +70,12 @@
       "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
     },
-    "3367027": {
-      "match": "Al Nassr - Abha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Mer. 09/09 à 20h00",
-      "fav_team": "Al Nassr",
-      "fav_odds": 1.16,
-      "p2_fav_odds": null,
-      "fav_score": 85,
-      "fav_badge": "💎 PLATINE"
-    },
     "3378089": {
       "match": "Rangers - St Mirren",
       "league": "Ecosse • D1 Ecosse",
       "date_str": "Mer. 09/09 à 20h45",
       "fav_team": "Rangers",
-      "fav_odds": 1.27,
+      "fav_odds": 1.28,
       "p2_fav_odds": null,
       "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
@@ -125,9 +85,9 @@
       "league": "Angleterre • Efl Cup",
       "date_str": "Mer. 09/09 à 21h00",
       "fav_team": "Chelsea",
-      "fav_odds": 1.56,
+      "fav_odds": 1.57,
       "p2_fav_odds": null,
-      "fav_score": 56,
+      "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     },
     "3378091": {
@@ -135,7 +95,7 @@
       "league": "Ecosse • D1 Ecosse",
       "date_str": "Mer. 09/09 à 21h00",
       "fav_team": "Celtic",
-      "fav_odds": 1.41,
+      "fav_odds": 1.43,
       "p2_fav_odds": null,
       "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
@@ -145,7 +105,7 @@
       "league": "Portugal • Liga Portugal",
       "date_str": "Mer. 09/09 à 21h45",
       "fav_team": "Benfica",
-      "fav_odds": 1.12,
+      "fav_odds": 1.13,
       "p2_fav_odds": null,
       "fav_score": 68,
       "fav_badge": "🥈 ARGENT"
