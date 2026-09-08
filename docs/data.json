@@ -9,7 +9,7 @@
     "win_rate": 64.7,
     "profit_units": 1.03,
     "roi_pct": 2.02,
-    "last_updated": "2026-09-08T15:13:58.981000+00:00"
+    "last_updated": "2026-09-08T15:16:37.985683+00:00"
   },
   "matches_today": [
     {
@@ -1126,7 +1126,7 @@
       "score_display": "2 - 2",
       "home_score": 2,
       "away_score": 2,
-      "minute": "43'",
+      "minute": "44'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1148,7 +1148,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "12'",
+      "minute": "15'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1346,7 +1346,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "13'",
+      "minute": "15'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1368,7 +1368,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "13'",
+      "minute": "15'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -2514,7 +2514,7 @@
         "win_pct_historical": 80,
         "status": "LIVE",
         "score_display": "2 - 2",
-        "minute": "43'",
+        "minute": "44'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       }
@@ -2542,7 +2542,7 @@
         "win_pct_historical": 50,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "12'",
+        "minute": "15'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2736,7 +2736,7 @@
         "score_display": "0 - 0",
         "home_score": 0,
         "away_score": 0,
-        "minute": "13'",
+        "minute": "15'",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -2758,7 +2758,7 @@
         "score_display": "0 - 0",
         "home_score": 0,
         "away_score": 0,
-        "minute": "13'",
+        "minute": "15'",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
