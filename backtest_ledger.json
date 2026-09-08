@@ -20720,5 +20720,91 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3367987",
+    "timestamp_utc": "2026-09-08T04:03:33.311794+00:00",
+    "match": "Kauno Zalgiris vs FK Suduva",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Mer. 09/09 à 17h45",
+    "fav_team": "Kauno Zalgiris",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367023",
+    "timestamp_utc": "2026-09-08T04:03:33.311794+00:00",
+    "match": "Al Kholood vs Al Shabab",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mer. 09/09 à 17h55",
+    "fav_team": "Al Shabab",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 37,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374807",
+    "timestamp_utc": "2026-09-08T04:03:33.311794+00:00",
+    "match": "FC Levadia vs FC Kuressaare",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Mer. 09/09 à 18h00",
+    "fav_team": "FC Levadia",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 64,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.11,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378055",
+    "timestamp_utc": "2026-09-08T04:03:33.311794+00:00",
+    "match": "Tammeka Tartu vs Paide",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Mer. 09/09 à 18h00",
+    "fav_team": "Paide",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.63,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
