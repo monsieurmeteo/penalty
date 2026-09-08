@@ -20806,5 +20806,116 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3367989",
+    "timestamp_utc": "2026-09-08T06:03:33.535407+00:00",
+    "match": "Twente vs SC Telstar",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Mer. 09/09 à 18h45",
+    "fav_team": "Twente",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375769",
+    "timestamp_utc": "2026-09-08T06:03:33.535407+00:00",
+    "match": "Stuttgart vs Viking FK",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mer. 09/09 à 18h45",
+    "fav_team": "Stuttgart",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375771",
+    "timestamp_utc": "2026-09-08T06:03:33.535407+00:00",
+    "match": "FC Barcelone vs Feyenoord",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Mer. 09/09 à 18h45",
+    "fav_team": "FC Barcelone",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.07,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367026",
+    "timestamp_utc": "2026-09-08T06:03:33.535407+00:00",
+    "match": "Al Fateh vs Diriyah Club",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mer. 09/09 à 20h00",
+    "fav_team": "Diriyah Club",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 61,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.82,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367027",
+    "timestamp_utc": "2026-09-08T06:03:33.535407+00:00",
+    "match": "Al Nassr vs Abha",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Mer. 09/09 à 20h00",
+    "fav_team": "Al Nassr",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 85,
+      "pct_fav_success": 90,
+      "pct_fav_lead2": 60
+    },
+    "odds": {
+      "fav_odds": 1.14,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
