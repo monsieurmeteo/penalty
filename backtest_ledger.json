@@ -20592,5 +20592,112 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373036",
+    "timestamp_utc": "2026-09-08T00:05:02.723441+00:00",
+    "match": "Fluminense vs CA Platense",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Mer. 09/09 à 00h00",
+    "fav_team": "Fluminense",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.47,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374745",
+    "timestamp_utc": "2026-09-08T00:05:02.723441+00:00",
+    "match": "Ind.Santa Fe vs Vasco De Gama",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Mer. 09/09 à 00h00",
+    "fav_team": "Ind.Santa Fe",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372377",
+    "timestamp_utc": "2026-09-08T00:05:02.723441+00:00",
+    "match": "Pohang vs Gimcheon",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mer. 09/09 à 12h30",
+    "fav_team": "Pohang",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372375",
+    "timestamp_utc": "2026-09-08T00:05:02.723441+00:00",
+    "match": "Gwangju FC vs Jeju",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mer. 09/09 à 12h30",
+    "fav_team": "Jeju",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.83,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372373",
+    "timestamp_utc": "2026-09-08T00:05:02.723441+00:00",
+    "match": "Daejeon vs FC Anyang",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mer. 09/09 à 12h30",
+    "fav_team": "Daejeon",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 38,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.53,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
