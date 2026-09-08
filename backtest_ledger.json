@@ -21200,5 +21200,26 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378697",
+    "timestamp_utc": "2026-09-08T12:03:44.084915+00:00",
+    "match": "Inter Toronto vs Pacific FC",
+    "league": "Canada • D1 Canada",
+    "date_str": "Jeu. 10/09 à 01h30",
+    "fav_team": "Inter Toronto",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 21,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
