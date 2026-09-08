@@ -9,7 +9,7 @@
     "win_rate": 67.2,
     "profit_units": 3.03,
     "roi_pct": 4.97,
-    "last_updated": "2026-09-08T21:54:02.566491+00:00"
+    "last_updated": "2026-09-08T22:05:02.418346+00:00"
   },
   "matches_today": [
     {
@@ -1469,7 +1469,7 @@
       "away": "St Mirren",
       "fav_team": "Rangers",
       "fav_side": "dom",
-      "odds": 1.28,
+      "odds": 1.27,
       "domination_score": 60,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -2679,7 +2679,7 @@
     {
       "id": "combo_25",
       "ticket_num": 25,
-      "email_ticket_num": 3,
+      "email_ticket_num": 1,
       "odds": 2.1,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -2789,7 +2789,7 @@
     {
       "id": "combo_27",
       "ticket_num": 27,
-      "email_ticket_num": 4,
+      "email_ticket_num": 2,
       "odds": 2.18,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -2844,7 +2844,7 @@
     {
       "id": "combo_28",
       "ticket_num": 28,
-      "email_ticket_num": 5,
+      "email_ticket_num": 3,
       "odds": 1.45,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -2899,7 +2899,7 @@
     {
       "id": "combo_29",
       "ticket_num": 29,
-      "email_ticket_num": 6,
+      "email_ticket_num": 4,
       "odds": 1.57,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -2954,31 +2954,11 @@
   ],
   "matches_discarded": [
     {
-      "time": "Mer. 09/09 à 00h00",
-      "league": "Amerique • Copa Sudamericana",
-      "match": "Ind.Santa Fe vs Vasco De Gama",
-      "fav_team": "Ind.Santa Fe",
-      "odds": "@2.15",
-      "domination_score": "42/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Mer. 09/09 à 00h00",
-      "league": "Amerique • Copa Libertadores",
-      "match": "Fluminense vs CA Platense",
-      "fav_team": "Fluminense",
-      "odds": "@1.51",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
       "time": "Mer. 09/09 à 02h30",
       "league": "Amerique • Copa Sudamericana",
       "match": "Boca Juniors vs Sao Paulo",
       "fav_team": "Boca Juniors",
-      "odds": "@1.86",
+      "odds": "@1.87",
       "domination_score": "49/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -3035,16 +3015,6 @@
     },
     {
       "time": "Mer. 09/09 à 18h00",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "FK Zeljeznicar vs FK Sarajevo",
-      "fav_team": "FK Sarajevo",
-      "odds": "@1.92",
-      "domination_score": "38/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Mer. 09/09 à 18h00",
       "league": "Estonie • D1 Estonie",
       "match": "Parnu JK Vapru vs Harju JK",
       "fav_team": "Parnu JK Vapru",
@@ -3054,11 +3024,21 @@
       "status": "ÉCARTÉ"
     },
     {
+      "time": "Mer. 09/09 à 18h00",
+      "league": "Bosnie Herzeg • D1 Bosnie",
+      "match": "FK Zeljeznicar vs FK Sarajevo",
+      "fav_team": "FK Sarajevo",
+      "odds": "@1.92",
+      "domination_score": "38/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
       "time": "Mer. 09/09 à 18h45",
       "league": "Coupes D Europe • Ligue Des Champions",
       "match": "FC Barcelone vs Feyenoord",
       "fav_team": "FC Barcelone",
-      "odds": "@1.06",
+      "odds": "@1.05",
       "domination_score": "48/100",
       "reussite": "60%",
       "status": "ÉCARTÉ"
@@ -3096,31 +3076,11 @@
     {
       "time": "Mer. 09/09 à 21h00",
       "league": "Coupes D Europe • Ligue Des Champions",
-      "match": "Sporting vs Galatasaray",
-      "fav_team": "Sporting",
-      "odds": "@1.76",
-      "domination_score": "51/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Mer. 09/09 à 21h00",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "match": "Naples vs Arsenal",
-      "fav_team": "Arsenal",
-      "odds": "@1.68",
-      "domination_score": "42/100",
+      "match": "Liverpool vs Atl. Madrid",
+      "fav_team": "Liverpool",
+      "odds": "@1.65",
+      "domination_score": "43/100",
       "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Mer. 09/09 à 21h00",
-      "league": "Angleterre • Championship",
-      "match": "Charlton vs Queens Park R.",
-      "fav_team": "Queens Park R.",
-      "odds": "@2.15",
-      "domination_score": "40/100",
-      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -3136,11 +3096,31 @@
     {
       "time": "Mer. 09/09 à 21h00",
       "league": "Coupes D Europe • Ligue Des Champions",
-      "match": "Liverpool vs Atl. Madrid",
-      "fav_team": "Liverpool",
+      "match": "Sporting vs Galatasaray",
+      "fav_team": "Sporting",
+      "odds": "@1.75",
+      "domination_score": "51/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mer. 09/09 à 21h00",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "match": "Naples vs Arsenal",
+      "fav_team": "Arsenal",
       "odds": "@1.65",
-      "domination_score": "43/100",
+      "domination_score": "42/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Mer. 09/09 à 21h00",
+      "league": "Angleterre • Championship",
+      "match": "Charlton vs Queens Park R.",
+      "fav_team": "Queens Park R.",
+      "odds": "@2.15",
+      "domination_score": "40/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -3166,31 +3146,11 @@
     {
       "time": "Jeu. 10/09 à 01h30",
       "league": "Etats Unis • Mls",
-      "match": "CF Montreal vs Charlotte FC",
-      "fav_team": "CF Montreal",
-      "odds": "@2.15",
-      "domination_score": "43/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Jeu. 10/09 à 01h30",
-      "league": "Etats Unis • Mls",
       "match": "Atlanta Utd vs Orlando City",
       "fav_team": "Atlanta Utd",
       "odds": "@2.05",
       "domination_score": "52/100",
       "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Jeu. 10/09 à 01h30",
-      "league": "Canada • D1 Canada",
-      "match": "Inter Toronto vs Pacific FC",
-      "fav_team": "Inter Toronto",
-      "odds": "@2.15",
-      "domination_score": "21/100",
-      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -3201,6 +3161,26 @@
       "odds": "@2.20",
       "domination_score": "49/100",
       "reussite": "60%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Jeu. 10/09 à 01h30",
+      "league": "Etats Unis • Mls",
+      "match": "CF Montreal vs Charlotte FC",
+      "fav_team": "CF Montreal",
+      "odds": "@2.15",
+      "domination_score": "43/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Jeu. 10/09 à 01h30",
+      "league": "Canada • D1 Canada",
+      "match": "Inter Toronto vs Pacific FC",
+      "fav_team": "Inter Toronto",
+      "odds": "@2.15",
+      "domination_score": "21/100",
+      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
