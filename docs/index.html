@@ -715,20 +715,29 @@
                     const legWon = m.selection_status.startsWith('WON');
                     const legLost = (m.selection_status === 'LOST');
                     const legLive = (m.status === 'LIVE');
+                    const market = m.market || 'FAV_1N2';
 
                     let legBadge = '';
                     if (m.selection_status === 'WON_LEAD2') legBadge = '<span class="leg-badge leg-won">👑 +2b Gagné</span>';
-                    else if (m.selection_status === 'WON_FINAL') legBadge = '<span class="leg-badge leg-won">✅ Victoire</span>';
+                    else if (m.selection_status === 'WON_FINAL') {
+                        if (market === 'OVER_15') legBadge = '<span class="leg-badge leg-won">⚽ Over 1.5 Validé</span>';
+                        else if (market === 'BTTS') legBadge = '<span class="leg-badge leg-won">🤝 BTTS Validé</span>';
+                        else legBadge = '<span class="leg-badge leg-won">✅ Victoire</span>';
+                    }
                     else if (legLost) legBadge = '<span class="leg-badge leg-lost">❌ Perdu</span>';
                     else if (legLive) legBadge = `<span class="leg-badge leg-live">🟢 ${m.minute}</span>`;
                     else legBadge = '<span class="leg-badge leg-pending">⏳ À venir</span>';
+
+                    let selLabel = `👑 ${m.fav_team}`;
+                    if (market === 'OVER_15') selLabel = '⚽ Over 1.5 Buts';
+                    else if (market === 'BTTS') selLabel = '🤝 Les 2 Marquent';
 
                     return `
                     <div class="combo-leg">
                         <div class="leg-left">
                             <span class="leg-time">${m.time ? m.time.replace(' à ', ' ') : ''}</span>
                             <span class="leg-teams">${m.home} vs ${m.away}</span>
-                            <span class="leg-fav">👑 ${m.fav_team} @${m.odds.toFixed(2)}</span>
+                            <span class="leg-fav">${selLabel} @${m.odds.toFixed(2)}</span>
                         </div>
                         <div style="display:flex; align-items:center; gap:6px;">
                             ${(isGoalActive(m.home) || isGoalActive(m.away)) ? '<span class="goal-badge-live">⚽ BUT !</span>' : ''}<span class="leg-score">${m.score_display || 'VS'}</span>

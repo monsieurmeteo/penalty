@@ -124,15 +124,7 @@ def sync():
             a_sc = best_ev["a_sc"]
             eps = best_ev["eps"]
 
-            fav_goals = h_sc if is_fav_home else a_sc
-            dog_goals = a_sc if is_fav_home else h_sc
-            lead2 = (fav_goals - dog_goals >= 2)
-            win = (fav_goals > dog_goals)
-
-            was_lead2 = (m.get("selection_status") == "WON_LEAD2")
-            if was_lead2:
-                lead2 = True
-
+            market = m.get("market", "FAV_1N2")
             old_sc = m.get("score_display")
             old_stat = m.get("status")
 
@@ -145,39 +137,62 @@ def sync():
                 m["is_finished"] = True
                 m["is_live"] = False
                 m["minute"] = "Terminé"
-                if lead2 or was_lead2:
-                    m["selection_status"] = "WON_LEAD2"
-                    m["profit"] = round(odds_val - 1.0, 2)
-                elif win:
-                    m["selection_status"] = "WON_FINAL"
-                    m["profit"] = round(odds_val - 1.0, 2)
+                if market == "OVER_15":
+                    is_won = (h_sc + a_sc >= 2)
+                    m["selection_status"] = "WON_FINAL" if is_won else "LOST"
+                    m["profit"] = round(odds_val - 1.0, 2) if is_won else -1.0
+                elif market == "BTTS":
+                    is_won = (h_sc >= 1 and a_sc >= 1)
+                    m["selection_status"] = "WON_FINAL" if is_won else "LOST"
+                    m["profit"] = round(odds_val - 1.0, 2) if is_won else -1.0
                 else:
-                    m["selection_status"] = "LOST"
-                    m["profit"] = -1.0
-            elif eps == "HT":
-                m["status"] = "LIVE"
-                m["is_live"] = True
-                m["is_finished"] = False
-                m["minute"] = "Mi-temps"
-                if lead2:
-                    m["selection_status"] = "WON_LEAD2"
-                    m["profit"] = round(odds_val - 1.0, 2)
-                else:
-                    m["selection_status"] = "IN_PROGRESS"
-                    m["profit"] = 0.0
+                    fav_goals = h_sc if is_fav_home else a_sc
+                    dog_goals = a_sc if is_fav_home else h_sc
+                    lead2 = (fav_goals - dog_goals >= 2)
+                    win = (fav_goals > dog_goals)
+                    was_lead2 = (m.get("selection_status") == "WON_LEAD2")
+                    if lead2 or was_lead2:
+                        m["selection_status"] = "WON_LEAD2"
+                        m["profit"] = round(odds_val - 1.0, 2)
+                    elif win:
+                        m["selection_status"] = "WON_FINAL"
+                        m["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        m["selection_status"] = "LOST"
+                        m["profit"] = -1.0
             elif eps in ["NS", "CANC", "POST", "DEFD", "INT"]:
                 pass
             else:
                 m["status"] = "LIVE"
                 m["is_live"] = True
                 m["is_finished"] = False
-                m["minute"] = eps + ("'" if eps.isdigit() else "")
-                if lead2:
-                    m["selection_status"] = "WON_LEAD2"
-                    m["profit"] = round(odds_val - 1.0, 2)
+                m["minute"] = "Mi-temps" if eps == "HT" else (eps + ("'" if eps.isdigit() else ""))
+
+                if market == "OVER_15":
+                    if h_sc + a_sc >= 2:
+                        m["selection_status"] = "WON_FINAL"
+                        m["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        m["selection_status"] = "IN_PROGRESS"
+                        m["profit"] = 0.0
+                elif market == "BTTS":
+                    if h_sc >= 1 and a_sc >= 1:
+                        m["selection_status"] = "WON_FINAL"
+                        m["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        m["selection_status"] = "IN_PROGRESS"
+                        m["profit"] = 0.0
                 else:
-                    m["selection_status"] = "IN_PROGRESS"
-                    m["profit"] = 0.0
+                    fav_goals = h_sc if is_fav_home else a_sc
+                    dog_goals = a_sc if is_fav_home else h_sc
+                    lead2 = (fav_goals - dog_goals >= 2)
+                    was_lead2 = (m.get("selection_status") == "WON_LEAD2")
+                    if lead2 or was_lead2:
+                        m["selection_status"] = "WON_LEAD2"
+                        m["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        m["selection_status"] = "IN_PROGRESS"
+                        m["profit"] = 0.0
 
             if old_sc != m["score_display"] or old_stat != m["status"]:
                 updated_count += 1

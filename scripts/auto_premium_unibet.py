@@ -15,6 +15,7 @@ except Exception:
 
 # ── Seuils Stratégie Favoris Win & 2 Buts d'Avance (Early Payout) ───────────
 MAX_COTE_FAV           = 2.20  # Cote maximale du favori Unibet 1N2
+MIN_COTE_FAV           = 1.40  # Plancher anti-pertes : élimine les cotes < 1.40
 MIN_SCORE_FAV_RETAINED = 55    # Score AdamChoi minimal pour être retenu (Bronze / Argent / Or / Platine)
 MIN_SCORE_FAV_SOLID    = 75    # Score AdamChoi pour être qualifié Favori Solide (Or / Platine)
 
@@ -60,8 +61,8 @@ def evaluate_favorite_domination(m):
     fav_odds = c1 if is_dom else c2
     dog_odds = c2 if is_dom else c1
 
-    # ponytail: cote max favori 2.20 pour garantir un avantage réel côté bookmaker
-    if fav_odds > MAX_COTE_FAV:
+    # ponytail: cote min 1.40 et max 2.20 pour éliminer les cotes faibles destructrices de capital
+    if fav_odds < MIN_COTE_FAV or fav_odds > MAX_COTE_FAV:
         return None
 
     fav_team = m["dom"] if is_dom else m["ext"]
@@ -173,6 +174,64 @@ def evaluate_favorite_domination(m):
         "pts_odds": pts_odds,
         "n_fav": n_fav,
         "n_dog": n_dog,
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)"
+    }
+
+def evaluate_over15(m):
+    """Évalue si le match est hautement qualifié pour le marché Over 1.5 Buts."""
+    o15 = m.get("over15")
+    if not o15 or o15 < 1.22 or o15 > 1.50:
+        return None
+    rec_h = m.get("recent_h_dom", [])
+    rec_a = m.get("recent_a_ext", [])
+    all_rec = rec_h + rec_a
+    if len(all_rec) < 4:
+        return None
+    tot_o15 = sum(1 for rm in all_rec if int(rm.get("homeGoals", rm.get("homeGoalsFt", 0))) + int(rm.get("awayGoals", rm.get("awayGoalsFt", 0))) >= 2)
+    pct = round(tot_o15 / len(all_rec) * 100)
+    if pct < 75:
+        return None
+    return {
+        "fav_team": f"{m.get('dom')} vs {m.get('ext')}",
+        "dog_team": "",
+        "fav_side": "dom",
+        "fav_odds": o15,
+        "p2_fav_odds": o15,
+        "fav_score": pct,
+        "fav_badge": "⚽ OVER 1.5",
+        "fav_classe": f"Fréquence Over 1.5 : {pct}%",
+        "pct_fav_success": pct,
+        "market": "OVER_15",
+        "market_label": "⚽ Over 1.5 Buts"
+    }
+
+def evaluate_btts(m):
+    """Évalue si le match est hautement qualifié pour Les Deux Équipes Marquent (BTTS)."""
+    btts = m.get("btts_oui")
+    if not btts or btts < 1.60 or btts > 2.20:
+        return None
+    rec_h = m.get("recent_h_dom", [])
+    rec_a = m.get("recent_a_ext", [])
+    all_rec = rec_h + rec_a
+    if len(all_rec) < 4:
+        return None
+    tot_btts = sum(1 for rm in all_rec if int(rm.get("homeGoals", rm.get("homeGoalsFt", 0))) >= 1 and int(rm.get("awayGoals", rm.get("awayGoalsFt", 0))) >= 1)
+    pct = round(tot_btts / len(all_rec) * 100)
+    if pct < 65:
+        return None
+    return {
+        "fav_team": f"{m.get('dom')} vs {m.get('ext')}",
+        "dog_team": "",
+        "fav_side": "dom",
+        "fav_odds": btts,
+        "p2_fav_odds": btts,
+        "fav_score": pct,
+        "fav_badge": "🤝 BTTS",
+        "fav_classe": f"Fréquence BTTS : {pct}%",
+        "pct_fav_success": pct,
+        "market": "BTTS",
+        "market_label": "🤝 Les 2 Marquent"
     }
 
 def render_fav_proof_html(m):
@@ -686,37 +745,67 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
             item["score_display"] = f"{h_sc} - {a_sc}"
 
             is_fav_home = (fav_team == dom)
-            fav_goals = h_sc if is_fav_home else a_sc
-            dog_goals = a_sc if is_fav_home else h_sc
-            lead2 = (fav_goals - dog_goals >= 2)
-            win = (fav_goals > dog_goals)
-            was_lead2 = (item.get("selection_status") == "WON_LEAD2")
-            if was_lead2:
-                lead2 = True
+            market = item.get("market", "FAV_1N2")
 
             if eps in ["FT", "AET", "AP"]:
                 item["status"] = "FINISHED"
                 item["is_finished"] = True
+                item["is_live"] = False
                 item["minute"] = "Terminé"
-                if lead2 or was_lead2:
-                    item["selection_status"] = "WON_LEAD2"
-                    item["profit"] = round(odds_val - 1.0, 2)
-                elif win:
-                    item["selection_status"] = "WON_FINAL"
-                    item["profit"] = round(odds_val - 1.0, 2)
+                if market == "OVER_15":
+                    is_won = (h_sc + a_sc >= 2)
+                    item["selection_status"] = "WON_FINAL" if is_won else "LOST"
+                    item["profit"] = round(odds_val - 1.0, 2) if is_won else -1.0
+                elif market == "BTTS":
+                    is_won = (h_sc >= 1 and a_sc >= 1)
+                    item["selection_status"] = "WON_FINAL" if is_won else "LOST"
+                    item["profit"] = round(odds_val - 1.0, 2) if is_won else -1.0
                 else:
-                    item["selection_status"] = "LOST"
-                    item["profit"] = -1.0
+                    fav_goals = h_sc if is_fav_home else a_sc
+                    dog_goals = a_sc if is_fav_home else h_sc
+                    lead2 = (fav_goals - dog_goals >= 2)
+                    win = (fav_goals > dog_goals)
+                    was_lead2 = (item.get("selection_status") == "WON_LEAD2")
+                    if lead2 or was_lead2:
+                        item["selection_status"] = "WON_LEAD2"
+                        item["profit"] = round(odds_val - 1.0, 2)
+                    elif win:
+                        item["selection_status"] = "WON_FINAL"
+                        item["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        item["selection_status"] = "LOST"
+                        item["profit"] = -1.0
             elif eps not in ["NS", "CANC", "POST", "DEFD", "INT"]:
                 item["status"] = "LIVE"
                 item["is_live"] = True
-                item["minute"] = eps + ("'" if eps.isdigit() else "")
-                if lead2:
-                    item["selection_status"] = "WON_LEAD2"
-                    item["profit"] = round(odds_val - 1.0, 2)
+                item["is_finished"] = False
+                item["minute"] = "Mi-temps" if eps == "HT" else (eps + ("'" if eps.isdigit() else ""))
+
+                if market == "OVER_15":
+                    if h_sc + a_sc >= 2:
+                        item["selection_status"] = "WON_FINAL"
+                        item["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        item["selection_status"] = "IN_PROGRESS"
+                        item["profit"] = 0.0
+                elif market == "BTTS":
+                    if h_sc >= 1 and a_sc >= 1:
+                        item["selection_status"] = "WON_FINAL"
+                        item["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        item["selection_status"] = "IN_PROGRESS"
+                        item["profit"] = 0.0
                 else:
-                    item["selection_status"] = "IN_PROGRESS"
-                    item["profit"] = 0.0
+                    fav_goals = h_sc if is_fav_home else a_sc
+                    dog_goals = a_sc if is_fav_home else h_sc
+                    lead2 = (fav_goals - dog_goals >= 2)
+                    was_lead2 = (item.get("selection_status") == "WON_LEAD2")
+                    if lead2 or was_lead2:
+                        item["selection_status"] = "WON_LEAD2"
+                        item["profit"] = round(odds_val - 1.0, 2)
+                    else:
+                        item["selection_status"] = "IN_PROGRESS"
+                        item["profit"] = 0.0
 
     all_today_matches = list(existing_matches_map.values())
     won_c = sum(1 for x in all_today_matches if x.get("selection_status", "").startswith("WON"))
@@ -812,18 +901,38 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         if k_dom not in used_teams and k_ext not in used_teams:
             unassigned_favs.append(m)
 
-    for i in range(0, len(unassigned_favs) - 1, 2):
-        m1_raw = unassigned_favs[i]
-        m2_raw = unassigned_favs[i+1]
+    # ponytail: Appairage intelligent Sweet Spot [2.10 - 2.55] en respectant la chronologie
+    pool = list(unassigned_favs)
+    while len(pool) >= 2:
+        m1_raw = pool.pop(0)
         k1 = _clean_team_key(m1_raw.get("dom", ""))
+        fi1 = m1_raw.get("fav_info", {})
+        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
+
+        best_j = None
+        best_score = 999.0
+        for j, m2_cand in enumerate(pool):
+            fi2 = m2_cand.get("fav_info", {})
+            c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
+            comb_odds = round(c1 * c2, 2)
+            if comb_odds > 2.85:
+                continue
+            dist = abs(comb_odds - 2.25)
+            score = dist + (j * 0.05)
+            if score < best_score:
+                best_score = score
+                best_j = j
+
+        if best_j is None:
+            best_j = 0
+
+        m2_raw = pool.pop(best_j)
         k2 = _clean_team_key(m2_raw.get("dom", ""))
         used_teams.add(k1)
         used_teams.add(k2)
 
         c_idx = len(combos_today) + 1
-        fi1 = m1_raw.get("fav_info", {})
         fi2 = m2_raw.get("fav_info", {})
-        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
         c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
         comb_odds = round(c1 * c2, 2)
 
@@ -835,6 +944,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
             "away": m1_raw.get("ext", ""),
             "fav_team": fi1.get("fav_team", m1_raw.get("dom", "")),
             "fav_side": fi1.get("fav_side", "dom"),
+            "market": fi1.get("market", "FAV_1N2"),
+            "market_label": fi1.get("market_label", "👑 Favori (+2b)"),
             "odds": c1,
             "domination_score": fi1.get("fav_score", 60),
             "badge_tier": fi1.get("fav_badge", "🥉 BRONZE"),
@@ -858,6 +969,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
             "away": m2_raw.get("ext", ""),
             "fav_team": fi2.get("fav_team", m2_raw.get("dom", "")),
             "fav_side": fi2.get("fav_side", "dom"),
+            "market": fi2.get("market", "FAV_1N2"),
+            "market_label": fi2.get("market_label", "👑 Favori (+2b)"),
             "odds": c2,
             "domination_score": fi2.get("fav_score", 60),
             "badge_tier": fi2.get("fav_badge", "🥉 BRONZE"),
@@ -1114,24 +1227,34 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Évaluation 100% Stratégie Favoris « Win & 2 Buts d'Avance (Early Payout) » ──
-    fav_matches = []
+    # ── Évaluation Multi-Marchés (Favoris 1N2 + Over 1.5 + BTTS) ──
+    retained_favs = []
+    rejected_favs = []
     for m in scanned_results:
         fav_res = evaluate_favorite_domination(m)
-        if fav_res:
+        if fav_res and fav_res["fav_score"] >= MIN_SCORE_FAV_RETAINED:
             m["fav_info"] = fav_res
-            fav_matches.append(m)
-
-    # Filtrage des favoris retenus (Score >= 65) et des favoris écartés (< 65)
-    retained_favs = [m for m in fav_matches if m["fav_info"]["fav_score"] >= MIN_SCORE_FAV_RETAINED]
-    rejected_favs = [m for m in fav_matches if m["fav_info"]["fav_score"] < MIN_SCORE_FAV_RETAINED]
+            retained_favs.append(m)
+        else:
+            # Fallback vers Over 1.5 Buts ou BTTS si le favori sec n'est pas qualifié
+            o15_res = evaluate_over15(m)
+            if o15_res:
+                m["fav_info"] = o15_res
+                retained_favs.append(m)
+            else:
+                btts_res = evaluate_btts(m)
+                if btts_res:
+                    m["fav_info"] = btts_res
+                    retained_favs.append(m)
+                elif fav_res:
+                    m["fav_info"] = fav_res
+                    rejected_favs.append(m)
 
     # ponytail: Tri STRICTEMENT CHRONOLOGIQUE demandé par l'utilisateur
     retained_favs.sort(key=lambda x: x.get("dt_obj", now_utc))
-    all_favs_chrono = sorted(fav_matches, key=lambda x: x.get("dt_obj", now_utc))
+    all_favs_chrono = sorted(retained_favs + rejected_favs, key=lambda x: x.get("dt_obj", now_utc))
 
     # ponytail: garde-fous absolus sur les matchs retenus
-    assert all(m["fav_info"]["fav_score"] >= MIN_SCORE_FAV_RETAINED for m in retained_favs), "ERREUR: Match retenu avec Score < 55"
     assert all(m["fav_info"]["fav_odds"] <= MAX_COTE_FAV for m in retained_favs), "ERREUR: Match retenu avec Cote > 2.20"
     for i in range(len(retained_favs) - 1):
         t1 = retained_favs[i].get("dt_obj", now_utc)
@@ -1144,9 +1267,9 @@ def main():
     nb_bronze = sum(1 for m in retained_favs if 55 <= m["fav_info"]["fav_score"] < 65)
     nb_risqued = len(rejected_favs)
 
-    print(f"🏆 Favoris analysés (Cote <= 2.20) : {len(fav_matches)} / {len(scanned_results)}")
-    print(f"⭐ Favoris Retenus (Score >= 55, tri chronologique) : {len(retained_favs)} (💎 Platine: {nb_platine}, 🥇 Or: {nb_or}, 🥈 Argent: {nb_argent}, 🥉 Bronze: {nb_bronze})")
-    print(f"⚠️ Favoris Écartés (Score < 55) : {len(rejected_favs)}")
+    print(f"🏆 Matchs analysés (Cote <= 2.20) : {len(retained_favs) + len(rejected_favs)} / {len(scanned_results)}")
+    print(f"⭐ Sélections Retenues (Score >= 55, tri chronologique) : {len(retained_favs)} (💎 Platine: {nb_platine}, 🥇 Or: {nb_or}, 🥈 Argent: {nb_argent}, 🥉 Bronze: {nb_bronze})")
+    print(f"⚠️ Sélections Écartées (Score < 55) : {len(rejected_favs)}")
 
     # ── Évolutions vs run précédent ──────────────────────────────────────────
     history_file = "previous_odds.json"
