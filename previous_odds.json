@@ -1,5 +1,15 @@
 {
   "favs": {
+    "3373028": {
+      "match": "Boca Juniors - Sao Paulo",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Mer. 09/09 à 02h30",
+      "fav_team": "Boca Juniors vs Sao Paulo",
+      "fav_odds": 1.48,
+      "p2_fav_odds": 1.48,
+      "fav_score": 75,
+      "fav_badge": "⚽ OVER 1.5"
+    },
     "3372375": {
       "match": "Gwangju FC - Jeju",
       "league": "Coree Du Sud • D1 Coree Du Sud",
@@ -9,6 +19,16 @@
       "p2_fav_odds": null,
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
+    },
+    "3372374": {
+      "match": "Gangwon FC - Jeonbuk",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Mer. 09/09 à 12h30",
+      "fav_team": "Gangwon FC vs Jeonbuk",
+      "fav_odds": 1.3,
+      "p2_fav_odds": 1.3,
+      "fav_score": 80,
+      "fav_badge": "⚽ OVER 1.5"
     },
     "3373089": {
       "match": "FK Jablonec - Banik Ostrava",
@@ -20,45 +40,25 @@
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
-    "3374807": {
-      "match": "FC Levadia - FC Kuressaare",
-      "league": "Estonie • D1 Estonie",
+    "3371407": {
+      "match": "FK Zeljeznicar - FK Sarajevo",
+      "league": "Bosnie Herzeg • D1 Bosnie",
       "date_str": "Mer. 09/09 à 18h00",
-      "fav_team": "FC Levadia",
-      "fav_odds": 1.09,
-      "p2_fav_odds": null,
-      "fav_score": 64,
-      "fav_badge": "🥉 BRONZE"
+      "fav_team": "FK Zeljeznicar vs FK Sarajevo",
+      "fav_odds": 1.38,
+      "p2_fav_odds": 1.38,
+      "fav_score": 75,
+      "fav_badge": "⚽ OVER 1.5"
     },
-    "3367989": {
-      "match": "Twente - SC Telstar",
-      "league": "Pays Bas • D1 Pays Bas",
+    "3375769": {
+      "match": "Stuttgart - Viking FK",
+      "league": "Coupes D Europe • Ligue Des Champions",
       "date_str": "Mer. 09/09 à 18h45",
-      "fav_team": "Twente",
-      "fav_odds": 1.2,
-      "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3368006": {
-      "match": "Mamelodi - Siwelele",
-      "league": "Afrique Du Sud • D1 Afrique Du Sud",
-      "date_str": "Mer. 09/09 à 19h30",
-      "fav_team": "Mamelodi",
-      "fav_odds": 1.19,
-      "p2_fav_odds": null,
-      "fav_score": 72,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3367027": {
-      "match": "Al Nassr - Abha",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "date_str": "Mer. 09/09 à 20h00",
-      "fav_team": "Al Nassr",
-      "fav_odds": 1.14,
-      "p2_fav_odds": null,
+      "fav_team": "Stuttgart vs Viking FK",
+      "fav_odds": 1.62,
+      "p2_fav_odds": 1.62,
       "fav_score": 85,
-      "fav_badge": "💎 PLATINE"
+      "fav_badge": "🤝 BTTS"
     },
     "3367026": {
       "match": "Al Fateh - Diriyah Club",
@@ -70,14 +70,24 @@
       "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
     },
-    "3378089": {
-      "match": "Rangers - St Mirren",
-      "league": "Ecosse • D1 Ecosse",
+    "3377205": {
+      "match": "Derby - West Bromwich",
+      "league": "Angleterre • Championship",
       "date_str": "Mer. 09/09 à 20h45",
-      "fav_team": "Rangers",
-      "fav_odds": 1.27,
+      "fav_team": "Derby vs West Bromwich",
+      "fav_odds": 1.25,
+      "p2_fav_odds": 1.25,
+      "fav_score": 75,
+      "fav_badge": "⚽ OVER 1.5"
+    },
+    "3375694": {
+      "match": "Chelsea - Leeds Utd",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Chelsea",
+      "fav_odds": 1.57,
       "p2_fav_odds": null,
-      "fav_score": 60,
+      "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     },
     "3378091": {
@@ -90,25 +100,25 @@
       "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     },
-    "3375694": {
-      "match": "Chelsea - Leeds Utd",
-      "league": "Angleterre • Efl Cup",
+    "3375777": {
+      "match": "Sporting - Galatasaray",
+      "league": "Coupes D Europe • Ligue Des Champions",
       "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Chelsea",
-      "fav_odds": 1.57,
-      "p2_fav_odds": null,
-      "fav_score": 55,
-      "fav_badge": "🥉 BRONZE"
+      "fav_team": "Sporting vs Galatasaray",
+      "fav_odds": 1.6,
+      "p2_fav_odds": 1.6,
+      "fav_score": 70,
+      "fav_badge": "🤝 BTTS"
     },
-    "3377204": {
-      "match": "Moreirense - Benfica",
-      "league": "Portugal • Liga Portugal",
-      "date_str": "Mer. 09/09 à 21h45",
-      "fav_team": "Benfica",
-      "fav_odds": 1.13,
-      "p2_fav_odds": null,
-      "fav_score": 68,
-      "fav_badge": "🥈 ARGENT"
+    "3373233": {
+      "match": "Santos - Atletico MG",
+      "league": "Amerique • Copa Sudamericana",
+      "date_str": "Jeu. 10/09 à 00h00",
+      "fav_team": "Santos vs Atletico MG",
+      "fav_odds": 1.35,
+      "p2_fav_odds": 1.35,
+      "fav_score": 75,
+      "fav_badge": "⚽ OVER 1.5"
     }
   }
 }
