@@ -9,7 +9,7 @@
     "win_rate": 64.7,
     "profit_units": 1.03,
     "roi_pct": 2.02,
-    "last_updated": "2026-09-08T15:06:07.475430+00:00"
+    "last_updated": "2026-09-08T15:09:26.843578+00:00"
   },
   "matches_today": [
     {
@@ -820,7 +820,8 @@
       "selection_status": "LOST",
       "profit": -1.0,
       "id": "m_sd_aucas",
-      "is_finished": true
+      "is_finished": true,
+      "is_live": false
     },
     {
       "time": "Lun. 07/09 à 03h15",
@@ -841,7 +842,8 @@
       "selection_status": "WON_LEAD2",
       "profit": 1.1,
       "id": "m_dep._toluca",
-      "is_finished": true
+      "is_finished": true,
+      "is_live": false
     },
     {
       "time": "Lun. 07/09 à 17h00",
@@ -862,7 +864,7 @@
       "selection_status": "LOST",
       "profit": -1.0,
       "id": "m_asteras_t.",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -884,7 +886,7 @@
       "selection_status": "LOST",
       "profit": -1.0,
       "id": "m_riga_fc",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -906,7 +908,7 @@
       "selection_status": "LOST",
       "profit": -1.0,
       "id": "m_rizespor",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -928,7 +930,7 @@
       "selection_status": "WON_LEAD2",
       "profit": 1.05,
       "id": "m_aris_limassol",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -950,7 +952,7 @@
       "selection_status": "WON_LEAD2",
       "profit": 0.5,
       "id": "m_uni.craiova",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -972,7 +974,7 @@
       "selection_status": "LOST",
       "profit": -1.0,
       "id": "m_al_hilal",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -994,7 +996,7 @@
       "selection_status": "WON_LEAD2",
       "profit": 0.98,
       "id": "m_sabadell",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -1016,7 +1018,7 @@
       "selection_status": "WON_LEAD2",
       "profit": 0.49,
       "id": "m_palerme",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -1038,7 +1040,7 @@
       "selection_status": "WON_LEAD2",
       "profit": 0.46,
       "id": "m_d._limache",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -1060,7 +1062,7 @@
       "selection_status": "WON_FINAL",
       "profit": 1.05,
       "id": "m_vitoria_ba",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -1082,7 +1084,7 @@
       "selection_status": "WON_FINAL",
       "profit": 0.56,
       "id": "m_emelec",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true
     },
     {
@@ -1103,7 +1105,7 @@
       "home_score": 1,
       "away_score": 0,
       "minute": "Terminé",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true,
       "profit": -1.0
     },
@@ -1146,7 +1148,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "5'",
+      "minute": "8'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1279,7 +1281,7 @@
       "home_score": 0,
       "away_score": 1,
       "minute": "Terminé",
-      "is_live": true,
+      "is_live": false,
       "is_finished": true,
       "profit": 0.49
     },
@@ -1344,7 +1346,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "5'",
+      "minute": "9'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -1366,7 +1368,7 @@
       "score_display": "0 - 0",
       "home_score": 0,
       "away_score": 0,
-      "minute": "5'",
+      "minute": "9'",
       "is_live": true,
       "is_finished": false,
       "profit": 0.0
@@ -2540,7 +2542,7 @@
         "win_pct_historical": 50,
         "status": "LIVE",
         "score_display": "0 - 0",
-        "minute": "5'",
+        "minute": "8'",
         "selection_status": "IN_PROGRESS",
         "profit": 0.0
       },
@@ -2734,7 +2736,7 @@
         "score_display": "0 - 0",
         "home_score": 0,
         "away_score": 0,
-        "minute": "5'",
+        "minute": "9'",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -2756,7 +2758,7 @@
         "score_display": "0 - 0",
         "home_score": 0,
         "away_score": 0,
-        "minute": "5'",
+        "minute": "9'",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0

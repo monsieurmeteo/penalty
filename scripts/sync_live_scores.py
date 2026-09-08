@@ -143,6 +143,7 @@ def sync():
             if eps in ["FT", "AET", "AP"]:
                 m["status"] = "FINISHED"
                 m["is_finished"] = True
+                m["is_live"] = False
                 m["minute"] = "Terminé"
                 if lead2 or was_lead2:
                     m["selection_status"] = "WON_LEAD2"
