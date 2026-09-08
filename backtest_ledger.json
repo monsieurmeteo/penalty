@@ -21221,5 +21221,49 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373089",
+    "timestamp_utc": "2026-09-08T16:04:37.910590+00:00",
+    "match": "FK Jablonec vs Banik Ostrava",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Mer. 09/09 à 17h00",
+    "fav_team": "FK Jablonec",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.82,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378515",
+    "timestamp_utc": "2026-09-08T16:04:37.910590+00:00",
+    "match": "FC Samgurali vs Dila Gori",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Mer. 09/09 à 17h00",
+    "fav_team": "Dila Gori",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 51,
+      "pct_fav_success": 57,
+      "pct_fav_lead2": 14
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
