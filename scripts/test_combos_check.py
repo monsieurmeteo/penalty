@@ -46,5 +46,11 @@ m_fav = {'fav_info': {'market': 'FAV_1N2', 'fav_team': 'Arsenal', 'dog_team': 'C
 assert apu.render_fav_proof_html(m_o15) == ""
 assert apu.render_fav_proof_html(m_btts) == ""
 
+# Verify Option 1 (Day-by-Day pairing and night session attachment)
+assert apu._get_session_day({'time': 'Mer. 09/09 à 12h30'}) == '2026-09-09'
+assert apu._get_session_day({'time': 'Mer. 09/09 à 21h00'}) == '2026-09-09'
+assert apu._get_session_day({'time': 'Jeu. 10/09 à 00h00'}) == '2026-09-09'  # Night match belongs to Wed session
+assert apu._get_session_day({'time': 'Jeu. 10/09 à 18h15'}) == '2026-09-10'
+
 print("✅ TOUS LES TESTS ASSERTIONS PASSENT AVEC SUCCÈS (100% Validé) !")
 

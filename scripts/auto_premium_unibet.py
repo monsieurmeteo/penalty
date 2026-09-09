@@ -46,6 +46,40 @@ def format_french_date(iso_str):
     except Exception:
         return iso_str
 
+def _get_session_day(m):
+    """
+    ponytail: Détermine la session sportive du match (06h00 du matin à 06h00 le lendemain).
+    Rattache automatiquement les matchs de nuit (00h-05h59) à la session de la veille au soir.
+    Garantit des combinés strictement Jour par Jour (Option 1).
+    """
+    if not m: return ""
+    start_iso = m.get("start_iso")
+    if start_iso:
+        try:
+            if ZoneInfo:
+                dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00")).astimezone(ZoneInfo("Europe/Paris"))
+            else:
+                dt = datetime.fromisoformat(start_iso.replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=2)))
+            return (dt - timedelta(hours=6)).strftime("%Y-%m-%d")
+        except Exception:
+            pass
+    t = m.get("time", m.get("date_str", ""))
+    if " à " in t:
+        d_p, h_p = t.split(" à ", 1)
+        try:
+            h = int(h_p.split("h")[0])
+            m_dm = re.search(r'(\d{1,2})/(\d{1,2})', d_p)
+            if m_dm:
+                day_val = int(m_dm.group(1))
+                month_val = int(m_dm.group(2))
+                year_val = datetime.now().year
+                dt = datetime(year_val, month_val, day_val, h)
+                return (dt - timedelta(hours=6)).strftime("%Y-%m-%d")
+        except Exception:
+            pass
+        return d_p.strip()
+    return t.strip()
+
 def _clean_team_key(name):
     if not name: return ""
     n = unicodedata.normalize('NFKD', str(name)).encode('ASCII', 'ignore').decode('ASCII').lower()
@@ -876,11 +910,17 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         comb_odds = c.get("odds", 2.0)
 
         # Purge des combinés non conformes créés avant les nouvelles règles
-        # Si un combiné n'a pas débuté (ni live, ni won/lost) et ne respecte pas le plancher Sweet Spot (< 2.00)
-        # ou comprend un 1N2 interdit (< 1.40) : on le purge pour libérer les matchs vers un appairage optimal.
+        # Si un combiné n'a pas débuté (ni live, ni won/lost) et :
+        # - ne respecte pas le plancher Sweet Spot (< 2.00)
+        # - ou comprend un 1N2 interdit (< 1.40)
+        # - ou chevauche deux journées sportives différentes (Option 1 : combinés strictement Jour par Jour)
+        # On le purge pour libérer les matchs vers un appairage optimal 100% même jour.
         is_started = (st1 == "LIVE" or st2 == "LIVE" or s1 != "PENDING" or s2 != "PENDING")
         is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") == "FAV_1N2" and m1.get("odds", 2.0) < 1.40) or (m2.get("market", "FAV_1N2") == "FAV_1N2" and m2.get("odds", 2.0) < 1.40)
-        if not is_started and is_subpar:
+        d1 = _get_session_day(m1)
+        d2 = _get_session_day(m2)
+        is_cross_day = bool(d1 and d2 and d1 != d2)
+        if not is_started and (is_subpar or is_cross_day):
             continue
 
         if k1: used_teams.add(k1)
@@ -915,7 +955,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         if k_dom not in used_teams and k_ext not in used_teams:
             unassigned_favs.append(m)
 
-    # ponytail: Appairage intelligent Sweet Spot [2.00 - 2.85] en respectant la chronologie
+    # ponytail: Appairage intelligent Sweet Spot [2.00 - 2.85] strictly Jour par Jour (Option 1)
     pool = list(unassigned_favs)
     while len(pool) >= 2:
         best_pair = None
@@ -924,6 +964,11 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
             fi1 = pool[i].get("fav_info", {})
             c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
             for j in range(i + 1, len(pool)):
+                # ponytail: Option 1 — combinés strictement Jour par Jour (même session 06h-06h)
+                d1 = _get_session_day(pool[i])
+                d2 = _get_session_day(pool[j])
+                if d1 and d2 and d1 != d2:
+                    continue
                 fi2 = pool[j].get("fav_info", {})
                 c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
                 comb_odds = round(c1 * c2, 2)
@@ -948,7 +993,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         if m1_raw.get("ext"): used_teams.add(_clean_team_key(m1_raw.get("ext")))
         if m2_raw.get("ext"): used_teams.add(_clean_team_key(m2_raw.get("ext")))
 
-        c_idx = len(combos_today) + 1
+        max_t_num = max([c.get("ticket_num", 0) for c in combos_today] or [0])
+        c_idx = max_t_num + 1
         fi2 = m2_raw.get("fav_info", {})
         c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
         comb_odds = round(c1 * c2, 2)
@@ -956,6 +1002,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         m1_clean = {
             "id": str(m1_raw.get("id", f"m_{k1}")),
             "time": m1_raw.get("date_str", "À venir"),
+            "start_iso": m1_raw.get("start_iso"),
             "league": m1_raw.get("league", "Football"),
             "home": m1_raw.get("dom", ""),
             "away": m1_raw.get("ext", ""),
@@ -981,6 +1028,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         m2_clean = {
             "id": str(m2_raw.get("id", f"m_{k2}")),
             "time": m2_raw.get("date_str", "À venir"),
+            "start_iso": m2_raw.get("start_iso"),
             "league": m2_raw.get("league", "Football"),
             "home": m2_raw.get("dom", ""),
             "away": m2_raw.get("ext", ""),
