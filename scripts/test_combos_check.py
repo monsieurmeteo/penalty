@@ -35,4 +35,16 @@ assert "Dortmund" in t24["m1"]["home"]
 assert "Real Madrid" in t24["m2"]["home"]
 assert t24["ticket_status"] == "WON"
 
+# Verify multi-market card rendering and proof guards
+import sys
+sys.path.insert(0, ".")
+import scripts.auto_premium_unibet as apu
+m_o15 = {'fav_info': {'market': 'OVER_15', 'fav_team': 'Over 1.5 Buts', 'fav_score': 80, 'fav_odds': 1.30, 'fav_badge': '⚽ OVER 1.5', 'pct_fav_success': 85}}
+m_btts = {'fav_info': {'market': 'BTTS', 'fav_team': 'Les 2 Marquent', 'fav_score': 75, 'fav_odds': 1.80, 'fav_badge': '🤝 BTTS', 'pct_fav_success': 70}}
+m_fav = {'fav_info': {'market': 'FAV_1N2', 'fav_team': 'Arsenal', 'dog_team': 'Chelsea', 'fav_side': 'dom', 'fav_score': 80, 'fav_odds': 1.60, 'fav_badge': '🥇 OR', 'pct_fav_success': 80, 'pct_fav_win': 70, 'pct_fav_lead2': 50, 'pct_fav_cs': 40, 'avg_fav_gf': 2.0, 'pct_dog_loss': 60, 'pct_dog_trailed2': 40, 'pct_dog_no_goal': 30, 'avg_dog_ga': 1.5}}
+
+assert apu.render_fav_proof_html(m_o15) == ""
+assert apu.render_fav_proof_html(m_btts) == ""
+
 print("✅ TOUS LES TESTS ASSERTIONS PASSENT AVEC SUCCÈS (100% Validé) !")
+

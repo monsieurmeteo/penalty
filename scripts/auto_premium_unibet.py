@@ -193,7 +193,7 @@ def evaluate_over15(m):
     if pct < 75:
         return None
     return {
-        "fav_team": f"{m.get('dom')} vs {m.get('ext')}",
+        "fav_team": "Over 1.5 Buts",
         "dog_team": "",
         "fav_side": "dom",
         "fav_odds": o15,
@@ -221,7 +221,7 @@ def evaluate_btts(m):
     if pct < 65:
         return None
     return {
-        "fav_team": f"{m.get('dom')} vs {m.get('ext')}",
+        "fav_team": "Les 2 Marquent",
         "dog_team": "",
         "fav_side": "dom",
         "fav_odds": btts,
@@ -236,11 +236,11 @@ def evaluate_btts(m):
 
 def render_fav_proof_html(m):
     fi = m.get("fav_info")
-    if not fi:
+    if not fi or fi.get("market") in ["OVER_15", "BTTS"]:
         return ""
-    fav_team = fi["fav_team"]
-    dog_team = fi["dog_team"]
-    is_dom = (fi["fav_side"] == "dom")
+    fav_team = fi.get("fav_team", "")
+    dog_team = fi.get("dog_team", "")
+    is_dom = (fi.get("fav_side") == "dom")
     rec_fav = m.get("recent_h_dom", []) if is_dom else m.get("recent_a_ext", [])
     rec_dog = m.get("recent_a_ext", []) if is_dom else m.get("recent_h_dom", [])
 
@@ -688,6 +688,9 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
             item["odds"] = odds_val
             item["domination_score"] = sc_val
             item["badge_tier"] = badge_tier
+            item["market"] = fi.get("market", "FAV_1N2")
+            item["market_label"] = fi.get("market_label", "👑 Favori (+2b)")
+            item["fav_team"] = fav_team
         else:
             item = {
                 "id": str(m.get("id", f"m_{len(existing_matches_map)+1}")),
@@ -697,6 +700,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
                 "away": ext,
                 "fav_team": fav_team,
                 "fav_side": fi.get("fav_side", "dom"),
+                "market": fi.get("market", "FAV_1N2"),
+                "market_label": fi.get("market_label", "👑 Favori (+2b)"),
                 "odds": odds_val,
                 "domination_score": sc_val,
                 "badge_tier": badge_tier,
@@ -1356,14 +1361,26 @@ def main():
     plan_rows_html = ""
     for m in retained_favs:
         fi = m["fav_info"]
-        sc = fi["fav_score"]
+        sc = fi.get("fav_score", 0)
         sc_bg = "#1e40af" if sc >= 85 else ("#15803d" if sc >= 75 else ("#b45309" if sc >= 65 else "#64748b"))
-        fav_team = fi["fav_team"]
-        fav_odds = fi["fav_odds"]
+        fav_team = fi.get("fav_team", "")
+        fav_odds = fi.get("fav_odds", 1.50)
         p2_odds = fi.get("p2_fav_odds")
-        cote_lbl = f"@{p2_odds:.2f} <span style='font-size:9px; color:#1d4ed8;'>(+2)</span>" if p2_odds else f"@{fav_odds:.2f}"
-        badge = fi["fav_badge"]
-        pct_succ = fi["pct_fav_success"]
+        market = fi.get("market", "FAV_1N2")
+        if market == "OVER_15":
+            cote_lbl = f"@{fav_odds:.2f} <span style='font-size:9px; color:#16a34a;'>(+1.5b)</span>"
+            fav_icon = "⚽"
+            succ_lbl = "2+ Buts"
+        elif market == "BTTS":
+            cote_lbl = f"@{fav_odds:.2f} <span style='font-size:9px; color:#2563eb;'>(BTTS)</span>"
+            fav_icon = "🤝"
+            succ_lbl = "BTTS"
+        else:
+            cote_lbl = f"@{p2_odds:.2f} <span style='font-size:9px; color:#1d4ed8;'>(+2)</span>" if p2_odds else f"@{fav_odds:.2f}"
+            fav_icon = "👑"
+            succ_lbl = "Win / +2b"
+        badge = fi.get("fav_badge", "")
+        pct_succ = fi.get("pct_fav_success", 0)
         plan_rows_html += (
             f'<tr>'
             f'<td style="padding:9px 8px; white-space:nowrap; border-bottom:1px solid #f1f5f9;">'
@@ -1373,13 +1390,13 @@ def main():
             f'<span style="font-size:10px; color:#94a3b8;">{m["league"]}</span></td>'
             f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
             f'<span style="background:#eff6ff; color:#1d4ed8; font-weight:800; font-size:12px; padding:4px 8px; border-radius:6px; border:1px solid #bfdbfe; white-space:nowrap;">'
-            f'👑 {fav_team}</span></td>'
+            f'{fav_icon} {fav_team}</span></td>'
             f'<td style="padding:9px 6px; text-align:center; font-weight:900; font-size:14px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{cote_lbl}</td>'
             f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
             f'<span style="background:{sc_bg}; color:#fff; font-weight:800; font-size:11px; padding:3px 7px; border-radius:5px; white-space:nowrap;">'
             f'{sc}/100</span></td>'
             f'<td style="padding:9px 6px; text-align:center; font-size:11px; font-weight:700; color:#15803d; border-bottom:1px solid #f1f5f9; white-space:nowrap;">'
-            f'{pct_succ}% Win / +2b</td>'
+            f'{pct_succ}% {succ_lbl}</td>'
             f'</tr>'
         )
     if not plan_rows_html:
@@ -1467,15 +1484,51 @@ def main():
     if retained_favs:
         for m in retained_favs:
             fi = m["fav_info"]
-            sc = fi["fav_score"]
+            sc = fi.get("fav_score", 0)
             sc_bg = "#1e40af" if sc >= 85 else ("#15803d" if sc >= 75 else ("#b45309" if sc >= 65 else "#64748b"))
-            badge = fi["fav_badge"]
-            fav_team = fi["fav_team"]
-            dog_team = fi["dog_team"]
-            fav_side_lbl = "Domicile" if fi["fav_side"] == "dom" else "Extérieur"
-            dog_side_lbl = "Extérieur" if fi["fav_side"] == "dom" else "Domicile"
+            badge = fi.get("fav_badge", "")
+            fav_team = fi.get("fav_team", "")
+            dog_team = fi.get("dog_team", "")
+            fav_side_lbl = "Domicile" if fi.get("fav_side") == "dom" else "Extérieur"
+            dog_side_lbl = "Extérieur" if fi.get("fav_side") == "dom" else "Domicile"
             p2_odds = fi.get("p2_fav_odds")
-            pari_cote_str = f"@{p2_odds:.2f} (Marché +2 Gagnant)" if p2_odds else f"@{fi['fav_odds']:.2f} (1N2)"
+            fav_odds = fi.get("fav_odds", 1.50)
+            market = fi.get("market", "FAV_1N2")
+
+            if market == "OVER_15":
+                pari_cote_str = f"@{fav_odds:.2f} (Over 1.5)"
+                stats_box_html = f'''
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; color:#334155; line-height:1.6; margin-bottom:6px;">
+                    <div>
+                        <b>⚽ Fréquence Over 1.5</b> : 
+                        <span style="color:#15803d; font-weight:800;">{fi.get('pct_fav_success', 0)}%</span> des derniers matchs avec 2+ buts au score final.
+                    </div>
+                </div>'''
+            elif market == "BTTS":
+                pari_cote_str = f"@{fav_odds:.2f} (Les 2 Marquent)"
+                stats_box_html = f'''
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; color:#334155; line-height:1.6; margin-bottom:6px;">
+                    <div>
+                        <b>🤝 Fréquence BTTS</b> : 
+                        <span style="color:#15803d; font-weight:800;">{fi.get('pct_fav_success', 0)}%</span> des derniers matchs où les deux équipes ont marqué.
+                    </div>
+                </div>'''
+            else:
+                pari_cote_str = f"@{p2_odds:.2f} (Marché +2 Gagnant)" if p2_odds else f"@{fav_odds:.2f} (1N2)"
+                stats_box_html = f'''
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; color:#334155; line-height:1.6; margin-bottom:6px;">
+                    <div style="margin-bottom:4px;">
+                        <b>👑 {fav_team} ({fav_side_lbl})</b> : 
+                        <span style="color:#15803d; font-weight:800;">{fi.get('pct_fav_success', 0)}%</span> de matchs gagnés ou menés par 2+ buts 
+                        <span style="color:#64748b;">({fi.get('pct_fav_win', 0)}% victoires, {fi.get('pct_fav_lead2', 0)}% avec 2+ buts d'écart, {fi.get('pct_fav_cs', 0)}% clean sheets &bull; marque {fi.get('avg_fav_gf', 0)} b/m)</span>
+                    </div>
+                    <div>
+                        <b>🛡️ {dog_team} ({dog_side_lbl})</b> : 
+                        <span style="color:#dc2626; font-weight:800;">{fi.get('pct_dog_loss', 0)}%</span> de défaites 
+                        <span style="color:#64748b;">({fi.get('pct_dog_trailed2', 0)}% mené de 2+ buts, {fi.get('pct_dog_no_goal', 0)}% sans but marqué &bull; encaisse {fi.get('avg_dog_ga', 0)} b/m)</span>
+                    </div>
+                </div>'''
+
             proof = render_fav_proof_html(m)
 
             fav_cards_html += f'''
@@ -1502,18 +1555,7 @@ def main():
                 </div>
 
                 <!-- Statistiques Clés 100% Token 0 AdamChoi -->
-                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:6px; padding:8px 10px; font-size:11px; color:#334155; line-height:1.6; margin-bottom:6px;">
-                    <div style="margin-bottom:4px;">
-                        <b>👑 {fav_team} ({fav_side_lbl})</b> : 
-                        <span style="color:#15803d; font-weight:800;">{fi['pct_fav_success']}%</span> de matchs gagnés ou menés par 2+ buts 
-                        <span style="color:#64748b;">({fi['pct_fav_win']}% victoires, {fi['pct_fav_lead2']}% avec 2+ buts d'écart, {fi['pct_fav_cs']}% clean sheets &bull; marque {fi['avg_fav_gf']} b/m)</span>
-                    </div>
-                    <div>
-                        <b>🛡️ {dog_team} ({dog_side_lbl})</b> : 
-                        <span style="color:#dc2626; font-weight:800;">{fi['pct_dog_loss']}%</span> de défaites 
-                        <span style="color:#64748b;">({fi['pct_dog_trailed2']}% mené de 2+ buts, {fi['pct_dog_no_goal']}% sans but marqué &bull; encaisse {fi['avg_dog_ga']} b/m)</span>
-                    </div>
-                </div>
+                {stats_box_html}
 
                 <!-- Pastilles des 10 derniers matchs récents Dom/Ext -->
                 {proof}
