@@ -5,8 +5,8 @@
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Mer. 09/09 à 02h30",
       "fav_team": "Boca Juniors vs Sao Paulo",
-      "fav_odds": 1.48,
-      "p2_fav_odds": 1.48,
+      "fav_odds": 1.5,
+      "p2_fav_odds": 1.5,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
@@ -45,8 +45,8 @@
       "league": "Bosnie Herzeg • D1 Bosnie",
       "date_str": "Mer. 09/09 à 18h00",
       "fav_team": "FK Zeljeznicar vs FK Sarajevo",
-      "fav_odds": 1.38,
-      "p2_fav_odds": 1.38,
+      "fav_odds": 1.4,
+      "p2_fav_odds": 1.4,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
@@ -80,22 +80,12 @@
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
-    "3375694": {
-      "match": "Chelsea - Leeds Utd",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Chelsea",
-      "fav_odds": 1.57,
-      "p2_fav_odds": null,
-      "fav_score": 55,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3378091": {
       "match": "St Johnstone - Celtic",
       "league": "Ecosse • D1 Ecosse",
       "date_str": "Mer. 09/09 à 21h00",
       "fav_team": "Celtic",
-      "fav_odds": 1.43,
+      "fav_odds": 1.41,
       "p2_fav_odds": null,
       "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
@@ -110,13 +100,23 @@
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
     },
+    "3375694": {
+      "match": "Chelsea - Leeds Utd",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Chelsea",
+      "fav_odds": 1.56,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3373233": {
       "match": "Santos - Atletico MG",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Jeu. 10/09 à 00h00",
       "fav_team": "Santos vs Atletico MG",
-      "fav_odds": 1.35,
-      "p2_fav_odds": 1.35,
+      "fav_odds": 1.36,
+      "p2_fav_odds": 1.36,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     }
