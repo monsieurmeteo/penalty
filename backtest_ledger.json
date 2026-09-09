@@ -21967,5 +21967,72 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378075",
+    "timestamp_utc": "2026-09-09T20:04:52.809918+00:00",
+    "match": "Dinamo Tbilisi vs FC Meshakhte",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Jeu. 10/09 à 17h00",
+    "fav_team": "Dinamo Tbilisi",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 76,
+      "pct_fav_success": 56,
+      "pct_fav_lead2": 33
+    },
+    "odds": {
+      "fav_odds": 1.32,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375636",
+    "timestamp_utc": "2026-09-09T20:04:52.809918+00:00",
+    "match": "ES Ben Aknoun vs US Biskra",
+    "league": "Algerie • D1 Algerie",
+    "date_str": "Jeu. 10/09 à 20h00",
+    "fav_team": "ES Ben Aknoun",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 26,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.8,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378526",
+    "timestamp_utc": "2026-09-09T20:04:52.809918+00:00",
+    "match": "USM Alger vs Js El Biar",
+    "league": "Algerie • D1 Algerie",
+    "date_str": "Jeu. 10/09 à 22h00",
+    "fav_team": "USM Alger",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 51,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.33,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
