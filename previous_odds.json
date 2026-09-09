@@ -140,16 +140,6 @@
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
     },
-    "3375781": {
-      "match": "Slavia Prague - Lens",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Jeu. 10/09 à 21h00",
-      "fav_team": "Over 1.5 Buts",
-      "fav_odds": 1.22,
-      "p2_fav_odds": 1.22,
-      "fav_score": 90,
-      "fav_badge": "⚽ OVER 1.5"
-    },
     "3375768": {
       "match": "Bayern Munich - Bodø/Glimt",
       "league": "Coupes D Europe • Ligue Des Champions",
@@ -159,6 +149,16 @@
       "p2_fav_odds": 1.65,
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
+    },
+    "3375781": {
+      "match": "Slavia Prague - Lens",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Jeu. 10/09 à 21h00",
+      "fav_team": "Over 1.5 Buts",
+      "fav_odds": 1.22,
+      "p2_fav_odds": 1.22,
+      "fav_score": 90,
+      "fav_badge": "⚽ OVER 1.5"
     },
     "3377644": {
       "match": "CF Estrela - Braga",

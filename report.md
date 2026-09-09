@@ -1,5 +1,5 @@
 # ⚽ SÉLECTION OFFICIELLE UNIBET — +2 GAGNANT (MÈNE DE 2 BUTS OU GAGNE)
-**Généré le** : 09/09/2026 à 09:58 UTC  |  **Matchs scannés** : 53  |  **Favoris analysés** : 33  |  **Favoris retenus** : 17
+**Généré le** : 09/09/2026 à 10:04 UTC  |  **Matchs scannés** : 53  |  **Favoris analysés** : 33  |  **Favoris retenus** : 17
 **Règle d'or Unibet** : Si l'équipe mène de 2 buts (2-0, 3-1, 4-2...) à n'importe quel moment du match, le pari est PAYÉ GAGNANT immédiatement (même en cas d'égalisation à 2-2 ou défaite 2-3). Si l'équipe gagne simplement 1-0 ou 2-1, le pari est également gagnant à la fin du match.
 
 ## 📅 Planning Chronologique des Favoris Retenus
@@ -19,8 +19,8 @@
 | Jeu. 10/09 à 00h00 | Amerique • Copa Sudamericana | **Santos vs Atletico MG** | **Over 1.5 Buts** | **@1.42 (Over 1.5)** | **75/100** (⚽ OVER 1.5) | **75%** |
 | Jeu. 10/09 à 18h15 | Emirats Arabes Unis • D1 Emirats Au | **Al Ain vs Al Wasl** | **Al Ain** | **@1.62 (1N2)** | **79/100** (🥇 OR) | **100%** |
 | Jeu. 10/09 à 18h45 | Coupes D Europe • Ligue Des Champions | **PSV Eindhoven vs Shakht.Donetsk** | **Les 2 Marquent** | **@1.62 (BTTS)** | **70/100** (🤝 BTTS) | **70%** |
-| Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | **Slavia Prague vs Lens** | **Over 1.5 Buts** | **@1.22 (Over 1.5)** | **90/100** (⚽ OVER 1.5) | **90%** |
 | Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | **Bayern Munich vs Bodø/Glimt** | **Les 2 Marquent** | **@1.65 (BTTS)** | **70/100** (🤝 BTTS) | **70%** |
+| Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | **Slavia Prague vs Lens** | **Over 1.5 Buts** | **@1.22 (Over 1.5)** | **90/100** (⚽ OVER 1.5) | **90%** |
 | Jeu. 10/09 à 21h15 | Portugal • Liga Portugal | **CF Estrela vs Braga** | **Braga** | **@1.61 (1N2)** | **56/100** (🥉 BRONZE) | **60%** |
 
 ## 📊 Tous les Favoris Analysés (33)
@@ -45,18 +45,18 @@
 | Mer. 09/09 à 21h00 | Cotes Boostees • Cotes Boostees Championsleague | Paris SG vs Slovan Bratislava | Over 1.5 Buts | @1.25 | 95/100 | 95% | ✅ RETENU |
 | Mer. 09/09 à 21h00 | Ecosse • D1 Ecosse | St Johnstone vs Celtic | Les 2 Marquent | @1.60 | 70/100 | 70% | ✅ RETENU |
 | Mer. 09/09 à 21h00 | Angleterre • Efl Cup | Chelsea vs Leeds Utd | Chelsea | @1.45 | 56/100 | 60% | ✅ RETENU |
-| Mer. 09/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Sporting vs Galatasaray | Sporting | @1.68 | 52/100 | 50% | ⚠️ ÉCARTÉ |
 | Mer. 09/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Liverpool vs Atl. Madrid | Liverpool | @1.66 | 43/100 | 30% | ⚠️ ÉCARTÉ |
-| Mer. 09/09 à 21h00 | Angleterre • Championship | Charlton vs Queens Park R. | Queens Park R. | @2.10 | 41/100 | 40% | ⚠️ ÉCARTÉ |
+| Mer. 09/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Sporting vs Galatasaray | Sporting | @1.68 | 52/100 | 50% | ⚠️ ÉCARTÉ |
 | Mer. 09/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Naples vs Arsenal | Arsenal | @1.60 | 42/100 | 30% | ⚠️ ÉCARTÉ |
+| Mer. 09/09 à 21h00 | Angleterre • Championship | Charlton vs Queens Park R. | Queens Park R. | @2.10 | 41/100 | 40% | ⚠️ ÉCARTÉ |
 | Jeu. 10/09 à 00h00 | Amerique • Copa Sudamericana | Santos vs Atletico MG | Over 1.5 Buts | @1.42 | 75/100 | 75% | ✅ RETENU |
 | Jeu. 10/09 à 01h30 | Canada • D1 Canada | Inter Toronto vs Pacific FC | Inter Toronto | @2.15 | 21/100 | 10% | ⚠️ ÉCARTÉ |
-| Jeu. 10/09 à 01h30 | Etats Unis • Mls | Atlanta Utd vs Orlando City | Atlanta Utd | @1.98 | 52/100 | 40% | ⚠️ ÉCARTÉ |
 | Jeu. 10/09 à 01h30 | Etats Unis • Mls | CF Montreal vs Charlotte FC | CF Montreal | @2.15 | 43/100 | 30% | ⚠️ ÉCARTÉ |
+| Jeu. 10/09 à 01h30 | Etats Unis • Mls | Atlanta Utd vs Orlando City | Atlanta Utd | @1.98 | 52/100 | 40% | ⚠️ ÉCARTÉ |
 | Jeu. 10/09 à 18h15 | Emirats Arabes Unis • D1 Emirats Au | Al Ain vs Al Wasl | Al Ain | @1.62 | 79/100 | 100% | ✅ RETENU |
 | Jeu. 10/09 à 18h45 | Coupes D Europe • Ligue Des Champions | PSV Eindhoven vs Shakht.Donetsk | Les 2 Marquent | @1.62 | 70/100 | 70% | ✅ RETENU |
 | Jeu. 10/09 à 18h45 | Coupes D Europe • Ligue Des Champions | Fenerbahce vs AS Rome | AS Rome | @2.10 | 40/100 | 40% | ⚠️ ÉCARTÉ |
-| Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Slavia Prague vs Lens | Over 1.5 Buts | @1.22 | 90/100 | 90% | ✅ RETENU |
 | Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Bayern Munich vs Bodø/Glimt | Les 2 Marquent | @1.65 | 70/100 | 70% | ✅ RETENU |
+| Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Slavia Prague vs Lens | Over 1.5 Buts | @1.22 | 90/100 | 90% | ✅ RETENU |
 | Jeu. 10/09 à 21h00 | Coupes D Europe • Ligue Des Champions | Como 1907 vs RB Leipzig | Como 1907 | @1.80 | 48/100 | 20% | ⚠️ ÉCARTÉ |
 | Jeu. 10/09 à 21h15 | Portugal • Liga Portugal | CF Estrela vs Braga | Braga | @1.61 | 56/100 | 60% | ✅ RETENU |
