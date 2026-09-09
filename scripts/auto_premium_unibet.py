@@ -851,10 +851,6 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         m2 = c.get("m2", {})
         k1 = _clean_team_key(m1.get("home", ""))
         k2 = _clean_team_key(m2.get("home", ""))
-        if k1: used_teams.add(k1)
-        if k2: used_teams.add(k2)
-        if m1.get("away"): used_teams.add(_clean_team_key(m1.get("away")))
-        if m2.get("away"): used_teams.add(_clean_team_key(m2.get("away")))
 
         if k1 in match_by_key:
             src = match_by_key[k1]
@@ -878,6 +874,19 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         st1 = m1.get("status")
         st2 = m2.get("status")
         comb_odds = c.get("odds", 2.0)
+
+        # Purge des combinés non conformes créés avant les nouvelles règles
+        # Si un combiné n'a pas débuté (ni live, ni won/lost) et ne respecte pas le plancher Sweet Spot (< 2.00)
+        # ou comprend un 1N2 interdit (< 1.40) : on le purge pour libérer les matchs vers un appairage optimal.
+        is_started = (st1 == "LIVE" or st2 == "LIVE" or s1 != "PENDING" or s2 != "PENDING")
+        is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") == "FAV_1N2" and m1.get("odds", 2.0) < 1.40) or (m2.get("market", "FAV_1N2") == "FAV_1N2" and m2.get("odds", 2.0) < 1.40)
+        if not is_started and is_subpar:
+            continue
+
+        if k1: used_teams.add(k1)
+        if k2: used_teams.add(k2)
+        if m1.get("away"): used_teams.add(_clean_team_key(m1.get("away")))
+        if m2.get("away"): used_teams.add(_clean_team_key(m2.get("away")))
 
         if w1 and w2:
             c["ticket_status"] = "WON"
@@ -906,35 +915,38 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         if k_dom not in used_teams and k_ext not in used_teams:
             unassigned_favs.append(m)
 
-    # ponytail: Appairage intelligent Sweet Spot [2.10 - 2.55] en respectant la chronologie
+    # ponytail: Appairage intelligent Sweet Spot [2.00 - 2.85] en respectant la chronologie
     pool = list(unassigned_favs)
     while len(pool) >= 2:
-        m1_raw = pool.pop(0)
-        k1 = _clean_team_key(m1_raw.get("dom", ""))
-        fi1 = m1_raw.get("fav_info", {})
-        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
-
-        best_j = None
+        best_pair = None
         best_score = 999.0
-        for j, m2_cand in enumerate(pool):
-            fi2 = m2_cand.get("fav_info", {})
-            c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
-            comb_odds = round(c1 * c2, 2)
-            if comb_odds > 2.85:
-                continue
-            dist = abs(comb_odds - 2.25)
-            score = dist + (j * 0.05)
-            if score < best_score:
-                best_score = score
-                best_j = j
+        for i in range(len(pool)):
+            fi1 = pool[i].get("fav_info", {})
+            c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
+            for j in range(i + 1, len(pool)):
+                fi2 = pool[j].get("fav_info", {})
+                c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
+                comb_odds = round(c1 * c2, 2)
+                if comb_odds < 2.00 or comb_odds > 2.85:
+                    continue
+                dist = abs(comb_odds - 2.25)
+                score = dist + (i * 0.02) + (j * 0.03)
+                if score < best_score:
+                    best_score = score
+                    best_pair = (i, j)
 
-        if best_j is None:
-            best_j = 0
+        if not best_pair:
+            break
 
-        m2_raw = pool.pop(best_j)
+        i, j = best_pair
+        m2_raw = pool.pop(j)
+        m1_raw = pool.pop(i)
+        k1 = _clean_team_key(m1_raw.get("dom", ""))
         k2 = _clean_team_key(m2_raw.get("dom", ""))
         used_teams.add(k1)
         used_teams.add(k2)
+        if m1_raw.get("ext"): used_teams.add(_clean_team_key(m1_raw.get("ext")))
+        if m2_raw.get("ext"): used_teams.add(_clean_team_key(m2_raw.get("ext")))
 
         c_idx = len(combos_today) + 1
         fi2 = m2_raw.get("fav_info", {})
@@ -1421,6 +1433,17 @@ def main():
         fav1 = m1.get("fav_team", m1.get("home", ""))
         fav2 = m2.get("fav_team", m2.get("home", ""))
 
+        def _get_leg_pick_html(m):
+            mkt = m.get("market", "FAV_1N2")
+            c = m.get("odds", 1.50)
+            fav_t = m.get("fav_team", m.get("home", ""))
+            if mkt == "OVER_15":
+                return f'<span style="color:#16a34a; font-weight:700;">⚽ Over 1.5 Buts</span> @{c:.2f}'
+            elif mkt == "BTTS":
+                return f'<span style="color:#2563eb; font-weight:700;">🤝 Les 2 Marquent</span> @{c:.2f}'
+            else:
+                return f'<span style="color:#1d4ed8; font-weight:700;">👑 {fav_t}</span> @{c:.2f}'
+
         def _get_leg_status_html(m):
             sel_st = m.get("selection_status", "PENDING")
             st = m.get("status", "UPCOMING")
@@ -1465,11 +1488,11 @@ def main():
           </div>
           <div style="font-size:11px; color:#334155; line-height:1.5;">
             <div style="padding:3px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
-              <span>1️⃣ <b>{m1.get('time', '')}</b> : {m1.get('home')} vs {m1.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav1}</span> @{c1:.2f}</span>
+              <span>1️⃣ <b>{m1.get('time', '')}</b> : {m1.get('home')} vs {m1.get('away')} &rarr; {_get_leg_pick_html(m1)}</span>
               {_get_leg_status_html(m1)}
             </div>
             <div style="padding:3px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
-              <span>2️⃣ <b>{m2.get('time', '')}</b> : {m2.get('home')} vs {m2.get('away')} &rarr; <span style="color:#1d4ed8; font-weight:700;">👑 {fav2}</span> @{c2:.2f}</span>
+              <span>2️⃣ <b>{m2.get('time', '')}</b> : {m2.get('home')} vs {m2.get('away')} &rarr; {_get_leg_pick_html(m2)}</span>
               {_get_leg_status_html(m2)}
             </div>
           </div>
