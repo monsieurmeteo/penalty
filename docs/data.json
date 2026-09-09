@@ -4,12 +4,12 @@
     "decided_matches": 61,
     "won": 41,
     "lost": 20,
-    "live": 0,
-    "upcoming": 18,
+    "live": 1,
+    "upcoming": 17,
     "win_rate": 67.2,
     "profit_units": 3.03,
     "roi_pct": 4.97,
-    "last_updated": "2026-09-09T00:03:57.194366+00:00"
+    "last_updated": "2026-09-09T02:03:43.958219+00:00"
   },
   "matches_today": [
     {
@@ -1315,7 +1315,7 @@
       "away": "Jeju",
       "fav_team": "Jeju",
       "fav_side": "ext",
-      "odds": 1.84,
+      "odds": 1.8,
       "domination_score": 58,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -1425,7 +1425,7 @@
       "away": "Diriyah Club",
       "fav_team": "Diriyah Club",
       "fav_side": "ext",
-      "odds": 1.8,
+      "odds": 1.76,
       "domination_score": 61,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 80,
@@ -1605,13 +1605,13 @@
       "domination_score": 75,
       "badge_tier": "⚽ OVER 1.5",
       "win_pct_historical": 75,
-      "status": "UPCOMING",
-      "selection_status": "PENDING",
-      "score_display": "VS",
-      "home_score": null,
-      "away_score": null,
-      "minute": "Mer. 09/09 à 02h30",
-      "is_live": false,
+      "status": "LIVE",
+      "selection_status": "IN_PROGRESS",
+      "score_display": "1 - 0",
+      "home_score": 1,
+      "away_score": 0,
+      "minute": "72'",
+      "is_live": true,
       "is_finished": false,
       "profit": 0.0
     },
@@ -1754,8 +1754,8 @@
     "decided_combos": 25,
     "won": 13,
     "lost": 12,
-    "live": 0,
-    "upcoming": 8,
+    "live": 1,
+    "upcoming": 7,
     "default_stake": 3.0,
     "win_rate": 52.0,
     "profit_units": 4.25,
@@ -3111,7 +3111,7 @@
       "email_ticket_num": 5,
       "odds": 2.4,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
+      "ticket_status": "LIVE",
       "profit_unit": 0.0,
       "gain_eur": 7.2,
       "profit_eur": 0.0,
@@ -3129,12 +3129,12 @@
         "domination_score": 75,
         "badge_tier": "⚽ OVER 1.5",
         "win_pct_historical": 75,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
+        "status": "LIVE",
+        "selection_status": "IN_PROGRESS",
+        "score_display": "1 - 0",
         "home_score": 0,
         "away_score": 0,
-        "minute": "Mer. 09/09 à 02h30",
+        "minute": "72'",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -3368,7 +3368,7 @@
       "league": "Lituanie • D1 Lituanie",
       "match": "Kauno Zalgiris vs FK Suduva",
       "fav_team": "Kauno Zalgiris",
-      "odds": "@1.83",
+      "odds": "@1.87",
       "domination_score": "38/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -3455,6 +3455,16 @@
     },
     {
       "time": "Jeu. 10/09 à 01h30",
+      "league": "Canada • D1 Canada",
+      "match": "Inter Toronto vs Pacific FC",
+      "fav_team": "Inter Toronto",
+      "odds": "@2.15",
+      "domination_score": "21/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Jeu. 10/09 à 01h30",
       "league": "Etats Unis • Mls",
       "match": "Toronto FC vs Nashville SC",
       "fav_team": "Nashville SC",
@@ -3471,16 +3481,6 @@
       "odds": "@2.05",
       "domination_score": "52/100",
       "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Jeu. 10/09 à 01h30",
-      "league": "Canada • D1 Canada",
-      "match": "Inter Toronto vs Pacific FC",
-      "fav_team": "Inter Toronto",
-      "odds": "@2.15",
-      "domination_score": "21/100",
-      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -3501,6 +3501,16 @@
       "odds": "@2.15",
       "domination_score": "40/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Jeu. 10/09 à 02h30",
+      "league": "Etats Unis • Mls",
+      "match": "Chicago Fire vs Inter Miami",
+      "fav_team": "Chicago Fire",
+      "odds": "@2.05",
+      "domination_score": "48/100",
+      "reussite": "70%",
       "status": "ÉCARTÉ"
     }
   ]
