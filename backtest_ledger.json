@@ -22034,5 +22034,49 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3375301",
+    "timestamp_utc": "2026-09-09T22:03:53.288702+00:00",
+    "match": "Kyoto Sanga FC vs Kashiwa Reysol",
+    "league": "Japon • D1 Japon",
+    "date_str": "Ven. 11/09 à 12h00",
+    "fav_team": "Kashiwa Reysol",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 55,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375304",
+    "timestamp_utc": "2026-09-09T22:03:53.288702+00:00",
+    "match": "Vissel Kobe vs Kashima",
+    "league": "Japon • D1 Japon",
+    "date_str": "Ven. 11/09 à 12h00",
+    "fav_team": "Kashima",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
