@@ -15,7 +15,7 @@
       "league": "Coree Du Sud • D1 Coree Du Sud",
       "date_str": "Mer. 09/09 à 12h30",
       "fav_team": "Jeju",
-      "fav_odds": 1.78,
+      "fav_odds": 1.8,
       "p2_fav_odds": null,
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
@@ -80,16 +80,6 @@
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
-    "3375694": {
-      "match": "Chelsea - Leeds Utd",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Chelsea",
-      "fav_odds": 1.49,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3379226": {
       "match": "Paris SG - Slovan Bratislava",
       "league": "Cotes Boostees • Cotes Boostees Championsleague",
@@ -110,13 +100,23 @@
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
     },
+    "3375694": {
+      "match": "Chelsea - Leeds Utd",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Chelsea",
+      "fav_odds": 1.45,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3373233": {
       "match": "Santos - Atletico MG",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Jeu. 10/09 à 00h00",
       "fav_team": "Over 1.5 Buts",
-      "fav_odds": 1.4,
-      "p2_fav_odds": 1.4,
+      "fav_odds": 1.42,
+      "p2_fav_odds": 1.42,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
