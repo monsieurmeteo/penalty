@@ -15,8 +15,8 @@ except Exception:
 
 # ── Seuils Stratégie Favoris Win & 2 Buts d'Avance (Early Payout) ───────────
 MAX_COTE_FAV           = 2.20  # Cote maximale du favori Unibet 1N2
-MIN_COTE_FAV           = 1.40  # Plancher anti-pertes : élimine les cotes < 1.40
-MIN_SCORE_FAV_RETAINED = 55    # Score AdamChoi minimal pour être retenu (Bronze / Argent / Or / Platine)
+MIN_COTE_FAV           = 1.30  # Plancher optimisé : accepte les favoris solides dès 1.30
+MIN_SCORE_FAV_RETAINED = 50    # Score Domination minimal (Bronze dès 50/100)
 MIN_SCORE_FAV_SOLID    = 75    # Score AdamChoi pour être qualifié Favori Solide (Or / Platine)
 
 H = {
@@ -28,9 +28,10 @@ H = {
 COUNTRIES = [
     "france", "angleterre", "espagne", "italie", "allemagne", "portugal", "pays-bas",
     "belgique", "ecosse", "suisse", "autriche", "turquie", "grece", "pologne", "croatie",
-    "serbie", "roumanie", "ukraine", "republique-tcheque", "hongrie", "bulgarie", "slovaquie",
+    "serbie", "roumanie", "ukraine", "rep-tcheque", "republique-tcheque", "hongrie", "bulgarie", "slovaquie",
     "suede", "norvege", "danemark", "finlande", "irlande", "islande", "lettonie", "lituanie", "estonie",
-    "bresil", "argentine", "colombie", "mexique", "chili", "equateur", "paraguay", "uruguay", "usa", "canada",
+    "bosnie-herzeg", "georgie",
+    "bresil", "argentine", "colombie", "mexique", "chili", "equateur", "paraguay", "uruguay", "amerique", "etats-unis", "usa", "canada",
     "japon", "coree-du-sud", "australie", "coupes-d-europe", "international",
     "afrique-du-sud", "arabie-saoudite", "emirats-arabes-unis", "egypte", "maroc", "algerie", "tunisie",
     "chine", "inde", "israel", "perou", "bolivie", "venezuela", "costa-rica", "honduras", "guatemala"
@@ -177,7 +178,7 @@ def evaluate_favorite_domination(m):
     elif total_score >= 65:
         badge = "🥈 ARGENT"
         classe = "Supérieur (Avantage net)"
-    elif total_score >= 55:
+    elif total_score >= 50:
         badge = "🥉 BRONZE"
         classe = "Favorable (Bonne rentabilité)"
     else:
@@ -213,60 +214,12 @@ def evaluate_favorite_domination(m):
     }
 
 def evaluate_over15(m):
-    """Évalue si le match est hautement qualifié pour le marché Over 1.5 Buts."""
-    o15 = m.get("over15")
-    if not o15 or o15 < 1.22 or o15 > 1.50:
-        return None
-    rec_h = m.get("recent_h_dom", [])
-    rec_a = m.get("recent_a_ext", [])
-    all_rec = rec_h + rec_a
-    if len(all_rec) < 4:
-        return None
-    tot_o15 = sum(1 for rm in all_rec if int(rm.get("homeGoals", rm.get("homeGoalsFt", 0))) + int(rm.get("awayGoals", rm.get("awayGoalsFt", 0))) >= 2)
-    pct = round(tot_o15 / len(all_rec) * 100)
-    if pct < 75:
-        return None
-    return {
-        "fav_team": "Over 1.5 Buts",
-        "dog_team": "",
-        "fav_side": "dom",
-        "fav_odds": o15,
-        "p2_fav_odds": o15,
-        "fav_score": pct,
-        "fav_badge": "⚽ OVER 1.5",
-        "fav_classe": f"Fréquence Over 1.5 : {pct}%",
-        "pct_fav_success": pct,
-        "market": "OVER_15",
-        "market_label": "⚽ Over 1.5 Buts"
-    }
+    """Désactivé : La méthode officielle repose à 100% sur les Favoris 1N2 (+2 Buts d'Avance)."""
+    return None
 
 def evaluate_btts(m):
-    """Évalue si le match est hautement qualifié pour Les Deux Équipes Marquent (BTTS)."""
-    btts = m.get("btts_oui")
-    if not btts or btts < 1.60 or btts > 2.20:
-        return None
-    rec_h = m.get("recent_h_dom", [])
-    rec_a = m.get("recent_a_ext", [])
-    all_rec = rec_h + rec_a
-    if len(all_rec) < 4:
-        return None
-    tot_btts = sum(1 for rm in all_rec if int(rm.get("homeGoals", rm.get("homeGoalsFt", 0))) >= 1 and int(rm.get("awayGoals", rm.get("awayGoalsFt", 0))) >= 1)
-    pct = round(tot_btts / len(all_rec) * 100)
-    if pct < 65:
-        return None
-    return {
-        "fav_team": "Les 2 Marquent",
-        "dog_team": "",
-        "fav_side": "dom",
-        "fav_odds": btts,
-        "p2_fav_odds": btts,
-        "fav_score": pct,
-        "fav_badge": "🤝 BTTS",
-        "fav_classe": f"Fréquence BTTS : {pct}%",
-        "pct_fav_success": pct,
-        "market": "BTTS",
-        "market_label": "🤝 Les 2 Marquent"
-    }
+    """Désactivé : La méthode officielle repose à 100% sur les Favoris 1N2 (+2 Buts d'Avance)."""
+    return None
 
 def render_fav_proof_html(m):
     fi = m.get("fav_info")
@@ -912,11 +865,12 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         # Purge des combinés non conformes créés avant les nouvelles règles
         # Si un combiné n'a pas débuté (ni live, ni won/lost) et :
         # - ne respecte pas le plancher Sweet Spot (< 2.00)
-        # - ou comprend un 1N2 interdit (< 1.40)
+        # - ou ne relève pas de la méthode 100% Favoris 1N2 (+2 Buts) (ex: anciens BTTS ou Over 1.5)
+        # - ou comprend une cote inférieure au plancher (< 1.30)
         # - ou chevauche deux journées sportives différentes (Option 1 : combinés strictement Jour par Jour)
-        # On le purge pour libérer les matchs vers un appairage optimal 100% même jour.
+        # On le purge pour libérer les matchs vers un appairage optimal 100% même jour et 100% Favoris +2 Buts.
         is_started = (st1 == "LIVE" or st2 == "LIVE" or s1 != "PENDING" or s2 != "PENDING")
-        is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") == "FAV_1N2" and m1.get("odds", 2.0) < 1.40) or (m2.get("market", "FAV_1N2") == "FAV_1N2" and m2.get("odds", 2.0) < 1.40)
+        is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") != "FAV_1N2") or (m2.get("market", "FAV_1N2") != "FAV_1N2") or (m1.get("odds", 2.0) < MIN_COTE_FAV) or (m2.get("odds", 2.0) < MIN_COTE_FAV)
         d1 = _get_session_day(m1)
         d2 = _get_session_day(m2)
         is_cross_day = bool(d1 and d2 and d1 != d2)
@@ -1292,28 +1246,17 @@ def main():
         with ThreadPoolExecutor(max_workers=10) as ex:
             scanned_results = list(ex.map(enrich_adamchoi, scanned_results))
 
-    # ── Évaluation Multi-Marchés (Favoris 1N2 + Over 1.5 + BTTS) ──
+    # ── Évaluation 100% Stratégie Favoris « Win & 2 Buts d'Avance (Early Payout) » ──
     retained_favs = []
     rejected_favs = []
     for m in scanned_results:
         fav_res = evaluate_favorite_domination(m)
-        if fav_res and fav_res["fav_score"] >= MIN_SCORE_FAV_RETAINED:
+        if fav_res:
             m["fav_info"] = fav_res
-            retained_favs.append(m)
-        else:
-            # Fallback vers Over 1.5 Buts ou BTTS si le favori sec n'est pas qualifié
-            o15_res = evaluate_over15(m)
-            if o15_res:
-                m["fav_info"] = o15_res
+            if fav_res["fav_score"] >= MIN_SCORE_FAV_RETAINED:
                 retained_favs.append(m)
             else:
-                btts_res = evaluate_btts(m)
-                if btts_res:
-                    m["fav_info"] = btts_res
-                    retained_favs.append(m)
-                elif fav_res:
-                    m["fav_info"] = fav_res
-                    rejected_favs.append(m)
+                rejected_favs.append(m)
 
     # ponytail: Tri STRICTEMENT CHRONOLOGIQUE demandé par l'utilisateur
     retained_favs.sort(key=lambda x: x.get("dt_obj", now_utc))
