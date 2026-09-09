@@ -5,7 +5,7 @@
       "league": "Coree Du Sud • D1 Coree Du Sud",
       "date_str": "Mer. 09/09 à 12h30",
       "fav_team": "Jeju",
-      "fav_odds": 1.78,
+      "fav_odds": 1.8,
       "p2_fav_odds": null,
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
@@ -40,16 +40,6 @@
       "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
     },
-    "3375777": {
-      "match": "Sporting - Galatasaray",
-      "league": "Coupes D Europe • Ligue Des Champions",
-      "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Sporting",
-      "fav_odds": 1.68,
-      "p2_fav_odds": null,
-      "fav_score": 52,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3378091": {
       "match": "St Johnstone - Celtic",
       "league": "Ecosse • D1 Ecosse",
@@ -68,6 +58,16 @@
       "fav_odds": 1.45,
       "p2_fav_odds": null,
       "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3375777": {
+      "match": "Sporting - Galatasaray",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Sporting",
+      "fav_odds": 1.68,
+      "p2_fav_odds": null,
+      "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
     },
     "3357702": {
@@ -120,16 +120,6 @@
       "fav_score": 57,
       "fav_badge": "🥉 BRONZE"
     },
-    "3357743": {
-      "match": "Vancouver - LA Galaxy",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 10/09 à 04h30",
-      "fav_team": "Vancouver",
-      "fav_odds": 1.31,
-      "p2_fav_odds": null,
-      "fav_score": 60,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3357740": {
       "match": "Los Angeles FC - NY Red Bulls",
       "league": "Etats Unis • Mls",
@@ -138,6 +128,16 @@
       "fav_odds": 1.32,
       "p2_fav_odds": null,
       "fav_score": 61,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3357743": {
+      "match": "Vancouver - LA Galaxy",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 10/09 à 04h30",
+      "fav_team": "Vancouver",
+      "fav_odds": 1.31,
+      "p2_fav_odds": null,
+      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3377645": {
