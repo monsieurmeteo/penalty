@@ -1,15 +1,5 @@
 {
   "favs": {
-    "3372374": {
-      "match": "Gangwon FC - Jeonbuk",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Mer. 09/09 à 12h30",
-      "fav_team": "Gangwon FC vs Jeonbuk",
-      "fav_odds": 1.32,
-      "p2_fav_odds": 1.32,
-      "fav_score": 80,
-      "fav_badge": "⚽ OVER 1.5"
-    },
     "3372375": {
       "match": "Gwangju FC - Jeju",
       "league": "Coree Du Sud • D1 Coree Du Sud",
@@ -20,23 +10,43 @@
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
+    "3372374": {
+      "match": "Gangwon FC - Jeonbuk",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Mer. 09/09 à 12h30",
+      "fav_team": "Gangwon FC vs Jeonbuk",
+      "fav_odds": 1.32,
+      "p2_fav_odds": 1.32,
+      "fav_score": 80,
+      "fav_badge": "⚽ OVER 1.5"
+    },
     "3373089": {
       "match": "FK Jablonec - Banik Ostrava",
       "league": "Rep Tcheque • D1 Rep Tcheque",
       "date_str": "Mer. 09/09 à 17h00",
       "fav_team": "FK Jablonec",
-      "fav_odds": 1.85,
+      "fav_odds": 1.72,
       "p2_fav_odds": null,
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
+    },
+    "3378514": {
+      "match": "FC Spaeri - Olimpi Rustavi",
+      "league": "Georgie • D1 Georgie",
+      "date_str": "Mer. 09/09 à 17h00",
+      "fav_team": "FC Spaeri vs Olimpi Rustavi",
+      "fav_odds": 1.25,
+      "p2_fav_odds": 1.25,
+      "fav_score": 80,
+      "fav_badge": "⚽ OVER 1.5"
     },
     "3371407": {
       "match": "FK Zeljeznicar - FK Sarajevo",
       "league": "Bosnie Herzeg • D1 Bosnie",
       "date_str": "Mer. 09/09 à 18h00",
       "fav_team": "FK Zeljeznicar vs FK Sarajevo",
-      "fav_odds": 1.4,
-      "p2_fav_odds": 1.4,
+      "fav_odds": 1.38,
+      "p2_fav_odds": 1.38,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
@@ -45,8 +55,8 @@
       "league": "Coupes D Europe • Ligue Des Champions",
       "date_str": "Mer. 09/09 à 18h45",
       "fav_team": "Stuttgart vs Viking FK",
-      "fav_odds": 1.62,
-      "p2_fav_odds": 1.62,
+      "fav_odds": 1.6,
+      "p2_fav_odds": 1.6,
       "fav_score": 85,
       "fav_badge": "🤝 BTTS"
     },
@@ -70,16 +80,6 @@
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
-    "3375694": {
-      "match": "Chelsea - Leeds Utd",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Chelsea",
-      "fav_odds": 1.56,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3378091": {
       "match": "St Johnstone - Celtic",
       "league": "Ecosse • D1 Ecosse",
@@ -90,15 +90,45 @@
       "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     },
+    "3375694": {
+      "match": "Chelsea - Leeds Utd",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Chelsea",
+      "fav_odds": 1.51,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3373233": {
       "match": "Santos - Atletico MG",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Jeu. 10/09 à 00h00",
       "fav_team": "Santos vs Atletico MG",
-      "fav_odds": 1.36,
-      "p2_fav_odds": 1.36,
+      "fav_odds": 1.4,
+      "p2_fav_odds": 1.4,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
+    },
+    "3374525": {
+      "match": "Al Ain - Al Wasl",
+      "league": "Emirats Arabes Unis • D1 Emirats Au",
+      "date_str": "Jeu. 10/09 à 18h15",
+      "fav_team": "Al Ain",
+      "fav_odds": 1.62,
+      "p2_fav_odds": null,
+      "fav_score": 79,
+      "fav_badge": "🥇 OR"
+    },
+    "3375778": {
+      "match": "PSV Eindhoven - Shakht.Donetsk",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Jeu. 10/09 à 18h45",
+      "fav_team": "PSV Eindhoven vs Shakht.Donetsk",
+      "fav_odds": 1.62,
+      "p2_fav_odds": 1.62,
+      "fav_score": 70,
+      "fav_badge": "🤝 BTTS"
     }
   }
 }
