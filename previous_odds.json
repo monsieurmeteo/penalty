@@ -20,16 +20,6 @@
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
-    "3373089": {
-      "match": "FK Jablonec - Banik Ostrava",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "date_str": "Mer. 09/09 à 17h00",
-      "fav_team": "FK Jablonec",
-      "fav_odds": 1.72,
-      "p2_fav_odds": null,
-      "fav_score": 58,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3378514": {
       "match": "FC Spaeri - Olimpi Rustavi",
       "league": "Georgie • D1 Georgie",
@@ -40,6 +30,16 @@
       "fav_score": 80,
       "fav_badge": "⚽ OVER 1.5"
     },
+    "3373089": {
+      "match": "FK Jablonec - Banik Ostrava",
+      "league": "Rep Tcheque • D1 Rep Tcheque",
+      "date_str": "Mer. 09/09 à 17h00",
+      "fav_team": "FK Jablonec",
+      "fav_odds": 1.72,
+      "p2_fav_odds": null,
+      "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3371407": {
       "match": "FK Zeljeznicar - FK Sarajevo",
       "league": "Bosnie Herzeg • D1 Bosnie",
@@ -49,6 +49,16 @@
       "p2_fav_odds": 1.38,
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
+    },
+    "3375769": {
+      "match": "Stuttgart - Viking FK",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Mer. 09/09 à 18h45",
+      "fav_team": "Les 2 Marquent",
+      "fav_odds": 1.6,
+      "p2_fav_odds": 1.6,
+      "fav_score": 85,
+      "fav_badge": "🤝 BTTS"
     },
     "3367026": {
       "match": "Al Fateh - Diriyah Club",
@@ -70,6 +80,16 @@
       "fav_score": 75,
       "fav_badge": "⚽ OVER 1.5"
     },
+    "3375694": {
+      "match": "Chelsea - Leeds Utd",
+      "league": "Angleterre • Efl Cup",
+      "date_str": "Mer. 09/09 à 21h00",
+      "fav_team": "Chelsea",
+      "fav_odds": 1.49,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3379226": {
       "match": "Paris SG - Slovan Bratislava",
       "league": "Cotes Boostees • Cotes Boostees Championsleague",
@@ -89,16 +109,6 @@
       "p2_fav_odds": 1.6,
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
-    },
-    "3375694": {
-      "match": "Chelsea - Leeds Utd",
-      "league": "Angleterre • Efl Cup",
-      "date_str": "Mer. 09/09 à 21h00",
-      "fav_team": "Chelsea",
-      "fav_odds": 1.49,
-      "p2_fav_odds": null,
-      "fav_score": 56,
-      "fav_badge": "🥉 BRONZE"
     },
     "3373233": {
       "match": "Santos - Atletico MG",
@@ -129,6 +139,36 @@
       "p2_fav_odds": 1.62,
       "fav_score": 70,
       "fav_badge": "🤝 BTTS"
+    },
+    "3375768": {
+      "match": "Bayern Munich - Bodø/Glimt",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Jeu. 10/09 à 21h00",
+      "fav_team": "Les 2 Marquent",
+      "fav_odds": 1.65,
+      "p2_fav_odds": 1.65,
+      "fav_score": 70,
+      "fav_badge": "🤝 BTTS"
+    },
+    "3375781": {
+      "match": "Slavia Prague - Lens",
+      "league": "Coupes D Europe • Ligue Des Champions",
+      "date_str": "Jeu. 10/09 à 21h00",
+      "fav_team": "Over 1.5 Buts",
+      "fav_odds": 1.22,
+      "p2_fav_odds": 1.22,
+      "fav_score": 90,
+      "fav_badge": "⚽ OVER 1.5"
+    },
+    "3377644": {
+      "match": "CF Estrela - Braga",
+      "league": "Portugal • Liga Portugal",
+      "date_str": "Jeu. 10/09 à 21h15",
+      "fav_team": "Braga",
+      "fav_odds": 1.61,
+      "p2_fav_odds": null,
+      "fav_score": 56,
+      "fav_badge": "🥉 BRONZE"
     }
   }
 }

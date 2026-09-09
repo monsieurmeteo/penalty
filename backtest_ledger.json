@@ -21569,5 +21569,95 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3375768",
+    "timestamp_utc": "2026-09-09T08:04:45.424842+00:00",
+    "match": "Bayern Munich vs Bodø/Glimt",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Jeu. 10/09 à 21h00",
+    "fav_team": "Les 2 Marquent",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 70,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.65,
+      "p2_fav_odds": 1.65
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375781",
+    "timestamp_utc": "2026-09-09T08:04:45.424842+00:00",
+    "match": "Slavia Prague vs Lens",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Jeu. 10/09 à 21h00",
+    "fav_team": "Over 1.5 Buts",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 90,
+      "pct_fav_success": 90,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.22,
+      "p2_fav_odds": 1.22
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375780",
+    "timestamp_utc": "2026-09-09T08:04:45.424842+00:00",
+    "match": "Como 1907 vs RB Leipzig",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Jeu. 10/09 à 21h00",
+    "fav_team": "Como 1907",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.8,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377644",
+    "timestamp_utc": "2026-09-09T08:04:45.424842+00:00",
+    "match": "CF Estrela vs Braga",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Jeu. 10/09 à 21h15",
+    "fav_team": "Braga",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.61,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
