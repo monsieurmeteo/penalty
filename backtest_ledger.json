@@ -21659,5 +21659,246 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3357700",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "NY City FC vs New England",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 02h00",
+    "fav_team": "NY City FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373246",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Estudiantes LP vs Corinthians",
+    "league": "Amerique • Copa Libertadores",
+    "date_str": "Jeu. 10/09 à 02h30",
+    "fav_team": "Estudiantes LP",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357721",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Houston vs Salt Lake",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 02h30",
+    "fav_team": "Houston",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 57,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357718",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Chicago Fire vs Inter Miami",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 02h30",
+    "fav_team": "Chicago Fire",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357719",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Minnesota Utd vs Dallas FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 02h30",
+    "fav_team": "Minnesota Utd",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 29,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357743",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Vancouver vs LA Galaxy",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 04h30",
+    "fav_team": "Vancouver",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 60,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.31,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357740",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Los Angeles FC vs NY Red Bulls",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 04h30",
+    "fav_team": "Los Angeles FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 61,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.32,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357741",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "San Diego FC vs San Jose",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 04h30",
+    "fav_team": "San Diego FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.68,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3357742",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Portland vs Saint Louis SC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 04h30",
+    "fav_team": "Portland",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377645",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "Al Jazira vs Al Nasr (EAU)",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Jeu. 10/09 à 15h40",
+    "fav_team": "Al Jazira",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 81,
+      "pct_fav_success": 100,
+      "pct_fav_lead2": 100
+    },
+    "odds": {
+      "fav_odds": 1.35,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378513",
+    "timestamp_utc": "2026-09-09T10:10:51.876302+00:00",
+    "match": "FC Gagra vs Torp.Kutaisi",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Jeu. 10/09 à 19h00",
+    "fav_team": "Torp.Kutaisi",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
