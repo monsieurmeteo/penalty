@@ -1712,7 +1712,13 @@ def main():
     ]
     for m in retained_favs:
         fi = m["fav_info"]
-        c_val = f"@{fi['p2_fav_odds']:.2f} (+2 Gagnant)" if fi.get("p2_fav_odds") else f"@{fi['fav_odds']:.2f} (1N2)"
+        mkt = fi.get("market", "FAV_1N2")
+        if mkt == "OVER_15":
+            c_val = f"@{fi['fav_odds']:.2f} (Over 1.5)"
+        elif mkt == "BTTS":
+            c_val = f"@{fi['fav_odds']:.2f} (BTTS)"
+        else:
+            c_val = f"@{fi['p2_fav_odds']:.2f} (+2 Gagnant)" if fi.get("p2_fav_odds") else f"@{fi['fav_odds']:.2f} (1N2)"
         report.append(f"| {m['date_str']} | {m['league']} | **{m['dom']} vs {m['ext']}** | **{fi['fav_team']}** | **{c_val}** | **{fi['fav_score']}/100** ({fi['fav_badge']}) | **{fi['pct_fav_success']}%** |")
 
     report.append(f"\n## 📊 Tous les Favoris Analysés ({nb_all_favs})\n")
@@ -1900,7 +1906,8 @@ def main():
 
             fi = m.get("fav_info", {})
             is_retained = m_id in retained_ids
-            sels = ["+2_GAGNANT"] if is_retained else []
+            mkt = fi.get("market", "FAV_1N2")
+            sels = [mkt] if is_retained else []
 
             entry = {
                 "match_id": m_id,
