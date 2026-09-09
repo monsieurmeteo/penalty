@@ -870,7 +870,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
         # - ou chevauche deux journées sportives différentes (Option 1 : combinés strictement Jour par Jour)
         # On le purge pour libérer les matchs vers un appairage optimal 100% même jour et 100% Favoris +2 Buts.
         is_started = (st1 == "LIVE" or st2 == "LIVE" or s1 != "PENDING" or s2 != "PENDING")
-        is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") != "FAV_1N2") or (m2.get("market", "FAV_1N2") != "FAV_1N2") or (m1.get("odds", 2.0) < MIN_COTE_FAV) or (m2.get("odds", 2.0) < MIN_COTE_FAV)
+        is_corrupted = (m1.get("fav_team") not in [m1.get("home"), m1.get("away")]) or (m2.get("fav_team") not in [m2.get("home"), m2.get("away")])
+        is_subpar = (comb_odds < 2.00) or (m1.get("market", "FAV_1N2") != "FAV_1N2") or (m2.get("market", "FAV_1N2") != "FAV_1N2") or (m1.get("odds", 2.0) < MIN_COTE_FAV) or (m2.get("odds", 2.0) < MIN_COTE_FAV) or is_corrupted
         d1 = _get_session_day(m1)
         d2 = _get_session_day(m2)
         is_cross_day = bool(d1 and d2 and d1 != d2)
@@ -949,6 +950,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
 
         max_t_num = max([c.get("ticket_num", 0) for c in combos_today] or [0])
         c_idx = max_t_num + 1
+        fi1 = m1_raw.get("fav_info", {})
+        c1 = fi1.get("p2_fav_odds") or fi1.get("fav_odds") or 1.50
         fi2 = m2_raw.get("fav_info", {})
         c2 = fi2.get("p2_fav_odds") or fi2.get("fav_odds") or 1.50
         comb_odds = round(c1 * c2, 2)
