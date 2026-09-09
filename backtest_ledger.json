@@ -21412,5 +21412,162 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3372374",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "Gangwon FC vs Jeonbuk",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Mer. 09/09 à 12h30",
+    "fav_team": "Over 1.5 Buts",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 80,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.32,
+      "p2_fav_odds": 1.32
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378514",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "FC Spaeri vs Olimpi Rustavi",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Mer. 09/09 à 17h00",
+    "fav_team": "Over 1.5 Buts",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 80,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.25,
+      "p2_fav_odds": 1.25
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377208",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "Hradec Kralové vs Viktoria Plzen",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Mer. 09/09 à 19h00",
+    "fav_team": "Viktoria Plzen",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3379226",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "Paris SG vs Slovan Bratislava",
+    "league": "Cotes Boostees • Cotes Boostees Championsleague",
+    "date_str": "Mer. 09/09 à 21h00",
+    "fav_team": "Over 1.5 Buts",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 95,
+      "pct_fav_success": 95,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.25,
+      "p2_fav_odds": 1.25
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374525",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "Al Ain vs Al Wasl",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Jeu. 10/09 à 18h15",
+    "fav_team": "Al Ain",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 79,
+      "pct_fav_success": 100,
+      "pct_fav_lead2": 100
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375778",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "PSV Eindhoven vs Shakht.Donetsk",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Jeu. 10/09 à 18h45",
+    "fav_team": "Les 2 Marquent",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 70,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": 1.62
+    },
+    "selected_markets": [
+      "+2_GAGNANT"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375774",
+    "timestamp_utc": "2026-09-09T06:45:39.169477+00:00",
+    "match": "Fenerbahce vs AS Rome",
+    "league": "Coupes D Europe • Ligue Des Champions",
+    "date_str": "Jeu. 10/09 à 18h45",
+    "fav_team": "AS Rome",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
