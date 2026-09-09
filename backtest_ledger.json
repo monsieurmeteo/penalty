@@ -21946,5 +21946,26 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3377817",
+    "timestamp_utc": "2026-09-09T16:05:36.158724+00:00",
+    "match": "UNAM Pumas vs FC Leon",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Ven. 11/09 à 05h05",
+    "fav_team": "UNAM Pumas",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.95,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
