@@ -21900,5 +21900,51 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373245",
+    "timestamp_utc": "2026-09-09T14:04:09.644709+00:00",
+    "match": "Cienciano vs Torque",
+    "league": "Amerique • Copa Sudamericana",
+    "date_str": "Ven. 11/09 à 02h30",
+    "fav_team": "Cienciano",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 60,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.5,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377156",
+    "timestamp_utc": "2026-09-09T14:04:09.644709+00:00",
+    "match": "Millonarios FC vs Deportivo Cali",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Ven. 11/09 à 03h00",
+    "fav_team": "Millonarios FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 55,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.61,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
