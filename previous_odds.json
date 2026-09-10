@@ -5,7 +5,7 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 15h40",
       "fav_team": "Al Jazira",
-      "fav_odds": 1.42,
+      "fav_odds": 1.4,
       "p2_fav_odds": null,
       "fav_score": 81,
       "fav_badge": "🥇 OR"
@@ -15,7 +15,7 @@
       "league": "Georgie • D1 Georgie",
       "date_str": "Jeu. 10/09 à 17h00",
       "fav_team": "Dinamo Tbilisi",
-      "fav_odds": 1.32,
+      "fav_odds": 1.31,
       "p2_fav_odds": null,
       "fav_score": 76,
       "fav_badge": "🥇 OR"
@@ -105,9 +105,29 @@
       "league": "Pologne • D1 Pologne",
       "date_str": "Ven. 11/09 à 18h00",
       "fav_team": "RKS Rakow",
-      "fav_odds": 1.66,
+      "fav_odds": 1.68,
       "p2_fav_odds": null,
       "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3378296": {
+      "match": "FK Zeleznicar - FK Macva Sabac",
+      "league": "Serbie • D1 Serbie",
+      "date_str": "Ven. 11/09 à 18h30",
+      "fav_team": "FK Zeleznicar",
+      "fav_odds": 1.37,
+      "p2_fav_odds": null,
+      "fav_score": 69,
+      "fav_badge": "🥈 ARGENT"
+    },
+    "3378008": {
+      "match": "Rodez - Grenoble",
+      "league": "France • Ligue 2 Bkt",
+      "date_str": "Ven. 11/09 à 20h00",
+      "fav_team": "Rodez",
+      "fav_odds": 1.68,
+      "p2_fav_odds": null,
+      "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     }
   }
