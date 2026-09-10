@@ -23051,5 +23051,72 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3367852",
+    "timestamp_utc": "2026-09-10T14:05:24.207127+00:00",
+    "match": "Boca Juniors vs CentralCordoba",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 12/09 à 02h30",
+    "fav_team": "Boca Juniors",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.33,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376861",
+    "timestamp_utc": "2026-09-10T14:05:24.207127+00:00",
+    "match": "Club Necaxa vs Club Puebla",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Sam. 12/09 à 03h00",
+    "fav_team": "Club Necaxa",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3370812",
+    "timestamp_utc": "2026-09-10T14:05:24.207127+00:00",
+    "match": "Ind.Santa Fe vs DeportesTolima",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Sam. 12/09 à 03h30",
+    "fav_team": "Ind.Santa Fe",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
