@@ -23185,5 +23185,93 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378636",
+    "timestamp_utc": "2026-09-10T20:04:37.614197+00:00",
+    "match": "MC Oran vs ZR Temouchent",
+    "league": "Algerie • D1 Algerie",
+    "date_str": "Ven. 11/09 à 20h00",
+    "fav_team": "MC Oran",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 75,
+      "pct_fav_success": 90,
+      "pct_fav_lead2": 60
+    },
+    "odds": {
+      "fav_odds": 1.47,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3379535",
+    "timestamp_utc": "2026-09-10T20:04:37.614197+00:00",
+    "match": "UN Kaerjeng vs FC Rosport",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Ven. 11/09 à 20h00",
+    "fav_team": "UN Kaerjeng",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.78,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377762",
+    "timestamp_utc": "2026-09-10T20:04:37.614197+00:00",
+    "match": "Grosuplje vs Nafta Lendava",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Ven. 11/09 à 20h15",
+    "fav_team": "Grosuplje",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372382",
+    "timestamp_utc": "2026-09-10T20:04:37.614197+00:00",
+    "match": "Ulsan vs Incheon FC",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Sam. 12/09 à 09h30",
+    "fav_team": "Ulsan",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
