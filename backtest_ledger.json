@@ -23162,5 +23162,28 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378635",
+    "timestamp_utc": "2026-09-10T18:04:57.343830+00:00",
+    "match": "Al Wahda vs Sharjah",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Ven. 11/09 à 18h15",
+    "fav_team": "Al Wahda",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 51,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
