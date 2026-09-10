@@ -23118,5 +23118,49 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3376863",
+    "timestamp_utc": "2026-09-10T16:04:18.103422+00:00",
+    "match": "Club Tijuana vs Queretaro FC",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Sam. 12/09 à 05h00",
+    "fav_team": "Club Tijuana",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.82,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376862",
+    "timestamp_utc": "2026-09-10T16:04:18.103422+00:00",
+    "match": "Atlante FC vs CF Pachuca",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Sam. 12/09 à 05h00",
+    "fav_team": "CF Pachuca",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]

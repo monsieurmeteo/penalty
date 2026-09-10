@@ -5,9 +5,9 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 18h15",
       "fav_team": "Al Ain",
-      "fav_odds": 1.86,
+      "fav_odds": 1.64,
       "p2_fav_odds": null,
-      "fav_score": 78,
+      "fav_score": 79,
       "fav_badge": "🥇 OR"
     },
     "3377644": {
@@ -15,7 +15,7 @@
       "league": "Portugal • Liga Portugal",
       "date_str": "Jeu. 10/09 à 21h15",
       "fav_team": "Braga",
-      "fav_odds": 1.52,
+      "fav_odds": 1.5,
       "p2_fav_odds": null,
       "fav_score": 57,
       "fav_badge": "🥉 BRONZE"
@@ -25,7 +25,7 @@
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Ven. 11/09 à 02h30",
       "fav_team": "Cienciano",
-      "fav_odds": 1.48,
+      "fav_odds": 1.46,
       "p2_fav_odds": null,
       "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
@@ -65,7 +65,7 @@
       "league": "Lettonie • D1 Lettonie",
       "date_str": "Ven. 11/09 à 16h00",
       "fav_team": "FK Liepaja",
-      "fav_odds": 1.51,
+      "fav_odds": 1.52,
       "p2_fav_odds": null,
       "fav_score": 74,
       "fav_badge": "🥈 ARGENT"
@@ -125,29 +125,9 @@
       "league": "France • Ligue 1 Mcdonalds",
       "date_str": "Ven. 11/09 à 20h45",
       "fav_team": "Rennes",
-      "fav_odds": 1.97,
+      "fav_odds": 1.98,
       "p2_fav_odds": null,
       "fav_score": 64,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3377996": {
-      "match": "West Ham - Wrexham",
-      "league": "Angleterre • Championship",
-      "date_str": "Ven. 11/09 à 21h00",
-      "fav_team": "West Ham",
-      "fav_odds": 1.48,
-      "p2_fav_odds": null,
-      "fav_score": 54,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3371156": {
-      "match": "Ameliano - San Lorenzo",
-      "league": "Paraguay • D1 Paraguay",
-      "date_str": "Ven. 11/09 à 21h00",
-      "fav_team": "Ameliano",
-      "fav_odds": 1.56,
-      "p2_fav_odds": null,
-      "fav_score": 59,
       "fav_badge": "🥉 BRONZE"
     },
     "3369048": {
@@ -160,12 +140,32 @@
       "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
     },
+    "3371156": {
+      "match": "Ameliano - San Lorenzo",
+      "league": "Paraguay • D1 Paraguay",
+      "date_str": "Ven. 11/09 à 21h00",
+      "fav_team": "Ameliano",
+      "fav_odds": 1.52,
+      "p2_fav_odds": null,
+      "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3377996": {
+      "match": "West Ham - Wrexham",
+      "league": "Angleterre • Championship",
+      "date_str": "Ven. 11/09 à 21h00",
+      "fav_team": "West Ham",
+      "fav_odds": 1.48,
+      "p2_fav_odds": null,
+      "fav_score": 54,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3367852": {
       "match": "Boca Juniors - CentralCordoba",
       "league": "Argentine • D1 Argentine",
       "date_str": "Sam. 12/09 à 02h30",
       "fav_team": "Boca Juniors",
-      "fav_odds": 1.33,
+      "fav_odds": 1.31,
       "p2_fav_odds": null,
       "fav_score": 54,
       "fav_badge": "🥉 BRONZE"
@@ -176,6 +176,16 @@
       "date_str": "Sam. 12/09 à 03h30",
       "fav_team": "Ind.Santa Fe",
       "fav_odds": 2.15,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376863": {
+      "match": "Club Tijuana - Queretaro FC",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Sam. 12/09 à 05h00",
+      "fav_team": "Club Tijuana",
+      "fav_odds": 1.82,
       "p2_fav_odds": null,
       "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
