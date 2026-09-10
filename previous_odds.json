@@ -5,7 +5,7 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 15h40",
       "fav_team": "Al Jazira",
-      "fav_odds": 1.42,
+      "fav_odds": 1.41,
       "p2_fav_odds": null,
       "fav_score": 81,
       "fav_badge": "🥇 OR"
@@ -15,7 +15,7 @@
       "league": "Georgie • D1 Georgie",
       "date_str": "Jeu. 10/09 à 17h00",
       "fav_team": "Dinamo Tbilisi",
-      "fav_odds": 1.31,
+      "fav_odds": 1.33,
       "p2_fav_odds": null,
       "fav_score": 76,
       "fav_badge": "🥇 OR"
@@ -25,9 +25,9 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 18h15",
       "fav_team": "Al Ain",
-      "fav_odds": 1.66,
+      "fav_odds": 1.56,
       "p2_fav_odds": null,
-      "fav_score": 79,
+      "fav_score": 80,
       "fav_badge": "🥇 OR"
     },
     "3377644": {
@@ -35,7 +35,7 @@
       "league": "Portugal • Liga Portugal",
       "date_str": "Jeu. 10/09 à 21h15",
       "fav_team": "Braga",
-      "fav_odds": 1.58,
+      "fav_odds": 1.57,
       "p2_fav_odds": null,
       "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
@@ -75,9 +75,9 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Ven. 11/09 à 15h40",
       "fav_team": "Baniyas SC",
-      "fav_odds": 2.15,
+      "fav_odds": 2.1,
       "p2_fav_odds": null,
-      "fav_score": 59,
+      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3378834": {
@@ -120,6 +120,16 @@
       "fav_score": 69,
       "fav_badge": "🥈 ARGENT"
     },
+    "3368369": {
+      "match": "Stellenbosch - Sekhukhune",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
+      "date_str": "Ven. 11/09 à 19h30",
+      "fav_team": "Stellenbosch",
+      "fav_odds": 2.15,
+      "p2_fav_odds": null,
+      "fav_score": 51,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3378008": {
       "match": "Rodez - Grenoble",
       "league": "France • Ligue 2 Bkt",
@@ -160,16 +170,6 @@
       "fav_score": 64,
       "fav_badge": "🥉 BRONZE"
     },
-    "3369048": {
-      "match": "AC Pisa 1909 - Virtus Entella",
-      "league": "Italie • Serie B",
-      "date_str": "Ven. 11/09 à 21h00",
-      "fav_team": "AC Pisa 1909",
-      "fav_odds": 1.67,
-      "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3377996": {
       "match": "West Ham - Wrexham",
       "league": "Angleterre • Championship",
@@ -178,6 +178,26 @@
       "fav_odds": 1.5,
       "p2_fav_odds": null,
       "fav_score": 54,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3371156": {
+      "match": "Ameliano - San Lorenzo",
+      "league": "Paraguay • D1 Paraguay",
+      "date_str": "Ven. 11/09 à 21h00",
+      "fav_team": "Ameliano",
+      "fav_odds": 1.56,
+      "p2_fav_odds": null,
+      "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3369048": {
+      "match": "AC Pisa 1909 - Virtus Entella",
+      "league": "Italie • Serie B",
+      "date_str": "Ven. 11/09 à 21h00",
+      "fav_team": "AC Pisa 1909",
+      "fav_odds": 1.67,
+      "p2_fav_odds": null,
+      "fav_score": 62,
       "fav_badge": "🥉 BRONZE"
     }
   }

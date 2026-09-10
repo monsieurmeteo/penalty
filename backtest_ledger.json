@@ -22900,5 +22900,93 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3374526",
+    "timestamp_utc": "2026-09-10T10:03:40.169148+00:00",
+    "match": "Hatta Club vs Al Dhafra",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Ven. 11/09 à 15h40",
+    "fav_team": "Al Dhafra",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368369",
+    "timestamp_utc": "2026-09-10T10:03:40.169148+00:00",
+    "match": "Stellenbosch vs Sekhukhune",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Ven. 11/09 à 19h30",
+    "fav_team": "Stellenbosch",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 51,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3371156",
+    "timestamp_utc": "2026-09-10T10:03:40.169148+00:00",
+    "match": "Ameliano vs San Lorenzo",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Ven. 11/09 à 21h00",
+    "fav_team": "Ameliano",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 59,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.56,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3371155",
+    "timestamp_utc": "2026-09-10T10:03:40.169148+00:00",
+    "match": "Club 2 De Mayo vs Libertad",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Ven. 11/09 à 23h30",
+    "fav_team": "Libertad",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 29,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.84,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]

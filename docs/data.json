@@ -1,15 +1,15 @@
 {
   "summary": {
-    "total_matches": 115,
+    "total_matches": 117,
     "decided_matches": 92,
     "won": 65,
     "lost": 27,
     "live": 0,
-    "upcoming": 23,
+    "upcoming": 25,
     "win_rate": 70.7,
     "profit_units": 7.6,
     "roi_pct": 8.26,
-    "last_updated": "2026-09-10T08:04:16.723930+00:00"
+    "last_updated": "2026-09-10T10:03:38.310297+00:00"
   },
   "matches_today": [
     {
@@ -1801,8 +1801,8 @@
       "away": "Al Wasl",
       "fav_team": "Al Ain",
       "fav_side": "dom",
-      "odds": 1.66,
-      "domination_score": 79,
+      "odds": 1.56,
+      "domination_score": 80,
       "badge_tier": "🥇 OR",
       "win_pct_historical": 100,
       "status": "UPCOMING",
@@ -1923,7 +1923,7 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.58,
+      "odds": 1.57,
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -2139,7 +2139,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.42,
+      "odds": 1.41,
       "domination_score": 81,
       "badge_tier": "🥇 OR",
       "win_pct_historical": 100,
@@ -2259,7 +2259,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.31,
+      "odds": 1.33,
       "domination_score": 76,
       "badge_tier": "🥇 OR",
       "win_pct_historical": 56,
@@ -2379,8 +2379,8 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.15,
-      "domination_score": 59,
+      "odds": 2.1,
+      "domination_score": 60,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -2623,6 +2623,54 @@
       "domination_score": 54,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Ven. 11/09 à 21h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3368369",
+      "time": "Ven. 11/09 à 19h30",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
+      "home": "Stellenbosch",
+      "away": "Sekhukhune",
+      "fav_team": "Stellenbosch",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 2.15,
+      "domination_score": 51,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 50,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Ven. 11/09 à 19h30",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3371156",
+      "time": "Ven. 11/09 à 21h00",
+      "league": "Paraguay • D1 Paraguay",
+      "home": "Ameliano",
+      "away": "San Lorenzo",
+      "fav_team": "Ameliano",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.56,
+      "domination_score": 59,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 40,
       "status": "UPCOMING",
       "selection_status": "PENDING",
       "score_display": "VS",
@@ -4464,7 +4512,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Ven. 11/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -4489,7 +4537,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Ven. 11/09 à 20h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -4525,7 +4573,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Ven. 11/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -4550,7 +4598,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Ven. 11/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -4563,7 +4611,7 @@
       "league": "Coupes D Europe • Ligue Des Champions",
       "match": "PSV Eindhoven vs Shakht.Donetsk",
       "fav_team": "PSV Eindhoven",
-      "odds": "@1.41",
+      "odds": "@1.40",
       "domination_score": "36/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
@@ -4573,7 +4621,7 @@
       "league": "Coupes D Europe • Ligue Des Champions",
       "match": "Fenerbahce vs AS Rome",
       "fav_team": "AS Rome",
-      "odds": "@2.00",
+      "odds": "@1.98",
       "domination_score": "40/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -4583,8 +4631,8 @@
       "league": "Algerie • D1 Algerie",
       "match": "ES Ben Aknoun vs US Biskra",
       "fav_team": "ES Ben Aknoun",
-      "odds": "@1.92",
-      "domination_score": "25/100",
+      "odds": "@1.81",
+      "domination_score": "26/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
@@ -4593,9 +4641,19 @@
       "league": "Coupes D Europe • Ligue Des Champions",
       "match": "Como 1907 vs RB Leipzig",
       "fav_team": "Como 1907",
-      "odds": "@1.70",
+      "odds": "@1.68",
       "domination_score": "49/100",
       "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 12h00",
+      "league": "Japon • D1 Japon",
+      "match": "Vissel Kobe vs Kashima",
+      "fav_team": "Kashima",
+      "odds": "@2.20",
+      "domination_score": "36/100",
+      "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
@@ -4609,13 +4667,13 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Ven. 11/09 à 12h00",
-      "league": "Japon • D1 Japon",
-      "match": "Vissel Kobe vs Kashima",
-      "fav_team": "Kashima",
-      "odds": "@2.20",
-      "domination_score": "36/100",
-      "reussite": "50%",
+      "time": "Ven. 11/09 à 15h40",
+      "league": "Emirats Arabes Unis • D1 Emirats Au",
+      "match": "Hatta Club vs Al Dhafra",
+      "fav_team": "Al Dhafra",
+      "odds": "@2.05",
+      "domination_score": "40/100",
+      "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
@@ -4643,7 +4701,7 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "match": "Ajman vs Ittihad Kalba",
       "fav_team": "Ajman",
-      "odds": "@1.93",
+      "odds": "@1.91",
       "domination_score": "42/100",
       "reussite": "33%",
       "status": "ÉCARTÉ"
@@ -4680,21 +4738,21 @@
     },
     {
       "time": "Ven. 11/09 à 19h00",
-      "league": "Italie • Serie B",
-      "match": "Empoli vs AC Arezzo",
-      "fav_team": "Empoli",
-      "odds": "@1.95",
-      "domination_score": "43/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Ven. 11/09 à 19h00",
       "league": "Chypre • D1 Chypre",
       "match": "AEL Limassol vs Nea Salamis",
       "fav_team": "AEL Limassol",
       "odds": "@1.86",
       "domination_score": "36/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 19h00",
+      "league": "Italie • Serie B",
+      "match": "Empoli vs AC Arezzo",
+      "fav_team": "Empoli",
+      "odds": "@1.95",
+      "domination_score": "43/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
     },
@@ -4740,12 +4798,22 @@
     },
     {
       "time": "Ven. 11/09 à 20h00",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "Celik Zenica vs Rad.Bijeljina",
-      "fav_team": "Celik Zenica",
-      "odds": "@1.78",
-      "domination_score": "49/100",
+      "league": "Bulgarie • D1 Bulgarie",
+      "match": "Cherno More vs Lokomo.Sofia",
+      "fav_team": "Cherno More",
+      "odds": "@1.86",
+      "domination_score": "46/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 20h00",
+      "league": "France • Ligue 2 Bkt",
+      "match": "Clermont vs Boulogne",
+      "fav_team": "Clermont",
+      "odds": "@2.20",
+      "domination_score": "30/100",
+      "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
@@ -4770,22 +4838,12 @@
     },
     {
       "time": "Ven. 11/09 à 20h00",
-      "league": "Bulgarie • D1 Bulgarie",
-      "match": "Cherno More vs Lokomo.Sofia",
-      "fav_team": "Cherno More",
-      "odds": "@1.86",
-      "domination_score": "46/100",
+      "league": "Bosnie Herzeg • D1 Bosnie",
+      "match": "Celik Zenica vs Rad.Bijeljina",
+      "fav_team": "Celik Zenica",
+      "odds": "@1.78",
+      "domination_score": "49/100",
       "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Ven. 11/09 à 20h00",
-      "league": "France • Ligue 2 Bkt",
-      "match": "Clermont vs Boulogne",
-      "fav_team": "Clermont",
-      "odds": "@2.20",
-      "domination_score": "30/100",
-      "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
@@ -4811,16 +4869,6 @@
     {
       "time": "Ven. 11/09 à 20h45",
       "league": "Irlande • D1 Irlande",
-      "match": "Waterford vs Dundalk",
-      "fav_team": "Waterford",
-      "odds": "@2.20",
-      "domination_score": "39/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Ven. 11/09 à 20h45",
-      "league": "Irlande • D1 Irlande",
       "match": "Drogheda vs Sligo",
       "fav_team": "Drogheda",
       "odds": "@1.64",
@@ -4831,21 +4879,31 @@
     {
       "time": "Ven. 11/09 à 20h45",
       "league": "Irlande • D1 Irlande",
-      "match": "Galway vs Bohemians",
-      "fav_team": "Bohemians",
-      "odds": "@1.73",
-      "domination_score": "47/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Ven. 11/09 à 20h45",
-      "league": "Irlande • D1 Irlande",
       "match": "Shelbourne FC vs Derry City",
       "fav_team": "Shelbourne FC",
       "odds": "@2.10",
       "domination_score": "39/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 20h45",
+      "league": "Irlande • D1 Irlande",
+      "match": "Waterford vs Dundalk",
+      "fav_team": "Waterford",
+      "odds": "@2.15",
+      "domination_score": "39/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 20h45",
+      "league": "Irlande • D1 Irlande",
+      "match": "Galway vs Bohemians",
+      "fav_team": "Bohemians",
+      "odds": "@1.73",
+      "domination_score": "47/100",
+      "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
@@ -4876,6 +4934,16 @@
       "odds": "@2.10",
       "domination_score": "42/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Ven. 11/09 à 23h30",
+      "league": "Paraguay • D1 Paraguay",
+      "match": "Club 2 De Mayo vs Libertad",
+      "fav_team": "Libertad",
+      "odds": "@1.84",
+      "domination_score": "29/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     }
   ]
