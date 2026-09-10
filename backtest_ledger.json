@@ -22988,5 +22988,68 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373749",
+    "timestamp_utc": "2026-09-10T12:04:03.658310+00:00",
+    "match": "Kolos Kovalivk vs Karpaty Lviv",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Ven. 11/09 à 14h30",
+    "fav_team": "Karpaty Lviv",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367854",
+    "timestamp_utc": "2026-09-10T12:04:03.658310+00:00",
+    "match": "Defensa Y Jus. vs Gimnasia Y Esg",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 12/09 à 00h15",
+    "fav_team": "Defensa Y Jus.",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.96,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3370807",
+    "timestamp_utc": "2026-09-10T12:04:03.658310+00:00",
+    "match": "Jaguares vs Fortaleza FC",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Sam. 12/09 à 01h15",
+    "fav_team": "Jaguares",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
