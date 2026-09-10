@@ -22147,5 +22147,93 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378832",
+    "timestamp_utc": "2026-09-10T04:04:05.488665+00:00",
+    "match": "Riga FC vs FK Auda",
+    "league": "Lettonie • D1 Lettonie",
+    "date_str": "Ven. 11/09 à 17h00",
+    "fav_team": "Riga FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 57,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.52,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368562",
+    "timestamp_utc": "2026-09-10T04:04:05.488665+00:00",
+    "match": "FC Constanta vs Uta Arad",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Ven. 11/09 à 17h00",
+    "fav_team": "FC Constanta",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367487",
+    "timestamp_utc": "2026-09-10T04:04:05.488665+00:00",
+    "match": "Al Faisaly vs Al Ittihad FC",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Ven. 11/09 à 17h45",
+    "fav_team": "Al Ittihad FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 35,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.66,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372834",
+    "timestamp_utc": "2026-09-10T04:04:05.488665+00:00",
+    "match": "RKS Rakow vs Motor Lublin",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Ven. 11/09 à 18h00",
+    "fav_team": "RKS Rakow",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.66,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]

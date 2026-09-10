@@ -1,15 +1,5 @@
 {
   "favs": {
-    "3357740": {
-      "match": "Los Angeles FC - NY Red Bulls",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 10/09 à 04h30",
-      "fav_team": "Los Angeles FC",
-      "fav_odds": 1.33,
-      "p2_fav_odds": null,
-      "fav_score": 61,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3377645": {
       "match": "Al Jazira - Al Nasr (EAU)",
       "league": "Emirats Arabes Unis • D1 Emirats Au",
@@ -50,22 +40,12 @@
       "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
-    "3378526": {
-      "match": "USM Alger - Js El Biar",
-      "league": "Algerie • D1 Algerie",
-      "date_str": "Jeu. 10/09 à 22h00",
-      "fav_team": "USM Alger",
-      "fav_odds": 1.33,
-      "p2_fav_odds": null,
-      "fav_score": 51,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3373245": {
       "match": "Cienciano - Torque",
       "league": "Amerique • Copa Sudamericana",
       "date_str": "Ven. 11/09 à 02h30",
       "fav_team": "Cienciano",
-      "fav_odds": 1.47,
+      "fav_odds": 1.49,
       "p2_fav_odds": null,
       "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
@@ -85,7 +65,7 @@
       "league": "Mexique • D1 Mexique",
       "date_str": "Ven. 11/09 à 05h05",
       "fav_team": "UNAM Pumas",
-      "fav_odds": 1.91,
+      "fav_odds": 1.93,
       "p2_fav_odds": null,
       "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
@@ -109,6 +89,26 @@
       "p2_fav_odds": null,
       "fav_score": 75,
       "fav_badge": "🥇 OR"
+    },
+    "3378832": {
+      "match": "Riga FC - FK Auda",
+      "league": "Lettonie • D1 Lettonie",
+      "date_str": "Ven. 11/09 à 17h00",
+      "fav_team": "Riga FC",
+      "fav_odds": 1.52,
+      "p2_fav_odds": null,
+      "fav_score": 57,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3372834": {
+      "match": "RKS Rakow - Motor Lublin",
+      "league": "Pologne • D1 Pologne",
+      "date_str": "Ven. 11/09 à 18h00",
+      "fav_team": "RKS Rakow",
+      "fav_odds": 1.66,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
     }
   }
 }
