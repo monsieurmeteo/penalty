@@ -22596,5 +22596,309 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3372831",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Wisla Cracovie vs Jagiellonia",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Ven. 11/09 à 20h30",
+    "fav_team": "Wisla Cracovie",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360636",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Burgos CF vs Ceuta",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Ven. 11/09 à 20h30",
+    "fav_team": "Burgos CF",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.54,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367247",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Union Berlin vs Schalke 04",
+    "league": "Allemagne • Bundesliga 1",
+    "date_str": "Ven. 11/09 à 20h30",
+    "fav_team": "Union Berlin",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376224",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Rennes vs Marseille",
+    "league": "France • Ligue 1 Mcdonalds",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Rennes",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 64,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.97,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368370",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "KV Mechelen vs Anderlecht",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Anderlecht",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.81,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377983",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Waterford vs Dundalk",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Waterford",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378041",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Drogheda vs Sligo",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Drogheda",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.64,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377981",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Galway vs Bohemians",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Bohemians",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368359",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Shelbourne FC vs Derry City",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Shelbourne FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369048",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "AC Pisa 1909 vs Virtus Entella",
+    "league": "Italie • Serie B",
+    "date_str": "Ven. 11/09 à 21h00",
+    "fav_team": "AC Pisa 1909",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.67,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377996",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "West Ham vs Wrexham",
+    "league": "Angleterre • Championship",
+    "date_str": "Ven. 11/09 à 21h00",
+    "fav_team": "West Ham",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.5,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360716",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "FC Séville vs CF Valence",
+    "league": "Espagne • Laliga",
+    "date_str": "Ven. 11/09 à 21h00",
+    "fav_team": "FC Séville",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378042",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "St Patricks vs Shamrock",
+    "league": "Irlande • D1 Irlande",
+    "date_str": "Ven. 11/09 à 21h00",
+    "fav_team": "St Patricks",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378560",
+    "timestamp_utc": "2026-09-10T08:04:18.559468+00:00",
+    "match": "Academica vs Benfica B",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Ven. 11/09 à 21h45",
+    "fav_team": "Academica",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
