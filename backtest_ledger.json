@@ -22078,5 +22078,28 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3357720",
+    "timestamp_utc": "2026-09-10T00:03:51.470561+00:00",
+    "match": "Austin FC vs Colorado",
+    "league": "Etats Unis • Mls",
+    "date_str": "Jeu. 10/09 à 02h30",
+    "fav_team": "Austin FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]

@@ -1,43 +1,23 @@
 {
   "favs": {
-    "3357703": {
-      "match": "Atlanta Utd - Orlando City",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 10/09 à 01h30",
-      "fav_team": "Atlanta Utd",
-      "fav_odds": 2.1,
-      "p2_fav_odds": null,
-      "fav_score": 52,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3357702": {
-      "match": "Toronto FC - Nashville SC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 10/09 à 01h30",
-      "fav_team": "Nashville SC",
-      "fav_odds": 1.9,
-      "p2_fav_odds": null,
-      "fav_score": 50,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3357704": {
-      "match": "Philadelphia - FC Cincinnati",
-      "league": "Etats Unis • Mls",
-      "date_str": "Jeu. 10/09 à 01h45",
-      "fav_team": "Philadelphia",
-      "fav_odds": 1.58,
-      "p2_fav_odds": null,
-      "fav_score": 50,
-      "fav_badge": "🥉 BRONZE"
-    },
     "3357721": {
       "match": "Houston - Salt Lake",
       "league": "Etats Unis • Mls",
       "date_str": "Jeu. 10/09 à 02h30",
       "fav_team": "Houston",
-      "fav_odds": 1.85,
+      "fav_odds": 1.68,
       "p2_fav_odds": null,
-      "fav_score": 57,
+      "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3357720": {
+      "match": "Austin FC - Colorado",
+      "league": "Etats Unis • Mls",
+      "date_str": "Jeu. 10/09 à 02h30",
+      "fav_team": "Austin FC",
+      "fav_odds": 2.2,
+      "p2_fav_odds": null,
+      "fav_score": 50,
       "fav_badge": "🥉 BRONZE"
     },
     "3357740": {
@@ -55,9 +35,9 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 15h40",
       "fav_team": "Al Jazira",
-      "fav_odds": 1.45,
+      "fav_odds": 1.42,
       "p2_fav_odds": null,
-      "fav_score": 80,
+      "fav_score": 81,
       "fav_badge": "🥇 OR"
     },
     "3378075": {
@@ -75,7 +55,7 @@
       "league": "Emirats Arabes Unis • D1 Emirats Au",
       "date_str": "Jeu. 10/09 à 18h15",
       "fav_team": "Al Ain",
-      "fav_odds": 1.64,
+      "fav_odds": 1.66,
       "p2_fav_odds": null,
       "fav_score": 79,
       "fav_badge": "🥇 OR"
@@ -125,7 +105,7 @@
       "league": "Mexique • D1 Mexique",
       "date_str": "Ven. 11/09 à 05h05",
       "fav_team": "UNAM Pumas",
-      "fav_odds": 1.95,
+      "fav_odds": 1.91,
       "p2_fav_odds": null,
       "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
