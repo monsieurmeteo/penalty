@@ -22101,5 +22101,51 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3374527",
+    "timestamp_utc": "2026-09-10T02:04:56.217889+00:00",
+    "match": "Khor Fakkan vs Baniyas SC",
+    "league": "Emirats Arabes Unis • D1 Emirats Au",
+    "date_str": "Ven. 11/09 à 15h40",
+    "fav_team": "Baniyas SC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 59,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378834",
+    "timestamp_utc": "2026-09-10T02:04:56.217889+00:00",
+    "match": "Ogre United vs FK Liepaja",
+    "league": "Lettonie • D1 Lettonie",
+    "date_str": "Ven. 11/09 à 16h00",
+    "fav_team": "FK Liepaja",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 75,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.43,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
