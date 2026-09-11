@@ -25248,5 +25248,353 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373615",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "HamrunSpartans vs Birzebbuga",
+    "league": "Malte • D1 Malte",
+    "date_str": "Ven. 11/09 à 20h30",
+    "fav_team": "HamrunSpartans",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.46,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376761",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "CSKA Sofia vs FC Arda",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Sam. 12/09 à 20h15",
+    "fav_team": "CSKA Sofia",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372013",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Spartak Trnava vs FK Kosice",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Sam. 12/09 à 20h30",
+    "fav_team": "Spartak Trnava",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.65,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368563",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Rapid Bucarest vs FC Voluntari",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Sam. 12/09 à 20h30",
+    "fav_team": "Rapid Bucarest",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.42,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378407",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Radnicki 1923 vs Mladost Lucani",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Sam. 12/09 à 20h30",
+    "fav_team": "Radnicki 1923",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.48,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378973",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "BoracBanjaLuka vs ZrinjskiMostar",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Sam. 12/09 à 20h45",
+    "fav_team": "BoracBanjaLuka",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369055",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Atalanta vs Cagliari",
+    "league": "Italie • Serie A",
+    "date_str": "Sam. 12/09 à 20h45",
+    "fav_team": "Atalanta",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 61,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.48,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368799",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "SC Cambuur vs NEC Nimègue",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "NEC Nimègue",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.45,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376212",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Sunderland vs Arsenal",
+    "league": "Angleterre • Premier League",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "Arsenal",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.4,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360637",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Cordoba vs Almeria",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "Cordoba",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378948",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Manta FC vs SD Aucas",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "SD Aucas",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.94,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3371154",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Guarani vs Cerro Porteno",
+    "league": "Paraguay • D1 Paraguay",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "Cerro Porteno",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 31,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376612",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Atletico MG vs Fluminense",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Sam. 12/09 à 21h00",
+    "fav_team": "Atletico MG",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378364",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Viseu vs Guimaraes",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Sam. 12/09 à 21h30",
+    "fav_team": "Guimaraes",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 28,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.94,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376615",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Chapecoense SC vs Internacional",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Sam. 12/09 à 22h00",
+    "fav_team": "Internacional",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368353",
+    "timestamp_utc": "2026-09-11T08:03:23.175086+00:00",
+    "match": "Supra Quebec vs HFX Wanderers",
+    "league": "Canada • D1 Canada",
+    "date_str": "Sam. 12/09 à 22h00",
+    "fav_team": "Supra Quebec",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.8,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
