@@ -200,15 +200,19 @@ def sync():
 
     match_lookup = {}
     for m in matches:
-        match_lookup[clean_name(m["home"])] = m
+        match_lookup[(clean_name(m.get("home", "")), clean_name(m.get("away", "")))] = m
 
     combos = data.get("combos_today", [])
     for c in combos:
+        # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
+        if c.get("ticket_status") in ["WON", "LOST"]:
+            continue
+
         m1 = c.get("m1", {})
         m2 = c.get("m2", {})
 
-        k1 = clean_name(m1.get("home", ""))
-        k2 = clean_name(m2.get("home", ""))
+        k1 = (clean_name(m1.get("home", "")), clean_name(m1.get("away", "")))
+        k2 = (clean_name(m2.get("home", "")), clean_name(m2.get("away", "")))
 
         if k1 in match_lookup:
             m_src = match_lookup[k1]

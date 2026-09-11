@@ -827,17 +827,22 @@ def sync_and_update_docs_data(retained_favs, rejected_favs):
     existing_combos = existing_docs.get("combos_today", [])
     combo_stake = 3.0
     match_by_key = {
-        _clean_team_key(m.get("home", "")): m
+        (_clean_team_key(m.get("home", "")), _clean_team_key(m.get("away", ""))): m
         for m in all_today_matches
     }
 
     used_teams = set()
     combos_today = []
     for c in existing_combos:
+        # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
+        if c.get("ticket_status") in ["WON", "LOST"]:
+            combos_today.append(c)
+            continue
+
         m1 = c.get("m1", {})
         m2 = c.get("m2", {})
-        k1 = _clean_team_key(m1.get("home", ""))
-        k2 = _clean_team_key(m2.get("home", ""))
+        k1 = (_clean_team_key(m1.get("home", "")), _clean_team_key(m1.get("away", "")))
+        k2 = (_clean_team_key(m2.get("home", "")), _clean_team_key(m2.get("away", "")))
 
         if k1 in match_by_key:
             src = match_by_key[k1]
