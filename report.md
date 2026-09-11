@@ -1,5 +1,5 @@
 # ⚽ SÉLECTION OFFICIELLE UNIBET — +2 GAGNANT (MÈNE DE 2 BUTS OU GAGNE)
-**Généré le** : 11/09/2026 à 09:05 UTC  |  **Matchs scannés** : 216  |  **Favoris analysés** : 153  |  **Favoris retenus** : 54
+**Généré le** : 11/09/2026 à 09:23 UTC  |  **Matchs scannés** : 217  |  **Favoris analysés** : 154  |  **Favoris retenus** : 54
 **Règle d'or Unibet** : Si l'équipe mène de 2 buts (2-0, 3-1, 4-2...) à n'importe quel moment du match, le pari est PAYÉ GAGNANT immédiatement (même en cas d'égalisation à 2-2 ou défaite 2-3). Si l'équipe gagne simplement 1-0 ou 2-1, le pari est également gagnant à la fin du match.
 
 ## 📅 Planning Chronologique des Favoris Retenus
@@ -10,20 +10,20 @@
 | Ven. 11/09 à 16h00 | Lettonie • D1 Lettonie | **Ogre United vs FK Liepaja** | **FK Liepaja** | **@1.59 (1N2)** | **73/100** (🥈 ARGENT) | **80%** |
 | Ven. 11/09 à 18h00 | Pologne • D1 Pologne | **RKS Rakow vs Motor Lublin** | **RKS Rakow** | **@1.76 (1N2)** | **52/100** (🥉 BRONZE) | **50%** |
 | Ven. 11/09 à 18h30 | Serbie • D1 Serbie | **FK Zeleznicar vs FK Macva Sabac** | **FK Zeleznicar** | **@1.30 (1N2)** | **70/100** (🥈 ARGENT) | **60%** |
-| Ven. 11/09 à 20h00 | Algerie • D1 Algerie | **MC Oran vs ZR Temouchent** | **MC Oran** | **@1.47 (1N2)** | **75/100** (🥇 OR) | **90%** |
 | Ven. 11/09 à 20h00 | France • Ligue 2 Bkt | **Rodez vs Grenoble** | **Rodez** | **@1.65 (1N2)** | **55/100** (🥉 BRONZE) | **60%** |
+| Ven. 11/09 à 20h00 | Algerie • D1 Algerie | **MC Oran vs ZR Temouchent** | **MC Oran** | **@1.47 (1N2)** | **75/100** (🥇 OR) | **90%** |
 | Ven. 11/09 à 20h15 | Slovenie • D1 Slovenie | **Grosuplje vs Nafta Lendava** | **Grosuplje** | **@2.05 (1N2)** | **50/100** (🥉 BRONZE) | **50%** |
-| Ven. 11/09 à 20h30 | Pologne • D1 Pologne | **Wisla Cracovie vs Jagiellonia** | **Wisla Cracovie** | **@2.10 (1N2)** | **50/100** (🥉 BRONZE) | **70%** |
 | Ven. 11/09 à 20h30 | Espagne • Laliga 2 | **Burgos CF vs Ceuta** | **Burgos CF** | **@1.58 (1N2)** | **61/100** (🥉 BRONZE) | **50%** |
-| Ven. 11/09 à 20h45 | Pays De Galles • D1 P Degalles | **Cambrian Utd vs Holywell Town** | **Cambrian Utd** | **@1.39 (1N2)** | **55/100** (🥉 BRONZE) | **40%** |
+| Ven. 11/09 à 20h30 | Pologne • D1 Pologne | **Wisla Cracovie vs Jagiellonia** | **Wisla Cracovie** | **@2.10 (1N2)** | **50/100** (🥉 BRONZE) | **70%** |
 | Ven. 11/09 à 20h45 | France • Ligue 1 Mcdonalds | **Rennes vs Marseille** | **Rennes** | **@1.90 (1N2)** | **64/100** (🥉 BRONZE) | **70%** |
-| Ven. 11/09 à 21h00 | Paraguay • D1 Paraguay | **Ameliano vs San Lorenzo** | **Ameliano** | **@1.57 (1N2)** | **58/100** (🥉 BRONZE) | **40%** |
+| Ven. 11/09 à 20h45 | Pays De Galles • D1 P Degalles | **Cambrian Utd vs Holywell Town** | **Cambrian Utd** | **@1.39 (1N2)** | **55/100** (🥉 BRONZE) | **40%** |
+| Ven. 11/09 à 21h00 | Paraguay • D1 Paraguay | **Ameliano vs San Lorenzo** | **Ameliano** | **@1.54 (1N2)** | **59/100** (🥉 BRONZE) | **40%** |
 | Ven. 11/09 à 21h00 | Italie • Serie B | **AC Pisa 1909 vs Virtus Entella** | **AC Pisa 1909** | **@1.67 (1N2)** | **62/100** (🥉 BRONZE) | **60%** |
 | Ven. 11/09 à 21h00 | Angleterre • Championship | **West Ham vs Wrexham** | **West Ham** | **@1.51 (1N2)** | **54/100** (🥉 BRONZE) | **50%** |
 | Ven. 11/09 à 22h00 | Algerie • D1 Algerie | **CR Belouizdad vs ES Setif** | **CR Belouizdad** | **@1.49 (1N2)** | **55/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 02h30 | Argentine • D1 Argentine | **Boca Juniors vs CentralCordoba** | **Boca Juniors** | **@1.34 (1N2)** | **53/100** (🥉 BRONZE) | **30%** |
 | Sam. 12/09 à 03h30 | Colombie • D1 Colombie | **Ind.Santa Fe vs DeportesTolima** | **Ind.Santa Fe** | **@2.15 (1N2)** | **53/100** (🥉 BRONZE) | **60%** |
-| Sam. 12/09 à 06h10 | Mexique • D1 Mexique | **Club Tijuana vs Queretaro FC** | **Club Tijuana** | **@1.80 (1N2)** | **53/100** (🥉 BRONZE) | **60%** |
+| Sam. 12/09 à 05h10 | Mexique • D1 Mexique | **Club Tijuana vs Queretaro FC** | **Club Tijuana** | **@1.80 (1N2)** | **53/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 12h00 | Japon • D1 Japon | **Hiroshima vs Cerezo Osaka** | **Hiroshima** | **@1.50 (1N2)** | **56/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 13h00 | Chine • D1 Chine | **Tianjin Tigers vs Liaoning Sheny** | **Tianjin Tigers** | **@1.85 (1N2)** | **55/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 13h30 | Estonie • D1 Estonie | **Nomme Kalju vs FC Narva** | **Nomme Kalju** | **@1.41 (1N2)** | **65/100** (🥈 ARGENT) | **40%** |
@@ -42,11 +42,11 @@
 | Sam. 12/09 à 17h15 | Italie • Serie B | **US Catanzaro vs Carrarese C.** | **US Catanzaro** | **@1.91 (1N2)** | **53/100** (🥉 BRONZE) | **50%** |
 | Sam. 12/09 à 17h30 | Pologne • D1 Pologne | **Gornik Zabrze vs Lech Poznan** | **Lech Poznan** | **@2.15 (1N2)** | **54/100** (🥉 BRONZE) | **80%** |
 | Sam. 12/09 à 17h30 | Suede • D1 Suede | **IFK Göteborg vs Halmstads** | **IFK Göteborg** | **@1.35 (1N2)** | **57/100** (🥉 BRONZE) | **40%** |
+| Sam. 12/09 à 18h00 | Finlande • D1 Finlande | **Ilves vs FC Lahti** | **Ilves** | **@1.97 (1N2)** | **52/100** (🥉 BRONZE) | **60%** |
+| Sam. 12/09 à 18h00 | Italie • Serie A | **Lazio Rome vs Milan AC** | **Milan AC** | **@2.15 (1N2)** | **51/100** (🥉 BRONZE) | **60%** |
+| Sam. 12/09 à 18h00 | Rep Tcheque • D1 Rep Tcheque | **Sparta Prague vs FK Jablonec** | **Sparta Prague** | **@1.48 (1N2)** | **80/100** (🥇 OR) | **80%** |
 | Sam. 12/09 à 18h00 | Suisse • D1 Suisse | **FC Thun vs Grasshoppers** | **FC Thun** | **@1.67 (1N2)** | **53/100** (🥉 BRONZE) | **50%** |
 | Sam. 12/09 à 18h00 | Norvege • D1 Norvege | **Rosenborg vs Tromsø** | **Rosenborg** | **@1.62 (1N2)** | **53/100** (🥉 BRONZE) | **60%** |
-| Sam. 12/09 à 18h00 | Finlande • D1 Finlande | **Ilves vs FC Lahti** | **Ilves** | **@1.97 (1N2)** | **52/100** (🥉 BRONZE) | **60%** |
-| Sam. 12/09 à 18h00 | Rep Tcheque • D1 Rep Tcheque | **Sparta Prague vs FK Jablonec** | **Sparta Prague** | **@1.48 (1N2)** | **80/100** (🥇 OR) | **80%** |
-| Sam. 12/09 à 18h00 | Italie • Serie A | **Lazio Rome vs Milan AC** | **Milan AC** | **@2.15 (1N2)** | **51/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 18h30 | Serbie • D1 Serbie | **FK Cukaricki vs FK Novi Pazar** | **FK Cukaricki** | **@1.99 (1N2)** | **52/100** (🥉 BRONZE) | **40%** |
 | Sam. 12/09 à 18h30 | Espagne • Laliga 2 | **Gérone vs Castellon** | **Gérone** | **@2.00 (1N2)** | **53/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 18h30 | Espagne • Laliga | **Ath. Bilbao vs Elche** | **Ath. Bilbao** | **@1.36 (1N2)** | **58/100** (🥉 BRONZE) | **50%** |
@@ -60,14 +60,14 @@
 | Sam. 12/09 à 21h00 | Angleterre • Premier League | **Sunderland vs Arsenal** | **Arsenal** | **@1.40 (1N2)** | **58/100** (🥉 BRONZE) | **60%** |
 | Sam. 12/09 à 21h00 | Pays Bas • D1 Pays Bas | **SC Cambuur vs NEC Nimègue** | **NEC Nimègue** | **@1.45 (1N2)** | **56/100** (🥉 BRONZE) | **60%** |
 
-## 📊 Tous les Favoris Analysés (153)
+## 📊 Tous les Favoris Analysés (154)
 
 | Heure | Ligue | Match | Favori | Cote | Score Domination | Réussite Win/+2b | Statut |
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
 
 ## 🎯 Méthode 2 (Test) : Tous Favoris Domicile (Cote Combinée ≥ 2.00)
 
-**Tickets actifs** : 68  |  **Mise** : 3.00 €  |  **Règle** : +2 Buts d'Avance ou Victoire 1N2
+**Tickets actifs** : 69  |  **Mise** : 3.00 €  |  **Règle** : +2 Buts d'Avance ou Victoire 1N2
 
 | Ticket | Cote Totale | Match 1 (Heure & Cote) | Match 2 (Heure & Cote) | Statut |
 | :---: | :---: | :--- | :--- | :---: |
@@ -95,6 +95,7 @@
 | #22 | @3.05 | Spartak Trnava vs FK Kosice (Sam. 12/09 à 20h30) @1.65 | BoracBanjaLuka vs ZrinjskiMostar (Sam. 12/09 à 20h45) @1.85 | PENDING |
 | #23 | @2.92 | Cambrian Utd vs Holywell Town (Ven. 11/09 à 20h45) @1.39 | Vissel Kobe vs Kashima (Ven. 11/09 à 12h00) @2.10 | PENDING |
 | #24 | @2.95 | Coleraine vs Ballymena Utd (Ven. 11/09 à 20h45) @1.37 | FC Constanta vs Uta Arad (Ven. 11/09 à 17h00) @2.15 | PENDING |
+| #39 | @3.11 | Atalanta vs Cagliari (Sam. 12/09 à 20h45) @1.48 | Ulsan vs Incheon FC (Sam. 12/09 à 09h30) @2.10 | PENDING |
 | #25 | @2.42 | Al Qadisiya vs Al Ettifaq (Ven. 11/09 à 17h25) @1.21 | Ajman vs Ittihad Kalba (Ven. 11/09 à 18h15) @2.00 | PENDING |
 | #26 | @2.22 | Besiktas vs Erzurum BB (Ven. 11/09 à 19h00) @1.17 | AEL Limassol vs Nea Salamis (Ven. 11/09 à 19h00) @1.90 | PENDING |
 | #27 | @2.44 | FC Copenhague vs Horsens (Ven. 11/09 à 19h00) @1.26 | Empoli vs AC Arezzo (Ven. 11/09 à 19h00) @1.94 | PENDING |
@@ -109,7 +110,6 @@
 | #36 | @3.94 | FC Séville vs CF Valence (Ven. 11/09 à 21h00) @1.92 | St Patricks vs Shamrock (Ven. 11/09 à 21h00) @2.05 | PENDING |
 | #37 | @2.39 | Paris SG F vs Strasbourg F (Ven. 11/09 à 21h00) @1.11 | Academica vs Benfica B (Ven. 11/09 à 21h45) @2.15 | PENDING |
 | #38 | @4.17 | Defensa Y Jus. vs Gimnasia Y Esg (Sam. 12/09 à 00h15) @1.94 | Jaguares vs Fortaleza FC (Sam. 12/09 à 01h15) @2.15 | PENDING |
-| #39 | @3.11 | Atalanta vs Cagliari (Sam. 12/09 à 20h45) @1.48 | Ulsan vs Incheon FC (Sam. 12/09 à 09h30) @2.10 | PENDING |
 | #40 | @2.28 | Daejeon vs Pohang (Sam. 12/09 à 12h00) @1.77 | LNZ Cherkasy vs Obolon Kiev (Sam. 12/09 à 12h00) @1.29 | PENDING |
 | #41 | @3.38 | FC Machida vs Yokohama F.Mar (Sam. 12/09 à 12h00) @1.69 | FC Magdeburg vs Kaiserslautern (Sam. 12/09 à 13h00) @2.00 | PENDING |
 | #42 | @4.18 | Bochum vs Greuther Furth (Sam. 12/09 à 13h00) @1.78 | Bolton vs Cardiff (Sam. 12/09 à 13h30) @2.35 | PENDING |
@@ -139,3 +139,4 @@
 | #66 | @2.87 | Saint-Gilloise vs Lommel United (Sam. 12/09 à 20h45) @1.17 | Lorient vs Toulouse (Sam. 12/09 à 20h45) @2.45 | PENDING |
 | #67 | @4.95 | Gremio vs Vasco De Gama (Sam. 12/09 à 21h00) @2.25 | Cordoba vs Almeria (Sam. 12/09 à 21h00) @2.20 | PENDING |
 | #68 | @2.16 | Real Madrid vs Rayo Vallecano (Sam. 12/09 à 21h00) @1.08 | Atletico MG vs Fluminense (Sam. 12/09 à 21h00) @2.00 | PENDING |
+| #69 | @2.95 | Supra Quebec vs HFX Wanderers (Sam. 12/09 à 22h00) @1.80 | Inter Bogota vs Llaneros FC (Sam. 12/09 à 23h05) @1.64 | PENDING |

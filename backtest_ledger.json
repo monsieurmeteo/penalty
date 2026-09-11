@@ -25617,5 +25617,26 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3370810",
+    "timestamp_utc": "2026-09-11T09:23:30.091598+00:00",
+    "match": "Inter Bogota vs Llaneros FC",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Sam. 12/09 à 23h05",
+    "fav_team": "Inter Bogota",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.64,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
