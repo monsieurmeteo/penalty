@@ -24837,5 +24837,416 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3376613",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Coritiba vs Atletico PR",
+    "league": "Bresil • D1 Bresil",
+    "date_str": "Sam. 12/09 à 02h00",
+    "fav_team": "Atletico PR",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360647",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Gérone vs Castellon",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Gérone",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378408",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "FK Cukaricki vs FK Novi Pazar",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "FK Cukaricki",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 52,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.99,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360693",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Ath. Bilbao vs Elche",
+    "league": "Espagne • Laliga",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Ath. Bilbao",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.35,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376209",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Tottenham vs Everton",
+    "league": "Angleterre • Premier League",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Tottenham",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 23,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.95,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368542",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Cologne vs Werder Brême",
+    "league": "Allemagne • Bundesliga 1",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Cologne",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360657",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Granada CF vs Albacete",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Granada CF",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.96,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368552",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "GOAhead Eagles vs Groningen",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 12/09 à 18h45",
+    "fav_team": "GOAhead Eagles",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 57,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3363779",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Alanyaspor vs Göztepe AS",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Sam. 12/09 à 19h00",
+    "fav_team": "Alanyaspor",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3363798",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Konyaspor vs Trabzonspor",
+    "league": "Turquie • D1 Turquie",
+    "date_str": "Sam. 12/09 à 19h00",
+    "fav_team": "Trabzonspor",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.85,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3371820",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Wolfsberger AC vs Rapid Vienne",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Sam. 12/09 à 19h30",
+    "fav_team": "Rapid Vienne",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 27,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.56,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369057",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Cesena vs US Cremonese",
+    "league": "Italie • Serie B",
+    "date_str": "Sam. 12/09 à 19h30",
+    "fav_team": "US Cremonese",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367859",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Ind. Rivadavia vs CA Aldosivi",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 12/09 à 19h45",
+    "fav_team": "Ind. Rivadavia",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 68,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.38,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367862",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Estudiantes LP vs CA Platense",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 12/09 à 19h45",
+    "fav_team": "Estudiantes LP",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.7,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368553",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "FortunaSittard vs Ajax",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Sam. 12/09 à 20h00",
+    "fav_team": "Ajax",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.36,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373733",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Cobresal vs Coquimbo U.",
+    "league": "Chili • D1 Chili",
+    "date_str": "Sam. 12/09 à 20h00",
+    "fav_team": "Coquimbo U.",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.89,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375649",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Lok.Zagreb vs HNK Rijeka",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Sam. 12/09 à 20h00",
+    "fav_team": "HNK Rijeka",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 38,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.48,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378360",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Dunkerque vs St Etienne",
+    "league": "France • Ligue 2 Bkt",
+    "date_str": "Sam. 12/09 à 20h00",
+    "fav_team": "St Etienne",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.72,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367498",
+    "timestamp_utc": "2026-09-11T06:05:26.126886+00:00",
+    "match": "Al Shabab vs Al Feiha",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Sam. 12/09 à 20h00",
+    "fav_team": "Al Shabab",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.51,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
