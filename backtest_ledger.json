@@ -26032,5 +26032,183 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3379534",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Haverfordwest vs Briton Ferry L",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Ven. 11/09 à 20h45",
+    "fav_team": "Haverfordwest",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358318",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Dallas FC vs Portland",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 02h30",
+    "fav_team": "Dallas FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.7,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358319",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Saint Louis SC vs Minnesota Utd",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 02h30",
+    "fav_team": "Saint Louis SC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.9,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358320",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Kansas City vs Los Angeles FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 02h30",
+    "fav_team": "Los Angeles FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 21,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.53,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376869",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Monterrey vs Tigres UANL",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 13/09 à 03h10",
+    "fav_team": "Monterrey",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3370808",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Alianza FC vs Junior FC",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Dim. 13/09 à 03h20",
+    "fav_team": "Junior FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358394",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Colorado vs CF Montreal",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 03h30",
+    "fav_team": "Colorado",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 69,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.57,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358395",
+    "timestamp_utc": "2026-09-11T14:05:39.914155+00:00",
+    "match": "Salt Lake vs NY City FC",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 03h30",
+    "fav_team": "Salt Lake",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 52,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.8,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
