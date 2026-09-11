@@ -10135,54 +10135,6 @@
       "email_ticket_num": 25
     },
     {
-      "id": "m2_combo_50",
-      "ticket_num": 50,
-      "session": "2026-09-11",
-      "odds": 2.78,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.34,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3367497",
-        "time": "Ven. 11/09 à 17h25",
-        "start_iso": "2026-09-11T15:25:00.000Z",
-        "league": "Arabie Saoudite • D1 Arabie Saoudite",
-        "home": "Al Qadisiya",
-        "away": "Al Ettifaq",
-        "odds": 1.21,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 17h25",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3378004",
-        "time": "Ven. 11/09 à 20h00",
-        "start_iso": "2026-09-11T18:00:00.000Z",
-        "league": "France • Ligue 2 Bkt",
-        "home": "Clermont",
-        "away": "Boulogne",
-        "odds": 2.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 26
-    },
-    {
       "id": "m2_combo_51",
       "ticket_num": 51,
       "session": "2026-09-11",
@@ -10228,103 +10180,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 27
-    },
-    {
-      "id": "m2_combo_52",
-      "ticket_num": 52,
-      "session": "2026-09-11",
-      "odds": 2.67,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.01,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3363789",
-        "time": "Ven. 11/09 à 19h00",
-        "start_iso": "2026-09-11T17:00:00.000Z",
-        "league": "Turquie • D1 Turquie",
-        "home": "Besiktas",
-        "away": "Erzurum BB",
-        "odds": 1.16,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 19h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3367247",
-        "time": "Ven. 11/09 à 20h30",
-        "start_iso": "2026-09-11T18:30:00.000Z",
-        "league": "Allemagne • Bundesliga 1",
-        "home": "Union Berlin",
-        "away": "Schalke 04",
-        "odds": 2.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 28
-    },
-    {
-      "id": "m2_combo_53",
-      "ticket_num": 53,
-      "session": "2026-09-11",
-      "odds": 2.6,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 7.8,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3371799",
-        "time": "Ven. 11/09 à 19h00",
-        "start_iso": "2026-09-11T17:00:00.000Z",
-        "league": "Danemark • D1 Danemark",
-        "home": "FC Copenhague",
-        "away": "Horsens",
-        "odds": 1.27,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 19h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3377947",
-        "time": "Ven. 11/09 à 19h45",
-        "start_iso": "2026-09-11T17:45:00.000Z",
-        "league": "Portugal • D2 Portugal",
-        "home": "Torreense",
-        "away": "Leixoes",
-        "odds": 2.05,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 19h45",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 29
+      "email_ticket_num": 26
     },
     {
       "id": "m2_combo_54",
@@ -10372,7 +10228,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 30
+      "email_ticket_num": 27
     },
     {
       "id": "m2_combo_55",
@@ -10420,55 +10276,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 31
-    },
-    {
-      "id": "m2_combo_56",
-      "ticket_num": 56,
-      "session": "2026-09-11",
-      "odds": 2.65,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 7.95,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3367483",
-        "time": "Ven. 11/09 à 20h00",
-        "start_iso": "2026-09-11T18:00:00.000Z",
-        "league": "Arabie Saoudite • D1 Arabie Saoudite",
-        "home": "Al Ahli SC",
-        "away": "Al Hazem",
-        "odds": 1.18,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3377983",
-        "time": "Ven. 11/09 à 20h45",
-        "start_iso": "2026-09-11T18:45:00.000Z",
-        "league": "Irlande • D1 Irlande",
-        "home": "Waterford",
-        "away": "Dundalk",
-        "odds": 2.25,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 32
+      "email_ticket_num": 28
     },
     {
       "id": "m2_combo_57",
@@ -10516,7 +10324,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 33
+      "email_ticket_num": 29
     },
     {
       "id": "m2_combo_58",
@@ -10564,7 +10372,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 34
+      "email_ticket_num": 30
     },
     {
       "id": "m2_combo_59",
@@ -10612,7 +10420,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 35
+      "email_ticket_num": 31
     },
     {
       "id": "m2_combo_60",
@@ -10660,7 +10468,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 36
+      "email_ticket_num": 32
     },
     {
       "id": "m2_combo_61",
@@ -10708,7 +10516,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 37
+      "email_ticket_num": 33
     },
     {
       "id": "m2_combo_62",
@@ -10756,7 +10564,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 38
+      "email_ticket_num": 34
     },
     {
       "id": "m2_combo_63",
@@ -10804,7 +10612,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 39
+      "email_ticket_num": 35
     },
     {
       "id": "m2_combo_64",
@@ -10852,7 +10660,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 40
+      "email_ticket_num": 36
     },
     {
       "id": "m2_combo_65",
@@ -10900,7 +10708,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 41
+      "email_ticket_num": 37
     },
     {
       "id": "m2_combo_66",
@@ -10948,103 +10756,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 42
-    },
-    {
-      "id": "m2_combo_67",
-      "ticket_num": 67,
-      "session": "2026-09-12",
-      "odds": 2.64,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 7.92,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3376126",
-        "time": "Sam. 12/09 à 13h30",
-        "start_iso": "2026-09-12T11:30:00.000Z",
-        "league": "Estonie • D1 Estonie",
-        "home": "FC Levadia",
-        "away": "Parnu JK Vapru",
-        "odds": 1.1,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 13h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3376229",
-        "time": "Sam. 12/09 à 20h45",
-        "start_iso": "2026-09-12T18:45:00.000Z",
-        "league": "France • Ligue 1 Mcdonalds",
-        "home": "Auxerre",
-        "away": "Nice",
-        "odds": 2.4,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 20h45",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 43
-    },
-    {
-      "id": "m2_combo_68",
-      "ticket_num": 68,
-      "session": "2026-09-12",
-      "odds": 2.65,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 7.95,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3379860",
-        "time": "Sam. 12/09 à 13h30",
-        "start_iso": "2026-09-12T11:30:00.000Z",
-        "league": "France • D1 Arkema F",
-        "home": "Lyon F",
-        "away": "Paris FC F",
-        "odds": 1.08,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 13h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3376234",
-        "time": "Sam. 12/09 à 20h45",
-        "start_iso": "2026-09-12T18:45:00.000Z",
-        "league": "France • Ligue 1 Mcdonalds",
-        "home": "Lorient",
-        "away": "Toulouse",
-        "odds": 2.45,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 20h45",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 44
+      "email_ticket_num": 38
     },
     {
       "id": "m2_combo_69",
@@ -11092,7 +10804,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 45
+      "email_ticket_num": 39
     },
     {
       "id": "m2_combo_70",
@@ -11140,7 +10852,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 46
+      "email_ticket_num": 40
     },
     {
       "id": "m2_combo_71",
@@ -11188,7 +10900,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 47
+      "email_ticket_num": 41
     },
     {
       "id": "m2_combo_72",
@@ -11236,7 +10948,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 48
+      "email_ticket_num": 42
     },
     {
       "id": "m2_combo_73",
@@ -11284,55 +10996,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 49
-    },
-    {
-      "id": "m2_combo_74",
-      "ticket_num": 74,
-      "session": "2026-09-12",
-      "odds": 2.77,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.31,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3368538",
-        "time": "Sam. 12/09 à 15h30",
-        "start_iso": "2026-09-12T13:30:00.000Z",
-        "league": "Allemagne • Bundesliga 1",
-        "home": "Dortmund",
-        "away": "Paderborn",
-        "odds": 1.18,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 15h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3376203",
-        "time": "Sam. 12/09 à 16h00",
-        "start_iso": "2026-09-12T14:00:00.000Z",
-        "league": "Angleterre • Premier League",
-        "home": "Bournemouth",
-        "away": "Brentford",
-        "odds": 2.35,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 16h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 50
+      "email_ticket_num": 43
     },
     {
       "id": "m2_combo_75",
@@ -11380,7 +11044,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 51
+      "email_ticket_num": 44
     },
     {
       "id": "m2_combo_76",
@@ -11428,55 +11092,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 52
-    },
-    {
-      "id": "m2_combo_77",
-      "ticket_num": 77,
-      "session": "2026-09-12",
-      "odds": 2.77,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.31,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3376204",
-        "time": "Sam. 12/09 à 16h00",
-        "start_iso": "2026-09-12T14:00:00.000Z",
-        "league": "Angleterre • Premier League",
-        "home": "Chelsea",
-        "away": "Hull City",
-        "odds": 1.18,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 16h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3378365",
-        "time": "Sam. 12/09 à 16h30",
-        "start_iso": "2026-09-12T14:30:00.000Z",
-        "league": "Portugal • Liga Portugal",
-        "home": "CD Nacional",
-        "away": "Alverca FC",
-        "odds": 2.35,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 16h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 53
+      "email_ticket_num": 45
     },
     {
       "id": "m2_combo_78",
@@ -11524,7 +11140,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 54
+      "email_ticket_num": 46
     },
     {
       "id": "m2_combo_79",
@@ -11572,55 +11188,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 55
-    },
-    {
-      "id": "m2_combo_80",
-      "ticket_num": 80,
-      "session": "2026-09-12",
-      "odds": 2.71,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.13,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3368551",
-        "time": "Sam. 12/09 à 16h30",
-        "start_iso": "2026-09-12T14:30:00.000Z",
-        "league": "Pays Bas • D1 Pays Bas",
-        "home": "Twente",
-        "away": "ADO Den Haag",
-        "odds": 1.18,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 16h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3373734",
-        "time": "Sam. 12/09 à 17h30",
-        "start_iso": "2026-09-12T15:30:00.000Z",
-        "league": "Chili • D1 Chili",
-        "home": "Nublense",
-        "away": "Everton Vina",
-        "odds": 2.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 17h30",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 56
+      "email_ticket_num": 47
     },
     {
       "id": "m2_combo_81",
@@ -11668,7 +11236,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 57
+      "email_ticket_num": 48
     },
     {
       "id": "m2_combo_82",
@@ -11716,55 +11284,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 58
-    },
-    {
-      "id": "m2_combo_83",
-      "ticket_num": 83,
-      "session": "2026-09-12",
-      "odds": 2.7,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.1,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3374310",
-        "time": "Sam. 12/09 à 18h00",
-        "start_iso": "2026-09-12T16:00:00.000Z",
-        "league": "Grece • D1 Grece",
-        "home": "Olympiakos",
-        "away": "OFI Crète",
-        "odds": 1.15,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 18h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3372836",
-        "time": "Sam. 12/09 à 20h15",
-        "start_iso": "2026-09-12T18:15:00.000Z",
-        "league": "Pologne • D1 Pologne",
-        "home": "Zaglebie Lubin",
-        "away": "GKS Katowice",
-        "odds": 2.35,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 20h15",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 59
+      "email_ticket_num": 49
     },
     {
       "id": "m2_combo_84",
@@ -11812,55 +11332,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 60
-    },
-    {
-      "id": "m2_combo_85",
-      "ticket_num": 85,
-      "session": "2026-09-12",
-      "odds": 2.88,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 8.64,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3376856",
-        "time": "Sam. 12/09 à 18h00",
-        "start_iso": "2026-09-12T16:00:00.000Z",
-        "league": "Bulgarie • D1 Bulgarie",
-        "home": "FC CSKA 1948",
-        "away": "Dunav Rousse",
-        "odds": 1.28,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 18h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3368573",
-        "time": "Sam. 12/09 à 18h15",
-        "start_iso": "2026-09-12T16:15:00.000Z",
-        "league": "Belgique • D1 Belgique",
-        "home": "Westerlo",
-        "away": "Standard Liège",
-        "odds": 2.25,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 18h15",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 61
+      "email_ticket_num": 50
     },
     {
       "id": "m2_combo_86",
@@ -11908,7 +11380,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 62
+      "email_ticket_num": 51
     },
     {
       "id": "m2_combo_87",
@@ -11956,7 +11428,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 63
+      "email_ticket_num": 52
     },
     {
       "id": "m2_combo_88",
@@ -12004,7 +11476,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 64
+      "email_ticket_num": 53
     },
     {
       "id": "m2_combo_89",
@@ -12052,7 +11524,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 65
+      "email_ticket_num": 54
     },
     {
       "id": "m2_combo_90",
@@ -12100,7 +11572,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 66
+      "email_ticket_num": 55
     },
     {
       "id": "m2_combo_91",
@@ -12148,7 +11620,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 67
+      "email_ticket_num": 56
     },
     {
       "id": "m2_combo_92",

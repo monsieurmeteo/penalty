@@ -1122,8 +1122,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         c2 = float(m2.get("odds", 1.50))
         comb_odds = round(c1 * c2, 2)
 
-        # Si les cotes réelles ont baissé et font moins de 2.60, libérer les matchs pour ré-appairage
-        if c.get("ticket_status") == "PENDING" and comb_odds < MIN_M2_COMBO_ODDS:
+        # Si les cotes réelles ont baissé (< 2.60) ou si une cote individuelle est < 1.30, libérer les matchs pour ré-appairage
+        if c.get("ticket_status") == "PENDING" and (c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS):
             continue
 
         c["odds"] = comb_odds
