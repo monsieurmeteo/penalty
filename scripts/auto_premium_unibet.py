@@ -1076,9 +1076,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     }
     existing_docs["combos_today"] = combos_today
 
-    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COMBINÉS COTE >= 2.60) ──
-    # ponytail: Règle d'or — 100% des équipes à domicile avec cote < cote extérieur, combinées chronologiquement par session jour avec cote combinée >= 2.60
+    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COTE ≥ 1.30 — COMBO ≥ 2.60) ──
+    # ponytail: Règle d'or — favoris domicile avec cote individuelle >= 1.30 et cote combinée >= 2.60
     MIN_M2_COMBO_ODDS = 2.60
+    MIN_M2_FAV_ODDS   = 1.30  # Cote minimale du favori domicile sur chaque match individuel
     m2_existing = existing_docs.get("methode2_combos", [])
     m2_combos = []
     m2_used_keys = set()
@@ -1166,6 +1167,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     for m in all_today_matches:
         if m.get("fav_side") != "dom":
             continue
+        if float(m.get("odds", 0)) < MIN_M2_FAV_ODDS:
+            continue
         k = (_clean_team_key(m.get("home", "")), _clean_team_key(m.get("away", "")))
         if k not in m2_used_keys and k not in seen_unpaired_keys:
             unpaired_home_favs.append(m)
@@ -1180,7 +1183,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 try:
                     c1_f = float(c1)
                     c2_f = float(c2)
-                    if c1_f > 1.0 and c1_f < c2_f:
+                    if c1_f >= MIN_M2_FAV_ODDS and c1_f < c2_f:
                         k = (_clean_team_key(m.get("dom", "")), _clean_team_key(m.get("ext", "")))
                         if k not in m2_used_keys and k not in seen_unpaired_keys:
                             unpaired_home_favs.append({
