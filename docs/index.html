@@ -761,10 +761,18 @@
                 return true;
             });
 
+            // Tri chronologique par heure de début du 1er match
+            filtered.sort((a, b) => {
+                const tA = (a.m1 && a.m1.start_iso) ? new Date(a.m1.start_iso).getTime() : 0;
+                const tB = (b.m1 && b.m1.start_iso) ? new Date(b.m1.start_iso).getTime() : 0;
+                return tA - tB;
+            });
+
             if (filtered.length === 0) {
                 container.innerHTML = '<div class="empty-state">Aucun combiné dans cette catégorie.</div>';
                 return;
             }
+
 
             function renderCard(c) {
                 const isWon = (c.ticket_status === 'WON');
@@ -890,6 +898,13 @@
                 if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
                 if (currentFilter === 'UPCOMING') return c.ticket_status === 'PENDING';
                 return true;
+            });
+
+            // Tri chronologique par heure de début du 1er match
+            filtered.sort((a, b) => {
+                const tA = (a.m1 && a.m1.start_iso) ? new Date(a.m1.start_iso).getTime() : 0;
+                const tB = (b.m1 && b.m1.start_iso) ? new Date(b.m1.start_iso).getTime() : 0;
+                return tA - tB;
             });
 
             if (filtered.length === 0) {
