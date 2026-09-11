@@ -283,7 +283,10 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab active" onclick="switchTab('combos')">
-                🎟️ Combinés 2 Matchs <span class="tab-badge" id="badge-combos">0</span>
+                🎟️ Combinés M1 (+2b) <span class="tab-badge" id="badge-combos">0</span>
+            </button>
+            <button class="tab" onclick="switchTab('methode2')">
+                🎯 Méthode 2 (Test Domicile @2.00+) <span class="tab-badge" id="badge-methode2">0</span>
             </button>
             <button class="tab" onclick="switchTab('today')">
                 ⚡ Matchs Simples du Mail (+2b) <span class="tab-badge" id="badge-today">0</span>
@@ -305,6 +308,11 @@
         <!-- Combos List (Default tab) -->
         <div class="matches-list" id="combos-container">
             <div class="empty-state">Chargement des combinés en direct...</div>
+        </div>
+
+        <!-- Methode 2 Combos List -->
+        <div class="matches-list" id="methode2-container" style="display:none;">
+            <div class="empty-state">Chargement des combinés Méthode 2...</div>
         </div>
 
         <!-- Matches List (Single matches tab) -->
@@ -465,6 +473,7 @@
         }
 
         let currentStakeCombos = 3;
+        let currentStakeM2 = 3;
         let currentStakeSimples = 10;
         let currentFilter = 'ALL';
         let currentTab = 'combos';
@@ -474,19 +483,32 @@
         function setStake(amount) {
             if (currentTab === 'combos') {
                 currentStakeCombos = amount;
+            } else if (currentTab === 'methode2') {
+                currentStakeM2 = amount;
             } else {
                 currentStakeSimples = amount;
             }
             renderStakeButtons();
             updateKPIs();
             if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'methode2') renderMethode2();
             else if (currentTab === 'today') renderMatches();
         }
 
         function renderStakeButtons() {
-            const activeStake = (currentTab === 'combos') ? currentStakeCombos : currentStakeSimples;
-            const options = (currentTab === 'combos') ? [3, 5, 10, 20] : [5, 10, 20, 50];
-            const title = (currentTab === 'combos') ? '💰 Mise Combiné (Par Ticket) :' : '💰 Mise Match Simple :';
+            let activeStake = currentStakeCombos;
+            let options = [3, 5, 10, 20];
+            let title = '💰 Mise Combiné M1 (Par Ticket) :';
+
+            if (currentTab === 'methode2') {
+                activeStake = currentStakeM2;
+                options = [3, 5, 10, 20];
+                title = '💰 Mise Combiné M2 Test (Par Ticket) :';
+            } else if (currentTab === 'today') {
+                activeStake = currentStakeSimples;
+                options = [5, 10, 20, 50];
+                title = '💰 Mise Match Simple :';
+            }
             document.getElementById('stake-title').textContent = title;
 
             const html = options.map(opt => `
@@ -501,6 +523,7 @@
                 btn.classList.toggle('active', btn.getAttribute('onclick').includes(f));
             });
             if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'methode2') renderMethode2();
             else if (currentTab === 'today') renderMatches();
         }
 
@@ -511,13 +534,15 @@
             });
 
             document.getElementById('combos-container').style.display = (t === 'combos') ? 'flex' : 'none';
+            document.getElementById('methode2-container').style.display = (t === 'methode2') ? 'flex' : 'none';
             document.getElementById('matches-container').style.display = (t === 'today') ? 'flex' : 'none';
-            document.getElementById('filters-container').style.display = (t === 'combos' || t === 'today') ? 'flex' : 'none';
+            document.getElementById('filters-container').style.display = (t === 'combos' || t === 'methode2' || t === 'today') ? 'flex' : 'none';
             document.getElementById('stats-container').style.display = (t === 'stats') ? 'block' : 'none';
 
             renderStakeButtons();
             updateKPIs();
             if (t === 'combos') renderCombos();
+            else if (t === 'methode2') renderMethode2();
             else if (t === 'today') renderMatches();
             else if (t === 'stats') renderStats();
         }
@@ -535,6 +560,7 @@
                     checkForGoals(globalData);
                     updateKPIs();
                     if (currentTab === 'combos') renderCombos();
+                    else if (currentTab === 'methode2') renderMethode2();
                     else if (currentTab === 'today') renderMatches();
                     else renderStats();
                     if (globalData.summary && globalData.summary.last_updated) {
@@ -574,11 +600,11 @@
                 const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
                 const profitEur = (profitUnits * currentStakeCombos).toFixed(2);
 
-                document.getElementById('kpi-title-won').textContent = '🏆 Combinés Gagnés';
+                document.getElementById('kpi-title-won').textContent = '🏆 Combinés M1 Gagnés';
                 document.getElementById('stat-won').textContent = won;
                 document.getElementById('stat-finished').textContent = `sur ${decided} combinés terminés`;
 
-                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite Combinés';
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M1';
                 document.getElementById('stat-rate').textContent = `${winRate}%`;
                 document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
 
@@ -592,8 +618,65 @@
                 roiEl.textContent = (roiPct >= 0 ? '+' : '') + roiPct + '%';
                 roiEl.style.color = roiPct >= 0 ? '#10b981' : '#ef4444';
 
-                document.getElementById('stat-total').textContent = `Total: ${combos.length} combinés`;
+                document.getElementById('stat-total').textContent = `Total: ${combos.length} combinés M1`;
                 document.getElementById('badge-combos').textContent = combos.length;
+                if (globalData.methode2_combos) document.getElementById('badge-methode2').textContent = globalData.methode2_combos.length;
+                if (globalData.matches_today) document.getElementById('badge-today').textContent = globalData.matches_today.length;
+
+                // Update filter buttons
+                const btns = document.querySelectorAll('.filter-btn');
+                if (btns.length >= 5) {
+                    btns[0].textContent = `Tous (${combos.length})`;
+                    btns[1].textContent = `🟢 En Direct (${live})`;
+                    btns[2].textContent = `✅ Gagnés (${won})`;
+                    btns[3].textContent = `❌ Perdus (${lost})`;
+                    btns[4].textContent = `⏳ À Venir (${upcoming})`;
+                }
+            } else if (currentTab === 'methode2') {
+                const combos = globalData.methode2_combos || [];
+                let won = 0, lost = 0, live = 0, upcoming = 0;
+                let profitUnits = 0.0;
+
+                combos.forEach(c => {
+                    if (c.ticket_status === 'WON') {
+                        won++;
+                        profitUnits += (c.odds - 1.0);
+                    } else if (c.ticket_status === 'LOST') {
+                        lost++;
+                        profitUnits -= 1.0;
+                    } else if (c.ticket_status === 'LIVE') {
+                        live++;
+                    } else {
+                        upcoming++;
+                    }
+                });
+
+                const decided = won + lost;
+                const winRate = decided > 0 ? ((won / decided) * 100).toFixed(1) : '0.0';
+                const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
+                const profitEur = (profitUnits * currentStakeM2).toFixed(2);
+
+                document.getElementById('kpi-title-won').textContent = '🏆 Combinés M2 Gagnés';
+                document.getElementById('stat-won').textContent = won;
+                document.getElementById('stat-finished').textContent = `sur ${decided} combinés terminés`;
+
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @2.00+)';
+                document.getElementById('stat-rate').textContent = `${winRate}%`;
+                document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
+
+                const profitEl = document.getElementById('stat-profit');
+                profitEl.textContent = (profitEur >= 0 ? '+' : '') + profitEur + ' €';
+                profitEl.style.color = profitEur >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-units').textContent = (profitUnits >= 0 ? '+' : '') + profitUnits.toFixed(2) + ' U';
+
+                const roiEl = document.getElementById('stat-roi');
+                roiEl.textContent = (roiPct >= 0 ? '+' : '') + roiPct + '%';
+                roiEl.style.color = roiPct >= 0 ? '#10b981' : '#ef4444';
+
+                document.getElementById('stat-total').textContent = `Total: ${combos.length} combinés M2`;
+                if (globalData.combos_today) document.getElementById('badge-combos').textContent = globalData.combos_today.length;
+                document.getElementById('badge-methode2').textContent = combos.length;
                 if (globalData.matches_today) document.getElementById('badge-today').textContent = globalData.matches_today.length;
 
                 // Update filter buttons
@@ -651,6 +734,7 @@
                 document.getElementById('stat-total').textContent = `Total: ${matches.length} matchs`;
                 document.getElementById('badge-today').textContent = matches.length;
                 if (globalData.combos_today) document.getElementById('badge-combos').textContent = globalData.combos_today.length;
+                if (globalData.methode2_combos) document.getElementById('badge-methode2').textContent = globalData.methode2_combos.length;
 
                 // Update filter buttons
                 const btns = document.querySelectorAll('.filter-btn');
@@ -795,7 +879,130 @@
             }
         }
 
-                function renderMatches() {
+        function renderMethode2() {
+            if (!globalData || !globalData.methode2_combos) return;
+            const container = document.getElementById('methode2-container');
+            const combos = globalData.methode2_combos;
+
+            let filtered = combos.filter(c => {
+                if (currentFilter === 'LIVE') return c.ticket_status === 'LIVE';
+                if (currentFilter === 'WON') return c.ticket_status === 'WON';
+                if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
+                if (currentFilter === 'UPCOMING') return c.ticket_status === 'PENDING';
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="empty-state">Aucun combiné Méthode 2 dans cette catégorie.</div>';
+                return;
+            }
+
+            function renderCard(c) {
+                const isWon = (c.ticket_status === 'WON');
+                const isLost = (c.ticket_status === 'LOST');
+                const isLive = (c.ticket_status === 'LIVE');
+
+                let cardClass = 'combo-card';
+                if (isWon) cardClass += ' is-won';
+                else if (isLost) cardClass += ' is-lost';
+                else if (isLive) cardClass += ' is-live';
+
+                let resBadge = '';
+                let profitBadge = '';
+
+                if (isWon) {
+                    resBadge = `<span class="bet-result res-won">✅ TICKET M2 GAGNÉ</span>`;
+                    const p = ((c.odds - 1.0) * currentStakeM2).toFixed(2);
+                    profitBadge = `<span class="card-profit" style="color:#10b981; font-size:13px;">+${p} €</span>`;
+                } else if (isLost) {
+                    resBadge = `<span class="bet-result res-lost">❌ NON VALIDÉ</span>`;
+                    profitBadge = `<span class="card-profit" style="color:#ef4444; font-size:13px;">-${currentStakeM2.toFixed(2)} €</span>`;
+                } else if (isLive) {
+                    resBadge = `<span class="bet-result res-pending">🟢 EN DIRECT</span>`;
+                    profitBadge = `<span class="card-profit" style="color:#f59e0b; font-size:13px;">En cours</span>`;
+                } else {
+                    resBadge = `<span class="bet-result res-pending">⏳ À VENIR</span>`;
+                    const pot = (c.odds * currentStakeM2).toFixed(2);
+                    profitBadge = `<span class="card-profit" style="color:#8b5cf6; font-size:12px;">Gain pot. : ${pot} €</span>`;
+                }
+
+                function renderLeg(m) {
+                    const legWon = (m.selection_status || '').startsWith('WON');
+                    const legLost = (m.selection_status === 'LOST');
+                    const legLive = (m.status === 'LIVE');
+
+                    let legBadge = '';
+                    if (m.selection_status === 'WON_LEAD2') legBadge = '<span class="leg-badge leg-won">👑 +2b Gagné</span>';
+                    else if (legWon) legBadge = '<span class="leg-badge leg-won">✅ Victoire</span>';
+                    else if (legLost) legBadge = '<span class="leg-badge leg-lost">❌ Perdu</span>';
+                    else if (legLive) legBadge = `<span class="leg-badge leg-live">🟢 ${m.minute || 'En cours'}</span>`;
+                    else legBadge = '<span class="leg-badge leg-pending">⏳ À venir</span>';
+
+                    const cVal = typeof m.odds === 'number' ? m.odds.toFixed(2) : parseFloat(m.odds || 1.5).toFixed(2);
+                    return `
+                    <div class="combo-leg">
+                        <div class="leg-left">
+                            <span class="leg-time">${m.time ? m.time.replace(' à ', ' ') : ''}</span>
+                            <span class="leg-teams">${m.home} vs ${m.away}</span>
+                            <span class="leg-fav" style="color:#a855f7;">👑 ${m.home} @${cVal}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            ${(isGoalActive(m.home) || isGoalActive(m.away)) ? '<span class="goal-badge-live">⚽ BUT !</span>' : ''}<span class="leg-score">${m.score_display || 'VS'}</span>
+                            ${legBadge}
+                        </div>
+                    </div>
+                    `;
+                }
+
+                const titleTag = c.email_ticket_num 
+                    ? `🎯 TICKET M2 #${c.email_ticket_num}` 
+                    : `🎯 COMBINÉ M2 #${c.ticket_num}`;
+
+                return `
+                <div class="${cardClass}" style="border-left:4px solid #8b5cf6;">
+                    <div class="combo-header">
+                        <div class="combo-title-wrap">
+                            <span class="combo-tag" style="border-color:#7c3aed; color:#d8b4fe;">${titleTag}</span>
+                            <span class="combo-cote-badge" style="background:#7c3aed;">Cote @${c.odds.toFixed(2)}</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            ${resBadge}
+                            ${profitBadge}
+                        </div>
+                    </div>
+                    <div class="combo-legs">
+                        ${renderLeg(c.m1)}
+                        ${renderLeg(c.m2)}
+                    </div>
+                </div>
+                `;
+            }
+
+            if (currentFilter === 'ALL') {
+                const liveItems = filtered.filter(c => c.ticket_status === 'LIVE');
+                const upcomingItems = filtered.filter(c => c.ticket_status === 'PENDING');
+                const finishedItems = filtered.filter(c => c.ticket_status === 'WON' || c.ticket_status === 'LOST');
+
+                let fullHtml = '';
+                if (liveItems.length > 0) {
+                    fullHtml += `<div class="list-section-header live-header"><span>🟢 EN DIRECT EN CE MOMENT (${liveItems.length})</span><span>En cours</span></div>`;
+                    fullHtml += liveItems.map(renderCard).join('');
+                }
+                if (upcomingItems.length > 0) {
+                    fullHtml += `<div class="list-section-header upcoming-header" style="background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:#c084fc;"><span>⏳ LES ${upcomingItems.length} COMBINÉS M2 DU DERNIER E-MAIL</span><span>${upcomingItems.length} tickets actifs &bull; Mise : 3,00 € &bull; Cote ≥ 2.00</span></div>`;
+                    fullHtml += upcomingItems.map(renderCard).join('');
+                }
+                if (finishedItems.length > 0) {
+                    fullHtml += `<div class="list-section-header finished-header"><span>📁 COMBINÉS M2 TERMINÉS (${finishedItems.length})</span><span>Résultats validés</span></div>`;
+                    fullHtml += finishedItems.map(renderCard).join('');
+                }
+                container.innerHTML = fullHtml;
+            } else {
+                container.innerHTML = filtered.map(renderCard).join('');
+            }
+        }
+
+        function renderMatches() {
             if (!globalData || !globalData.matches_today) return;
             const container = document.getElementById('matches-container');
             const matches = globalData.matches_today;

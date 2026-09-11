@@ -281,6 +281,85 @@ def sync():
         "roi_pct": c_roi
     }
 
+    # Synchronisation Méthode 2 (Test) : Tous Favoris Domicile
+    m2_combos = data.get("methode2_combos", [])
+    for c in m2_combos:
+        # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
+        if c.get("ticket_status") in ["WON", "LOST"]:
+            continue
+
+        m1 = c.get("m1", {})
+        m2 = c.get("m2", {})
+        k1 = (clean_name(m1.get("home", "")), clean_name(m1.get("away", "")))
+        k2 = (clean_name(m2.get("home", "")), clean_name(m2.get("away", "")))
+
+        if k1 in match_lookup:
+            m_src = match_lookup[k1]
+            m1["score_display"] = m_src.get("score_display", m1.get("score_display"))
+            m1["minute"] = m_src.get("minute", m1.get("minute"))
+            m1["status"] = m_src.get("status", m1.get("status"))
+            m1["selection_status"] = m_src.get("selection_status", m1.get("selection_status"))
+
+        if k2 in match_lookup:
+            m_src = match_lookup[k2]
+            m2["score_display"] = m_src.get("score_display", m2.get("score_display"))
+            m2["minute"] = m_src.get("minute", m2.get("minute"))
+            m2["status"] = m_src.get("status", m2.get("status"))
+            m2["selection_status"] = m_src.get("selection_status", m2.get("selection_status"))
+
+        s1 = m1.get("selection_status", "PENDING")
+        s2 = m2.get("selection_status", "PENDING")
+        w1 = s1.startswith("WON")
+        w2 = s2.startswith("WON")
+        l1 = (s1 == "LOST")
+        l2 = (s2 == "LOST")
+        st1 = m1.get("status")
+        st2 = m2.get("status")
+
+        comb_odds = c.get("odds", 2.0)
+        c_stake = c.get("default_stake", 3.0)
+
+        if w1 and w2:
+            c["ticket_status"] = "WON"
+            c["profit_unit"] = round(comb_odds - 1.0, 2)
+            c["profit_eur"] = round(c["profit_unit"] * c_stake, 2)
+        elif l1 or l2:
+            c["ticket_status"] = "LOST"
+            c["profit_unit"] = -1.0
+            c["profit_eur"] = round(-c_stake, 2)
+        elif st1 == "LIVE" or st2 == "LIVE" or s1 == "IN_PROGRESS" or s2 == "IN_PROGRESS":
+            c["ticket_status"] = "LIVE"
+            c["profit_unit"] = 0.0
+            c["profit_eur"] = 0.0
+        else:
+            c["ticket_status"] = "PENDING"
+            c["profit_unit"] = 0.0
+            c["profit_eur"] = 0.0
+
+    m2_won = sum(1 for c in m2_combos if c["ticket_status"] == "WON")
+    m2_lost = sum(1 for c in m2_combos if c["ticket_status"] == "LOST")
+    m2_live = sum(1 for c in m2_combos if c["ticket_status"] == "LIVE")
+    m2_upc = sum(1 for c in m2_combos if c["ticket_status"] == "PENDING")
+    m2_dec = m2_won + m2_lost
+    m2_profit_u = sum(c.get("profit_unit", 0.0) for c in m2_combos)
+    m2_stake = 3.0
+    m2_wr = round((m2_won / m2_dec * 100), 1) if m2_dec > 0 else 0.0
+    m2_roi = round((m2_profit_u / m2_dec * 100), 2) if m2_dec > 0 else 0.0
+
+    data["methode2_summary"] = {
+        "total_combos": len(m2_combos),
+        "decided_combos": m2_dec,
+        "won": m2_won,
+        "lost": m2_lost,
+        "live": m2_live,
+        "upcoming": m2_upc,
+        "default_stake": m2_stake,
+        "win_rate": m2_wr,
+        "profit_units": round(m2_profit_u, 2),
+        "profit_eur": round(m2_profit_u * m2_stake, 2),
+        "roi_pct": m2_roi
+    }
+
     won_c = sum(1 for x in matches if x.get("selection_status", "").startswith("WON"))
     lost_c = sum(1 for x in matches if x.get("selection_status") == "LOST")
     live_c = sum(1 for x in matches if x.get("status") == "LIVE")
