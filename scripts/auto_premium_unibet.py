@@ -652,6 +652,25 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         for m in existing_docs.get("matches_today", [])
     }
 
+    # ponytail: Actualiser en direct les cotes de matches_today avec le scan Unibet frais
+    if all_scanned:
+        for sm in all_scanned:
+            k = (_clean_team_key(sm.get("dom", "")), _clean_team_key(sm.get("ext", "")))
+            if k in existing_matches_map:
+                item = existing_matches_map[k]
+                c1 = sm.get("c1")
+                c2 = sm.get("c2")
+                if c1 and c2:
+                    try:
+                        c1_f = float(c1)
+                        c2_f = float(c2)
+                        is_dom = c1_f < c2_f
+                        fresh_odds = float(sm.get("p2_c1") or c1_f) if is_dom else float(sm.get("p2_c2") or c2_f)
+                        item["odds"] = fresh_odds
+                        item["fav_side"] = "dom" if is_dom else "ext"
+                    except Exception:
+                        pass
+
     DAYS_FR = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."]
     today_day = DAYS_FR[now_ls.weekday()]
     yesterday_day = DAYS_FR[(now_ls.weekday() - 1) % 7]
@@ -1065,18 +1084,17 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     m2_used_keys = set()
 
     for c in m2_existing:
-        if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
-            continue
         m1 = c.get("m1", {})
         m2 = c.get("m2", {})
         k1 = (_clean_team_key(m1.get("home", "")), _clean_team_key(m1.get("away", "")))
         k2 = (_clean_team_key(m2.get("home", "")), _clean_team_key(m2.get("away", "")))
-        m2_used_keys.add(k1)
-        m2_used_keys.add(k2)
 
         # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
         if c.get("ticket_status") in ["WON", "LOST"]:
-            m2_combos.append(c)
+            if c.get("odds", 0) >= MIN_M2_COMBO_ODDS:
+                m2_combos.append(c)
+                m2_used_keys.add(k1)
+                m2_used_keys.add(k2)
             continue
 
         if k1 in match_by_key:
@@ -1086,6 +1104,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m1["selection_status"] = src.get("selection_status", m1.get("selection_status"))
             m1["minute"] = src.get("minute", m1.get("minute"))
             m1["profit"] = src.get("profit", m1.get("profit", 0.0))
+            if src.get("odds"):
+                m1["odds"] = float(src.get("odds"))
 
         if k2 in match_by_key:
             src = match_by_key[k2]
@@ -1094,6 +1114,21 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m2["selection_status"] = src.get("selection_status", m2.get("selection_status"))
             m2["minute"] = src.get("minute", m2.get("minute"))
             m2["profit"] = src.get("profit", m2.get("profit", 0.0))
+            if src.get("odds"):
+                m2["odds"] = float(src.get("odds"))
+
+        c1 = float(m1.get("odds", 1.50))
+        c2 = float(m2.get("odds", 1.50))
+        comb_odds = round(c1 * c2, 2)
+
+        # Si les cotes réelles ont baissé et font moins de 2.60, libérer les matchs pour ré-appairage
+        if c.get("ticket_status") == "PENDING" and comb_odds < MIN_M2_COMBO_ODDS:
+            continue
+
+        c["odds"] = comb_odds
+        c["gain_eur"] = round(comb_odds * combo_stake, 2)
+        m2_used_keys.add(k1)
+        m2_used_keys.add(k2)
 
         s1 = m1.get("selection_status", "PENDING")
         s2 = m2.get("selection_status", "PENDING")
@@ -1104,7 +1139,6 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         st1 = m1.get("status")
         st2 = m2.get("status")
 
-        comb_odds = c.get("odds", 2.0)
         if w1 and w2:
             c["ticket_status"] = "WON"
             c["profit_unit"] = round(comb_odds - 1.0, 2)
