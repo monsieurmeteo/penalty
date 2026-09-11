@@ -26210,5 +26210,68 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3358414",
+    "timestamp_utc": "2026-09-11T16:05:44.247392+00:00",
+    "match": "LA Galaxy vs Seattle",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 04h30",
+    "fav_team": "LA Galaxy",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358415",
+    "timestamp_utc": "2026-09-11T16:05:44.247392+00:00",
+    "match": "San Jose vs Houston",
+    "league": "Etats Unis • Mls",
+    "date_str": "Dim. 13/09 à 04h30",
+    "fav_team": "San Jose",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376866",
+    "timestamp_utc": "2026-09-11T16:05:44.247392+00:00",
+    "match": "Cruz Azul vs Club America",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Dim. 13/09 à 05h15",
+    "fav_team": "Club America",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
