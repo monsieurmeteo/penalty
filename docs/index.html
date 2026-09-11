@@ -305,6 +305,14 @@
             <button class="filter-btn" onclick="setFilter('UPCOMING')">⏳ À Venir (0)</button>
         </div>
 
+        <!-- Period Filter Row -->
+        <div class="filters-row" id="period-filters-container" style="margin-top:-8px;">
+            <button class="filter-btn active" style="border-color:#7c3aed; color:#a78bfa;" onclick="setPeriod('ALL')">📅 Toutes périodes</button>
+            <button class="filter-btn" onclick="setPeriod('TODAY')">📅 Aujourd'hui</button>
+            <button class="filter-btn" onclick="setPeriod('TOMORROW')">📅 Demain</button>
+            <button class="filter-btn" onclick="setPeriod('PAST')">🗂️ Passés</button>
+        </div>
+
         <!-- Combos List (Default tab) -->
         <div class="matches-list" id="combos-container">
             <div class="empty-state">Chargement des combinés en direct...</div>
@@ -476,9 +484,54 @@
         let currentStakeM2 = 3;
         let currentStakeSimples = 10;
         let currentFilter = 'ALL';
+        let currentPeriod = 'ALL';
         let currentTab = 'combos';
         let globalData = null;
         let countdown = 30;
+
+        // Extrait la date dd/mm depuis le champ time "Dim. 06/09 à 12h30"
+        function getComboDate(c) {
+            const t = (c.m1 && c.m1.time) ? c.m1.time : '';
+            const m = t.match(/(\d{2})\/(\d{2})/);
+            if (!m) return '';
+            return m[1] + '/' + m[2]; // "11/09"
+        }
+
+        function todayStr() {
+            const d = new Date();
+            return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+        }
+
+        function tomorrowStr() {
+            const d = new Date(); d.setDate(d.getDate()+1);
+            return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
+        }
+
+        function matchesPeriod(c) {
+            if (currentPeriod === 'ALL') return true;
+            const cd = getComboDate(c);
+            if (currentPeriod === 'TODAY') return cd === todayStr();
+            if (currentPeriod === 'TOMORROW') return cd === tomorrowStr();
+            if (currentPeriod === 'PAST') return cd !== todayStr() && cd !== tomorrowStr() && cd !== '';
+            return true;
+        }
+
+        function setPeriod(p) {
+            currentPeriod = p;
+            document.querySelectorAll('#period-filters-container .filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('onclick').includes("'" + p + "'"));
+                if (btn.classList.contains('active')) {
+                    btn.style.borderColor = '#7c3aed';
+                    btn.style.color = '#a78bfa';
+                } else {
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }
+            });
+            if (currentTab === 'combos') renderCombos();
+            else if (currentTab === 'methode2') renderMethode2();
+            else if (currentTab === 'today') renderMatches();
+        }
 
         function setStake(amount) {
             if (currentTab === 'combos') {
@@ -754,6 +807,7 @@
             const combos = globalData.combos_today;
 
             let filtered = combos.filter(c => {
+                if (!matchesPeriod(c)) return false;
                 if (currentFilter === 'LIVE') return c.ticket_status === 'LIVE';
                 if (currentFilter === 'WON') return c.ticket_status === 'WON';
                 if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
@@ -893,6 +947,7 @@
             const combos = globalData.methode2_combos;
 
             let filtered = combos.filter(c => {
+                if (!matchesPeriod(c)) return false;
                 if (currentFilter === 'LIVE') return c.ticket_status === 'LIVE';
                 if (currentFilter === 'WON') return c.ticket_status === 'WON';
                 if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
