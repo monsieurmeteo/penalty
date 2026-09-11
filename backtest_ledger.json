@@ -25596,5 +25596,26 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3367858",
+    "timestamp_utc": "2026-09-11T09:05:09.721084+00:00",
+    "match": "Tucuman vs River Plate",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Sam. 12/09 à 22h30",
+    "fav_team": "River Plate",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.9,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
