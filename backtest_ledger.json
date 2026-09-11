@@ -26338,5 +26338,91 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3375642",
+    "timestamp_utc": "2026-09-11T22:05:41.516218+00:00",
+    "match": "CS Constantine vs ASO Chlef",
+    "league": "Algerie • D1 Algerie",
+    "date_str": "Sam. 12/09 à 22h00",
+    "fav_team": "CS Constantine",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 63,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.46,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376460",
+    "timestamp_utc": "2026-09-11T22:05:41.516218+00:00",
+    "match": "Tokyo Verdy vs JEF Utd Chiba",
+    "league": "Japon • D1 Japon",
+    "date_str": "Dim. 13/09 à 11h00",
+    "fav_team": "Tokyo Verdy",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 28,
+      "pct_fav_success": 0,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372387",
+    "timestamp_utc": "2026-09-11T22:05:41.516218+00:00",
+    "match": "Gwangju FC vs FC Anyang",
+    "league": "Coree Du Sud • D1 Coree Du Sud",
+    "date_str": "Dim. 13/09 à 12h00",
+    "fav_team": "FC Anyang",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.93,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378061",
+    "timestamp_utc": "2026-09-11T22:05:41.516218+00:00",
+    "match": "AVS Futebol vs SC Farense",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 13/09 à 12h00",
+    "fav_team": "SC Farense",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 32,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
