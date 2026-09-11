@@ -1662,6 +1662,9 @@ def main():
     combos_html = ""
     default_combo_stake = 3.0
 
+    # Tri chronologique par heure de coup d'envoi du 1er match
+    active_combos = sorted(active_combos, key=lambda c: c.get("m1", {}).get("start_iso") or "")
+
     for c in active_combos:
         c_num = c.get("email_ticket_num", c.get("ticket_num", 1))
         comb_odds = c.get("odds", 2.0)
@@ -1745,6 +1748,8 @@ def main():
 
     # ── Construction des Combinés Méthode 2 (Test) pour l'Email ──────
     m2_combos_html = ""
+    # Tri chronologique par heure de coup d'envoi du 1er match
+    m2_active = sorted(m2_active, key=lambda c: c.get("m1", {}).get("start_iso") or "")
     for c in m2_active:
         c_num = c.get("email_ticket_num", c.get("ticket_num", 1))
         comb_odds = c.get("odds", 2.0)
