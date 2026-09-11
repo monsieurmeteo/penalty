@@ -26273,5 +26273,70 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3376856",
+    "timestamp_utc": "2026-09-11T18:06:01.810591+00:00",
+    "match": "FC CSKA 1948 vs Dunav Rousse",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "FC CSKA 1948",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 59,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.3,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3379893",
+    "timestamp_utc": "2026-09-11T18:06:01.810591+00:00",
+    "match": "Marseille F vs Lens F",
+    "league": "France • D1 Arkema F",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "Marseille F",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.63,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3379894",
+    "timestamp_utc": "2026-09-11T18:06:01.810591+00:00",
+    "match": "FC Nantes F vs FC Fleury F",
+    "league": "France • D1 Arkema F",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "FC Fleury F",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
