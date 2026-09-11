@@ -14,8 +14,8 @@ assert m2_summary.get("won") + m2_summary.get("lost") == m2_summary.get("decided
 assert m2_summary.get("decided_combos") + m2_summary.get("live") + m2_summary.get("upcoming") == len(m2_combos), "Counts mismatch M2"
 
 for c in m2_combos:
-    # Cote combinée >= 2.00
-    assert c["odds"] >= 2.00, f"Erreur: ticket #{c['ticket_num']} cote < 2.00 ({c['odds']})"
+    # Cote combinée >= 2.60
+    assert c["odds"] >= 2.60, f"Erreur: ticket #{c['ticket_num']} cote < 2.60 ({c['odds']})"
     # Les deux sélections sont à domicile
     m1 = c["m1"]
     m2 = c["m2"]

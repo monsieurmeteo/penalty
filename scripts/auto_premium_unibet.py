@@ -1057,13 +1057,16 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     }
     existing_docs["combos_today"] = combos_today
 
-    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COMBINÉS COTE >= 2.00) ──
-    # ponytail: Règle d'or — 100% des équipes à domicile avec cote < cote extérieur, combinées chronologiquement par session jour avec cote combinée >= 2.00
+    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COMBINÉS COTE >= 2.60) ──
+    # ponytail: Règle d'or — 100% des équipes à domicile avec cote < cote extérieur, combinées chronologiquement par session jour avec cote combinée >= 2.60
+    MIN_M2_COMBO_ODDS = 2.60
     m2_existing = existing_docs.get("methode2_combos", [])
     m2_combos = []
     m2_used_keys = set()
 
     for c in m2_existing:
+        if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
+            continue
         m1 = c.get("m1", {})
         m2 = c.get("m2", {})
         k1 = (_clean_team_key(m1.get("home", "")), _clean_team_key(m1.get("away", "")))
@@ -1167,7 +1170,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 except Exception:
                     pass
 
-    # Appairage chronologique par session Jour par Jour (Option 1) avec comb_odds >= 2.00
+    # Appairage chronologique par session Jour par Jour (Option 1) avec comb_odds >= 2.60
     m2_by_session = {}
     for m in unpaired_home_favs:
         s_day = _get_session_day(m)
@@ -1180,7 +1183,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             best_j = None
             for j in range(1, len(pool)):
                 c2 = float(pool[j].get("odds", 1.50))
-                if round(c1 * c2, 2) >= 2.00:
+                if round(c1 * c2, 2) >= MIN_M2_COMBO_ODDS:
                     best_j = j
                     break
             if best_j is not None:
@@ -1987,7 +1990,7 @@ def main():
           <!-- SECTION COMBINÉS MÉTHODE 2 (TEST EXPÉRIMENTAL) -->
           <div style="padding:14px 16px 8px 16px; background:#faf5ff; border-top:2px solid #e9d5ff;">
             <div style="font-size:14px; font-weight:900; color:#4c1d95; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 MÉTHODE 2 (TEST) · TOUS FAVORIS DOMICILE (COTE TOTALE ≥ 2.00)</span>
+              <span>🎯 MÉTHODE 2 (TEST) · TOUS FAVORIS DOMICILE (COTE TOTALE ≥ 2.60)</span>
               <span style="font-size:11px; background:#7c3aed; color:#ffffff; font-weight:700; padding:2px 8px; border-radius:6px;">Mise : 3,00 € &bull; {len(m2_active)} ticket(s)</span>
             </div>
             <div style="font-size:11px; color:#6b21a8; margin-bottom:10px; line-height:1.4;">
@@ -2061,7 +2064,7 @@ def main():
         fi = m["fav_info"]
         c_val = f"@{fi['p2_fav_odds']:.2f}" if fi.get("p2_fav_odds") else f"@{fi['fav_odds']:.2f}"
         stat = "✅ RETENU" if fi["fav_score"] >= MIN_SCORE_FAV_RETAINED else "⚠️ ÉCARTÉ"
-    report.append(f"\n## 🎯 Méthode 2 (Test) : Tous Favoris Domicile (Cote Combinée ≥ 2.00)\n")
+    report.append(f"\n## 🎯 Méthode 2 (Test) : Tous Favoris Domicile (Cote Combinée ≥ 2.60)\n")
     report.append(f"**Tickets actifs** : {len(m2_active)}  |  **Mise** : 3.00 €  |  **Règle** : +2 Buts d'Avance ou Victoire 1N2\n")
     report.append("| Ticket | Cote Totale | Match 1 (Heure & Cote) | Match 2 (Heure & Cote) | Statut |")
     report.append("| :---: | :---: | :--- | :--- | :---: |")

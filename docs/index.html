@@ -286,7 +286,7 @@
                 🎟️ Combinés M1 (+2b) <span class="tab-badge" id="badge-combos">0</span>
             </button>
             <button class="tab" onclick="switchTab('methode2')">
-                🎯 Méthode 2 (Test Domicile @2.00+) <span class="tab-badge" id="badge-methode2">0</span>
+                🎯 Méthode 2 (Test Domicile @2.60+) <span class="tab-badge" id="badge-methode2">0</span>
             </button>
             <button class="tab" onclick="switchTab('today')">
                 ⚡ Matchs Simples du Mail (+2b) <span class="tab-badge" id="badge-today">0</span>
@@ -713,7 +713,7 @@
                 document.getElementById('stat-won').textContent = won;
                 document.getElementById('stat-finished').textContent = `sur ${decided} combinés terminés`;
 
-                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @2.00+)';
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @2.60+)';
                 document.getElementById('stat-rate').textContent = `${winRate}%`;
                 document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
 
@@ -1059,7 +1059,7 @@
                     fullHtml += liveItems.map(renderCard).join('');
                 }
                 if (upcomingItems.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header" style="background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:#c084fc;"><span>⏳ LES ${upcomingItems.length} COMBINÉS M2 DU DERNIER E-MAIL</span><span>${upcomingItems.length} tickets actifs &bull; Mise : 3,00 € &bull; Cote ≥ 2.00</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header" style="background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:#c084fc;"><span>⏳ LES ${upcomingItems.length} COMBINÉS M2 DU DERNIER E-MAIL</span><span>${upcomingItems.length} tickets actifs &bull; Mise : 3,00 € &bull; Cote ≥ 2.60</span></div>`;
                     fullHtml += upcomingItems.map(renderCard).join('');
                 }
                 if (finishedItems.length > 0) {
