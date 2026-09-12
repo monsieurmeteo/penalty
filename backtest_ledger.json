@@ -28227,5 +28227,68 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3379253",
+    "timestamp_utc": "2026-09-12T06:55:33.961044+00:00",
+    "match": "Wuhan Th.Towns vs Henan SL",
+    "league": "Chine • D1 Chine",
+    "date_str": "Sam. 12/09 à 13h35",
+    "fav_team": "Henan SL",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378972",
+    "timestamp_utc": "2026-09-12T06:55:33.961044+00:00",
+    "match": "Velez Mostar vs FK Sarajevo",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Dim. 13/09 à 20h45",
+    "fav_team": "FK Sarajevo",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 20,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369053",
+    "timestamp_utc": "2026-09-12T06:55:33.961044+00:00",
+    "match": "Sassuolo vs Juventus Turin",
+    "league": "Italie • Serie A",
+    "date_str": "Dim. 13/09 à 20h45",
+    "fav_team": "Juventus Turin",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.57,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
