@@ -710,6 +710,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                         fresh_odds = float(sm.get("p2_c1") or c1_f) if is_dom else float(sm.get("p2_c2") or c2_f)
                         item["odds"] = fresh_odds
                         item["fav_side"] = "dom" if is_dom else "ext"
+                        item["away_odds"] = c2_f if is_dom else c1_f  # cote adverse (pour filtre M2)
                     except Exception:
                         pass
 
@@ -1156,6 +1157,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 m1["odds"] = float(src.get("odds"))
             if src.get("domination_score") is not None:
                 m1["domination_score"] = src.get("domination_score")
+            if src.get("fav_side"):
+                m1["fav_side"] = src.get("fav_side")
+            if src.get("away_odds"):
+                m1["away_odds"] = float(src.get("away_odds"))
 
         if k2 in match_by_key:
             src = match_by_key[k2]
@@ -1172,6 +1177,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 m2["odds"] = float(src.get("odds"))
             if src.get("domination_score") is not None:
                 m2["domination_score"] = src.get("domination_score")
+            if src.get("fav_side"):
+                m2["fav_side"] = src.get("fav_side")
+            if src.get("away_odds"):
+                m2["away_odds"] = float(src.get("away_odds"))
 
         c1 = float(m1.get("odds", 1.50))
         c2 = float(m2.get("odds", 1.50))
@@ -1180,11 +1189,23 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         comb_odds = round(c1 * c2, 2)
         is_night = is_night_match(m1) or is_night_match(m2)
 
-        # Si match de nuit (00h01-06h00), si les cotes réelles ont baissé (< 3.25), si une cote individuelle est < 1.30, ou si score < 33, libérer les matchs pour ré-appairage
+        # Si match de nuit (00h01-06h00), si les cotes réelles ont baissé (< 3.50), si une cote individuelle est < 1.30, si score < 35, ou si l'équipe à domicile n'est pas le favori (cote dom >= cote ext), libérer les matchs pour ré-appairage
         if c.get("ticket_status") == "PENDING":
             if is_night or c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS:
                 continue
             if (sc1 is not None and sc1 < MIN_M2_FAV_SCORE) or (sc2 is not None and sc2 < MIN_M2_FAV_SCORE):
+                continue
+            if m1.get("market") in ["OVER_15", "BTTS"] or m2.get("market") in ["OVER_15", "BTTS"]:
+                continue
+            if m1.get("fav_team") in ["Over 1.5 Buts", "Les 2 Marquent"] or m2.get("fav_team") in ["Over 1.5 Buts", "Les 2 Marquent"]:
+                continue
+            if (m1.get("fav_side") and m1.get("fav_side") != "dom") or (m2.get("fav_side") and m2.get("fav_side") != "dom"):
+                continue
+            if (m1.get("fav_team") and m1.get("fav_team") == m1.get("away")) or (m2.get("fav_team") and m2.get("fav_team") == m2.get("away")):
+                continue
+            if m1.get("away_odds") and c1 >= float(m1.get("away_odds")):
+                continue
+            if m2.get("away_odds") and c2 >= float(m2.get("away_odds")):
                 continue
 
         c["odds"] = comb_odds
@@ -1228,7 +1249,15 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     for m in all_today_matches:
         if is_night_match(m):
             continue
+        if m.get("market") in ["OVER_15", "BTTS"]:
+            continue
+        if m.get("fav_team") in ["Over 1.5 Buts", "Les 2 Marquent"]:
+            continue
         if m.get("fav_side") != "dom":
+            continue
+        if m.get("fav_team") and m.get("fav_team") == m.get("away"):
+            continue
+        if m.get("away_odds") and float(m.get("odds", 0)) >= float(m.get("away_odds")):
             continue
         if float(m.get("odds", 0)) < MIN_M2_FAV_ODDS:
             continue
@@ -1265,6 +1294,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                                 "home": m.get("dom", ""),
                                 "away": m.get("ext", ""),
                                 "odds": c1_f,
+                                "away_odds": c2_f,
                                 "domination_score": sc,
                                 "fav_side": "dom",
                                 "status": "UPCOMING",
@@ -1311,6 +1341,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                     "home": m1.get("home", ""),
                     "away": m1.get("away", ""),
                     "odds": c1,
+                    "away_odds": m1.get("away_odds"),
+                    "fav_side": "dom",
                     "domination_score": m1.get("domination_score"),
                     "status": m1.get("status", "UPCOMING"),
                     "selection_status": m1.get("selection_status", "PENDING"),
@@ -1330,6 +1362,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                     "home": m2.get("home", ""),
                     "away": m2.get("away", ""),
                     "odds": c2,
+                    "away_odds": m2.get("away_odds"),
+                    "fav_side": "dom",
                     "domination_score": m2.get("domination_score"),
                     "status": m2.get("status", "UPCOMING"),
                     "selection_status": m2.get("selection_status", "PENDING"),
@@ -1389,7 +1423,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     for idx, c in enumerate(m2_active, 1):
         c["email_ticket_num"] = idx
 
-    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.25, fav ≥ 1.30, score ≥ 33)
+    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.50, fav ≥ 1.30, score ≥ 35, favori domicile)
     # Les anciens tickets joués avant la mise en place de ces règles sont dans m2_combos mais exclus du bilan
     def _m2_conforms(c):
         if (c.get("odds") or 0) < MIN_M2_COMBO_ODDS:
@@ -1400,6 +1434,16 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 return False
             sc = m.get("domination_score")
             if sc is not None and sc < MIN_M2_FAV_SCORE:
+                return False
+            if m.get("market") in ["OVER_15", "BTTS"]:
+                return False
+            if m.get("fav_team") in ["Over 1.5 Buts", "Les 2 Marquent"]:
+                return False
+            if m.get("fav_side") and m.get("fav_side") != "dom":
+                return False
+            if m.get("fav_team") and m.get("fav_team") == m.get("away"):
+                return False
+            if m.get("away_odds") and float(m.get("odds", 0)) >= float(m.get("away_odds")):
                 return False
         return True
 

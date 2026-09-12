@@ -336,7 +336,7 @@ def sync():
             c["profit_unit"] = 0.0
             c["profit_eur"] = 0.0
 
-    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.50, fav ≥ 1.30, score ≥ 35)
+    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.50, fav ≥ 1.30, score ≥ 35, favori domicile)
     MIN_M2_COMBO_ODDS = 3.50
     MIN_M2_FAV_ODDS   = 1.30
     MIN_M2_FAV_SCORE  = 35
@@ -349,6 +349,16 @@ def sync():
                 return False
             sc = m.get("domination_score")
             if sc is not None and sc < MIN_M2_FAV_SCORE:
+                return False
+            if m.get("market") in ["OVER_15", "BTTS"]:
+                return False
+            if m.get("fav_team") in ["Over 1.5 Buts", "Les 2 Marquent"]:
+                return False
+            if m.get("fav_side") and m.get("fav_side") != "dom":
+                return False
+            if m.get("fav_team") and m.get("fav_team") == m.get("away"):
+                return False
+            if m.get("away_odds") and float(m.get("odds", 0)) >= float(m.get("away_odds")):
                 return False
         return True
 

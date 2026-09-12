@@ -23,6 +23,17 @@ for c in m2_combos:
     m2 = c["m2"]
     assert m1.get("home"), "m1 sans équipe domicile"
     assert m2.get("home"), "m2 sans équipe domicile"
+    # Les deux sélections sont impérativement des favoris à domicile (fav_side == 'dom' et cote dom < cote ext)
+    assert m1.get("fav_side") == "dom", f"m1 non favori domicile sur ticket #{c['ticket_num']}: fav_side={m1.get('fav_side')}"
+    assert m2.get("fav_side") == "dom", f"m2 non favori domicile sur ticket #{c['ticket_num']}: fav_side={m2.get('fav_side')}"
+    if m1.get("away_odds"):
+        assert float(m1.get("odds", 0)) < float(m1.get("away_odds")), f"m1 cote dom >= cote ext sur ticket #{c['ticket_num']}"
+    if m2.get("away_odds"):
+        assert float(m2.get("odds", 0)) < float(m2.get("away_odds")), f"m2 cote dom >= cote ext sur ticket #{c['ticket_num']}"
+    if m1.get("fav_team"):
+        assert m1.get("fav_team") != m1.get("away"), f"m1 fav_team est l'adversaire extérieur sur #{c['ticket_num']}"
+    if m2.get("fav_team"):
+        assert m2.get("fav_team") != m2.get("away"), f"m2 fav_team est l'adversaire extérieur sur #{c['ticket_num']}"
     # Cote combinée >= 3.50, cote individuelle >= 1.30, score >= 35 et pas de match de nuit pour les tickets PENDING
     if c.get("ticket_status") == "PENDING":
         assert c["odds"] >= 3.50, f"Erreur: ticket #{c['ticket_num']} cote < 3.50 ({c['odds']})"
