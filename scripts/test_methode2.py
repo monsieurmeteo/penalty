@@ -23,15 +23,15 @@ for c in m2_combos:
     m2 = c["m2"]
     assert m1.get("home"), "m1 sans équipe domicile"
     assert m2.get("home"), "m2 sans équipe domicile"
-    # Cote combinée >= 3.25, cote individuelle >= 1.30, score >= 33 et pas de match de nuit pour les tickets PENDING
+    # Cote combinée >= 3.50, cote individuelle >= 1.30, score >= 35 et pas de match de nuit pour les tickets PENDING
     if c.get("ticket_status") == "PENDING":
-        assert c["odds"] >= 3.25, f"Erreur: ticket #{c['ticket_num']} cote < 3.25 ({c['odds']})"
+        assert c["odds"] >= 3.50, f"Erreur: ticket #{c['ticket_num']} cote < 3.50 ({c['odds']})"
         assert float(m1.get("odds", 0)) >= 1.30, f"m1 cote < 1.30 ({m1.get('odds')}) sur ticket #{c['ticket_num']}"
         assert float(m2.get("odds", 0)) >= 1.30, f"m2 cote < 1.30 ({m2.get('odds')}) sur ticket #{c['ticket_num']}"
         if m1.get("domination_score") is not None:
-            assert m1.get("domination_score") >= 33, f"m1 score < 33 ({m1.get('domination_score')}) sur ticket #{c['ticket_num']}"
+            assert m1.get("domination_score") >= 35, f"m1 score < 35 ({m1.get('domination_score')}) sur ticket #{c['ticket_num']}"
         if m2.get("domination_score") is not None:
-            assert m2.get("domination_score") >= 33, f"m2 score < 33 ({m2.get('domination_score')}) sur ticket #{c['ticket_num']}"
+            assert m2.get("domination_score") >= 35, f"m2 score < 35 ({m2.get('domination_score')}) sur ticket #{c['ticket_num']}"
         assert not is_night_match(m1), f"m1 match de nuit sur ticket M2 #{c['ticket_num']}: {m1.get('time')}"
         assert not is_night_match(m2), f"m2 match de nuit sur ticket M2 #{c['ticket_num']}: {m2.get('time')}"
     assert c["ticket_status"] in ["WON", "LOST", "LIVE", "PENDING"]

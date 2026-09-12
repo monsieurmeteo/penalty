@@ -336,10 +336,10 @@ def sync():
             c["profit_unit"] = 0.0
             c["profit_eur"] = 0.0
 
-    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.25, fav ≥ 1.30, score ≥ 33)
-    MIN_M2_COMBO_ODDS = 3.25
+    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.50, fav ≥ 1.30, score ≥ 35)
+    MIN_M2_COMBO_ODDS = 3.50
     MIN_M2_FAV_ODDS   = 1.30
-    MIN_M2_FAV_SCORE  = 33
+    MIN_M2_FAV_SCORE  = 35
     def _m2_conforms(c):
         if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
             return False

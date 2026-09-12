@@ -286,7 +286,7 @@
                 🎟️ Combinés M1 (+2b) <span class="tab-badge" id="badge-combos">0</span>
             </button>
             <button class="tab" onclick="switchTab('methode2')">
-                🎯 Méthode 2 (Test Domicile @3.25+ / Sc≥33) <span class="tab-badge" id="badge-methode2">0</span>
+                🎯 Méthode 2 (Test Domicile @3.50+ / Sc≥35) <span class="tab-badge" id="badge-methode2">0</span>
             </button>
             <button class="tab" onclick="switchTab('today')">
                 ⚡ Matchs Simples du Mail (+2b) <span class="tab-badge" id="badge-today">0</span>
@@ -514,13 +514,13 @@
             return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
         }
 
-        // ponytail: Helper conformité Méthode 2 (combo >= 3.25, fav >= 1.30, score >= 33)
+        // ponytail: Helper conformité Méthode 2 (combo >= 3.50, fav >= 1.30, score >= 35)
         function isM2Conform(c) {
-            if ((c.odds || 0) < 3.25) return false;
+            if ((c.odds || 0) < 3.50) return false;
             for (let leg of ['m1', 'm2']) {
                 const m = c[leg] || {};
                 if ((m.odds || 0) < 1.30) return false;
-                if ((m.domination_score || 0) < 33) return false;
+                if ((m.domination_score || 0) < 35) return false;
             }
             return true;
         }
@@ -734,7 +734,7 @@
                 document.getElementById('stat-won').textContent = won;
                 document.getElementById('stat-finished').textContent = `sur ${decided} combinés conformes terminés`;
 
-                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @3.25+)';
+                document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @3.50+)';
                 document.getElementById('stat-rate').textContent = `${winRate}%`;
                 document.getElementById('stat-pending').textContent = `${live} en direct · ${upcoming} à venir`;
 
@@ -1080,7 +1080,7 @@
                     fullHtml += liveItems.map(renderCard).join('');
                 }
                 if (upcomingItems.length > 0) {
-                    fullHtml += `<div class="list-section-header upcoming-header" style="background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:#c084fc;"><span>⏳ LES ${upcomingItems.length} COMBINÉS M2 DU DERNIER E-MAIL</span><span>${upcomingItems.length} tickets actifs &bull; Mise : 3,00 € &bull; Cote ≥ 3.25 &bull; Score ≥ 33</span></div>`;
+                    fullHtml += `<div class="list-section-header upcoming-header" style="background:rgba(139,92,246,0.1); border-color:rgba(139,92,246,0.3); color:#c084fc;"><span>⏳ LES ${upcomingItems.length} COMBINÉS M2 DU DERNIER E-MAIL</span><span>${upcomingItems.length} tickets actifs &bull; Mise : 3,00 € &bull; Cote ≥ 3.50 &bull; Score ≥ 35</span></div>`;
                     fullHtml += upcomingItems.map(renderCard).join('');
                 }
                 if (finishedItems.length > 0) {

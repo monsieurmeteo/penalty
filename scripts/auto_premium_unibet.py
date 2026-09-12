@@ -1120,11 +1120,11 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     }
     existing_docs["combos_today"] = combos_today
 
-    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COTE ≥ 1.30 — COMBO ≥ 3.25 — SCORE ≥ 33) ──
-    # ponytail: Règle d'or — favoris domicile avec cote individuelle >= 1.30, score >= 33 et cote combinée >= 3.25
-    MIN_M2_COMBO_ODDS = 3.25
+    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COTE ≥ 1.30 — COMBO ≥ 3.50 — SCORE ≥ 35) ──
+    # ponytail: Règle d'or — favoris domicile avec cote individuelle >= 1.30, score >= 35 et cote combinée >= 3.50
+    MIN_M2_COMBO_ODDS = 3.50
     MIN_M2_FAV_ODDS   = 1.30  # Cote minimale du favori domicile sur chaque match individuel
-    MIN_M2_FAV_SCORE  = 33    # Score de domination minimal (>= 33/100)
+    MIN_M2_FAV_SCORE  = 35    # Score de domination minimal (>= 35/100)
     m2_existing = existing_docs.get("methode2_combos", [])
     m2_combos = []
     m2_used_keys = set()
@@ -2115,11 +2115,11 @@ def main():
           <!-- SECTION COMBINÉS MÉTHODE 2 (TEST EXPÉRIMENTAL) -->
           <div style="padding:14px 16px 8px 16px; background:#faf5ff; border-top:2px solid #e9d5ff;">
             <div style="font-size:14px; font-weight:900; color:#4c1d95; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 MÉTHODE 2 (TEST) · FAVORIS DOMICILE (COTE TOTALE ≥ 3.25 & SCORE ≥ 33)</span>
+              <span>🎯 MÉTHODE 2 (TEST) · FAVORIS DOMICILE (COTE TOTALE ≥ 3.50 & SCORE ≥ 35)</span>
               <span style="font-size:11px; background:#7c3aed; color:#ffffff; font-weight:700; padding:2px 8px; border-radius:6px;">Mise : 3,00 € &bull; {len(m2_active)} ticket(s)</span>
             </div>
             <div style="font-size:11px; color:#6b21a8; margin-bottom:10px; line-height:1.4;">
-              💡 <b>Stratégie Test</b> : Équipes à domicile favorites (cote &ge; 1.30, score &ge; 33/100), combinées par session jour avec cote &ge; 3.25. Gain dès +2 buts d'avance ou victoire.
+              💡 <b>Stratégie Test</b> : Équipes à domicile favorites (cote &ge; 1.30, score &ge; 35/100), combinées par session jour avec cote &ge; 3.50. Gain dès +2 buts d'avance ou victoire.
             </div>
             {m2_combos_html}
           </div>
