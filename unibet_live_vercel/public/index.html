@@ -111,8 +111,8 @@
         
         .tabs-row { 
             display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
-            gap: 3px; 
+            grid-template-columns: repeat(7, 1fr); 
+            gap: 2px; 
             width: 100%; 
             background: #0b111e;
             border: 1px solid #1e293b;
@@ -139,6 +139,7 @@
         .tab-btn.active { background: #1e293b; color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
         .tab-btn.active-live { background: #7f1d1d; color: #fecaca; }
         .tab-btn.active-won { background: #065f46; color: #a7f3d0; }
+        .tab-btn.active-lost { background: #450a0a; color: #fca5a5; border: 1px solid #991b1b; }
         .tab-btn.active-pre { background: #1e3a8a; color: #bfdbfe; }
         .tab-btn.active-fav { background: #78350f; color: #fef3c7; }
         .tab-btn.active-combos { background: #4c1d95; color: #ede9fe; }
@@ -367,7 +368,7 @@
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid #1e293b; 
             display: grid; 
-            grid-template-columns: repeat(6, 1fr); 
+            grid-template-columns: repeat(7, 1fr); 
             z-index: 9999; 
             box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
         }
@@ -376,6 +377,7 @@
         .nav-item.active { color: #10b981; }
         .nav-item.active-live { color: #ef4444; }
         .nav-item.active-won { color: #10b981; }
+        .nav-item.active-lost { color: #ef4444; }
         .nav-item.active-pre { color: #38bdf8; }
         .nav-item.active-fav { color: #f59e0b; }
         .nav-item.active-combos { color: #a855f7; }
@@ -467,6 +469,7 @@
                 <button id="tabAll" class="tab-btn active" onclick="setFilter('all')">Tous (<span id="countAll">0</span>)</button>
                 <button id="tabLive" class="tab-btn" onclick="setFilter('live')">🔴 Live (<span id="countLive">0</span>)</button>
                 <button id="tabWon" class="tab-btn" onclick="setFilter('won')">👑 Gagnés (<span id="countWon">0</span>)</button>
+                <button id="tabLost" class="tab-btn" onclick="setFilter('lost')">❌ Perdus (<span id="countLost">0</span>)</button>
                 <button id="tabPre" class="tab-btn" onclick="setFilter('pre')">🕒 Pré (<span id="countPre">0</span>)</button>
                 <button id="tabFav" class="tab-btn" onclick="setFilter('fav')">⭐ Fav (<span id="countFav">0</span>)</button>
                 <button id="tabCombos" class="tab-btn" onclick="setFilter('combos')">🎫 Combos (<span id="countCombos">0</span>)</button>
@@ -494,6 +497,10 @@
             <span class="icon">👑</span>
             <span>Gagnés</span>
         </div>
+        <div id="navLost" class="nav-item" onclick="setFilter('lost')">
+            <span class="icon">❌</span>
+            <span>Perdus</span>
+        </div>
         <div id="navPre" class="nav-item" onclick="setFilter('pre')">
             <span class="icon">🕒</span>
             <span>Pré</span>
@@ -516,6 +523,7 @@
         const countAllEl = document.getElementById('countAll');
         const countLiveEl = document.getElementById('countLive');
         const countWonEl = document.getElementById('countWon');
+        const countLostEl = document.getElementById('countLost');
         const countPreEl = document.getElementById('countPre');
         const countFavEl = document.getElementById('countFav');
         const countCombosEl = document.getElementById('countCombos');
@@ -523,6 +531,7 @@
         const tabAllBtn = document.getElementById('tabAll');
         const tabLiveBtn = document.getElementById('tabLive');
         const tabWonBtn = document.getElementById('tabWon');
+        const tabLostBtn = document.getElementById('tabLost');
         const tabPreBtn = document.getElementById('tabPre');
         const tabFavBtn = document.getElementById('tabFav');
         const tabCombosBtn = document.getElementById('tabCombos');
@@ -530,6 +539,7 @@
         const navAll = document.getElementById('navAll');
         const navLive = document.getElementById('navLive');
         const navWon = document.getElementById('navWon');
+        const navLost = document.getElementById('navLost');
         const navPre = document.getElementById('navPre');
         const navFav = document.getElementById('navFav');
         const navCombos = document.getElementById('navCombos');
@@ -713,8 +723,8 @@
         // ==========================================
         function setFilter(tab) {
             activeTab = tab;
-            [tabAllBtn, tabLiveBtn, tabWonBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
-            [navAll, navLive, navWon, navPre, navFav, navCombos].forEach(nav => { if (nav) nav.className = 'nav-item'; });
+            [tabAllBtn, tabLiveBtn, tabWonBtn, tabLostBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
+            [navAll, navLive, navWon, navLost, navPre, navFav, navCombos].forEach(nav => { if (nav) nav.className = 'nav-item'; });
 
             if (tab === 'all') {
                 tabAllBtn.classList.add('active'); navAll.classList.add('active');
@@ -722,6 +732,8 @@
                 tabLiveBtn.classList.add('active-live'); navLive.classList.add('active-live');
             } else if (tab === 'won') {
                 tabWonBtn.classList.add('active-won'); navWon.classList.add('active-won');
+            } else if (tab === 'lost') {
+                tabLostBtn.classList.add('active-lost'); navLost.classList.add('active-lost');
             } else if (tab === 'pre') {
                 tabPreBtn.classList.add('active-pre'); navPre.classList.add('active-pre');
             } else if (tab === 'fav') {
@@ -987,6 +999,21 @@
             return !hasAlivePartner;
         }
 
+        // ❌ DÉTECTION MATCH OU COMBINÉ PERDU
+        function isMatchLostOrDead(g) {
+            // Si le match a déjà validé sa part (+2b d'avance ou victoire finale), il est dans Gagnés
+            if (isMatchWon(g)) return false;
+
+            // 1. Le match s'est terminé avec défaite du favori
+            const wonSt = getGameWonStatus(g);
+            if (wonSt && wonSt.type === 'lost') return true;
+
+            // 2. Le match a été rendu inutile car le partenaire a déjà perdu
+            if (isMatchUselessDead(g)) return true;
+
+            return false;
+        }
+
         function openComboFromTag(e, method, ticketNum) {
             if (e) e.stopPropagation();
             currentMethod = method;
@@ -1005,7 +1032,10 @@
                 return;
             }
 
-            // Exclut les matchs dont tous les combinés (M1 et M2) sont déjà perdus par l'autre match
+            // Tous les matchs perdus (défaite du favori ou combiné tué par l'autre match)
+            const lostMatches = cachedComboGames.filter(g => isMatchLostOrDead(g));
+
+            // Exclut les matchs morts pour les onglets vivants (Tous, Live, Gagnés, Pré, Fav)
             const comboGames = cachedComboGames.filter(g => !isMatchUselessDead(g));
             const wonMatches = comboGames.filter(g => isMatchWon(g));
             const liveActiveMatches = comboGames.filter(g => g.status_type === 'LIVE' && !isMatchWon(g));
@@ -1015,6 +1045,7 @@
             if (countAllEl) countAllEl.textContent = comboGames.length;
             if (countLiveEl) countLiveEl.textContent = liveActiveMatches.length;
             if (countWonEl) countWonEl.textContent = wonMatches.length;
+            if (countLostEl) countLostEl.textContent = lostMatches.length;
             if (countPreEl) countPreEl.textContent = preMatches.length;
             if (countFavEl) countFavEl.textContent = favMatchesAll.length;
 
@@ -1023,7 +1054,7 @@
                 return;
             }
 
-            let filtered = comboGames;
+            let filtered = (activeTab === 'lost') ? lostMatches : comboGames;
             if (query) {
                 filtered = filtered.filter(g => 
                     (g.dom || '').toLowerCase().includes(query) || 
@@ -1037,6 +1068,8 @@
                 filtered = filtered.filter(g => g.status_type === 'LIVE' && !isMatchWon(g));
             } else if (activeTab === 'won') {
                 filtered = filtered.filter(g => isMatchWon(g));
+            } else if (activeTab === 'lost') {
+                filtered = filtered; // déjà lostMatches
             } else if (activeTab === 'pre') {
                 filtered = filtered.filter(g => g.status_type === 'PRE_MATCH');
             } else if (activeTab === 'fav') {
@@ -1044,6 +1077,29 @@
             }
 
             let html = '';
+
+            // CAS : ONGLET PERDUS SPÉCIFIQUE
+            if (activeTab === 'lost') {
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                    <div class="empty-state-card">
+                        <div class="empty-icon">🛡️</div>
+                        <div class="empty-title">Aucun match perdu pour le moment</div>
+                        <div class="empty-desc">Tous vos combinés sont en cours, à venir ou déjà validés !</div>
+                    </div>`;
+                    return;
+                }
+                html += `
+                <div class="league-group" style="border-color:#7f1d1d; background:#181014; margin-bottom: 8px;">
+                    <div class="league-header" style="background:#7f1d1d; color:#fecaca; font-weight:900;">
+                        <span>❌ MATCHS & COMBINÉS PERDUS (${filtered.length})</span>
+                        <span class="count" style="background:rgba(0,0,0,0.35); color:#fff;">ARCHIVE</span>
+                    </div>
+                    ${filtered.map(g => renderCompactMatchRow(g, now)).join('')}
+                </div>`;
+                container.innerHTML = html;
+                return;
+            }
 
             // CAS : ONGLET GAGNÉS SPÉCIFIQUE
             if (activeTab === 'won') {
@@ -1230,7 +1286,7 @@
                 <div class="score-box ${methodScoreClass}">${scoreDisplay}</div>
                 <div class="team-away ${isFavAway ? 'is-fav' : ''}">${isFavAway ? '👑 ' : ''}${g.ext}</div>
                 <div class="combos-tag-col">
-                    ${wonStatus ? `<span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span>` : ''}
+                    ${wonStatus ? `<span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span>` : (isMatchUselessDead(g) ? `<span class="score-status-badge lost">❌ COMBINÉ PERDU</span>` : '')}
                     ${comboTagsHtml}
                 </div>
             </div>`;
