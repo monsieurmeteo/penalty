@@ -12446,17 +12446,17 @@
     }
   ],
   "methode2_summary": {
-    "total_combos": 98,
-    "decided_combos": 29,
-    "won": 9,
-    "lost": 20,
+    "total_combos": 162,
+    "decided_combos": 20,
+    "won": 6,
+    "lost": 14,
     "live": 0,
-    "upcoming": 69,
+    "upcoming": 106,
     "default_stake": 3.0,
-    "win_rate": 44.6,
-    "profit_units": 22.78,
-    "profit_eur": 68.34,
-    "roi_pct": 40.68
+    "win_rate": 30.0,
+    "profit_units": 0.82,
+    "profit_eur": 2.46,
+    "roi_pct": 4.1
   },
   "methode2_combos": [
     {

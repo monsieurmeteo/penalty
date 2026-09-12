@@ -1389,12 +1389,26 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     for idx, c in enumerate(m2_active, 1):
         c["email_ticket_num"] = idx
 
-    m2_won = sum(1 for c in m2_combos if c["ticket_status"] == "WON")
-    m2_lost = sum(1 for c in m2_combos if c["ticket_status"] == "LOST")
+    # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.25, fav ≥ 1.30, score ≥ 33)
+    # Les anciens tickets joués avant la mise en place de ces règles sont dans m2_combos mais exclus du bilan
+    def _m2_conforms(c):
+        if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
+            return False
+        for leg in ["m1", "m2"]:
+            m = c.get(leg, {})
+            if m.get("odds", 0) < MIN_M2_FAV_ODDS:
+                return False
+            if m.get("domination_score", 0) < MIN_M2_FAV_SCORE:
+                return False
+        return True
+
+    m2_conf = [c for c in m2_combos if c["ticket_status"] in ("WON", "LOST") and _m2_conforms(c)]
+    m2_won = sum(1 for c in m2_conf if c["ticket_status"] == "WON")
+    m2_lost = sum(1 for c in m2_conf if c["ticket_status"] == "LOST")
     m2_live = sum(1 for c in m2_combos if c["ticket_status"] == "LIVE")
     m2_upc = sum(1 for c in m2_combos if c["ticket_status"] == "PENDING")
     m2_dec = m2_won + m2_lost
-    m2_prof_u = sum(c.get("profit_unit", 0.0) for c in m2_combos)
+    m2_prof_u = sum(c.get("profit_unit", 0.0) for c in m2_conf)
     m2_wr = round((m2_won / m2_dec * 100), 1) if m2_dec > 0 else 0.0
     m2_roi = round((m2_prof_u / m2_dec * 100), 2) if m2_dec > 0 else 0.0
 
