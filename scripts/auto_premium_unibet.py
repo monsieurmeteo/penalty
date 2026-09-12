@@ -86,6 +86,24 @@ def _clean_team_key(name):
     n = unicodedata.normalize('NFKD', str(name)).encode('ASCII', 'ignore').decode('ASCII').lower()
     return re.sub(r'[^a-z0-9]', '', n)
 
+def is_night_match(m):
+    """
+    Retourne True si le match débute entre 00h01 et 06h00 (inclus).
+    Règle d'or : exclusion stricte des matchs de nuit pour la Méthode 1 et la Méthode 2.
+    """
+    if not m:
+        return False
+    for field in ["time", "date_str", "minute"]:
+        val = str(m.get(field, ""))
+        mat = re.search(r'(?:à\s*|T)?(\d{1,2})[h:](\d{2})', val)
+        if mat:
+            hour = int(mat.group(1))
+            minute = int(mat.group(2))
+            mins = hour * 60 + minute
+            if 1 <= mins <= 360:
+                return True
+    return False
+
 # ── Moteur d'Analyse « Favori Win & 2 Buts d'Avance (Early Payout) » ────────
 def evaluate_favorite_domination(m):
     c1, c2 = m.get("c1"), m.get("c2")
@@ -922,7 +940,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         d1 = _get_session_day(m1)
         d2 = _get_session_day(m2)
         is_cross_day = bool(d1 and d2 and d1 != d2)
-        if not is_started and (is_subpar or is_cross_day):
+        is_night = is_night_match(m1) or is_night_match(m2)
+        if not is_started and (is_subpar or is_cross_day or is_night):
             continue
 
         if k1: used_teams.add(k1)
@@ -952,6 +971,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     # 3. Pair any newly found matches from retained_favs that are not yet in combos
     unassigned_favs = []
     for m in retained_favs:
+        if is_night_match(m):
+            continue
         k_dom = _clean_team_key(m.get("dom", ""))
         k_ext = _clean_team_key(m.get("ext", ""))
         if k_dom not in used_teams and k_ext not in used_teams:
@@ -1158,10 +1179,11 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         sc1 = m1.get("domination_score")
         sc2 = m2.get("domination_score")
         comb_odds = round(c1 * c2, 2)
+        is_night = is_night_match(m1) or is_night_match(m2)
 
-        # Si les cotes réelles ont baissé (< 3.25), si une cote individuelle est < 1.30, ou si score < 33, libérer les matchs pour ré-appairage
+        # Si match de nuit (00h01-06h00), si les cotes réelles ont baissé (< 3.25), si une cote individuelle est < 1.30, ou si score < 33, libérer les matchs pour ré-appairage
         if c.get("ticket_status") == "PENDING":
-            if c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS:
+            if is_night or c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS:
                 continue
             if (sc1 is not None and sc1 < MIN_M2_FAV_SCORE) or (sc2 is not None and sc2 < MIN_M2_FAV_SCORE):
                 continue
@@ -1205,6 +1227,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
 
     # Source 1 : all_today_matches
     for m in all_today_matches:
+        if is_night_match(m):
+            continue
         if m.get("fav_side") != "dom":
             continue
         if float(m.get("odds", 0)) < MIN_M2_FAV_ODDS:
@@ -1220,6 +1244,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     # Source 2 : all_scanned (pour capturer les cotes > 2.20 non présentes dans retained_favs)
     if all_scanned:
         for m in all_scanned:
+            if is_night_match(m):
+                continue
             c1 = m.get("c1")
             c2 = m.get("c2")
             if c1 and c2:

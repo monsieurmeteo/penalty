@@ -1,5 +1,7 @@
 import json
 import sys
+sys.path.insert(0, '.')
+from scripts.auto_premium_unibet import is_night_match
 
 with open("docs/data.json", "r", encoding="utf-8") as f:
     d = json.load(f)
@@ -29,6 +31,8 @@ for c in m2_combos:
             assert m1.get("domination_score") >= 33, f"m1 score < 33 ({m1.get('domination_score')}) sur ticket #{c['ticket_num']}"
         if m2.get("domination_score") is not None:
             assert m2.get("domination_score") >= 33, f"m2 score < 33 ({m2.get('domination_score')}) sur ticket #{c['ticket_num']}"
+        assert not is_night_match(m1), f"m1 match de nuit sur ticket M2 #{c['ticket_num']}: {m1.get('time')}"
+        assert not is_night_match(m2), f"m2 match de nuit sur ticket M2 #{c['ticket_num']}: {m2.get('time')}"
     assert c["ticket_status"] in ["WON", "LOST", "LIVE", "PENDING"]
     if c["ticket_status"] == "WON":
         assert c["profit_eur"] > 0, f"Ticket WON avec profit <= 0: {c['profit_eur']}"
@@ -43,5 +47,12 @@ assert len(m1_combos) >= 35, f"Attendu >= 35 combinés M1, obtenu {len(m1_combos
 assert m1_summary.get("won") >= 19, f"M1 won attendu >= 19, obtenu {m1_summary.get('won')}"
 assert m1_summary.get("lost") >= 16, f"M1 lost attendu >= 16, obtenu {m1_summary.get('lost')}"
 assert m1_summary.get("decided_combos") == m1_summary.get("won") + m1_summary.get("lost"), "M1 won + lost mismatch"
+
+for c in m1_combos:
+    if c.get("ticket_status") == "PENDING":
+        m1 = c["m1"]
+        m2 = c["m2"]
+        assert not is_night_match(m1), f"m1 match de nuit sur ticket M1 #{c['ticket_num']}: {m1.get('time')}"
+        assert not is_night_match(m2), f"m2 match de nuit sur ticket M1 #{c['ticket_num']}: {m2.get('time')}"
 
 print("✅ TOUS LES TESTS ASSERTIONS MÉTHODE 2 & NON-RÉGRESSION MÉTHODE 1 PASSENT AVEC SUCCÈS (100% Validé) !")
