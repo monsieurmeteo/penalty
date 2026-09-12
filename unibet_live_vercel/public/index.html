@@ -165,15 +165,14 @@
         }
         .league-header span.count { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 9px; color: #475569; font-weight: 800; }
         
-        /* ⚡ LIGNE DE MATCH COMPACTE (38PX SEULEMENT !) */
+        /* MATCH ROW - DESIGN FLASHSCORE PRO (MOBILE ET DESKTOP) */
         .match-row { 
             display: flex; 
             align-items: center; 
-            padding: 5px 8px; 
-            font-size: 11px; 
+            padding: 8px 10px; 
             border-bottom: 1px solid var(--border-subtle); 
             cursor: pointer; 
-            gap: 6px; 
+            gap: 10px; 
             background: #ffffff;
             transition: background 0.1s;
             position: relative;
@@ -181,106 +180,104 @@
         .match-row:last-child { border-bottom: none; }
         .match-row:hover { background: #f8fafc; }
         
-        .star-col { width: 18px; text-align: center; cursor: pointer; color: #cbd5e1; font-size: 14px; user-select: none; flex: 0 0 18px; }
+        .match-left-meta {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex: 0 0 auto;
+            min-width: 58px;
+        }
+        .star-col { width: 16px; text-align: center; cursor: pointer; color: #cbd5e1; font-size: 15px; user-select: none; }
         .star-col.starred { color: var(--yellow-star); }
 
         .status-col { 
-            width: 58px; 
             font-size: 11px; 
             font-weight: 900; 
             color: var(--accent); 
-            flex: 0 0 58px; 
             white-space: nowrap;
+            letter-spacing: -0.2px;
         }
-        .status-col.pre-match { color: var(--blue-pre); font-size: 10px; }
-        .status-col.finished { color: var(--muted); font-size: 10px; }
+        .status-col.pre-match { color: var(--blue-pre); font-size: 11px; font-weight: 800; }
+        .status-col.finished { color: var(--muted); font-size: 10px; font-weight: 800; }
 
-        .teams-block {
-            display: flex;
-            align-items: center;
+        /* ÉQUIPES EN 2 LIGNES NATURELLES (ZÉRO TRONCATURE, 100% LISIBLE) */
+        .match-teams-col {
             flex: 1 1 auto;
             min-width: 0;
-            gap: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
-
-        .team-home { 
-            text-align: right; 
-            flex: 1 1 0; 
-            min-width: 0; 
+        .team-row-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        .team-name-text { 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
             font-weight: 700; 
             color: #0f172a; 
             font-size: 12px;
+            flex: 1 1 auto;
+            min-width: 0;
+            letter-spacing: -0.1px;
         }
-        .team-away { 
-            text-align: left; 
-            flex: 1 1 0; 
-            min-width: 0; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-            font-weight: 700; 
-            color: #0f172a; 
-            font-size: 12px;
-        }
-        
-        /* SCORE COMPACT */
-        .score-box { 
-            text-align: center; 
-            font-size: 12px; 
-            font-weight: 900; 
-            background: #f1f5f9; 
-            border: 1.5px solid #cbd5e1;
-            padding: 1px 7px; 
-            border-radius: 5px; 
-            color: #0f172a; 
-            flex: 0 0 auto; 
-            min-width: 44px; 
-            letter-spacing: 0.5px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-            transition: all 0.2s ease;
+        .team-name-text.fav-team {
+            color: #1e40af;
+            font-weight: 800;
         }
 
-        /* 🔵 MÉTHODE 1 (+2b) : BLEU */
-        .score-box.m1, .ticket-leg-score.m1 {
+        /* SCORES PAR ÉQUIPE (M1 BLEU / M2 VIOLET / BOTH) */
+        .team-score-num, .ticket-leg-score {
+            font-size: 12px;
+            font-weight: 900;
+            padding: 1px 6px;
+            border-radius: 4px;
+            min-width: 22px;
+            text-align: center;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            flex: 0 0 auto;
+        }
+        .team-score-num.m1, .ticket-leg-score.m1 {
             background: #eff6ff !important;
             border-color: #3b82f6 !important;
             color: #1d4ed8 !important;
-            box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15) !important;
         }
-
-        /* 🟣 MÉTHODE 2 (@3.50+) : VIOLET */
-        .score-box.m2, .ticket-leg-score.m2 {
+        .team-score-num.m2, .ticket-leg-score.m2 {
             background: #faf5ff !important;
             border-color: #a855f7 !important;
             color: #6b21a8 !important;
-            box-shadow: 0 1px 3px rgba(168, 85, 247, 0.15) !important;
         }
-
-        /* 🔷/🔮 COMBINÉ DANS LES DEUX MÉTHODES (M1 + M2) */
-        .score-box.m-both, .ticket-leg-score.m-both {
-            background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%) !important;
+        .team-score-num.m-both, .ticket-leg-score.m-both {
+            background: #f5f3ff !important;
             border-color: #6366f1 !important;
             color: #4338ca !important;
-            box-shadow: 0 1px 3px rgba(99, 102, 241, 0.18) !important;
         }
 
-        /* 👑 BADGE GAGNÉ */
-        .won-badge-col {
+        /* DROITE : BADGES (STATUT GAGNÉ ET TICKETS COMBINÉS) */
+        .match-right-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
             flex: 0 0 auto;
+            min-width: 65px;
+        }
+        .won-badge-box {
             display: flex;
             align-items: center;
-            min-width: 78px;
-            justify-content: flex-end;
         }
         .score-status-badge {
             display: inline-flex;
             align-items: center;
             gap: 3px;
-            padding: 1px 6px;
-            border-radius: 8px;
+            padding: 2px 6px;
+            border-radius: 6px;
             font-size: 9px;
             font-weight: 900;
             white-space: nowrap;
@@ -295,11 +292,6 @@
             border: 1px solid #86efac;
             color: #15803d;
         }
-        .score-status-badge.live {
-            background: #fef3c7;
-            border: 1px solid #fde68a;
-            color: #b45309;
-        }
         .score-status-badge.lost {
             background: #fee2e2;
             border: 1px solid #fca5a5;
@@ -307,11 +299,11 @@
         }
 
         .combos-tag-col {
-            flex: 0 0 auto;
             display: flex;
             align-items: center;
             gap: 3px;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
         .badge-combo-indicator { 
             font-size: 8px; 
@@ -322,6 +314,7 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            white-space: nowrap;
         }
         .badge-combo-indicator.m1 { 
             background: #dbeafe; 
@@ -456,10 +449,10 @@
             
             <div class="header-actions">
                 <button id="soundToggleBtn" class="sound-btn" onclick="toggleSoundAlerts()" title="Activer ou couper la sonnerie douce">
-                    <span id="soundIcon">🔔</span> <span id="soundText">Son Doux ⭐</span>
+                    <span id="soundIcon">🔔</span> <span id="soundText">Son Doux</span>
                 </button>
                 <button id="testSoundBtn" class="sound-btn test-btn" onclick="testGoalSound()" title="Écouter la mélodie douce immédiatement">
-                    <span>🎵 Tester</span>
+                    <span>🎵 Test</span>
                 </button>
                 
                 <div id="connectionStatus" class="live-badge">
@@ -470,7 +463,7 @@
         </header>
 
         <div class="toolbar">
-            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher une équipe de nos combinés (Hiroshima, Cherkasy, Machida)...">
+            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher une équipe (Cherkasy, Hiroshima, Vicenza...)">
             
             <div class="tabs-row">
                 <button id="tabAll" class="tab-btn active" onclick="setFilter('all')">Tous (<span id="countAll">0</span>)</button>
@@ -586,7 +579,7 @@
             if (isSoundEnabled) {
                 soundToggleBtn.classList.add('active');
                 soundIcon.textContent = '🔔';
-                soundText.textContent = 'Son Doux ⭐';
+                soundText.textContent = 'Son Doux';
             } else {
                 soundToggleBtn.classList.remove('active');
                 soundIcon.textContent = '🔕';
@@ -943,10 +936,6 @@
                     return { text: '❌ PERDU', type: 'lost' };
                 }
             }
-
-            if (g.status_type === 'LIVE') {
-                return { text: '🔴 EN COURS', type: 'live' };
-            }
             return null;
         }
 
@@ -1122,20 +1111,40 @@
                 }
             }
 
+            const isPre = (g.status_type === 'PRE_MATCH');
+            const homeScoreDisplay = isPre ? '-' : g.score_dom;
+            const awayScoreDisplay = isPre ? '-' : g.score_ext;
+
+            let isFavHome = false;
+            let isFavAway = false;
+            comboTags.forEach(t => {
+                const leg = t.leg;
+                if (!leg) return;
+                if (leg.fav_side === 'dom' || leg.fav_team === leg.home) isFavHome = true;
+                if (leg.fav_side === 'ext' || leg.fav_team === leg.away) isFavAway = true;
+            });
+
             return `
             <div class="match-row ${isRecentGoal ? 'goal-flash' : ''}" onclick="toggleExpand('${key}')">
-                <div class="star-col ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
-                <div class="${statusClass}">${statusText}</div>
-                <div class="teams-block">
-                    <div class="team-home">${g.dom}</div>
-                    <div class="score-box ${methodScoreClass}">${scoreDisplay}</div>
-                    <div class="team-away">${g.ext}</div>
+                <div class="match-left-meta">
+                    <div class="star-col ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
+                    <div class="${statusClass}">${statusText}</div>
                 </div>
-                <div class="won-badge-col">
-                    ${wonStatus ? `<span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span>` : ''}
+                <div class="match-teams-col">
+                    <div class="team-row-line">
+                        <span class="team-name-text ${isFavHome ? 'fav-team' : ''}">${isFavHome ? '👑 ' : ''}${g.dom}</span>
+                        <span class="team-score-num ${methodScoreClass}">${homeScoreDisplay}</span>
+                    </div>
+                    <div class="team-row-line">
+                        <span class="team-name-text ${isFavAway ? 'fav-team' : ''}">${isFavAway ? '👑 ' : ''}${g.ext}</span>
+                        <span class="team-score-num ${methodScoreClass}">${awayScoreDisplay}</span>
+                    </div>
                 </div>
-                <div class="combos-tag-col">
-                    ${comboTagsHtml}
+                <div class="match-right-meta">
+                    ${wonStatus ? `<div class="won-badge-box"><span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span></div>` : ''}
+                    <div class="combos-tag-col">
+                        ${comboTagsHtml}
+                    </div>
                 </div>
             </div>
             ${drawerHtml}`;
