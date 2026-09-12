@@ -16,15 +16,14 @@ assert m2_summary.get("won") + m2_summary.get("lost") == m2_summary.get("decided
 assert m2_summary.get("decided_combos") + m2_summary.get("live") + m2_summary.get("upcoming") == len(m2_combos), "Counts mismatch M2"
 
 for c in m2_combos:
-    # Cote combinée >= 3.25
-    assert c["odds"] >= 3.25, f"Erreur: ticket #{c['ticket_num']} cote < 3.25 ({c['odds']})"
     # Les deux sélections sont à domicile
     m1 = c["m1"]
     m2 = c["m2"]
     assert m1.get("home"), "m1 sans équipe domicile"
     assert m2.get("home"), "m2 sans équipe domicile"
-    # Cote individuelle >= 1.30 et score >= 33 pour les tickets PENDING
+    # Cote combinée >= 3.25, cote individuelle >= 1.30, score >= 33 et pas de match de nuit pour les tickets PENDING
     if c.get("ticket_status") == "PENDING":
+        assert c["odds"] >= 3.25, f"Erreur: ticket #{c['ticket_num']} cote < 3.25 ({c['odds']})"
         assert float(m1.get("odds", 0)) >= 1.30, f"m1 cote < 1.30 ({m1.get('odds')}) sur ticket #{c['ticket_num']}"
         assert float(m2.get("odds", 0)) >= 1.30, f"m2 cote < 1.30 ({m2.get('odds')}) sur ticket #{c['ticket_num']}"
         if m1.get("domination_score") is not None:

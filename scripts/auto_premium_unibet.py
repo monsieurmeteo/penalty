@@ -1137,10 +1137,9 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
 
         # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
         if c.get("ticket_status") in ["WON", "LOST"]:
-            if c.get("odds", 0) >= MIN_M2_COMBO_ODDS:
-                m2_combos.append(c)
-                m2_used_keys.add(k1)
-                m2_used_keys.add(k2)
+            m2_combos.append(c)
+            m2_used_keys.add(k1)
+            m2_used_keys.add(k2)
             continue
 
         if k1 in match_by_key:

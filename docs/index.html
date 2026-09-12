@@ -489,12 +489,19 @@
         let globalData = null;
         let countdown = 30;
 
-        // Extrait la date dd/mm depuis le champ time "Dim. 06/09 à 12h30"
+        // Extrait la date dd/mm depuis session "2026-09-11" ou le champ time "Dim. 06/09 à 12h30"
         function getComboDate(c) {
-            const t = (c.m1 && c.m1.time) ? c.m1.time : '';
-            const m = t.match(/(\d{2})\/(\d{2})/);
-            if (!m) return '';
-            return m[1] + '/' + m[2]; // "11/09"
+            if (c.session) {
+                const ms = c.session.match(/\d{4}-(\d{2})-(\d{2})/);
+                if (ms) return ms[2] + '/' + ms[1]; // "11/09"
+            }
+            const t1 = (c.m1 && c.m1.time) ? c.m1.time : '';
+            const m1 = t1.match(/(\d{2})\/(\d{2})/);
+            if (m1) return m1[1] + '/' + m1[2];
+            const t2 = (c.m2 && c.m2.time) ? c.m2.time : '';
+            const m2 = t2.match(/(\d{2})\/(\d{2})/);
+            if (m2) return m2[1] + '/' + m2[2];
+            return '';
         }
 
         function todayStr() {
@@ -512,7 +519,10 @@
             const cd = getComboDate(c);
             if (currentPeriod === 'TODAY') return cd === todayStr();
             if (currentPeriod === 'TOMORROW') return cd === tomorrowStr();
-            if (currentPeriod === 'PAST') return cd !== todayStr() && cd !== tomorrowStr() && cd !== '';
+            if (currentPeriod === 'PAST') {
+                if (c.ticket_status === 'WON' || c.ticket_status === 'LOST') return true;
+                return cd !== todayStr() && cd !== tomorrowStr() && cd !== '';
+            }
             return true;
         }
 
