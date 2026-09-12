@@ -26424,5 +26424,355 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3368797",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Exce.Rotterdam vs Utrecht",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 13/09 à 12h15",
+    "fav_team": "Exce.Rotterdam",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 31,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368583",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Banik Ostrava vs FK Pardubice",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Dim. 13/09 à 13h00",
+    "fav_team": "Banik Ostrava",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.82,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378603",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Sheffield Utd vs Wolverhampton",
+    "league": "Angleterre • Championship",
+    "date_str": "Dim. 13/09 à 13h00",
+    "fav_team": "Wolverhampton",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 37,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.93,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368783",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Osnabrück vs Hertha Berlin",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 13/09 à 13h30",
+    "fav_team": "Hertha Berlin",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 55,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.93,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369218",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Karlsruhe vs Cottbus",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 13/09 à 13h30",
+    "fav_team": "Karlsruhe",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.59,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368782",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "FC Heidenheim vs Holstein Kiel",
+    "league": "Allemagne • Bundesliga 2",
+    "date_str": "Dim. 13/09 à 13h30",
+    "fav_team": "FC Heidenheim",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 68,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378817",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Paide vs Harju JK",
+    "league": "Estonie • D1 Estonie",
+    "date_str": "Dim. 13/09 à 13h30",
+    "fav_team": "Paide",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.46,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368793",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "FK Panevezys vs Kauno Zalgiris",
+    "league": "Lituanie • D1 Lituanie",
+    "date_str": "Dim. 13/09 à 13h30",
+    "fav_team": "Kauno Zalgiris",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.49,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372454",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Lyngby BK vs Sønderjyske",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Lyngby BK",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 52,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.53,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360658",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Gijon vs Club Eldense",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Gijon",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 57,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.61,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368824",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Elfsborg vs Kalmar FF",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Elfsborg",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.69,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377663",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Kups vs HJK Helsinki",
+    "league": "Finlande • D1 Finlande",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Kups",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360694",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Celta Vigo vs Malaga",
+    "league": "Espagne • Laliga",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Celta Vigo",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 40,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.67,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368826",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "FC Zurich vs FC Vaduz",
+    "league": "Suisse • D1 Suisse",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "FC Zurich",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372451",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "Silkeborg vs Viborg FF",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "Viborg FF",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368564",
+    "timestamp_utc": "2026-09-12T00:04:40.407237+00:00",
+    "match": "FC Arges vs FC Botosani",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Dim. 13/09 à 14h00",
+    "fav_team": "FC Arges",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
