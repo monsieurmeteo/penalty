@@ -163,7 +163,8 @@ class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
 
 class LiveStreamHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path.startswith('/api/live'):
+        clean_path = self.path.split('?')[0]
+        if clean_path == '/api/live':
             data = fetch_livescore_data()
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
@@ -171,14 +172,46 @@ class LiveStreamHandler(BaseHTTPRequestHandler):
             self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
             self.end_headers()
             self.wfile.write(json.dumps(data).encode('utf-8'))
+        elif clean_path == '/api/combos':
+            # ponytail: Lecture directe de docs/data.json pour rafraîchissement instantané 0ms
+            data_path = os.path.join(os.path.dirname(__file__), "..", "docs", "data.json")
+            try:
+                with open(data_path, "rb") as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+                self.end_headers()
+                self.wfile.write(content)
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
         else:
-            index_path = os.path.join(os.path.dirname(__file__), "..", "unibet_live_vercel", "public", "index.html")
-            with open(index_path, "r", encoding="utf-8") as f:
-                content = f.read()
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html; charset=utf-8')
-            self.end_headers()
-            self.wfile.write(content.encode('utf-8'))
+            public_dir = os.path.join(os.path.dirname(__file__), "..", "unibet_live_vercel", "public")
+            rel = clean_path.lstrip('/')
+            target = os.path.join(public_dir, rel) if rel else os.path.join(public_dir, "index.html")
+            if not os.path.isfile(target):
+                target = os.path.join(public_dir, "index.html")
+
+            content_type = 'text/html; charset=utf-8'
+            if target.endswith('.json'):
+                content_type = 'application/json'
+            elif target.endswith('.js'):
+                content_type = 'application/javascript'
+
+            try:
+                with open(target, "rb") as f:
+                    body = f.read()
+                self.send_response(200)
+                self.send_header('Content-Type', content_type)
+                self.end_headers()
+                self.wfile.write(body)
+            except Exception as e:
+                self.send_response(404)
+                self.end_headers()
 
 if __name__ == '__main__':
     server = ThreadedHTTPServer(('0.0.0.0', PORT), LiveStreamHandler)

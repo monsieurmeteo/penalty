@@ -46,12 +46,13 @@
         .toolbar { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
         .search-bar { width: 100%; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: #fff; font-size: 12px; outline: none; }
         
-        .tabs-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; }
+        .tabs-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 100%; }
         .tab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 5px 2px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 2px; white-space: nowrap; }
         .tab-btn.active { background: #238636; border-color: #2ea043; color: #fff; }
         .tab-btn.active-live { background: var(--crimson-soft); border-color: #ef4444; color: #fff; }
         .tab-btn.active-pre { background: #2563eb; border-color: #3b82f6; color: #fff; }
         .tab-btn.active-fav { background: #d97706; border-color: #f59e0b; color: #fff; }
+        .tab-btn.active-combos { background: linear-gradient(135deg, #1e3a8a, #7c3aed); border-color: #818cf8; color: #fff; }
 
         /* CHAMPIONNATS ET BANDEAU FAVORIS HYPER COMPACT */
         .league-group { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--panel); }
@@ -148,6 +149,7 @@
         .event-pill-mini.redcard { background: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5; }
 
         /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) */
+        /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) */
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
@@ -159,7 +161,7 @@
             -webkit-backdrop-filter: blur(10px);
             border-top: 1px solid var(--border); 
             display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
+            grid-template-columns: repeat(5, 1fr); 
             z-index: 9999; 
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--muted); text-decoration: none; font-size: 9px; font-weight: 700; cursor: pointer; }
@@ -168,6 +170,54 @@
         .nav-item.active-live { color: #ef4444; }
         .nav-item.active-pre { color: #3b82f6; }
         .nav-item.active-fav { color: #f59e0b; }
+        .nav-item.active-combos { color: #a78bfa; }
+
+        /* 🎫 STYLES COMBINÉS INTÉGRÉS */
+        .combos-container-view { display: flex; flex-direction: column; gap: 8px; }
+        .combos-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 6px; }
+        .combos-kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 3px; text-align: center; }
+        .combos-kpi-val { font-size: 14px; font-weight: 900; }
+        .combos-kpi-sub { font-size: 8px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+
+        .combos-subtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 6px; }
+        .subtab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; }
+        .subtab-btn.active { background: #1e3a8a; border-color: #3b82f6; color: #fff; }
+        .subtab-btn.active-m2 { background: #4c1d95; border-color: #8b5cf6; color: #fff; }
+
+        .combos-filters-row { display: flex; gap: 4px; margin-bottom: 6px; overflow-x: auto; padding-bottom: 2px; }
+        .cfilter-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 3px 8px; border-radius: 12px; font-size: 9px; font-weight: 800; cursor: pointer; white-space: nowrap; }
+        .cfilter-btn.active { background: #238636; border-color: #2ea043; color: #fff; }
+
+        .stake-bar-mini { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; }
+        .stake-btn-mini { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 4px; font-size: 9px; font-weight: 800; cursor: pointer; }
+        .stake-btn-mini.active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+
+        .ticket-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
+        .ticket-card.is-won { border-left: 4px solid #10b981; }
+        .ticket-card.is-lost { border-left: 4px solid #ef4444; }
+        .ticket-card.is-live { border-left: 4px solid #f59e0b; }
+
+        .ticket-header { background: var(--header-bg); padding: 5px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .ticket-odds-badge { background: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 900; }
+        .ticket-res-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; }
+        .ticket-res-badge.won { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+        .ticket-res-badge.lost { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+        .ticket-res-badge.live { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+        .ticket-res-badge.pending { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+        .ticket-leg { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; }
+        .ticket-leg:last-child { border-bottom: none; }
+        .ticket-leg-left { flex: 1; min-width: 0; }
+        .ticket-leg-match { font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ticket-leg-sub { font-size: 10px; color: var(--muted); margin-top: 2px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+        .ticket-leg-fav { color: #38bdf8; font-weight: 800; }
+        .ticket-leg-right { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+        .ticket-leg-score { font-size: 12px; font-weight: 900; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; color: #fff; }
+        .ticket-leg-badge { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; }
+        .pin-match-btn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 2px 6px; border-radius: 4px; font-size: 9px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 2px; }
+        .pin-match-btn:hover { background: #f59e0b; color: #000; }
+
+        .badge-combo-indicator { background: linear-gradient(135deg, #1e3a8a, #4338ca); color: #93c5fd; border: 1px solid #3b82f6; font-size: 8px; font-weight: 900; padding: 1px 4px; border-radius: 3px; margin-left: 4px; text-transform: uppercase; }
 
         .empty-state { text-align: center; padding: 30px 15px; color: var(--muted); font-size: 12px; }
 
@@ -207,12 +257,16 @@
                 <button id="tabLive" class="tab-btn" onclick="setFilter('live')">🔴 Live (<span id="countLive">0</span>)</button>
                 <button id="tabPre" class="tab-btn" onclick="setFilter('pre')">🕒 Pré (<span id="countPre">0</span>)</button>
                 <button id="tabFav" class="tab-btn" onclick="setFilter('fav')">⭐ Fav (<span id="countFav">0</span>)</button>
+                <button id="tabCombos" class="tab-btn" onclick="setFilter('combos')">🎫 Combos (<span id="countCombos">0</span>)</button>
             </div>
         </div>
 
         <div id="liveContent">
             <div class="empty-state">Connexion aux matchs en direct et pré-match...</div>
         </div>
+
+        <!-- 🎫 CONTENEUR DÉDIÉ AUX COMBINÉS M1 & M2 -->
+        <div id="combosContent" style="display:none;"></div>
     </div>
 
     <!-- 📱 BARRE DE NAVIGATION FIXE EN BAS DE L'ÉCRAN (STICKY BOTTOM NAV) -->
@@ -227,32 +281,40 @@
         </div>
         <div id="navPre" class="nav-item" onclick="setFilter('pre')">
             <span class="icon">🕒</span>
-            <span>Pré-match</span>
+            <span>Pré</span>
         </div>
         <div id="navFav" class="nav-item" onclick="setFilter('fav')">
             <span class="icon">⭐</span>
             <span>Favoris</span>
         </div>
+        <div id="navCombos" class="nav-item" onclick="setFilter('combos')">
+            <span class="icon">🎫</span>
+            <span>Combos</span>
+        </div>
     </nav>
 
     <script>
         const container = document.getElementById('liveContent');
+        const combosContainer = document.getElementById('combosContent');
         const searchInput = document.getElementById('searchInput');
         
         const countAllEl = document.getElementById('countAll');
         const countLiveEl = document.getElementById('countLive');
         const countPreEl = document.getElementById('countPre');
         const countFavEl = document.getElementById('countFav');
+        const countCombosEl = document.getElementById('countCombos');
         
         const tabAllBtn = document.getElementById('tabAll');
         const tabLiveBtn = document.getElementById('tabLive');
         const tabPreBtn = document.getElementById('tabPre');
         const tabFavBtn = document.getElementById('tabFav');
+        const tabCombosBtn = document.getElementById('tabCombos');
 
         const navAll = document.getElementById('navAll');
         const navLive = document.getElementById('navLive');
         const navPre = document.getElementById('navPre');
         const navFav = document.getElementById('navFav');
+        const navCombos = document.getElementById('navCombos');
 
         const connectionStatus = document.getElementById('connectionStatus');
         const connectionText = document.getElementById('connectionText');
@@ -266,6 +328,12 @@
         let isSoundEnabled = localStorage.getItem('flashscore_sound') === 'true';
         let failedPollCount = 0;
         window.latestGames = [];
+
+        // 🎫 ÉTAT COMBINÉS M1 & M2
+        let globalCombosData = null;
+        let currentMethod = 'm1'; // 'm1' ou 'm2'
+        let currentComboFilter = 'ALL'; // 'ALL', 'LIVE', 'WON', 'LOST', 'PENDING'
+        let currentComboStake = 3;
 
         let favoritesSet = new Set(JSON.parse(localStorage.getItem('flashscore_favs') || '[]'));
         let expandedSet = new Set(JSON.parse(localStorage.getItem('flashscore_expanded') || '[]'));
@@ -386,8 +454,8 @@
 
         function setFilter(tab) {
             activeTab = tab;
-            [tabAllBtn, tabLiveBtn, tabPreBtn, tabFavBtn].forEach(btn => btn.className = 'tab-btn');
-            [navAll, navLive, navPre, navFav].forEach(nav => nav.className = 'nav-item');
+            [tabAllBtn, tabLiveBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
+            [navAll, navLive, navPre, navFav, navCombos].forEach(nav => { if (nav) nav.className = 'nav-item'; });
 
             if (tab === 'all') {
                 tabAllBtn.classList.add('active'); navAll.classList.add('active');
@@ -397,9 +465,19 @@
                 tabPreBtn.classList.add('active-pre'); navPre.classList.add('active-pre');
             } else if (tab === 'fav') {
                 tabFavBtn.classList.add('active-fav'); navFav.classList.add('active-fav');
+            } else if (tab === 'combos') {
+                tabCombosBtn.classList.add('active-combos'); navCombos.classList.add('active-combos');
             }
 
-            if (window.latestGames) renderFlashscore(window.latestGames);
+            if (tab === 'combos') {
+                container.style.display = 'none';
+                combosContainer.style.display = 'block';
+                renderCombosView();
+            } else {
+                container.style.display = 'block';
+                combosContainer.style.display = 'none';
+                if (window.latestGames) renderFlashscore(window.latestGames);
+            }
         }
 
         function getStatusPriority(g) {
@@ -540,14 +618,18 @@
                 else if (g.status_type === 'FINISHED') statusBadgeText = `TERMINÉ`;
 
                 if (isRecentGoal) statusBadgeText = `⚽ BUT ! ${g.minute}`;
+                const comboTag = getComboTagForGame(g);
 
                 return `
                 <div class="match-card-expanded ${isRecentGoal ? 'goal-flash' : ''}" onclick="toggleExpand('${key}')">
                     <div class="expanded-header-line">
                         <span class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</span>
-                        <span class="live-status-tag" style="color: ${isRecentGoal ? '#ef4444' : (g.status_type === 'LIVE' ? '#10b981' : (g.status_type === 'PRE_MATCH' ? '#3b82f6' : '#8b949e'))}">
-                            ${statusBadgeText}
-                        </span>
+                        <div style="display:flex; align-items:center; gap:4px;">
+                            ${comboTag ? `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${comboTag.method}', ${comboTag.num})">${comboTag.label}</span>` : ''}
+                            <span class="live-status-tag" style="color: ${isRecentGoal ? '#ef4444' : (g.status_type === 'LIVE' ? '#10b981' : (g.status_type === 'PRE_MATCH' ? '#3b82f6' : '#8b949e'))}">
+                                ${statusBadgeText}
+                            </span>
+                        </div>
                     </div>
 
                     <div class="teams-score-row">
@@ -565,15 +647,357 @@
             if (g.status_type === 'PRE_MATCH') statusClass += ' pre-match';
             else if (g.status_type === 'FINISHED') statusClass += ' finished';
 
+            const comboTag = getComboTagForGame(g);
+
             return `
             <div class="match-row-compact" onclick="toggleExpand('${key}')">
                 <div class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
                 <div class="${statusClass}">${statusText}</div>
                 <div class="home-col">${g.dom}</div>
                 <div class="score-pill-compact">${g.status_type === 'PRE_MATCH' ? (g.kickoff || 'VS') : `${g.score_dom} - ${g.score_ext}`}</div>
-                <div class="away-col">${g.ext}</div>
+                <div class="away-col">${g.ext} ${comboTag ? `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${comboTag.method}', ${comboTag.num})">${comboTag.label}</span>` : ''}</div>
             </div>`;
         }
+
+        // ==========================================
+        // 🎫 LOGIQUE COMBINÉS MÉTHODE 1 & MÉTHODE 2
+        // ==========================================
+        function cleanStr(s) {
+            return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function isM2Conform(c) {
+            if ((c.odds || 0) < 3.50) return false;
+            for (let leg of ['m1', 'm2']) {
+                const m = c[leg] || {};
+                if ((m.odds || 0) < 1.30) return false;
+                const sc = m.domination_score;
+                if (sc !== undefined && sc !== null && sc < 35) return false;
+                if (m.market === 'OVER_15' || m.market === 'BTTS') return false;
+                if (m.fav_team === 'Over 1.5 Buts' || m.fav_team === 'Les 2 Marquent') return false;
+                if (m.fav_side && m.fav_side !== 'dom') return false;
+                if (m.fav_team && m.away && m.fav_team === m.away) return false;
+                if (m.away_odds && m.odds >= m.away_odds) return false;
+            }
+            return true;
+        }
+
+        function getComboTagForGame(g) {
+            if (!globalCombosData) return null;
+            const ch = cleanStr(g.dom);
+            const ca = cleanStr(g.ext);
+            if (!ch || !ca) return null;
+
+            // Cherche dans Méthode 1
+            const m1List = globalCombosData.combos_today || [];
+            for (let c of m1List) {
+                for (let leg of [c.m1, c.m2]) {
+                    if (!leg) continue;
+                    const lh = cleanStr(leg.home);
+                    const la = cleanStr(leg.away);
+                    if ((lh.includes(ch) || ch.includes(lh)) && (la.includes(ca) || ca.includes(la))) {
+                        return { method: 'm1', num: c.email_ticket_num || c.ticket_num, label: `🎫 M1 #${c.email_ticket_num || c.ticket_num}` };
+                    }
+                }
+            }
+
+            // Cherche dans Méthode 2
+            const m2List = globalCombosData.methode2_combos || [];
+            for (let c of m2List) {
+                if (!isM2Conform(c)) continue;
+                for (let leg of [c.m1, c.m2]) {
+                    if (!leg) continue;
+                    const lh = cleanStr(leg.home);
+                    const la = cleanStr(leg.away);
+                    if ((lh.includes(ch) || ch.includes(lh)) && (la.includes(ca) || ca.includes(la))) {
+                        return { method: 'm2', num: c.email_ticket_num || c.ticket_num, label: `🎯 M2 #${c.email_ticket_num || c.ticket_num}` };
+                    }
+                }
+            }
+            return null;
+        }
+
+        function openComboFromTag(e, method, ticketNum) {
+            if (e) e.stopPropagation();
+            currentMethod = method;
+            setFilter('combos');
+        }
+
+        function setCombosMethod(m) {
+            currentMethod = m;
+            renderCombosView();
+        }
+
+        function setCombosFilter(f) {
+            currentComboFilter = f;
+            renderCombosView();
+        }
+
+        function setComboStake(stake) {
+            currentComboStake = stake;
+            renderCombosView();
+        }
+
+        function pinComboToFavs(e, h1, a1, h2, a2) {
+            if (e) e.stopPropagation();
+            if (!window.latestGames) return;
+            let pinned = 0;
+
+            [ [h1, a1], [h2, a2] ].forEach(([h, a]) => {
+                const ch = cleanStr(h);
+                const ca = cleanStr(a);
+                for (const g of window.latestGames) {
+                    const gh = cleanStr(g.dom);
+                    const ga = cleanStr(g.ext);
+                    if ((gh.includes(ch) || ch.includes(gh)) && (ga.includes(ca) || ca.includes(ga))) {
+                        favoritesSet.add(g.id);
+                        expandedSet.add(g.id);
+                        pinned++;
+                        break;
+                    }
+                }
+            });
+
+            localStorage.setItem('flashscore_favs', JSON.stringify(Array.from(favoritesSet)));
+            localStorage.setItem('flashscore_expanded', JSON.stringify(Array.from(expandedSet)));
+            if (pinned > 0) {
+                alert(`✅ ${pinned} match(s) épinglé(s) dans vos Favoris ⭐ ! Alerte but activée.`);
+            } else {
+                alert(`Matchs ajoutés. Ils apparaîtront au sommet des favoris dès leur apparition dans le flux.`);
+            }
+            countFavEl.textContent = favoritesSet.size;
+            renderCombosView();
+        }
+
+        function renderCombosView() {
+            if (!globalCombosData) {
+                combosContainer.innerHTML = '<div class="empty-state">Chargement des combinés en direct...</div>';
+                return;
+            }
+
+            const m1List = globalCombosData.combos_today || [];
+            const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
+            const activeList = (currentMethod === 'm1') ? m1List : m2List;
+
+            // KPIs
+            let won = 0, lost = 0, live = 0, upcoming = 0;
+            let profitUnits = 0.0;
+
+            activeList.forEach(c => {
+                if (c.ticket_status === 'WON') {
+                    won++;
+                    profitUnits += (c.odds - 1.0);
+                } else if (c.ticket_status === 'LOST') {
+                    lost++;
+                    profitUnits -= 1.0;
+                } else if (c.ticket_status === 'LIVE') {
+                    live++;
+                } else {
+                    upcoming++;
+                }
+            });
+
+            const decided = won + lost;
+            const winRate = decided > 0 ? ((won / decided) * 100).toFixed(1) : '0.0';
+            const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
+            const profitEur = (profitUnits * currentComboStake).toFixed(2);
+
+            // Filtrage des tickets
+            let filtered = activeList.filter(c => {
+                if (currentComboFilter === 'LIVE') return c.ticket_status === 'LIVE';
+                if (currentComboFilter === 'WON') return c.ticket_status === 'WON';
+                if (currentComboFilter === 'LOST') return c.ticket_status === 'LOST';
+                if (currentComboFilter === 'PENDING') return c.ticket_status === 'PENDING';
+                return true;
+            });
+
+            let html = `
+            <div class="combos-container-view">
+                <!-- SÉLECTEUR DE MÉTHODE -->
+                <div class="combos-subtabs">
+                    <div class="subtab-btn ${currentMethod === 'm1' ? 'active' : ''}" onclick="setCombosMethod('m1')">
+                        🎟️ Méthode 1 (+2b) (${m1List.length})
+                    </div>
+                    <div class="subtab-btn ${currentMethod === 'm2' ? 'active-m2' : ''}" onclick="setCombosMethod('m2')">
+                        🎯 Méthode 2 (@3.50+) (${m2List.length})
+                    </div>
+                </div>
+
+                <!-- KPI BANNER -->
+                <div class="combos-kpi-grid">
+                    <div class="combos-kpi-card">
+                        <div class="combos-kpi-val" style="color:#10b981;">${won}/${decided}</div>
+                        <div class="combos-kpi-sub">Gagnés</div>
+                    </div>
+                    <div class="combos-kpi-card">
+                        <div class="combos-kpi-val" style="color:#f59e0b;">${winRate}%</div>
+                        <div class="combos-kpi-sub">Réussite</div>
+                    </div>
+                    <div class="combos-kpi-card">
+                        <div class="combos-kpi-val" style="color:${profitEur >= 0 ? '#10b981' : '#ef4444'};">${profitEur >= 0 ? '+' : ''}${profitEur} €</div>
+                        <div class="combos-kpi-sub">Gain (${profitUnits >= 0 ? '+' : ''}${profitUnits.toFixed(1)}U)</div>
+                    </div>
+                    <div class="combos-kpi-card">
+                        <div class="combos-kpi-val" style="color:${roiPct >= 0 ? '#10b981' : '#ef4444'};">${roiPct >= 0 ? '+' : ''}${roiPct}%</div>
+                        <div class="combos-kpi-sub">ROI</div>
+                    </div>
+                </div>
+
+                <!-- SIMULATEUR DE MISE & FILTRES -->
+                <div class="stake-bar-mini">
+                    <span>Mise / Ticket :</span>
+                    <div style="display:flex; gap:3px;">
+                        ${[3, 5, 10, 20].map(s => `
+                            <button class="stake-btn-mini ${currentComboStake === s ? 'active' : ''}" onclick="setComboStake(${s})">${s}€</button>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="combos-filters-row">
+                    <button class="cfilter-btn ${currentComboFilter === 'ALL' ? 'active' : ''}" onclick="setCombosFilter('ALL')">Tous (${activeList.length})</button>
+                    <button class="cfilter-btn ${currentComboFilter === 'LIVE' ? 'active' : ''}" onclick="setCombosFilter('LIVE')">🔴 En direct (${live})</button>
+                    <button class="cfilter-btn ${currentComboFilter === 'WON' ? 'active' : ''}" onclick="setCombosFilter('WON')">✅ Gagnés (${won})</button>
+                    <button class="cfilter-btn ${currentComboFilter === 'LOST' ? 'active' : ''}" onclick="setCombosFilter('LOST')">❌ Perdus (${lost})</button>
+                    <button class="cfilter-btn ${currentComboFilter === 'PENDING' ? 'active' : ''}" onclick="setCombosFilter('PENDING')">⏳ À venir (${upcoming})</button>
+                </div>
+            `;
+
+            if (filtered.length === 0) {
+                html += '<div class="empty-state">Aucun combiné dans ce filtre.</div></div>';
+                combosContainer.innerHTML = html;
+                return;
+            }
+
+            // Cartes de tickets
+            html += filtered.map(c => {
+                const isWon = (c.ticket_status === 'WON');
+                const isLost = (c.ticket_status === 'LOST');
+                const isLive = (c.ticket_status === 'LIVE');
+
+                let cardClass = 'ticket-card';
+                if (isWon) cardClass += ' is-won';
+                else if (isLost) cardClass += ' is-lost';
+                else if (isLive) cardClass += ' is-live';
+
+                let resBadge = '<span class="ticket-res-badge pending">⏳ À VENIR</span>';
+                let gainText = `Gain pot. : ${(c.odds * currentComboStake).toFixed(2)} €`;
+                let gainColor = '#38bdf8';
+
+                if (isWon) {
+                    resBadge = '<span class="ticket-res-badge won">✅ GAGNÉ</span>';
+                    const net = ((c.odds - 1.0) * currentComboStake).toFixed(2);
+                    gainText = `+${net} € Net`;
+                    gainColor = '#10b981';
+                } else if (isLost) {
+                    resBadge = '<span class="ticket-res-badge lost">❌ PERDU</span>';
+                    gainText = `-${currentComboStake.toFixed(2)} €`;
+                    gainColor = '#ef4444';
+                } else if (isLive) {
+                    resBadge = '<span class="ticket-res-badge live">🔴 EN COURS</span>';
+                    gainText = `En jeu (${(c.odds * currentComboStake).toFixed(2)} €)`;
+                    gainColor = '#f59e0b';
+                }
+
+                const title = c.email_ticket_num 
+                    ? `TICKET #${c.email_ticket_num} DU MAIL` 
+                    : `COMBINÉ #${c.ticket_num}`;
+
+                function renderLegHtml(m) {
+                    if (!m) return '';
+                    const legWon = m.selection_status && m.selection_status.startsWith('WON');
+                    const legLost = (m.selection_status === 'LOST');
+                    const legLive = (m.status === 'LIVE');
+
+                    let legBadge = '<span class="ticket-leg-badge" style="background:rgba(148,163,184,0.15); color:#94a3b8;">⏳ À venir</span>';
+                    if (m.selection_status === 'WON_LEAD2') {
+                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">👑 +2b Gagné</span>';
+                    } else if (legWon) {
+                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">✅ Victoire</span>';
+                    } else if (legLost) {
+                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(239,68,68,0.2); color:#f87171;">❌ Perdu</span>';
+                    } else if (legLive) {
+                        legBadge = `<span class="ticket-leg-badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">🔴 ${m.minute || 'Live'}</span>`;
+                    }
+
+                    const favLabel = m.fav_team ? `👑 ${m.fav_team}` : (m.home || '');
+                    const score = (m.home_score !== null && m.home_score !== undefined && m.away_score !== null && m.away_score !== undefined)
+                        ? `${m.home_score} - ${m.away_score}`
+                        : (m.score_display || 'VS');
+
+                    return `
+                    <div class="ticket-leg">
+                        <div class="ticket-leg-left">
+                            <div class="ticket-leg-match">${m.home} vs ${m.away}</div>
+                            <div class="ticket-leg-sub">
+                                <span>🕒 ${m.time ? m.time.replace(' à ', ' ') : ''}</span>
+                                <span class="ticket-leg-fav">${favLabel} @${(m.odds || 0).toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <div class="ticket-leg-right">
+                            <div class="ticket-leg-score">${score}</div>
+                            ${legBadge}
+                        </div>
+                    </div>`;
+                }
+
+                return `
+                <div class="${cardClass}">
+                    <div class="ticket-header">
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span>${title}</span>
+                            <span class="ticket-odds-badge">@${(c.odds || 0).toFixed(2)}</span>
+                            <button class="pin-match-btn" onclick="pinComboToFavs(event, '${c.m1?.home||''}', '${c.m1?.away||''}', '${c.m2?.home||''}', '${c.m2?.away||''}')" title="Épingler dans vos favoris Flashscore">⭐ Suivre</button>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            ${resBadge}
+                            <span style="color:${gainColor}; font-size:10px; font-weight:800;">${gainText}</span>
+                        </div>
+                    </div>
+                    <div class="ticket-legs">
+                        ${renderLegHtml(c.m1)}
+                        ${renderLegHtml(c.m2)}
+                    </div>
+                </div>`;
+            }).join('');
+
+            html += '</div>';
+            combosContainer.innerHTML = html;
+        }
+
+        async function fetchCombosData() {
+            try {
+                // Essai 1 : Serveur local /api/combos
+                let res = await fetch('/api/combos?t=' + Date.now());
+                if (!res.ok) {
+                    // Essai 2 : Fallback sur GitHub Pages si en ligne sur Vercel
+                    res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
+                }
+                if (res.ok) {
+                    globalCombosData = await res.json();
+                    const m1Count = (globalCombosData.combos_today || []).length;
+                    const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
+                    if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
+                    if (activeTab === 'combos') renderCombosView();
+                }
+            } catch(e) {
+                try {
+                    const res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
+                    if (res.ok) {
+                        globalCombosData = await res.json();
+                        const m1Count = (globalCombosData.combos_today || []).length;
+                        const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
+                        if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
+                        if (activeTab === 'combos') renderCombosView();
+                    }
+                } catch(err) {}
+            }
+        }
+
+        function pollCombosLoop() {
+            fetchCombosData();
+            setTimeout(pollCombosLoop, 15000);
+        }
+        pollCombosLoop();
 
         async function pollLiveLoop() {
             try {
