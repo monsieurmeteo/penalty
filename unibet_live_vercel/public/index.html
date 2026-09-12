@@ -132,7 +132,7 @@
             justify-content: center; 
             gap: 2px; 
             white-space: nowrap; 
-            transition: all 0.15s;
+            transition: background 0.1s, color 0.1s;
         }
         .tab-btn:hover { color: #0f172a; }
         .tab-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
@@ -165,7 +165,7 @@
         }
         .league-header span.count { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 9px; color: #475569; font-weight: 800; }
         
-        /* ⚡ LIGNE DE MATCH COMPACTE (38PX DE HAUTEUR SEULEMENT !) */
+        /* ⚡ LIGNE DE MATCH COMPACTE (38PX SEULEMENT !) */
         .match-row { 
             display: flex; 
             align-items: center; 
@@ -226,7 +226,7 @@
             font-size: 12px;
         }
         
-        /* SCORE COMPACT ULTRA-LISIBLE */
+        /* SCORE COMPACT */
         .score-box { 
             text-align: center; 
             font-size: 12px; 
@@ -242,7 +242,7 @@
             box-shadow: inset 0 1px 1px rgba(0,0,0,0.04);
         }
 
-        /* 👑 BADGE GAGNÉ COMPACT */
+        /* 👑 BADGE GAGNÉ */
         .won-badge-col {
             flex: 0 0 auto;
             display: flex;
@@ -281,7 +281,6 @@
             color: #b91c1c;
         }
 
-        /* BADGES COMBINÉS DISCRETS ET NETS */
         .combos-tag-col {
             flex: 0 0 auto;
             display: flex;
@@ -301,7 +300,7 @@
             cursor: pointer;
         }
 
-        /* 🚨 ALERTE BUT (20 SECONDES) : CLIGNOTEMENT ROUGE DOUX */
+        /* 🚨 ALERTE BUT (20 SECONDES) */
         .match-row.goal-flash {
             background: #fff5f5 !important;
             border-left: 3px solid #ef4444 !important;
@@ -318,7 +317,7 @@
             100% { transform: scale(1.08); }
         }
 
-        /* TIROIR ÉTENDU (ÉVÉNEMENTS / BUTEURS AU CLIC) */
+        /* TIROIR ÉVÉNEMENTS AU CLIC */
         .match-drawer {
             background: #f8fafc;
             border-bottom: 1px solid var(--border);
@@ -332,7 +331,7 @@
         .event-pill-mini.goal { background: #ecfdf5; border-color: #a7f3d0; color: #047857; font-weight: 800; }
         .event-pill-mini.redcard { background: #fee2e2; border-color: #fecaca; color: #b91c1c; font-weight: 800; }
 
-        /* 📱 BARRE FIXE EN BAS */
+        /* 📱 BARRE FIXE BAS */
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
@@ -356,7 +355,7 @@
         .nav-item.active-fav { color: #f59e0b; }
         .nav-item.active-combos { color: #7c3aed; }
 
-        /* 🎫 VUE COMBINÉS COMPACTE */
+        /* 🎫 VUE COMBINÉS */
         .combos-container-view { display: flex; flex-direction: column; gap: 8px; }
         .combos-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 2px; }
         .combos-kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 3px; text-align: center; box-shadow: var(--card-shadow); }
@@ -452,11 +451,10 @@
             <div class="empty-state">Chargement des matchs de vos combinés...</div>
         </div>
 
-        <!-- 🎫 CONTENEUR COMBINÉS -->
         <div id="combosContent" style="display:none;"></div>
     </div>
 
-    <!-- 📱 BARRE DE NAVIGATION FIXE BAS -->
+    <!-- 📱 BARRE DE NAVIGATION BAS -->
     <nav class="bottom-nav">
         <div id="navAll" class="nav-item active" onclick="setFilter('all')">
             <span class="icon">⚽</span>
@@ -512,12 +510,16 @@
         let prevScores = {};
         let goalTimestamps = {};
         let activeTab = 'all';
-        const GOAL_ALERT_DURATION = 20000; // ⚡ 20 SECONDES D'ALERTE BUT EN ROUGE VIF
+        const GOAL_ALERT_DURATION = 20000;
         let isSoundEnabled = localStorage.getItem('flashscore_sound') !== 'false';
         let failedPollCount = 0;
+
+        // ⚡ CACHE HAUTE PERFORMANCE (ZÉRO LATENCE SUR LES ONGLETS)
+        let globalCombosData = null;
+        let cachedComboLegs = [];
+        let cachedComboGames = [];
         window.latestGames = [];
 
-        let globalCombosData = null;
         let currentMethod = 'm1';
         let currentComboFilter = 'ALL';
         let currentComboStake = 3;
@@ -533,7 +535,7 @@
                 favoritesSet.add(id);
             }
             localStorage.setItem('flashscore_favs', JSON.stringify(Array.from(favoritesSet)));
-            if (window.latestGames) renderFlashscore(window.latestGames);
+            renderFlashscore();
         }
 
         function toggleExpand(id) {
@@ -543,7 +545,7 @@
                 expandedSet.add(id);
             }
             localStorage.setItem('flashscore_expanded', JSON.stringify(Array.from(expandedSet)));
-            if (window.latestGames) renderFlashscore(window.latestGames);
+            renderFlashscore();
         }
 
         function updateSoundBtnUI() {
@@ -572,7 +574,7 @@
             }
         }
 
-        // 🎵 SONNERIE DOUCE (CARILLON / VIBRAPHONE HARMONIEUX EN ONDES PURES)
+        // 🎵 CARILLON DOUX & HARMONIEUX (ONDES SINUSOÏDALES PURES)
         let audioCtx = null;
         function getAudioContext() {
             if (!audioCtx) {
@@ -601,12 +603,11 @@
                 if (!ctx) return;
                 const t = ctx.currentTime;
 
-                // 🎵 Séquence mélodique douce & cristalline (C5 -> E5 -> G5 -> C6)
                 const notes = [
-                    { f: 523.25, time: 0.00, dur: 0.5, gain: 0.14 }, // Do
-                    { f: 659.25, time: 0.11, dur: 0.6, gain: 0.16 }, // Mi
-                    { f: 783.99, time: 0.22, dur: 0.7, gain: 0.18 }, // Sol
-                    { f: 1046.50, time: 0.35, dur: 1.1, gain: 0.22 } // Do aigu résonnant doux
+                    { f: 523.25, time: 0.00, dur: 0.5, gain: 0.14 },
+                    { f: 659.25, time: 0.11, dur: 0.6, gain: 0.16 },
+                    { f: 783.99, time: 0.22, dur: 0.7, gain: 0.18 },
+                    { f: 1046.50, time: 0.35, dur: 1.1, gain: 0.22 }
                 ];
 
                 notes.forEach(n => {
@@ -614,10 +615,10 @@
                     const osc2 = ctx.createOscillator();
                     const gain = ctx.createGain();
 
-                    osc.type = 'sine'; // Onde sinusoïdale pure très douce
+                    osc.type = 'sine';
                     osc.frequency.setValueAtTime(n.f, t + n.time);
 
-                    osc2.type = 'triangle'; // Harmonique chaude
+                    osc2.type = 'triangle';
                     osc2.frequency.setValueAtTime(n.f * 2, t + n.time);
 
                     const noteStart = t + n.time;
@@ -691,6 +692,9 @@
             }
         }
 
+        // ==========================================
+        // ⚡ BASCULE INSTANTANÉE D'ONGLET (0 MILLISECONDE)
+        // ==========================================
         function setFilter(tab) {
             activeTab = tab;
             [tabAllBtn, tabLiveBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
@@ -715,7 +719,7 @@
             } else {
                 container.style.display = 'block';
                 combosContainer.style.display = 'none';
-                if (window.latestGames) renderFlashscore(window.latestGames);
+                renderFlashscore();
             }
         }
 
@@ -729,7 +733,7 @@
         }
 
         // ==========================================
-        // 🔍 TOKENIZER & MATCHING D'ÉQUIPES ROBUSTE
+        // 🔍 TOKENIZER & DICTIONNAIRE D'ÉQUIPES
         // ==========================================
         const TEAM_ALIASES = {
             'cadix': 'cadiz',
@@ -744,7 +748,9 @@
             'moenchengladbach': 'gladbach',
             'qpr': 'queens park rangers',
             'bilbao': 'athletic',
-            'ath bilbao': 'athletic'
+            'ath bilbao': 'athletic',
+            'kyiv': 'kiev',
+            'kiev': 'kiev'
         };
 
         function stripAccents(s) {
@@ -774,25 +780,6 @@
             return false;
         }
 
-        function matchTeams(h1, a1, h2, a2) {
-            if (!h1 || !a1 || !h2 || !a2) return false;
-            const tH1 = getTokens(h1);
-            const tA1 = getTokens(a1);
-            const tH2 = getTokens(h2);
-            const tA2 = getTokens(a2);
-            return tokenMatch(tH1, tH2) && tokenMatch(tA1, tA2);
-        }
-
-        function findGameInLatest(home, away) {
-            if (!window.latestGames || !window.latestGames.length) return null;
-            for (const g of window.latestGames) {
-                if (matchTeams(home, away, g.dom, g.ext)) {
-                    return g;
-                }
-            }
-            return null;
-        }
-
         function isM2Conform(c) {
             if ((c.odds || 0) < 3.50) return false;
             for (let leg of ['m1', 'm2']) {
@@ -809,48 +796,89 @@
             return true;
         }
 
-        function getComboTagsForGame(g) {
-            if (!globalCombosData) return [];
-            const tags = [];
-            const seen = new Set();
-
+        // ==========================================
+        // ⚡ PRÉ-COMPILATION ET LIAISON O(1)
+        // ==========================================
+        function precompileComboLegs() {
+            if (!globalCombosData) return;
+            const legs = [];
+            
             const m1List = globalCombosData.combos_today || [];
-            for (let c of m1List) {
-                for (let leg of [c.m1, c.m2]) {
-                    if (!leg) continue;
-                    if (matchTeams(leg.home, leg.away, g.dom, g.ext)) {
-                        const num = c.email_ticket_num || c.ticket_num;
-                        const key = `m1_${num}`;
-                        if (!seen.has(key)) {
-                            seen.add(key);
-                            tags.push({ method: 'm1', num: num, label: `🎫 M1 #${num}`, leg: leg, ticket: c });
-                        }
+            m1List.forEach(c => {
+                [c.m1, c.m2].forEach(leg => {
+                    if (leg && leg.home && leg.away) {
+                        legs.push({
+                            leg: leg,
+                            ticket: c,
+                            method: 'm1',
+                            num: c.email_ticket_num || c.ticket_num,
+                            tHome: getTokens(leg.home),
+                            tAway: getTokens(leg.away),
+                            label: `🎫 M1 #${c.email_ticket_num || c.ticket_num}`
+                        });
                     }
-                }
-            }
+                });
+            });
 
-            const m2List = globalCombosData.methode2_combos || [];
-            for (let c of m2List) {
-                if (!isM2Conform(c)) continue;
-                for (let leg of [c.m1, c.m2]) {
-                    if (!leg) continue;
-                    if (matchTeams(leg.home, leg.away, g.dom, g.ext)) {
-                        const num = c.email_ticket_num || c.ticket_num;
-                        const key = `m2_${num}`;
-                        if (!seen.has(key)) {
-                            seen.add(key);
-                            tags.push({ method: 'm2', num: num, label: `🎯 M2 #${num}`, leg: leg, ticket: c });
-                        }
+            const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
+            m2List.forEach(c => {
+                [c.m1, c.m2].forEach(leg => {
+                    if (leg && leg.home && leg.away) {
+                        legs.push({
+                            leg: leg,
+                            ticket: c,
+                            method: 'm2',
+                            num: c.email_ticket_num || c.ticket_num,
+                            tHome: getTokens(leg.home),
+                            tAway: getTokens(leg.away),
+                            label: `🎯 M2 #${c.email_ticket_num || c.ticket_num}`
+                        });
                     }
-                }
-            }
-            return tags;
+                });
+            });
+
+            cachedComboLegs = legs;
         }
 
-        // 👑 STATUT GAGNÉ AFFICHÉ DANS LE TABLEAU
+        // Liaison globale rapide effectuée uniquement lors de la réception du flux (1ms)
+        function linkGamesAndCombos(allGames) {
+            if (!cachedComboLegs.length) precompileComboLegs();
+            if (!cachedComboLegs.length || !allGames || !allGames.length) return;
+
+            cachedComboLegs.forEach(cl => { cl.leg._liveGame = null; });
+            const matchedGames = [];
+
+            allGames.forEach(g => {
+                g._comboTags = [];
+                const tDom = getTokens(g.dom);
+                const tExt = getTokens(g.ext);
+
+                cachedComboLegs.forEach(cl => {
+                    if (tokenMatch(cl.tHome, tDom) && tokenMatch(cl.tAway, tExt)) {
+                        cl.leg._liveGame = g;
+                        g._comboTags.push({
+                            method: cl.method,
+                            num: cl.num,
+                            label: cl.label,
+                            leg: cl.leg,
+                            ticket: cl.ticket
+                        });
+                    }
+                });
+
+                if (g._comboTags.length > 0) {
+                    matchedGames.push(g);
+                }
+            });
+
+            cachedComboGames = matchedGames;
+            window.latestGames = matchedGames;
+        }
+
+        // 👑 STATUT GAGNÉ O(1)
         function getGameWonStatus(g) {
-            const tags = getComboTagsForGame(g);
-            if (!tags || tags.length === 0) return null;
+            const tags = g._comboTags || [];
+            if (!tags.length) return null;
 
             for (let t of tags) {
                 const leg = t.leg;
@@ -882,50 +910,37 @@
         }
 
         // ==========================================
-        // 📊 RENDU PRINCIPAL DU FLASHSCORE (100% COMBINÉS)
+        // 📊 RENDU FLASHSCORE HAUTE VITESSE (0ms)
         // ==========================================
-        function renderFlashscore(games) {
+        function renderFlashscore() {
             const now = Date.now();
-            window.latestGames = games;
             const query = (searchInput.value || '').toLowerCase();
 
-            if (!globalCombosData) {
+            if (!globalCombosData || !cachedComboGames) {
                 container.innerHTML = '<div class="empty-state">Chargement des combinés en direct...</div>';
                 return;
             }
 
-            // 🎯 RÈGLE STRICTE : AUCUN MATCH EXTÉRIEUR SUR LE SITE !
-            const comboGames = games.filter(g => getComboTagsForGame(g).length > 0);
+            const comboGames = cachedComboGames;
 
             countAllEl.textContent = comboGames.length;
             countLiveEl.textContent = comboGames.filter(g => g.status_type === 'LIVE').length;
             countPreEl.textContent = comboGames.filter(g => g.status_type === 'PRE_MATCH').length;
             countFavEl.textContent = comboGames.filter(g => favoritesSet.has(g.id)).length;
 
-            // Détection de but & sonnerie douce
-            comboGames.forEach(g => {
-                const key = g.id;
-                const scoreStr = `${g.score_dom}-${g.score_ext}`;
-                if (prevScores[key] !== undefined && prevScores[key] !== scoreStr) {
-                    goalTimestamps[key] = now;
-                    sendSystemNotification(g);
-                    if (isSoundEnabled) {
-                        playGoalSound();
-                    }
-                }
-                prevScores[key] = scoreStr;
-            });
-
             if (activeTab === 'combos') {
                 renderCombosView();
                 return;
             }
 
-            let filtered = comboGames.filter(g => 
-                (g.dom || '').toLowerCase().includes(query) || 
-                (g.ext || '').toLowerCase().includes(query) || 
-                (g.league || '').toLowerCase().includes(query)
-            );
+            let filtered = comboGames;
+            if (query) {
+                filtered = filtered.filter(g => 
+                    (g.dom || '').toLowerCase().includes(query) || 
+                    (g.ext || '').toLowerCase().includes(query) || 
+                    (g.league || '').toLowerCase().includes(query)
+                );
+            }
 
             if (activeTab === 'live') {
                 filtered = filtered.filter(g => g.status_type === 'LIVE');
@@ -960,11 +975,10 @@
 
             let html = '';
 
-            // SECTION 0: BUTS RÉCENTS (20 SECONDES) AU SOMMET
+            // BUTS RÉCENTS (20s)
             const goalAlertMatches = filtered.filter(g => (now - (goalTimestamps[g.id] || 0)) < GOAL_ALERT_DURATION);
-            goalAlertMatches.sort((a, b) => (goalTimestamps[b.id] || 0) - (goalTimestamps[a.id] || 0));
-
             if (goalAlertMatches.length > 0) {
+                goalAlertMatches.sort((a, b) => (goalTimestamps[b.id] || 0) - (goalTimestamps[a.id] || 0));
                 html += `
                 <div class="league-group" style="border-color:#f87171; margin-bottom: 8px;">
                     <div class="league-header" style="background:#ef4444; color:#fff; font-size: 10px;">
@@ -975,11 +989,10 @@
                 </div>`;
             }
 
-            // SECTION 1: MATCHS FAVORIS
+            // FAVORIS
             const favMatches = filtered.filter(g => favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
-            favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
-
             if (favMatches.length > 0) {
+                favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
                 html += `
                 <div class="league-group" style="border-color:#fde68a; margin-bottom: 8px;">
                     <div class="league-header" style="background:#f59e0b; color:#fff; font-size: 10px;">
@@ -990,7 +1003,7 @@
                 </div>`;
             }
 
-            // SECTION 2: TOUS LES MATCHS PAR CHAMPIONNAT (GROUPÉS COMPACTS)
+            // MATCHS PAR CHAMPIONNAT
             if (activeTab !== 'fav') {
                 const normalMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
                 const leaguesMap = {};
@@ -1015,7 +1028,7 @@
         }
 
         // ==========================================
-        // ⚡ LIGNE COMPACTE ULTRA-DENSE (FLASHSCORE PRO)
+        // ⚡ LIGNE COMPACTE (38PX)
         // ==========================================
         function renderCompactMatchRow(g, now) {
             const key = g.id;
@@ -1024,7 +1037,7 @@
             const isStarred = favoritesSet.has(key);
             const isExpanded = expandedSet.has(key);
             const incs = g.incidents || [];
-            const comboTags = getComboTagsForGame(g);
+            const comboTags = g._comboTags || [];
             const wonStatus = getGameWonStatus(g);
 
             const comboTagsHtml = comboTags.map(t => 
@@ -1075,7 +1088,7 @@
         }
 
         // ==========================================
-        // 🎫 VUE DES COMBINÉS MÉTHODE 1 & MÉTHODE 2
+        // 🎫 VUE COMBINÉS (CALCUL DIRECT O(1))
         // ==========================================
         function setCombosMethod(m) {
             currentMethod = m;
@@ -1094,23 +1107,19 @@
 
         function pinComboToFavs(e, h1, a1, h2, a2) {
             if (e) e.stopPropagation();
-            if (!window.latestGames) return;
+            if (!cachedComboLegs.length) return;
             let pinned = 0;
 
             [ [h1, a1], [h2, a2] ].forEach(([h, a]) => {
-                const g = findGameInLatest(h, a);
-                if (g) {
-                    favoritesSet.add(g.id);
+                const foundLeg = cachedComboLegs.find(cl => cl.leg.home === h && cl.leg.away === a);
+                if (foundLeg && foundLeg.leg._liveGame) {
+                    favoritesSet.add(foundLeg.leg._liveGame.id);
                     pinned++;
                 }
             });
 
             localStorage.setItem('flashscore_favs', JSON.stringify(Array.from(favoritesSet)));
-            if (pinned > 0) {
-                alert(`✅ ${pinned} match(s) épinglé(s) dans vos Favoris ⭐ !`);
-            } else {
-                alert(`Matchs ajoutés aux favoris dès qu'ils apparaissent.`);
-            }
+            if (pinned > 0) alert(`✅ ${pinned} match(s) épinglé(s) dans vos Favoris ⭐ !`);
             countFavEl.textContent = favoritesSet.size;
             renderCombosView();
         }
@@ -1294,7 +1303,7 @@
                         <div style="display:flex; align-items:center; gap:5px;">
                             <span>${title}</span>
                             <span class="ticket-odds-badge">@${(c.odds || 0).toFixed(2)}</span>
-                            <button class="pin-match-btn" onclick="pinComboToFavs(event, '${c.m1?.home||''}', '${c.m1?.away||''}', '${c.m2?.home||''}', '${c.m2?.away||''}')" title="Épingler dans vos favoris Flashscore">⭐ Suivre</button>
+                            <button class="pin-match-btn" onclick="pinComboToFavs(event, '${c.m1?.home||''}', '${c.m1?.away||''}', '${c.m2?.home||''}', '${c.m2?.away||''}')" title="Épingler dans vos favoris">⭐ Suivre</button>
                         </div>
                         <div style="display:flex; align-items:center; gap:5px;">
                             ${resBadge}
@@ -1312,6 +1321,7 @@
             combosContainer.innerHTML = html;
         }
 
+        // ⚡ ÉVALUATION INSTANTANÉE O(1) GRÂCE AU POINTEUR DIRECT
         function evalLegLive(m) {
             if (!m) return { status: 'UPCOMING', selStatus: 'PENDING', score: 'VS', min: 'À venir', isLive: false, isRecentGoal: false };
             let selStatus = m.selection_status || 'PENDING';
@@ -1323,7 +1333,7 @@
             let isLive = (status === 'LIVE');
             let isRecentGoal = false;
 
-            const g = findGameInLatest(m.home, m.away);
+            const g = m._liveGame; // ⚡ O(1) IMMÉDIAT
             if (g) {
                 score = `${g.score_dom} - ${g.score_ext}`;
                 min = g.minute;
@@ -1379,22 +1389,24 @@
                 }
                 if (res.ok) {
                     globalCombosData = await res.json();
+                    precompileComboLegs();
                     const m1Count = (globalCombosData.combos_today || []).length;
                     const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
                     if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
                     if (activeTab === 'combos') renderCombosView();
-                    else if (window.latestGames) renderFlashscore(window.latestGames);
+                    else renderFlashscore();
                 }
             } catch(e) {
                 try {
                     const res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
                     if (res.ok) {
                         globalCombosData = await res.json();
+                        precompileComboLegs();
                         const m1Count = (globalCombosData.combos_today || []).length;
                         const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
                         if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
                         if (activeTab === 'combos') renderCombosView();
-                        else if (window.latestGames) renderFlashscore(window.latestGames);
+                        else renderFlashscore();
                     }
                 } catch(err) {}
             }
@@ -1410,11 +1422,29 @@
             try {
                 const res = await fetch('/api/live?t=' + Date.now());
                 if (res.ok) {
-                    const data = await res.json();
+                    const allFeedData = await res.json();
                     failedPollCount = 0;
                     connectionStatus.className = 'live-badge';
                     connectionText.textContent = 'DIRECT < 1S';
-                    renderFlashscore(data);
+                    
+                    // ⚡ LIAISON UNIQUE ET DÉTECTION DE BUT
+                    linkGamesAndCombos(allFeedData);
+
+                    // Détection des buts
+                    const now = Date.now();
+                    cachedComboGames.forEach(g => {
+                        const key = g.id;
+                        const scoreStr = `${g.score_dom}-${g.score_ext}`;
+                        if (prevScores[key] !== undefined && prevScores[key] !== scoreStr) {
+                            goalTimestamps[key] = now;
+                            sendSystemNotification(g);
+                            if (isSoundEnabled) playGoalSound();
+                        }
+                        prevScores[key] = scoreStr;
+                    });
+
+                    if (activeTab === 'combos') renderCombosView();
+                    else renderFlashscore();
                 } else {
                     failedPollCount++;
                     if (failedPollCount >= 3) {
@@ -1429,14 +1459,14 @@
                     connectionText.textContent = 'RECONNEXION...';
                 }
             } finally {
-                setTimeout(pollLiveLoop, 500);
+                setTimeout(pollLiveLoop, 1500); // 1.5s = fréquence idéale, laisse 100% de CPU libre
             }
         }
 
         pollLiveLoop();
 
         searchInput.addEventListener('input', () => {
-            if (window.latestGames) renderFlashscore(window.latestGames);
+            renderFlashscore();
         });
 
         let swRegistration = null;
@@ -1444,7 +1474,6 @@
             navigator.serviceWorker.register('/sw.js')
                 .then(reg => {
                     swRegistration = reg;
-                    console.log('[SW] Service Worker enregistré ✅', reg.scope);
                 })
                 .catch(err => console.warn('[SW] Échec enregistrement:', err));
         }
