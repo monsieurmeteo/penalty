@@ -16,7 +16,7 @@ except Exception:
 # ── Seuils Stratégie Favoris Win & 2 Buts d'Avance (Early Payout) ───────────
 MAX_COTE_FAV           = 2.20  # Cote maximale du favori Unibet 1N2
 MIN_COTE_FAV           = 1.30  # Plancher optimisé : accepte les favoris solides dès 1.30
-MIN_SCORE_FAV_RETAINED = 58    # Score Domination minimal rehaussé (suppression de la tranche Bronze fragile 50-57)
+MIN_SCORE_FAV_RETAINED = 55    # Score Domination minimal (tranche Bronze haute 55-57 réintégrée)
 MIN_SCORE_FAV_SOLID    = 75    # Score AdamChoi pour être qualifié Favori Solide (Or / Platine)
 
 H = {
