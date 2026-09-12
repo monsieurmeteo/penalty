@@ -1,23 +1,13 @@
 {
   "favs": {
-    "3373750": {
-      "match": "LNZ Cherkasy - Obolon Kiev",
-      "league": "Ukraine • D1 Ukraine",
-      "date_str": "Sam. 12/09 à 12h00",
-      "fav_team": "LNZ Cherkasy",
-      "fav_odds": 1.3,
+    "3376863": {
+      "match": "Club Tijuana - Queretaro FC",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Sam. 12/09 à 05h10",
+      "fav_team": "Club Tijuana",
+      "fav_odds": 1.89,
       "p2_fav_odds": null,
-      "fav_score": 55,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3372384": {
-      "match": "Daejeon - Pohang",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "date_str": "Sam. 12/09 à 12h00",
-      "fav_team": "Daejeon",
-      "fav_odds": 1.74,
-      "p2_fav_odds": null,
-      "fav_score": 56,
+      "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
     "3375305": {
@@ -27,18 +17,18 @@
       "fav_team": "Hiroshima",
       "fav_odds": 1.51,
       "p2_fav_odds": null,
-      "fav_score": 55,
+      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
-    "3372631": {
-      "match": "FC Magdeburg - Kaiserslautern",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Sam. 12/09 à 13h00",
-      "fav_team": "FC Magdeburg",
-      "fav_odds": 2.05,
+    "3373750": {
+      "match": "LNZ Cherkasy - Obolon Kiev",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Sam. 12/09 à 12h00",
+      "fav_team": "LNZ Cherkasy",
+      "fav_odds": 1.3,
       "p2_fav_odds": null,
-      "fav_score": 50,
-      "fav_badge": "🥉 BRONZE"
+      "fav_score": 67,
+      "fav_badge": "🥈 ARGENT"
     },
     "3379341": {
       "match": "Tianjin Tigers - Liaoning Sheny",
@@ -47,7 +37,7 @@
       "fav_team": "Tianjin Tigers",
       "fav_odds": 1.82,
       "p2_fav_odds": null,
-      "fav_score": 57,
+      "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     },
     "3376125": {
@@ -57,7 +47,17 @@
       "fav_team": "Nomme Kalju",
       "fav_odds": 1.42,
       "p2_fav_odds": null,
-      "fav_score": 53,
+      "fav_score": 65,
+      "fav_badge": "🥈 ARGENT"
+    },
+    "3378598": {
+      "match": "West Bromwich - Queens Park R.",
+      "league": "Angleterre • Championship",
+      "date_str": "Sam. 12/09 à 13h30",
+      "fav_team": "West Bromwich",
+      "fav_odds": 2.0,
+      "p2_fav_odds": null,
+      "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
     },
     "3360645": {
@@ -67,37 +67,27 @@
       "fav_team": "FC Andorra",
       "fav_odds": 1.48,
       "p2_fav_odds": null,
-      "fav_score": 50,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3378300": {
-      "match": "Guingamp - Annecy FC",
-      "league": "France • Ligue 2 Bkt",
-      "date_str": "Sam. 12/09 à 14h00",
-      "fav_team": "Guingamp",
-      "fav_odds": 2.05,
-      "p2_fav_odds": null,
       "fav_score": 51,
       "fav_badge": "🥉 BRONZE"
     },
-    "3377946": {
-      "match": "FC Felgueiras - Penafiel",
-      "league": "Portugal • D2 Portugal",
+    "3379637": {
+      "match": "AmaZulu - Marumo Gallants",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
       "date_str": "Sam. 12/09 à 15h00",
-      "fav_team": "FC Felgueiras",
-      "fav_odds": 2.15,
+      "fav_team": "AmaZulu",
+      "fav_odds": 1.88,
       "p2_fav_odds": null,
-      "fav_score": 50,
+      "fav_score": 54,
       "fav_badge": "🥉 BRONZE"
     },
-    "3372628": {
-      "match": "Hoffenheim - Stuttgart",
-      "league": "Allemagne • Bundesliga 1",
-      "date_str": "Sam. 12/09 à 15h30",
-      "fav_team": "Hoffenheim",
-      "fav_odds": 2.2,
+    "3369054": {
+      "match": "Vicenza - SS Juve Stabia",
+      "league": "Italie • Serie B",
+      "date_str": "Sam. 12/09 à 15h00",
+      "fav_team": "Vicenza",
+      "fav_odds": 1.87,
       "p2_fav_odds": null,
-      "fav_score": 56,
+      "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
     "3368539": {
@@ -105,9 +95,29 @@
       "league": "Allemagne • Bundesliga 1",
       "date_str": "Sam. 12/09 à 15h30",
       "fav_team": "Fribourg",
-      "fav_odds": 1.62,
+      "fav_odds": 1.6,
       "p2_fav_odds": null,
-      "fav_score": 55,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3378600": {
+      "match": "Southampton - Bristol City",
+      "league": "Angleterre • Championship",
+      "date_str": "Sam. 12/09 à 16h00",
+      "fav_team": "Southampton",
+      "fav_odds": 1.58,
+      "p2_fav_odds": null,
+      "fav_score": 57,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376205": {
+      "match": "Liverpool - Fulham",
+      "league": "Angleterre • Premier League",
+      "date_str": "Sam. 12/09 à 16h00",
+      "fav_team": "Liverpool",
+      "fav_odds": 1.38,
+      "p2_fav_odds": null,
+      "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
     "3376127": {
@@ -117,8 +127,8 @@
       "fav_team": "FC Flora",
       "fav_odds": 1.49,
       "p2_fav_odds": null,
-      "fav_score": 52,
-      "fav_badge": "🥉 BRONZE"
+      "fav_score": 74,
+      "fav_badge": "🥈 ARGENT"
     },
     "3378601": {
       "match": "Watford - Stoke City",
@@ -127,48 +137,28 @@
       "fav_team": "Watford",
       "fav_odds": 2.15,
       "p2_fav_odds": null,
-      "fav_score": 59,
+      "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
-    "3376205": {
-      "match": "Liverpool - Fulham",
-      "league": "Angleterre • Premier League",
-      "date_str": "Sam. 12/09 à 16h00",
-      "fav_team": "Liverpool",
-      "fav_odds": 1.39,
+    "3360736": {
+      "match": "Osasuna - Espanyol",
+      "league": "Espagne • Laliga",
+      "date_str": "Sam. 12/09 à 16h15",
+      "fav_team": "Osasuna",
+      "fav_odds": 2.0,
       "p2_fav_odds": null,
       "fav_score": 51,
       "fav_badge": "🥉 BRONZE"
     },
-    "3371785": {
-      "match": "Samsunspor - Corum",
-      "league": "Turquie • D1 Turquie",
-      "date_str": "Sam. 12/09 à 16h00",
-      "fav_team": "Samsunspor",
-      "fav_odds": 2.05,
+    "3378626": {
+      "match": "NK Osijek - Dinamo Zagreb",
+      "league": "Croatie • D1 Croatie",
+      "date_str": "Sam. 12/09 à 17h00",
+      "fav_team": "Dinamo Zagreb",
+      "fav_odds": 1.38,
       "p2_fav_odds": null,
-      "fav_score": 52,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3378599": {
-      "match": "Middlesbrough - Norwich",
-      "league": "Angleterre • Championship",
-      "date_str": "Sam. 12/09 à 16h00",
-      "fav_team": "Middlesbrough",
-      "fav_odds": 1.79,
-      "p2_fav_odds": null,
-      "fav_score": 53,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3377652": {
-      "match": "Mariehamn - Turku PS",
-      "league": "Finlande • D1 Finlande",
-      "date_str": "Sam. 12/09 à 16h00",
-      "fav_team": "Mariehamn",
-      "fav_odds": 2.2,
-      "p2_fav_odds": null,
-      "fav_score": 59,
-      "fav_badge": "🥉 BRONZE"
+      "fav_score": 66,
+      "fav_badge": "🥈 ARGENT"
     },
     "3376226": {
       "match": "Strasbourg - Monaco",
@@ -177,7 +167,7 @@
       "fav_team": "Monaco",
       "fav_odds": 2.05,
       "p2_fav_odds": null,
-      "fav_score": 55,
+      "fav_score": 54,
       "fav_badge": "🥉 BRONZE"
     },
     "3369050": {
@@ -187,7 +177,7 @@
       "fav_team": "US Catanzaro",
       "fav_odds": 1.96,
       "p2_fav_odds": null,
-      "fav_score": 57,
+      "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
     "3368576": {
@@ -197,77 +187,17 @@
       "fav_team": "IFK Göteborg",
       "fav_odds": 1.36,
       "p2_fav_odds": null,
-      "fav_score": 60,
+      "fav_score": 57,
       "fav_badge": "🥉 BRONZE"
     },
-    "3372008": {
-      "match": "MFK Ruzomberok - MFK Zemplin",
-      "league": "Slovaquie • D1 Slovaquie",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "MFK Ruzomberok",
-      "fav_odds": 1.87,
-      "p2_fav_odds": null,
-      "fav_score": 54,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3368584": {
-      "match": "Sparta Prague - FK Jablonec",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "Sparta Prague",
-      "fav_odds": 1.49,
-      "p2_fav_odds": null,
-      "fav_score": 63,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3376856": {
-      "match": "FC CSKA 1948 - Dunav Rousse",
-      "league": "Bulgarie • D1 Bulgarie",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "FC CSKA 1948",
-      "fav_odds": 1.3,
-      "p2_fav_odds": null,
-      "fav_score": 62,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3369064": {
-      "match": "Lazio Rome - Milan AC",
-      "league": "Italie • Serie A",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "Milan AC",
+    "3372835": {
+      "match": "Gornik Zabrze - Lech Poznan",
+      "league": "Pologne • D1 Pologne",
+      "date_str": "Sam. 12/09 à 17h30",
+      "fav_team": "Lech Poznan",
       "fav_odds": 2.15,
       "p2_fav_odds": null,
-      "fav_score": 50,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3368561": {
-      "match": "Rosenborg - Tromsø",
-      "league": "Norvege • D1 Norvege",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "Rosenborg",
-      "fav_odds": 1.58,
-      "p2_fav_odds": null,
-      "fav_score": 65,
-      "fav_badge": "🥈 ARGENT"
-    },
-    "3378963": {
-      "match": "Siroki Brijeg - BSK Banja Luka",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "Siroki Brijeg",
-      "fav_odds": 1.6,
-      "p2_fav_odds": null,
-      "fav_score": 51,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3379863": {
-      "match": "Saint Malo - Montpellier F",
-      "league": "France • D1 Arkema F",
-      "date_str": "Sam. 12/09 à 18h00",
-      "fav_team": "Montpellier F",
-      "fav_odds": 1.8,
-      "p2_fav_odds": null,
-      "fav_score": 58,
+      "fav_score": 54,
       "fav_badge": "🥉 BRONZE"
     },
     "3377654": {
@@ -280,6 +210,76 @@
       "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
     },
+    "3368578": {
+      "match": "FC Thun - Grasshoppers",
+      "league": "Suisse • D1 Suisse",
+      "date_str": "Sam. 12/09 à 18h00",
+      "fav_team": "FC Thun",
+      "fav_odds": 1.68,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368584": {
+      "match": "Sparta Prague - FK Jablonec",
+      "league": "Rep Tcheque • D1 Rep Tcheque",
+      "date_str": "Sam. 12/09 à 18h00",
+      "fav_team": "Sparta Prague",
+      "fav_odds": 1.49,
+      "p2_fav_odds": null,
+      "fav_score": 80,
+      "fav_badge": "🥇 OR"
+    },
+    "3368561": {
+      "match": "Rosenborg - Tromsø",
+      "league": "Norvege • D1 Norvege",
+      "date_str": "Sam. 12/09 à 18h00",
+      "fav_team": "Rosenborg",
+      "fav_odds": 1.58,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376856": {
+      "match": "FC CSKA 1948 - Dunav Rousse",
+      "league": "Bulgarie • D1 Bulgarie",
+      "date_str": "Sam. 12/09 à 18h00",
+      "fav_team": "FC CSKA 1948",
+      "fav_odds": 1.3,
+      "p2_fav_odds": null,
+      "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3369064": {
+      "match": "Lazio Rome - Milan AC",
+      "league": "Italie • Serie A",
+      "date_str": "Sam. 12/09 à 18h00",
+      "fav_team": "Milan AC",
+      "fav_odds": 2.1,
+      "p2_fav_odds": null,
+      "fav_score": 52,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3360693": {
+      "match": "Ath. Bilbao - Elche",
+      "league": "Espagne • Laliga",
+      "date_str": "Sam. 12/09 à 18h30",
+      "fav_team": "Ath. Bilbao",
+      "fav_odds": 1.36,
+      "p2_fav_odds": null,
+      "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3360647": {
+      "match": "Gérone - Castellon",
+      "league": "Espagne • Laliga 2",
+      "date_str": "Sam. 12/09 à 18h30",
+      "fav_team": "Gérone",
+      "fav_odds": 2.0,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3378408": {
       "match": "FK Cukaricki - FK Novi Pazar",
       "league": "Serbie • D1 Serbie",
@@ -287,7 +287,7 @@
       "fav_team": "FK Cukaricki",
       "fav_odds": 1.99,
       "p2_fav_odds": null,
-      "fav_score": 51,
+      "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
     },
     "3368552": {
@@ -297,7 +297,7 @@
       "fav_team": "GOAhead Eagles",
       "fav_odds": 2.15,
       "p2_fav_odds": null,
-      "fav_score": 50,
+      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
     "3367859": {
@@ -307,8 +307,8 @@
       "fav_team": "Ind. Rivadavia",
       "fav_odds": 1.37,
       "p2_fav_odds": null,
-      "fav_score": 57,
-      "fav_badge": "🥉 BRONZE"
+      "fav_score": 68,
+      "fav_badge": "🥈 ARGENT"
     },
     "3368553": {
       "match": "FortunaSittard - Ajax",
@@ -317,7 +317,7 @@
       "fav_team": "Ajax",
       "fav_odds": 1.35,
       "p2_fav_odds": null,
-      "fav_score": 53,
+      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
     "3376761": {
@@ -327,7 +327,7 @@
       "fav_team": "CSKA Sofia",
       "fav_odds": 1.64,
       "p2_fav_odds": null,
-      "fav_score": 59,
+      "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
     },
     "3372013": {
@@ -340,22 +340,42 @@
       "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
-    "3378407": {
-      "match": "Radnicki 1923 - Mladost Lucani",
-      "league": "Serbie • D1 Serbie",
-      "date_str": "Sam. 12/09 à 20h30",
-      "fav_team": "Radnicki 1923",
-      "fav_odds": 1.47,
+    "3369055": {
+      "match": "Atalanta - Cagliari",
+      "league": "Italie • Serie A",
+      "date_str": "Sam. 12/09 à 20h45",
+      "fav_team": "Atalanta",
+      "fav_odds": 1.52,
       "p2_fav_odds": null,
-      "fav_score": 50,
+      "fav_score": 61,
       "fav_badge": "🥉 BRONZE"
     },
-    "3360637": {
-      "match": "Cordoba - Almeria",
-      "league": "Espagne • Laliga 2",
+    "3378973": {
+      "match": "BoracBanjaLuka - ZrinjskiMostar",
+      "league": "Bosnie Herzeg • D1 Bosnie",
+      "date_str": "Sam. 12/09 à 20h45",
+      "fav_team": "BoracBanjaLuka",
+      "fav_odds": 1.87,
+      "p2_fav_odds": null,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376212": {
+      "match": "Sunderland - Arsenal",
+      "league": "Angleterre • Premier League",
       "date_str": "Sam. 12/09 à 21h00",
-      "fav_team": "Cordoba",
-      "fav_odds": 2.15,
+      "fav_team": "Arsenal",
+      "fav_odds": 1.4,
+      "p2_fav_odds": null,
+      "fav_score": 58,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368799": {
+      "match": "SC Cambuur - NEC Nimègue",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Sam. 12/09 à 21h00",
+      "fav_team": "NEC Nimègue",
+      "fav_odds": 1.46,
       "p2_fav_odds": null,
       "fav_score": 56,
       "fav_badge": "🥉 BRONZE"
@@ -367,17 +387,27 @@
       "fav_team": "CS Constantine",
       "fav_odds": 1.46,
       "p2_fav_odds": null,
-      "fav_score": 63,
+      "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
-    "3371153": {
-      "match": "CD Recoleta - CS Trinidense",
-      "league": "Paraguay • D1 Paraguay",
+    "3375064": {
+      "match": "Palmeiras - Sao Paulo",
+      "league": "Bresil • D1 Bresil",
       "date_str": "Sam. 12/09 à 23h30",
-      "fav_team": "CS Trinidense",
-      "fav_odds": 1.91,
+      "fav_team": "Palmeiras",
+      "fav_odds": 1.56,
       "p2_fav_odds": null,
-      "fav_score": 52,
+      "fav_score": 62,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376864": {
+      "match": "Dep. Toluca - Atlas FC",
+      "league": "Mexique • D1 Mexique",
+      "date_str": "Dim. 13/09 à 01h00",
+      "fav_team": "Dep. Toluca",
+      "fav_odds": 1.35,
+      "p2_fav_odds": null,
+      "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
     "3378940": {
@@ -387,27 +417,17 @@
       "fav_team": "Forge",
       "fav_odds": 1.55,
       "p2_fav_odds": null,
+      "fav_score": 71,
+      "fav_badge": "🥈 ARGENT"
+    },
+    "3358312": {
+      "match": "Orlando City - Toronto FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 13/09 à 01h30",
+      "fav_team": "Orlando City",
+      "fav_odds": 1.75,
+      "p2_fav_odds": null,
       "fav_score": 54,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3358310": {
-      "match": "Inter Miami - Nashville SC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 13/09 à 01h30",
-      "fav_team": "Inter Miami",
-      "fav_odds": 1.85,
-      "p2_fav_odds": null,
-      "fav_score": 51,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3358308": {
-      "match": "FC Cincinnati - Charlotte FC",
-      "league": "Etats Unis • Mls",
-      "date_str": "Dim. 13/09 à 01h30",
-      "fav_team": "FC Cincinnati",
-      "fav_odds": 1.93,
-      "p2_fav_odds": null,
-      "fav_score": 60,
       "fav_badge": "🥉 BRONZE"
     },
     "3358309": {
@@ -417,7 +437,47 @@
       "fav_team": "Columbus Crew",
       "fav_odds": 1.63,
       "p2_fav_odds": null,
-      "fav_score": 53,
+      "fav_score": 60,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3358308": {
+      "match": "FC Cincinnati - Charlotte FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 13/09 à 01h30",
+      "fav_team": "FC Cincinnati",
+      "fav_odds": 1.93,
+      "p2_fav_odds": null,
+      "fav_score": 55,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3378667": {
+      "match": "LDU Quito - Dep.Cuenca",
+      "league": "Equateur • D1 Equateur",
+      "date_str": "Dim. 13/09 à 02h00",
+      "fav_team": "LDU Quito",
+      "fav_odds": 1.48,
+      "p2_fav_odds": null,
+      "fav_score": 61,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3358319": {
+      "match": "Saint Louis SC - Minnesota Utd",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 13/09 à 02h30",
+      "fav_team": "Saint Louis SC",
+      "fav_odds": 1.93,
+      "p2_fav_odds": null,
+      "fav_score": 50,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3358318": {
+      "match": "Dallas FC - Portland",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 13/09 à 02h30",
+      "fav_team": "Dallas FC",
+      "fav_odds": 1.69,
+      "p2_fav_odds": null,
+      "fav_score": 50,
       "fav_badge": "🥉 BRONZE"
     },
     "3376869": {
@@ -425,9 +485,19 @@
       "league": "Mexique • D1 Mexique",
       "date_str": "Dim. 13/09 à 03h10",
       "fav_team": "Monterrey",
-      "fav_odds": 1.97,
+      "fav_odds": 1.99,
       "p2_fav_odds": null,
-      "fav_score": 62,
+      "fav_score": 54,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3358395": {
+      "match": "Salt Lake - NY City FC",
+      "league": "Etats Unis • Mls",
+      "date_str": "Dim. 13/09 à 03h30",
+      "fav_team": "Salt Lake",
+      "fav_odds": 1.82,
+      "p2_fav_odds": null,
+      "fav_score": 52,
       "fav_badge": "🥉 BRONZE"
     },
     "3358394": {
@@ -435,29 +505,19 @@
       "league": "Etats Unis • Mls",
       "date_str": "Dim. 13/09 à 03h30",
       "fav_team": "Colorado",
-      "fav_odds": 1.55,
+      "fav_odds": 1.56,
       "p2_fav_odds": null,
-      "fav_score": 66,
+      "fav_score": 70,
       "fav_badge": "🥈 ARGENT"
     },
-    "3368783": {
-      "match": "Osnabrück - Hertha Berlin",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 13/09 à 13h30",
-      "fav_team": "Hertha Berlin",
+    "3372387": {
+      "match": "Gwangju FC - FC Anyang",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "date_str": "Dim. 13/09 à 12h00",
+      "fav_team": "FC Anyang",
       "fav_odds": 1.93,
       "p2_fav_odds": null,
-      "fav_score": 55,
-      "fav_badge": "🥉 BRONZE"
-    },
-    "3369218": {
-      "match": "Karlsruhe - Cottbus",
-      "league": "Allemagne • Bundesliga 2",
-      "date_str": "Dim. 13/09 à 13h30",
-      "fav_team": "Karlsruhe",
-      "fav_odds": 1.59,
-      "p2_fav_odds": null,
-      "fav_score": 54,
+      "fav_score": 53,
       "fav_badge": "🥉 BRONZE"
     },
     "3368782": {
@@ -480,6 +540,26 @@
       "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
+    "3368783": {
+      "match": "Osnabrück - Hertha Berlin",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 13/09 à 13h30",
+      "fav_team": "Hertha Berlin",
+      "fav_odds": 1.93,
+      "p2_fav_odds": null,
+      "fav_score": 55,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3369218": {
+      "match": "Karlsruhe - Cottbus",
+      "league": "Allemagne • Bundesliga 2",
+      "date_str": "Dim. 13/09 à 13h30",
+      "fav_team": "Karlsruhe",
+      "fav_odds": 1.59,
+      "p2_fav_odds": null,
+      "fav_score": 54,
+      "fav_badge": "🥉 BRONZE"
+    },
     "3372454": {
       "match": "Lyngby BK - Sønderjyske",
       "league": "Danemark • D1 Danemark",
@@ -488,6 +568,16 @@
       "fav_odds": 1.53,
       "p2_fav_odds": null,
       "fav_score": 52,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368824": {
+      "match": "Elfsborg - Kalmar FF",
+      "league": "Suede • D1 Suede",
+      "date_str": "Dim. 13/09 à 14h00",
+      "fav_team": "Elfsborg",
+      "fav_odds": 1.69,
+      "p2_fav_odds": null,
+      "fav_score": 58,
       "fav_badge": "🥉 BRONZE"
     },
     "3360658": {
@@ -500,14 +590,84 @@
       "fav_score": 57,
       "fav_badge": "🥉 BRONZE"
     },
-    "3368824": {
-      "match": "Elfsborg - Kalmar FF",
-      "league": "Suede • D1 Suede",
-      "date_str": "Dim. 13/09 à 14h00",
-      "fav_team": "Elfsborg",
-      "fav_odds": 1.69,
+    "3373751": {
+      "match": "Livyi Bereg - Zhytomyr",
+      "league": "Ukraine • D1 Ukraine",
+      "date_str": "Dim. 13/09 à 14h30",
+      "fav_team": "Zhytomyr",
+      "fav_odds": 1.35,
       "p2_fav_odds": null,
-      "fav_score": 58,
+      "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368554": {
+      "match": "Heerenveen - SC Telstar",
+      "league": "Pays Bas • D1 Pays Bas",
+      "date_str": "Dim. 13/09 à 14h30",
+      "fav_team": "Heerenveen",
+      "fav_odds": 1.52,
+      "p2_fav_odds": null,
+      "fav_score": 59,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3376238": {
+      "match": "Lille - Troyes",
+      "league": "France • Ligue 1 Mcdonalds",
+      "date_str": "Dim. 13/09 à 15h00",
+      "fav_team": "Lille",
+      "fav_odds": 1.36,
+      "p2_fav_odds": null,
+      "fav_score": 52,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368781": {
+      "match": "RB Leipzig - Hambourg",
+      "league": "Allemagne • Bundesliga 1",
+      "date_str": "Dim. 13/09 à 15h30",
+      "fav_team": "RB Leipzig",
+      "fav_odds": 1.3,
+      "p2_fav_odds": null,
+      "fav_score": 63,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3378412": {
+      "match": "Radnicki Nis - OFK Belgrade",
+      "league": "Serbie • D1 Serbie",
+      "date_str": "Dim. 13/09 à 16h00",
+      "fav_team": "Radnicki Nis",
+      "fav_odds": 1.98,
+      "p2_fav_odds": null,
+      "fav_score": 52,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3368811": {
+      "match": "RC Genk - La Gantoise",
+      "league": "Belgique • D1 Belgique",
+      "date_str": "Dim. 13/09 à 16h00",
+      "fav_team": "RC Genk",
+      "fav_odds": 1.87,
+      "p2_fav_odds": null,
+      "fav_score": 53,
+      "fav_badge": "🥉 BRONZE"
+    },
+    "3379293": {
+      "match": "KR Reykjavik - IA Akranes",
+      "league": "Islande • D1 Islande",
+      "date_str": "Dim. 13/09 à 16h00",
+      "fav_team": "KR Reykjavik",
+      "fav_odds": 1.46,
+      "p2_fav_odds": null,
+      "fav_score": 66,
+      "fav_badge": "🥈 ARGENT"
+    },
+    "3379295": {
+      "match": "ValurReykjavik - Thor Akureyri",
+      "league": "Islande • D1 Islande",
+      "date_str": "Dim. 13/09 à 16h00",
+      "fav_team": "ValurReykjavik",
+      "fav_odds": 1.49,
+      "p2_fav_odds": null,
+      "fav_score": 55,
       "fav_badge": "🥉 BRONZE"
     }
   }
