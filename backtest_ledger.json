@@ -28776,5 +28776,223 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3360656",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Cadix vs Las Palmas",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Sam. 12/09 à 16h15",
+    "fav_team": "Cadix",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376728",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "FC Koper vs O.Ljubljana",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Sam. 12/09 à 17h30",
+    "fav_team": "FC Koper",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373773",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Hibernians FC vs Birkirkara FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "Birkirkara FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 29,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374821",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Ano.Famagouste vs Apoel Nicosie",
+    "league": "Chypre • D1 Chypre",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "Apoel Nicosie",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 19,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374818",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Karmiotissa FC vs Omonia Arad",
+    "league": "Chypre • D1 Chypre",
+    "date_str": "Sam. 12/09 à 18h00",
+    "fav_team": "Omonia Arad",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368366",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Colwyn Bay vs Connah`s Quay",
+    "league": "Pays De Galles • D1 P Degalles",
+    "date_str": "Sam. 12/09 à 18h30",
+    "fav_team": "Connah`s Quay",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 72,
+      "pct_fav_success": 100,
+      "pct_fav_lead2": 90
+    },
+    "odds": {
+      "fav_odds": 1.99,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376868",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Santos Laguna vs FC Juarez",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Lun. 14/09 à 03h00",
+    "fav_team": "Santos Laguna",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.82,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3358565",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "San Diego FC vs Philadelphia",
+    "league": "Etats Unis • Mls",
+    "date_str": "Lun. 14/09 à 03h00",
+    "fav_team": "Philadelphia",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 32,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376867",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Chivas vs UNAM Pumas",
+    "league": "Mexique • D1 Mexique",
+    "date_str": "Lun. 14/09 à 03h07",
+    "fav_team": "Chivas",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.41,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372684",
+    "timestamp_utc": "2026-09-12T14:05:47.748590+00:00",
+    "match": "Cucuta vs Millonarios FC",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Lun. 14/09 à 03h15",
+    "fav_team": "Millonarios FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 38,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.69,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
