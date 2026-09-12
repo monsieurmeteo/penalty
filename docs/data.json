@@ -1,15 +1,15 @@
 {
   "summary": {
-    "total_matches": 218,
-    "decided_matches": 128,
+    "total_matches": 225,
+    "decided_matches": 129,
     "won": 88,
-    "lost": 40,
-    "live": 1,
-    "upcoming": 89,
-    "win_rate": 68.8,
-    "profit_units": 10.25,
-    "roi_pct": 8.01,
-    "last_updated": "2026-09-12T04:04:06.168882+00:00"
+    "lost": 41,
+    "live": 0,
+    "upcoming": 96,
+    "win_rate": 68.2,
+    "profit_units": 9.25,
+    "roi_pct": 7.17,
+    "last_updated": "2026-09-12T06:05:42.478423+00:00"
   },
   "matches_today": [
     {
@@ -2743,15 +2743,15 @@
       "domination_score": 53,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
-      "status": "LIVE",
-      "selection_status": "IN_PROGRESS",
+      "status": "FINISHED",
+      "selection_status": "LOST",
       "score_display": "0 - 1",
       "home_score": 0,
       "away_score": 1,
-      "minute": "Mi-temps",
-      "is_live": true,
-      "is_finished": false,
-      "profit": 0.0
+      "minute": "Terminé",
+      "is_live": false,
+      "is_finished": true,
+      "profit": -1.0
     },
     {
       "id": "3378635",
@@ -2859,7 +2859,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.51,
+      "odds": 1.47,
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -2883,7 +2883,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.8,
+      "odds": 1.82,
       "domination_score": 55,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -2907,7 +2907,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.0,
+      "odds": 1.92,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -3003,8 +3003,8 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.87,
-      "domination_score": 53,
+      "odds": 1.91,
+      "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -3051,7 +3051,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.6,
+      "odds": 1.61,
       "domination_score": 62,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -3099,7 +3099,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.39,
+      "odds": 1.42,
       "domination_score": 53,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 40,
@@ -3267,7 +3267,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.96,
+      "odds": 1.91,
       "domination_score": 53,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -3291,7 +3291,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.36,
+      "odds": 1.37,
       "domination_score": 57,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 40,
@@ -3339,7 +3339,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.68,
+      "odds": 1.69,
       "domination_score": 53,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -3363,7 +3363,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.05,
+      "odds": 2.1,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -3387,8 +3387,8 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.15,
-      "domination_score": 51,
+      "odds": 2.1,
+      "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -3459,8 +3459,8 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.0,
-      "domination_score": 53,
+      "odds": 2.15,
+      "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -3483,7 +3483,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.99,
+      "odds": 2.0,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 40,
@@ -3507,7 +3507,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.35,
+      "odds": 1.37,
       "domination_score": 58,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -3555,7 +3555,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.37,
+      "odds": 1.39,
       "domination_score": 68,
       "badge_tier": "🥈 ARGENT",
       "win_pct_historical": 70,
@@ -3603,7 +3603,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.61,
+      "odds": 1.63,
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -3675,8 +3675,8 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.52,
-      "domination_score": 61,
+      "odds": 1.59,
+      "domination_score": 60,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -3699,7 +3699,7 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.44,
+      "odds": 1.51,
       "domination_score": 56,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -3723,8 +3723,8 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.41,
-      "domination_score": 58,
+      "odds": 1.46,
+      "domination_score": 57,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
       "status": "UPCOMING",
@@ -3939,7 +3939,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.5,
+      "odds": 1.52,
       "domination_score": 61,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -4083,7 +4083,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.82,
+      "odds": 1.85,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -4107,7 +4107,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.85,
+      "odds": 1.9,
       "domination_score": 54,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 50,
@@ -4131,7 +4131,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.26,
+      "odds": 1.31,
       "domination_score": 59,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -4179,8 +4179,8 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.72,
-      "domination_score": 56,
+      "odds": 1.7,
+      "domination_score": 50,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
       "status": "UPCOMING",
@@ -4203,7 +4203,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 2.0,
+      "odds": 1.94,
       "domination_score": 50,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -4443,7 +4443,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.46,
+      "odds": 1.47,
       "domination_score": 58,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -4467,7 +4467,7 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.85,
+      "odds": 1.9,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 60,
@@ -4491,7 +4491,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.82,
+      "odds": 1.9,
       "domination_score": 51,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 40,
@@ -4731,7 +4731,7 @@
       "fav_side": "ext",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.35,
+      "odds": 1.36,
       "domination_score": 59,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -4779,7 +4779,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.35,
+      "odds": 1.36,
       "domination_score": 52,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 20,
@@ -4803,7 +4803,7 @@
       "fav_side": "dom",
       "market": "FAV_1N2",
       "market_label": "👑 Favori (+2b)",
-      "odds": 1.3,
+      "odds": 1.31,
       "domination_score": 63,
       "badge_tier": "🥉 BRONZE",
       "win_pct_historical": 70,
@@ -5104,21 +5104,189 @@
       "is_live": false,
       "is_finished": false,
       "profit": 0.0
+    },
+    {
+      "id": "3368579",
+      "time": "Sam. 12/09 à 19h00",
+      "league": "Suisse • D1 Suisse",
+      "home": "FC Lugano",
+      "away": "Young Boys",
+      "fav_team": "FC Lugano",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 2.15,
+      "domination_score": 54,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 80,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Sam. 12/09 à 19h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3376426",
+      "time": "Dim. 13/09 à 18h20",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "home": "Neom SC",
+      "away": "Al Fateh",
+      "fav_team": "Neom SC",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.59,
+      "domination_score": 54,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 50,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 18h20",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3360638",
+      "time": "Dim. 13/09 à 18h30",
+      "league": "Espagne • Laliga 2",
+      "home": "Majorque",
+      "away": "Sabadell",
+      "fav_team": "Majorque",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.58,
+      "domination_score": 66,
+      "badge_tier": "🥈 ARGENT",
+      "win_pct_historical": 70,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 18h30",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3378411",
+      "time": "Dim. 13/09 à 19h00",
+      "league": "Serbie • D1 Serbie",
+      "home": "IMT N.Belgrade",
+      "away": "Etoile Rouge",
+      "fav_team": "Etoile Rouge",
+      "fav_side": "ext",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.31,
+      "domination_score": 54,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 70,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 19h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3376855",
+      "time": "Dim. 13/09 à 19h30",
+      "league": "Bulgarie • D1 Bulgarie",
+      "home": "Botev Plovdiv",
+      "away": "Lokomo.Plovdiv",
+      "fav_team": "Botev Plovdiv",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.64,
+      "domination_score": 54,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 40,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 19h30",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3377624",
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Equateur • D1 Equateur",
+      "home": "FC Leones",
+      "away": "Tecnico Uni.",
+      "fav_team": "FC Leones",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.73,
+      "domination_score": 62,
+      "badge_tier": "🥉 BRONZE",
+      "win_pct_historical": 50,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 20h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3374316",
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Grece • D1 Grece",
+      "home": "PAOK Salonique",
+      "away": "Aris Salonique",
+      "fav_team": "PAOK Salonique",
+      "fav_side": "dom",
+      "market": "FAV_1N2",
+      "market_label": "👑 Favori (+2b)",
+      "odds": 1.39,
+      "domination_score": 65,
+      "badge_tier": "🥈 ARGENT",
+      "win_pct_historical": 70,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "Dim. 13/09 à 20h00",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
     }
   ],
   "history": [],
   "combos_summary": {
-    "total_combos": 71,
-    "decided_combos": 42,
+    "total_combos": 74,
+    "decided_combos": 43,
     "won": 22,
-    "lost": 20,
-    "live": 1,
-    "upcoming": 28,
+    "lost": 21,
+    "live": 0,
+    "upcoming": 31,
     "default_stake": 3.0,
-    "win_rate": 52.4,
-    "profit_units": 8.82,
-    "profit_eur": 26.46,
-    "roi_pct": 21.0
+    "win_rate": 51.2,
+    "profit_units": 7.82,
+    "profit_eur": 23.46,
+    "roi_pct": 18.19
   },
   "combos_today": [
     {
@@ -7034,10 +7202,10 @@
       "email_ticket_num": 1,
       "odds": 2.77,
       "default_stake": 3.0,
-      "ticket_status": "LIVE",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 8.31,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3371156",
         "time": "Ven. 11/09 à 21h00",
@@ -7078,12 +7246,12 @@
         "domination_score": 53,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 60,
-        "status": "LIVE",
-        "selection_status": "IN_PROGRESS",
+        "status": "FINISHED",
+        "selection_status": "LOST",
         "score_display": "0 - 1",
         "home_score": 0,
         "away_score": 0,
-        "minute": "Mi-temps",
+        "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -7153,7 +7321,7 @@
     {
       "id": "combo_44",
       "ticket_num": 44,
-      "email_ticket_num": 2,
+      "email_ticket_num": 1,
       "odds": 2.19,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7214,7 +7382,7 @@
     {
       "id": "combo_45",
       "ticket_num": 45,
-      "email_ticket_num": 3,
+      "email_ticket_num": 2,
       "odds": 2.25,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7336,7 +7504,7 @@
     {
       "id": "combo_47",
       "ticket_num": 47,
-      "email_ticket_num": 4,
+      "email_ticket_num": 3,
       "odds": 2.12,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7458,7 +7626,7 @@
     {
       "id": "combo_49",
       "ticket_num": 49,
-      "email_ticket_num": 5,
+      "email_ticket_num": 4,
       "odds": 2.19,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7519,7 +7687,7 @@
     {
       "id": "combo_50",
       "ticket_num": 50,
-      "email_ticket_num": 6,
+      "email_ticket_num": 5,
       "odds": 2.51,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7580,7 +7748,7 @@
     {
       "id": "combo_51",
       "ticket_num": 51,
-      "email_ticket_num": 7,
+      "email_ticket_num": 6,
       "odds": 2.35,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7641,7 +7809,7 @@
     {
       "id": "combo_52",
       "ticket_num": 52,
-      "email_ticket_num": 8,
+      "email_ticket_num": 7,
       "odds": 2.74,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7763,7 +7931,7 @@
     {
       "id": "combo_54",
       "ticket_num": 54,
-      "email_ticket_num": 9,
+      "email_ticket_num": 8,
       "odds": 2.21,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7824,7 +7992,7 @@
     {
       "id": "combo_55",
       "ticket_num": 55,
-      "email_ticket_num": 10,
+      "email_ticket_num": 9,
       "odds": 2.19,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7885,7 +8053,7 @@
     {
       "id": "combo_56",
       "ticket_num": 56,
-      "email_ticket_num": 11,
+      "email_ticket_num": 10,
       "odds": 2.27,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -7946,7 +8114,7 @@
     {
       "id": "combo_57",
       "ticket_num": 57,
-      "email_ticket_num": 12,
+      "email_ticket_num": 11,
       "odds": 2.31,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8007,7 +8175,7 @@
     {
       "id": "combo_58",
       "ticket_num": 58,
-      "email_ticket_num": 13,
+      "email_ticket_num": 12,
       "odds": 2.41,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8068,7 +8236,7 @@
     {
       "id": "combo_59",
       "ticket_num": 59,
-      "email_ticket_num": 14,
+      "email_ticket_num": 13,
       "odds": 2.34,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8129,7 +8297,7 @@
     {
       "id": "combo_60",
       "ticket_num": 60,
-      "email_ticket_num": 15,
+      "email_ticket_num": 14,
       "odds": 2.22,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8190,7 +8358,7 @@
     {
       "id": "combo_61",
       "ticket_num": 61,
-      "email_ticket_num": 16,
+      "email_ticket_num": 15,
       "odds": 2.56,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8251,7 +8419,7 @@
     {
       "id": "combo_62",
       "ticket_num": 62,
-      "email_ticket_num": 17,
+      "email_ticket_num": 16,
       "odds": 2.67,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8312,7 +8480,7 @@
     {
       "id": "combo_63",
       "ticket_num": 63,
-      "email_ticket_num": 18,
+      "email_ticket_num": 17,
       "odds": 2.57,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8373,7 +8541,7 @@
     {
       "id": "combo_64",
       "ticket_num": 64,
-      "email_ticket_num": 19,
+      "email_ticket_num": 18,
       "odds": 2.35,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8434,7 +8602,7 @@
     {
       "id": "combo_65",
       "ticket_num": 65,
-      "email_ticket_num": 20,
+      "email_ticket_num": 19,
       "odds": 2.54,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8495,7 +8663,7 @@
     {
       "id": "combo_66",
       "ticket_num": 66,
-      "email_ticket_num": 21,
+      "email_ticket_num": 20,
       "odds": 2.32,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8556,7 +8724,7 @@
     {
       "id": "combo_67",
       "ticket_num": 67,
-      "email_ticket_num": 22,
+      "email_ticket_num": 21,
       "odds": 2.46,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8617,7 +8785,7 @@
     {
       "id": "combo_68",
       "ticket_num": 68,
-      "email_ticket_num": 23,
+      "email_ticket_num": 22,
       "odds": 2.28,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8678,7 +8846,7 @@
     {
       "id": "combo_69",
       "ticket_num": 69,
-      "email_ticket_num": 24,
+      "email_ticket_num": 23,
       "odds": 2.22,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8739,7 +8907,7 @@
     {
       "id": "combo_70",
       "ticket_num": 70,
-      "email_ticket_num": 25,
+      "email_ticket_num": 24,
       "odds": 2.51,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8800,7 +8968,7 @@
     {
       "id": "combo_71",
       "ticket_num": 71,
-      "email_ticket_num": 26,
+      "email_ticket_num": 25,
       "odds": 2.03,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8861,7 +9029,7 @@
     {
       "id": "combo_72",
       "ticket_num": 72,
-      "email_ticket_num": 27,
+      "email_ticket_num": 26,
       "odds": 2.27,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8888,7 +9056,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 16h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -8913,7 +9081,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -8922,7 +9090,7 @@
     {
       "id": "combo_73",
       "ticket_num": 73,
-      "email_ticket_num": 28,
+      "email_ticket_num": 27,
       "odds": 2.28,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -8949,7 +9117,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 16h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -8974,7 +9142,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -8983,7 +9151,7 @@
     {
       "id": "combo_74",
       "ticket_num": 74,
-      "email_ticket_num": 29,
+      "email_ticket_num": 28,
       "odds": 2.31,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
@@ -9010,7 +9178,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -9035,6 +9203,189 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
+        "minute": "Dim. 13/09 à 18h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      }
+    },
+    {
+      "id": "combo_75",
+      "ticket_num": 75,
+      "email_ticket_num": 29,
+      "odds": 2.27,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 6.81,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3378411",
+        "time": "Dim. 13/09 à 19h00",
+        "start_iso": "2026-09-13T17:00:00.000Z",
+        "league": "Serbie • D1 Serbie",
+        "home": "IMT N.Belgrade",
+        "away": "Etoile Rouge",
+        "fav_team": "Etoile Rouge",
+        "fav_side": "ext",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.31,
+        "domination_score": 54,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 70,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3377624",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": "2026-09-13T18:00:00.000Z",
+        "league": "Equateur • D1 Equateur",
+        "home": "FC Leones",
+        "away": "Tecnico Uni.",
+        "fav_team": "FC Leones",
+        "fav_side": "dom",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.73,
+        "domination_score": 62,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 50,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      }
+    },
+    {
+      "id": "combo_76",
+      "ticket_num": 76,
+      "email_ticket_num": 30,
+      "odds": 2.21,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 6.63,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3376426",
+        "time": "Dim. 13/09 à 18h20",
+        "start_iso": "2026-09-13T16:20:00.000Z",
+        "league": "Arabie Saoudite • D1 Arabie Saoudite",
+        "home": "Neom SC",
+        "away": "Al Fateh",
+        "fav_team": "Neom SC",
+        "fav_side": "dom",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.59,
+        "domination_score": 54,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 50,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3374316",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": "2026-09-13T18:00:00.000Z",
+        "league": "Grece • D1 Grece",
+        "home": "PAOK Salonique",
+        "away": "Aris Salonique",
+        "fav_team": "PAOK Salonique",
+        "fav_side": "dom",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.39,
+        "domination_score": 65,
+        "badge_tier": "🥈 ARGENT",
+        "win_pct_historical": 70,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      }
+    },
+    {
+      "id": "combo_77",
+      "ticket_num": 77,
+      "email_ticket_num": 31,
+      "odds": 2.59,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 7.77,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3360638",
+        "time": "Dim. 13/09 à 18h30",
+        "start_iso": "2026-09-13T16:30:00.000Z",
+        "league": "Espagne • Laliga 2",
+        "home": "Majorque",
+        "away": "Sabadell",
+        "fav_team": "Majorque",
+        "fav_side": "dom",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.58,
+        "domination_score": 66,
+        "badge_tier": "🥈 ARGENT",
+        "win_pct_historical": 70,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "À venir",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3376855",
+        "time": "Dim. 13/09 à 19h30",
+        "start_iso": "2026-09-13T17:30:00.000Z",
+        "league": "Bulgarie • D1 Bulgarie",
+        "home": "Botev Plovdiv",
+        "away": "Lokomo.Plovdiv",
+        "fav_team": "Botev Plovdiv",
+        "fav_side": "dom",
+        "market": "FAV_1N2",
+        "market_label": "👑 Favori (+2b)",
+        "odds": 1.64,
+        "domination_score": 54,
+        "badge_tier": "🥉 BRONZE",
+        "win_pct_historical": 40,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": 0,
+        "away_score": 0,
         "minute": "À venir",
         "is_live": false,
         "is_finished": false,
@@ -9048,7 +9399,7 @@
       "league": "Coree Du Sud • D1 Coree Du Sud",
       "match": "Ulsan vs Incheon FC",
       "fav_team": "Ulsan",
-      "odds": "@2.05",
+      "odds": "@1.96",
       "domination_score": "39/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
@@ -9068,49 +9419,9 @@
       "league": "Japon • D1 Japon",
       "match": "Mito Hollyhock vs KawasakiFront.",
       "fav_team": "KawasakiFront.",
-      "odds": "@1.91",
+      "odds": "@2.00",
       "domination_score": "33/100",
       "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Ukraine • D1 Ukraine",
-      "match": "Kryvbas vs FC Kharkiv",
-      "fav_team": "FC Kharkiv",
-      "odds": "@1.53",
-      "domination_score": "48/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Japon • D1 Japon",
-      "match": "FC Machida vs Yokohama F.Mar",
-      "fav_team": "FC Machida",
-      "odds": "@1.68",
-      "domination_score": "44/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "match": "Daejeon vs Pohang",
-      "fav_team": "Daejeon",
-      "odds": "@1.74",
-      "domination_score": "49/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Japon • D1 Japon",
-      "match": "Gamba Osaka vs FC Tokyo",
-      "fav_team": "FC Tokyo",
-      "odds": "@1.83",
-      "domination_score": "40/100",
-      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9118,9 +9429,19 @@
       "league": "Japon • D1 Japon",
       "match": "VV Nagasaki vs Nagoya Grampus",
       "fav_team": "Nagoya Grampus",
-      "odds": "@1.97",
-      "domination_score": "38/100",
+      "odds": "@1.86",
+      "domination_score": "39/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 12h00",
+      "league": "Japon • D1 Japon",
+      "match": "Gamba Osaka vs FC Tokyo",
+      "fav_team": "FC Tokyo",
+      "odds": "@1.80",
+      "domination_score": "40/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9134,11 +9455,41 @@
       "status": "ÉCARTÉ"
     },
     {
+      "time": "Sam. 12/09 à 12h00",
+      "league": "Japon • D1 Japon",
+      "match": "FC Machida vs Yokohama F.Mar",
+      "fav_team": "FC Machida",
+      "odds": "@1.78",
+      "domination_score": "43/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 12h00",
+      "league": "Ukraine • D1 Ukraine",
+      "match": "Kryvbas vs FC Kharkiv",
+      "fav_team": "FC Kharkiv",
+      "odds": "@1.48",
+      "domination_score": "48/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 13h00",
+      "league": "Chine • D1 Chine",
+      "match": "Tianjin Tigers vs Liaoning Sheny",
+      "fav_team": "Tianjin Tigers",
+      "odds": "@1.85",
+      "domination_score": "49/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
       "time": "Sam. 12/09 à 13h00",
       "league": "Allemagne • Bundesliga 2",
       "match": "FC Magdeburg vs Kaiserslautern",
       "fav_team": "FC Magdeburg",
-      "odds": "@2.05",
+      "odds": "@1.96",
       "domination_score": "47/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -9150,16 +9501,6 @@
       "fav_team": "Bochum",
       "odds": "@1.80",
       "domination_score": "46/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h00",
-      "league": "Chine • D1 Chine",
-      "match": "Tianjin Tigers vs Liaoning Sheny",
-      "fav_team": "Tianjin Tigers",
-      "odds": "@1.82",
-      "domination_score": "49/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -9178,8 +9519,8 @@
       "league": "France • Ligue 2 Bkt",
       "match": "Sochaux vs Nantes",
       "fav_team": "Nantes",
-      "odds": "@2.15",
-      "domination_score": "35/100",
+      "odds": "@2.10",
+      "domination_score": "36/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
@@ -9195,21 +9536,11 @@
     },
     {
       "time": "Sam. 12/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Bohemians 1905 vs FC Slovacko",
-      "fav_team": "Bohemians 1905",
-      "odds": "@2.00",
-      "domination_score": "44/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Slovan Liberec vs Mlada Boleslav",
-      "fav_team": "Slovan Liberec",
-      "odds": "@1.56",
-      "domination_score": "30/100",
+      "league": "Portugal • D2 Portugal",
+      "match": "FC Felgueiras vs Penafiel",
+      "fav_team": "FC Felgueiras",
+      "odds": "@2.15",
+      "domination_score": "36/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
     },
@@ -9225,6 +9556,26 @@
     },
     {
       "time": "Sam. 12/09 à 15h00",
+      "league": "Rep Tcheque • D1 Rep Tcheque",
+      "match": "Slovan Liberec vs Mlada Boleslav",
+      "fav_team": "Slovan Liberec",
+      "odds": "@1.56",
+      "domination_score": "30/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 15h00",
+      "league": "Rep Tcheque • D1 Rep Tcheque",
+      "match": "Zbrojovka Brno vs SK Lisen",
+      "fav_team": "Zbrojovka Brno",
+      "odds": "@1.48",
+      "domination_score": "33/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 15h00",
       "league": "Afrique Du Sud • D1 Afrique Du Sud",
       "match": "Polokwane vs Kaizer Chiefs",
       "fav_team": "Kaizer Chiefs",
@@ -9235,22 +9586,12 @@
     },
     {
       "time": "Sam. 12/09 à 15h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "FC Felgueiras vs Penafiel",
-      "fav_team": "FC Felgueiras",
-      "odds": "@2.15",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
       "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Zbrojovka Brno vs SK Lisen",
-      "fav_team": "Zbrojovka Brno",
-      "odds": "@1.47",
-      "domination_score": "33/100",
-      "reussite": "40%",
+      "match": "Bohemians 1905 vs FC Slovacko",
+      "fav_team": "Bohemians 1905",
+      "odds": "@2.00",
+      "domination_score": "44/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9258,18 +9599,8 @@
       "league": "Italie • Serie A",
       "match": "Genoa vs Frosinone",
       "fav_team": "Genoa",
-      "odds": "@2.05",
+      "odds": "@2.10",
       "domination_score": "36/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Italie • Serie B",
-      "match": "FC Sudtirol vs Modène",
-      "fav_team": "Modène",
-      "odds": "@2.20",
-      "domination_score": "41/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -9288,8 +9619,18 @@
       "league": "Allemagne • Bundesliga 1",
       "match": "Augsburg vs Leverkusen",
       "fav_team": "Leverkusen",
-      "odds": "@1.73",
+      "odds": "@1.78",
       "domination_score": "38/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 15h30",
+      "league": "Allemagne • Bundesliga 1",
+      "match": "Mayence vs Ein.Francfort",
+      "fav_team": "Mayence",
+      "odds": "@1.73",
+      "domination_score": "46/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
     },
@@ -9304,13 +9645,13 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Sam. 12/09 à 15h30",
-      "league": "Allemagne • Bundesliga 1",
-      "match": "Mayence vs Ein.Francfort",
-      "fav_team": "Mayence",
-      "odds": "@1.83",
-      "domination_score": "46/100",
-      "reussite": "50%",
+      "time": "Sam. 12/09 à 16h00",
+      "league": "Angleterre • Championship",
+      "match": "Middlesbrough vs Norwich",
+      "fav_team": "Middlesbrough",
+      "odds": "@1.76",
+      "domination_score": "41/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9325,52 +9666,32 @@
     },
     {
       "time": "Sam. 12/09 à 16h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Lillestrøm vs Vålerenga",
-      "fav_team": "Lillestrøm",
-      "odds": "@1.80",
-      "domination_score": "49/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Championship",
-      "match": "Middlesbrough vs Norwich",
-      "fav_team": "Middlesbrough",
-      "odds": "@1.76",
-      "domination_score": "41/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
       "league": "Angleterre • Premier League",
       "match": "Crystal Palace vs Ipswich",
       "fav_team": "Crystal Palace",
-      "odds": "@1.80",
+      "odds": "@1.82",
       "domination_score": "43/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
       "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Championship",
-      "match": "Swansea vs Burnley",
-      "fav_team": "Swansea",
-      "odds": "@1.93",
-      "domination_score": "39/100",
+      "league": "Norvege • D1 Norvege",
+      "match": "Lillestrøm vs Vålerenga",
+      "fav_team": "Lillestrøm",
+      "odds": "@1.87",
+      "domination_score": "49/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
       "time": "Sam. 12/09 à 16h00",
-      "league": "Belgique • D1 Belgique",
-      "match": "KV Beveren vs St Trond",
-      "fav_team": "St Trond",
-      "odds": "@2.00",
-      "domination_score": "30/100",
-      "reussite": "30%",
+      "league": "Turquie • D1 Turquie",
+      "match": "Samsunspor vs Corum",
+      "fav_team": "Samsunspor",
+      "odds": "@2.05",
+      "domination_score": "49/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9386,11 +9707,11 @@
     {
       "time": "Sam. 12/09 à 16h00",
       "league": "Turquie • D1 Turquie",
-      "match": "Samsunspor vs Corum",
-      "fav_team": "Samsunspor",
-      "odds": "@2.05",
-      "domination_score": "49/100",
-      "reussite": "40%",
+      "match": "Eyupspor vs Rizespor",
+      "fav_team": "Rizespor",
+      "odds": "@1.79",
+      "domination_score": "35/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9415,12 +9736,22 @@
     },
     {
       "time": "Sam. 12/09 à 16h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Eyupspor vs Rizespor",
-      "fav_team": "Rizespor",
-      "odds": "@1.79",
-      "domination_score": "35/100",
+      "league": "Belgique • D1 Belgique",
+      "match": "KV Beveren vs St Trond",
+      "fav_team": "St Trond",
+      "odds": "@2.10",
+      "domination_score": "30/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 16h00",
+      "league": "Angleterre • Championship",
+      "match": "Swansea vs Burnley",
+      "fav_team": "Swansea",
+      "odds": "@1.94",
+      "domination_score": "39/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9428,9 +9759,19 @@
       "league": "Ukraine • D1 Ukraine",
       "match": "Veres Rivne vs FK Kudrivka",
       "fav_team": "Veres Rivne",
-      "odds": "@2.05",
+      "odds": "@2.10",
       "domination_score": "38/100",
       "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 18h00",
+      "league": "France • D1 Arkema F",
+      "match": "FC Nantes F vs FC Fleury F",
+      "fav_team": "FC Fleury F",
+      "odds": "@1.91",
+      "domination_score": "46/100",
+      "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9438,19 +9779,19 @@
       "league": "Slovaquie • D1 Slovaquie",
       "match": "MFK Ruzomberok vs MFK Zemplin",
       "fav_team": "MFK Ruzomberok",
-      "odds": "@1.87",
-      "domination_score": "42/100",
+      "odds": "@1.92",
+      "domination_score": "41/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
       "time": "Sam. 12/09 à 18h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "Dukla Bystrica vs MFK Skalica",
-      "fav_team": "Dukla Bystrica",
-      "odds": "@2.10",
-      "domination_score": "30/100",
-      "reussite": "10%",
+      "league": "Bosnie Herzeg • D1 Bosnie",
+      "match": "Siroki Brijeg vs BSK Banja Luka",
+      "fav_team": "Siroki Brijeg",
+      "odds": "@1.61",
+      "domination_score": "40/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9461,6 +9802,26 @@
       "odds": "@2.05",
       "domination_score": "36/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 18h00",
+      "league": "France • D1 Arkema F",
+      "match": "Marseille F vs Lens F",
+      "fav_team": "Marseille F",
+      "odds": "@1.63",
+      "domination_score": "40/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 18h00",
+      "league": "Finlande • D1 Finlande",
+      "match": "AC Oulu vs IF Gnistan",
+      "fav_team": "AC Oulu",
+      "odds": "@2.10",
+      "domination_score": "46/100",
+      "reussite": "60%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9478,49 +9839,19 @@
       "league": "Finlande • D1 Finlande",
       "match": "FF Jaro vs SJK Seinäjoen",
       "fav_team": "SJK Seinäjoen",
-      "odds": "@1.92",
+      "odds": "@1.95",
       "domination_score": "29/100",
       "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
       "time": "Sam. 12/09 à 18h00",
-      "league": "France • D1 Arkema F",
-      "match": "Marseille F vs Lens F",
-      "fav_team": "Marseille F",
-      "odds": "@1.63",
-      "domination_score": "40/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "France • D1 Arkema F",
-      "match": "FC Nantes F vs FC Fleury F",
-      "fav_team": "FC Fleury F",
-      "odds": "@1.91",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Finlande • D1 Finlande",
-      "match": "AC Oulu vs IF Gnistan",
-      "fav_team": "AC Oulu",
+      "league": "Slovaquie • D1 Slovaquie",
+      "match": "Dukla Bystrica vs MFK Skalica",
+      "fav_team": "Dukla Bystrica",
       "odds": "@2.10",
-      "domination_score": "46/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "Siroki Brijeg vs BSK Banja Luka",
-      "fav_team": "Siroki Brijeg",
-      "odds": "@1.60",
-      "domination_score": "40/100",
-      "reussite": "40%",
+      "domination_score": "30/100",
+      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9528,19 +9859,9 @@
       "league": "Allemagne • Bundesliga 1",
       "match": "Cologne vs Werder Brême",
       "fav_team": "Cologne",
-      "odds": "@1.96",
+      "odds": "@1.97",
       "domination_score": "48/100",
       "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h30",
-      "league": "Angleterre • Premier League",
-      "match": "Tottenham vs Everton",
-      "fav_team": "Tottenham",
-      "odds": "@1.94",
-      "domination_score": "23/100",
-      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9548,19 +9869,19 @@
       "league": "Espagne • Laliga 2",
       "match": "Granada CF vs Albacete",
       "fav_team": "Granada CF",
-      "odds": "@1.95",
-      "domination_score": "46/100",
+      "odds": "@1.87",
+      "domination_score": "47/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Sam. 12/09 à 19h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Konyaspor vs Trabzonspor",
-      "fav_team": "Trabzonspor",
-      "odds": "@1.83",
-      "domination_score": "43/100",
-      "reussite": "50%",
+      "time": "Sam. 12/09 à 18h30",
+      "league": "Angleterre • Premier League",
+      "match": "Tottenham vs Everton",
+      "fav_team": "Tottenham",
+      "odds": "@1.93",
+      "domination_score": "23/100",
+      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9571,6 +9892,16 @@
       "odds": "@2.05",
       "domination_score": "46/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 19h00",
+      "league": "Turquie • D1 Turquie",
+      "match": "Konyaspor vs Trabzonspor",
+      "fav_team": "Trabzonspor",
+      "odds": "@1.96",
+      "domination_score": "42/100",
+      "reussite": "50%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9588,8 +9919,8 @@
       "league": "Autriche • D1 Autriche",
       "match": "Wolfsberger AC vs Rapid Vienne",
       "fav_team": "Rapid Vienne",
-      "odds": "@1.58",
-      "domination_score": "26/100",
+      "odds": "@1.54",
+      "domination_score": "27/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
@@ -9598,9 +9929,29 @@
       "league": "Argentine • D1 Argentine",
       "match": "Estudiantes LP vs CA Platense",
       "fav_team": "Estudiantes LP",
-      "odds": "@1.71",
+      "odds": "@1.76",
+      "domination_score": "44/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 20h00",
+      "league": "France • Ligue 2 Bkt",
+      "match": "Dunkerque vs St Etienne",
+      "fav_team": "St Etienne",
+      "odds": "@1.65",
       "domination_score": "45/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 20h00",
+      "league": "Croatie • D1 Croatie",
+      "match": "Lok.Zagreb vs HNK Rijeka",
+      "fav_team": "HNK Rijeka",
+      "odds": "@1.49",
+      "domination_score": "38/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9615,30 +9966,10 @@
     },
     {
       "time": "Sam. 12/09 à 20h00",
-      "league": "France • Ligue 2 Bkt",
-      "match": "Dunkerque vs St Etienne",
-      "fav_team": "St Etienne",
-      "odds": "@1.68",
-      "domination_score": "45/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
-      "league": "Croatie • D1 Croatie",
-      "match": "Lok.Zagreb vs HNK Rijeka",
-      "fav_team": "HNK Rijeka",
-      "odds": "@1.47",
-      "domination_score": "38/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
       "league": "Chili • D1 Chili",
       "match": "Cobresal vs Coquimbo U.",
       "fav_team": "Coquimbo U.",
-      "odds": "@1.92",
+      "odds": "@1.93",
       "domination_score": "40/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
@@ -9665,22 +9996,22 @@
     },
     {
       "time": "Sam. 12/09 à 21h00",
-      "league": "Bresil • D1 Bresil",
-      "match": "Atletico MG vs Fluminense",
-      "fav_team": "Atletico MG",
-      "odds": "@2.05",
-      "domination_score": "47/100",
-      "reussite": "60%",
+      "league": "Espagne • Laliga 2",
+      "match": "Cordoba vs Almeria",
+      "fav_team": "Cordoba",
+      "odds": "@2.15",
+      "domination_score": "44/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
       "time": "Sam. 12/09 à 21h00",
-      "league": "Equateur • D1 Equateur",
-      "match": "Manta FC vs SD Aucas",
-      "fav_team": "SD Aucas",
-      "odds": "@1.96",
-      "domination_score": "42/100",
-      "reussite": "40%",
+      "league": "Bresil • D1 Bresil",
+      "match": "Atletico MG vs Fluminense",
+      "fav_team": "Atletico MG",
+      "odds": "@2.00",
+      "domination_score": "47/100",
+      "reussite": "60%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9695,11 +10026,11 @@
     },
     {
       "time": "Sam. 12/09 à 21h00",
-      "league": "Espagne • Laliga 2",
-      "match": "Cordoba vs Almeria",
-      "fav_team": "Cordoba",
-      "odds": "@2.15",
-      "domination_score": "44/100",
+      "league": "Equateur • D1 Equateur",
+      "match": "Manta FC vs SD Aucas",
+      "fav_team": "SD Aucas",
+      "odds": "@1.96",
+      "domination_score": "42/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -9715,22 +10046,22 @@
     },
     {
       "time": "Sam. 12/09 à 22h00",
-      "league": "Bresil • D1 Bresil",
-      "match": "Chapecoense SC vs Internacional",
-      "fav_team": "Internacional",
-      "odds": "@2.05",
-      "domination_score": "39/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 22h00",
       "league": "Canada • D1 Canada",
       "match": "Supra Quebec vs HFX Wanderers",
       "fav_team": "Supra Quebec",
       "odds": "@1.87",
       "domination_score": "42/100",
       "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Sam. 12/09 à 22h00",
+      "league": "Bresil • D1 Bresil",
+      "match": "Chapecoense SC vs Internacional",
+      "fav_team": "Internacional",
+      "odds": "@2.05",
+      "domination_score": "39/100",
+      "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9758,19 +10089,9 @@
       "league": "Paraguay • D1 Paraguay",
       "match": "CD Recoleta vs CS Trinidense",
       "fav_team": "CS Trinidense",
-      "odds": "@1.87",
-      "domination_score": "43/100",
+      "odds": "@1.92",
+      "domination_score": "42/100",
       "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h00",
-      "league": "Chili • D1 Chili",
-      "match": "CD Palestino vs Uni.Catolica",
-      "fav_team": "Uni.Catolica",
-      "odds": "@2.10",
-      "domination_score": "38/100",
-      "reussite": "60%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9784,22 +10105,22 @@
       "status": "ÉCARTÉ"
     },
     {
+      "time": "Dim. 13/09 à 01h00",
+      "league": "Chili • D1 Chili",
+      "match": "CD Palestino vs Uni.Catolica",
+      "fav_team": "Uni.Catolica",
+      "odds": "@2.10",
+      "domination_score": "38/100",
+      "reussite": "60%",
+      "status": "ÉCARTÉ"
+    },
+    {
       "time": "Dim. 13/09 à 01h10",
       "league": "Colombie • D1 Colombie",
       "match": "Boyaca Chico vs Indep.Medellin",
       "fav_team": "Indep.Medellin",
-      "odds": "@1.73",
+      "odds": "@1.76",
       "domination_score": "39/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h30",
-      "league": "Etats Unis • Mls",
-      "match": "Inter Miami vs Nashville SC",
-      "fav_team": "Inter Miami",
-      "odds": "@1.85",
-      "domination_score": "43/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
     },
@@ -9824,11 +10145,11 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Dim. 13/09 à 02h00",
-      "league": "Bresil • D1 Bresil",
-      "match": "Santos vs Cruzeiro",
-      "fav_team": "Cruzeiro",
-      "odds": "@2.20",
+      "time": "Dim. 13/09 à 01h30",
+      "league": "Etats Unis • Mls",
+      "match": "Inter Miami vs Nashville SC",
+      "fav_team": "Inter Miami",
+      "odds": "@1.93",
       "domination_score": "42/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
@@ -9838,8 +10159,8 @@
       "league": "Etats Unis • Mls",
       "match": "Kansas City vs Los Angeles FC",
       "fav_team": "Los Angeles FC",
-      "odds": "@1.55",
-      "domination_score": "47/100",
+      "odds": "@1.57",
+      "domination_score": "46/100",
       "reussite": "20%",
       "status": "ÉCARTÉ"
     },
@@ -9856,16 +10177,6 @@
     {
       "time": "Dim. 13/09 à 04h30",
       "league": "Etats Unis • Mls",
-      "match": "LA Galaxy vs Seattle",
-      "fav_team": "LA Galaxy",
-      "odds": "@2.00",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 04h30",
-      "league": "Etats Unis • Mls",
       "match": "San Jose vs Houston",
       "fav_team": "San Jose",
       "odds": "@2.20",
@@ -9874,11 +10185,21 @@
       "status": "ÉCARTÉ"
     },
     {
+      "time": "Dim. 13/09 à 04h30",
+      "league": "Etats Unis • Mls",
+      "match": "LA Galaxy vs Seattle",
+      "fav_team": "LA Galaxy",
+      "odds": "@2.00",
+      "domination_score": "36/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
       "time": "Dim. 13/09 à 05h15",
       "league": "Mexique • D1 Mexique",
       "match": "Cruz Azul vs Club America",
       "fav_team": "Club America",
-      "odds": "@2.15",
+      "odds": "@2.20",
       "domination_score": "41/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
@@ -9925,22 +10246,22 @@
     },
     {
       "time": "Dim. 13/09 à 13h00",
-      "league": "Angleterre • Championship",
-      "match": "Sheffield Utd vs Wolverhampton",
-      "fav_team": "Wolverhampton",
-      "odds": "@1.93",
-      "domination_score": "37/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 13h00",
       "league": "Rep Tcheque • D1 Rep Tcheque",
       "match": "Banik Ostrava vs FK Pardubice",
       "fav_team": "Banik Ostrava",
       "odds": "@1.82",
       "domination_score": "47/100",
       "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 13h00",
+      "league": "Angleterre • Championship",
+      "match": "Sheffield Utd vs Wolverhampton",
+      "fav_team": "Wolverhampton",
+      "odds": "@1.93",
+      "domination_score": "37/100",
+      "reussite": "20%",
       "status": "ÉCARTÉ"
     },
     {
@@ -9975,16 +10296,6 @@
     },
     {
       "time": "Dim. 13/09 à 14h00",
-      "league": "Suisse • D1 Suisse",
-      "match": "FC Zurich vs FC Vaduz",
-      "fav_team": "FC Zurich",
-      "odds": "@2.20",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
       "league": "Danemark • D1 Danemark",
       "match": "Silkeborg vs Viborg FF",
       "fav_team": "Viborg FF",
@@ -9998,9 +10309,19 @@
       "league": "Finlande • D1 Finlande",
       "match": "Kups vs HJK Helsinki",
       "fav_team": "Kups",
-      "odds": "@1.98",
+      "odds": "@2.00",
       "domination_score": "45/100",
       "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 14h00",
+      "league": "Suisse • D1 Suisse",
+      "match": "FC Zurich vs FC Vaduz",
+      "fav_team": "FC Zurich",
+      "odds": "@2.20",
+      "domination_score": "42/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     },
     {
@@ -10045,21 +10366,11 @@
     },
     {
       "time": "Dim. 13/09 à 15h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "Chaves vs Feirense",
-      "fav_team": "Chaves",
-      "odds": "@1.96",
-      "domination_score": "47/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 15h00",
-      "league": "Angleterre • Premier League",
-      "match": "Coventry vs Brighton Hove",
-      "fav_team": "Brighton Hove",
-      "odds": "@1.83",
-      "domination_score": "34/100",
+      "league": "Rep Tcheque • D1 Rep Tcheque",
+      "match": "FC Fastav Zlin vs Hradec Kralové",
+      "fav_team": "Hradec Kralové",
+      "odds": "@1.85",
+      "domination_score": "48/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
     },
@@ -10075,11 +10386,21 @@
     },
     {
       "time": "Dim. 13/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "FC Fastav Zlin vs Hradec Kralové",
-      "fav_team": "Hradec Kralové",
-      "odds": "@1.85",
-      "domination_score": "48/100",
+      "league": "Portugal • D2 Portugal",
+      "match": "Chaves vs Feirense",
+      "fav_team": "Chaves",
+      "odds": "@1.96",
+      "domination_score": "47/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 15h00",
+      "league": "Angleterre • Premier League",
+      "match": "Coventry vs Brighton Hove",
+      "fav_team": "Brighton Hove",
+      "odds": "@1.82",
+      "domination_score": "34/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
     },
@@ -10105,21 +10426,21 @@
     },
     {
       "time": "Dim. 13/09 à 16h00",
-      "league": "Estonie • D1 Estonie",
-      "match": "FC Kuressaare vs Tammeka Tartu",
-      "fav_team": "Tammeka Tartu",
-      "odds": "@2.00",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
       "league": "Turquie • D1 Turquie",
       "match": "Genclerbirligi vs Kasimpasa",
       "fav_team": "Genclerbirligi",
       "odds": "@2.10",
       "domination_score": "47/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 16h00",
+      "league": "Estonie • D1 Estonie",
+      "match": "FC Kuressaare vs Tammeka Tartu",
+      "fav_team": "Tammeka Tartu",
+      "odds": "@2.00",
+      "domination_score": "46/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
     },
@@ -10168,7 +10489,7 @@
       "league": "Suisse • D1 Suisse",
       "match": "FC Lausanne vs Servette FC",
       "fav_team": "Servette FC",
-      "odds": "@1.98",
+      "odds": "@1.97",
       "domination_score": "42/100",
       "reussite": "30%",
       "status": "ÉCARTÉ"
@@ -10178,8 +10499,8 @@
       "league": "Bulgarie • D1 Bulgarie",
       "match": "Botev Vratsa vs Levski Sofia",
       "fav_team": "Levski Sofia",
-      "odds": "@1.33",
-      "domination_score": "47/100",
+      "odds": "@1.34",
+      "domination_score": "46/100",
       "reussite": "50%",
       "status": "ÉCARTÉ"
     },
@@ -10195,11 +10516,31 @@
     },
     {
       "time": "Dim. 13/09 à 17h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "Podbrezova vs KFC Komarno",
-      "fav_team": "Podbrezova",
+      "league": "Norvege • D1 Norvege",
+      "match": "Start vs SK Brann",
+      "fav_team": "SK Brann",
       "odds": "@1.87",
-      "domination_score": "42/100",
+      "domination_score": "43/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 17h00",
+      "league": "Croatie • D1 Croatie",
+      "match": "Istra 1961 vs NK Rudes",
+      "fav_team": "Istra 1961",
+      "odds": "@1.40",
+      "domination_score": "45/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 17h00",
+      "league": "Norvege • D1 Norvege",
+      "match": "Kfum Oslo vs Aalesunds",
+      "fav_team": "Kfum Oslo",
+      "odds": "@2.15",
+      "domination_score": "48/100",
       "reussite": "40%",
       "status": "ÉCARTÉ"
     },
@@ -10225,32 +10566,22 @@
     },
     {
       "time": "Dim. 13/09 à 17h00",
-      "league": "Croatie • D1 Croatie",
-      "match": "Istra 1961 vs NK Rudes",
-      "fav_team": "Istra 1961",
-      "odds": "@1.40",
-      "domination_score": "45/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Start vs SK Brann",
-      "fav_team": "SK Brann",
+      "league": "Slovaquie • D1 Slovaquie",
+      "match": "Podbrezova vs KFC Komarno",
+      "fav_team": "Podbrezova",
       "odds": "@1.87",
-      "domination_score": "43/100",
-      "reussite": "30%",
+      "domination_score": "42/100",
+      "reussite": "40%",
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Kfum Oslo vs Aalesunds",
-      "fav_team": "Kfum Oslo",
-      "odds": "@2.15",
-      "domination_score": "48/100",
-      "reussite": "40%",
+      "time": "Dim. 13/09 à 17h15",
+      "league": "France • Ligue 1 Mcdonalds",
+      "match": "Le Mans vs Lens",
+      "fav_team": "Lens",
+      "odds": "@1.59",
+      "domination_score": "38/100",
+      "reussite": "30%",
       "status": "ÉCARTÉ"
     },
     {
@@ -10264,13 +10595,13 @@
       "status": "ÉCARTÉ"
     },
     {
-      "time": "Dim. 13/09 à 17h15",
-      "league": "France • Ligue 1 Mcdonalds",
-      "match": "Le Mans vs Lens",
-      "fav_team": "Lens",
-      "odds": "@1.58",
-      "domination_score": "38/100",
-      "reussite": "30%",
+      "time": "Dim. 13/09 à 17h30",
+      "league": "Afrique Du Sud • D1 Afrique Du Sud",
+      "match": "TS Galaxy FC vs Kruger United",
+      "fav_team": "TS Galaxy FC",
+      "odds": "@2.05",
+      "domination_score": "17/100",
+      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -10281,16 +10612,6 @@
       "odds": "@2.05",
       "domination_score": "41/100",
       "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h30",
-      "league": "Afrique Du Sud • D1 Afrique Du Sud",
-      "match": "TS Galaxy FC vs Kruger United",
-      "fav_team": "TS Galaxy FC",
-      "odds": "@2.05",
-      "domination_score": "17/100",
-      "reussite": "10%",
       "status": "ÉCARTÉ"
     },
     {
@@ -10312,20 +10633,130 @@
       "domination_score": "47/100",
       "reussite": "60%",
       "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 18h30",
+      "league": "Bosnie Herzeg • D1 Bosnie",
+      "match": "Sloga Doboj vs FK Zeljeznicar",
+      "fav_team": "Sloga Doboj",
+      "odds": "@2.15",
+      "domination_score": "43/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h00",
+      "league": "Slovaquie • D1 Slovaquie",
+      "match": "Slo.Bratislava vs MSK Zilina",
+      "fav_team": "Slo.Bratislava",
+      "odds": "@1.59",
+      "domination_score": "46/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h15",
+      "league": "Belgique • D1 Belgique",
+      "match": "La Louviere vs KV Kortrijk",
+      "fav_team": "La Louviere",
+      "odds": "@2.20",
+      "domination_score": "34/100",
+      "reussite": "10%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h15",
+      "league": "Norvege • D1 Norvege",
+      "match": "Fredrikstad vs Sarpsborg 08",
+      "fav_team": "Fredrikstad",
+      "odds": "@2.20",
+      "domination_score": "44/100",
+      "reussite": "50%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h30",
+      "league": "Roumanie • D1 Roumanie",
+      "match": "Hunedoara vs Uni.Craiova",
+      "fav_team": "Uni.Craiova",
+      "odds": "@1.74",
+      "domination_score": "28/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h30",
+      "league": "Israel • D1 Israel",
+      "match": "Hap.PetachTikv vs Hap.Beer Sheva",
+      "fav_team": "Hap.Beer Sheva",
+      "odds": "@1.37",
+      "domination_score": "29/100",
+      "reussite": "20%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 19h45",
+      "league": "Argentine • D1 Argentine",
+      "match": "Sarmiento vs Belgrano",
+      "fav_team": "Belgrano",
+      "odds": "@2.15",
+      "domination_score": "37/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Diriyah Club vs Abha",
+      "fav_team": "Diriyah Club",
+      "odds": "@1.41",
+      "domination_score": "43/100",
+      "reussite": "0%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Grece • D1 Grece",
+      "match": "Kifisias AE vs Levadiakos",
+      "fav_team": "Kifisias AE",
+      "odds": "@2.15",
+      "domination_score": "48/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Chili • D1 Chili",
+      "match": "La Serena vs Uni.De Chile",
+      "fav_team": "Uni.De Chile",
+      "odds": "@1.73",
+      "domination_score": "39/100",
+      "reussite": "40%",
+      "status": "ÉCARTÉ"
+    },
+    {
+      "time": "Dim. 13/09 à 20h00",
+      "league": "Arabie Saoudite • D1 Arabie Saoudite",
+      "match": "Al Riyadh vs Al Kholood",
+      "fav_team": "Al Kholood",
+      "odds": "@2.00",
+      "domination_score": "36/100",
+      "reussite": "30%",
+      "status": "ÉCARTÉ"
     }
   ],
   "methode2_summary": {
-    "total_combos": 125,
-    "decided_combos": 32,
+    "total_combos": 135,
+    "decided_combos": 33,
     "won": 17,
-    "lost": 15,
-    "live": 1,
-    "upcoming": 92,
+    "lost": 16,
+    "live": 0,
+    "upcoming": 102,
     "default_stake": 3.0,
-    "win_rate": 53.1,
-    "profit_units": 17.67,
-    "profit_eur": 53.01,
-    "roi_pct": 55.22
+    "win_rate": 51.5,
+    "profit_units": 16.67,
+    "profit_eur": 50.01,
+    "roi_pct": 50.52
   },
   "methode2_combos": [
     {
@@ -11654,10 +12085,10 @@
       "session": "2026-09-11",
       "odds": 3.08,
       "default_stake": 3.0,
-      "ticket_status": "LIVE",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 9.24,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3371156",
         "time": "Ven. 11/09 à 21h00",
@@ -11684,15 +12115,15 @@
         "home": "Club Tijuana",
         "away": "Queretaro FC",
         "odds": 1.89,
-        "status": "LIVE",
-        "selection_status": "IN_PROGRESS",
+        "status": "FINISHED",
+        "selection_status": "LOST",
         "score_display": "0 - 1",
         "home_score": null,
         "away_score": null,
-        "minute": "Mi-temps",
+        "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "email_ticket_num": 1
     },
@@ -11844,11 +12275,11 @@
       "id": "m2_combo_34",
       "ticket_num": 34,
       "session": "2026-09-12",
-      "odds": 2.72,
+      "odds": 2.68,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.16,
+      "gain_eur": 8.04,
       "profit_eur": 0.0,
       "m1": {
         "id": "3375305",
@@ -11857,7 +12288,7 @@
         "league": "Japon • D1 Japon",
         "home": "Hiroshima",
         "away": "Cerezo Osaka",
-        "odds": 1.51,
+        "odds": 1.47,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -11875,7 +12306,7 @@
         "league": "Chine • D1 Chine",
         "home": "Tianjin Tigers",
         "away": "Liaoning Sheny",
-        "odds": 1.8,
+        "odds": 1.82,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -11886,17 +12317,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 2
+      "email_ticket_num": 1
     },
     {
       "id": "m2_combo_35",
       "ticket_num": 35,
       "session": "2026-09-12",
-      "odds": 2.84,
+      "odds": 2.73,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.52,
+      "gain_eur": 8.19,
       "profit_eur": 0.0,
       "m1": {
         "id": "3378598",
@@ -11905,7 +12336,7 @@
         "league": "Angleterre • Championship",
         "home": "West Bromwich",
         "away": "Queens Park R.",
-        "odds": 2.0,
+        "odds": 1.92,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -11934,17 +12365,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 3
+      "email_ticket_num": 2
     },
     {
       "id": "m2_combo_36",
       "ticket_num": 36,
       "session": "2026-09-12",
-      "odds": 2.73,
+      "odds": 2.79,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.19,
+      "gain_eur": 8.37,
       "profit_eur": 0.0,
       "m1": {
         "id": "3360645",
@@ -11971,7 +12402,7 @@
         "league": "Italie • Serie B",
         "home": "Vicenza",
         "away": "SS Juve Stabia",
-        "odds": 1.87,
+        "odds": 1.91,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -11982,17 +12413,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 4
+      "email_ticket_num": 3
     },
     {
       "id": "m2_combo_37",
       "ticket_num": 37,
       "session": "2026-09-12",
-      "odds": 3.01,
+      "odds": 3.03,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 9.03,
+      "gain_eur": 9.09,
       "profit_eur": 0.0,
       "m1": {
         "id": "3379637",
@@ -12019,7 +12450,7 @@
         "league": "Allemagne • Bundesliga 1",
         "home": "Fribourg",
         "away": "M'Gladbach",
-        "odds": 1.6,
+        "odds": 1.61,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12030,17 +12461,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 5
+      "email_ticket_num": 4
     },
     {
       "id": "m2_combo_38",
       "ticket_num": 38,
       "session": "2026-09-12",
-      "odds": 2.99,
+      "odds": 3.05,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.97,
+      "gain_eur": 9.15,
       "profit_eur": 0.0,
       "m1": {
         "id": "3376205",
@@ -12049,7 +12480,7 @@
         "league": "Angleterre • Premier League",
         "home": "Liverpool",
         "away": "Fulham",
-        "odds": 1.39,
+        "odds": 1.42,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12078,7 +12509,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 6
+      "email_ticket_num": 5
     },
     {
       "id": "m2_combo_39",
@@ -12126,17 +12557,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 7
+      "email_ticket_num": 6
     },
     {
       "id": "m2_combo_40",
       "ticket_num": 40,
       "session": "2026-09-12",
-      "odds": 3.29,
+      "odds": 3.23,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 9.87,
+      "gain_eur": 9.69,
       "profit_eur": 0.0,
       "m1": {
         "id": "3369050",
@@ -12145,7 +12576,7 @@
         "league": "Italie • Serie B",
         "home": "US Catanzaro",
         "away": "Carrarese C.",
-        "odds": 1.96,
+        "odds": 1.91,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12163,7 +12594,7 @@
         "league": "Suisse • D1 Suisse",
         "home": "FC Thun",
         "away": "Grasshoppers",
-        "odds": 1.68,
+        "odds": 1.69,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12174,17 +12605,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 8
+      "email_ticket_num": 7
     },
     {
       "id": "m2_combo_41",
       "ticket_num": 41,
       "session": "2026-09-12",
-      "odds": 2.79,
+      "odds": 2.88,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.37,
+      "gain_eur": 8.64,
       "profit_eur": 0.0,
       "m1": {
         "id": "3368576",
@@ -12193,7 +12624,7 @@
         "league": "Suede • D1 Suede",
         "home": "IFK Göteborg",
         "away": "Halmstads",
-        "odds": 1.36,
+        "odds": 1.37,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12211,7 +12642,7 @@
         "league": "Finlande • D1 Finlande",
         "home": "Ilves",
         "away": "FC Lahti",
-        "odds": 2.05,
+        "odds": 2.1,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12222,17 +12653,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 9
+      "email_ticket_num": 8
     },
     {
       "id": "m2_combo_42",
       "ticket_num": 42,
       "session": "2026-09-12",
-      "odds": 2.98,
+      "odds": 3.2,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.94,
+      "gain_eur": 9.6,
       "profit_eur": 0.0,
       "m1": {
         "id": "3368584",
@@ -12259,7 +12690,7 @@
         "league": "Espagne • Laliga 2",
         "home": "Gérone",
         "away": "Castellon",
-        "odds": 2.0,
+        "odds": 2.15,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12270,17 +12701,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 10
+      "email_ticket_num": 9
     },
     {
       "id": "m2_combo_43",
       "ticket_num": 43,
       "session": "2026-09-12",
-      "odds": 3.14,
+      "odds": 3.16,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 9.42,
+      "gain_eur": 9.48,
       "profit_eur": 0.0,
       "m1": {
         "id": "3368561",
@@ -12307,7 +12738,7 @@
         "league": "Serbie • D1 Serbie",
         "home": "FK Cukaricki",
         "away": "FK Novi Pazar",
-        "odds": 1.99,
+        "odds": 2.0,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12318,17 +12749,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 11
+      "email_ticket_num": 10
     },
     {
       "id": "m2_combo_44",
       "ticket_num": 44,
       "session": "2026-09-12",
-      "odds": 2.9,
+      "odds": 2.95,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.7,
+      "gain_eur": 8.85,
       "profit_eur": 0.0,
       "m1": {
         "id": "3360693",
@@ -12337,7 +12768,7 @@
         "league": "Espagne • Laliga",
         "home": "Ath. Bilbao",
         "away": "Elche",
-        "odds": 1.35,
+        "odds": 1.37,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12366,17 +12797,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 12
+      "email_ticket_num": 11
     },
     {
       "id": "m2_combo_45",
       "ticket_num": 45,
       "session": "2026-09-12",
-      "odds": 2.67,
+      "odds": 2.71,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.01,
+      "gain_eur": 8.13,
       "profit_eur": 0.0,
       "m1": {
         "id": "3376761",
@@ -12385,7 +12816,7 @@
         "league": "Bulgarie • D1 Bulgarie",
         "home": "CSKA Sofia",
         "away": "FC Arda",
-        "odds": 1.61,
+        "odds": 1.63,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12414,17 +12845,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 13
+      "email_ticket_num": 12
     },
     {
       "id": "m2_combo_46",
       "ticket_num": 46,
       "session": "2026-09-12",
-      "odds": 2.84,
+      "odds": 2.97,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.52,
+      "gain_eur": 8.91,
       "profit_eur": 0.0,
       "m1": {
         "id": "3378973",
@@ -12451,7 +12882,7 @@
         "league": "Italie • Serie A",
         "home": "Atalanta",
         "away": "Cagliari",
-        "odds": 1.52,
+        "odds": 1.59,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -12462,7 +12893,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 14
+      "email_ticket_num": 13
     },
     {
       "id": "m2_combo_47",
@@ -12510,7 +12941,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 15
+      "email_ticket_num": 14
     },
     {
       "id": "m2_combo_48",
@@ -12558,7 +12989,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 16
+      "email_ticket_num": 15
     },
     {
       "id": "m2_combo_49",
@@ -12606,7 +13037,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 17
+      "email_ticket_num": 16
     },
     {
       "id": "m2_combo_51",
@@ -12654,7 +13085,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 18
+      "email_ticket_num": 17
     },
     {
       "id": "m2_combo_54",
@@ -12702,7 +13133,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 19
+      "email_ticket_num": 18
     },
     {
       "id": "m2_combo_55",
@@ -12750,7 +13181,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 20
+      "email_ticket_num": 19
     },
     {
       "id": "m2_combo_57",
@@ -12798,7 +13229,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 21
+      "email_ticket_num": 20
     },
     {
       "id": "m2_combo_58",
@@ -12846,7 +13277,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 22
+      "email_ticket_num": 21
     },
     {
       "id": "m2_combo_59",
@@ -12894,7 +13325,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 23
+      "email_ticket_num": 22
     },
     {
       "id": "m2_combo_60",
@@ -12942,7 +13373,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 24
+      "email_ticket_num": 23
     },
     {
       "id": "m2_combo_61",
@@ -12990,17 +13421,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 25
+      "email_ticket_num": 24
     },
     {
       "id": "m2_combo_62",
       "ticket_num": 62,
       "session": "2026-09-12",
-      "odds": 2.88,
+      "odds": 2.92,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.64,
+      "gain_eur": 8.76,
       "profit_eur": 0.0,
       "m1": {
         "id": "3367859",
@@ -13009,7 +13440,7 @@
         "league": "Argentine • D1 Argentine",
         "home": "Ind. Rivadavia",
         "away": "CA Aldosivi",
-        "odds": 1.37,
+        "odds": 1.39,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -13038,65 +13469,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 26
-    },
-    {
-      "id": "m2_combo_63",
-      "ticket_num": 63,
-      "session": "2026-09-12",
-      "odds": 2.6,
-      "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
-      "gain_eur": 7.8,
-      "profit_eur": 0.0,
-      "m1": {
-        "id": "3373750",
-        "time": "Sam. 12/09 à 12h00",
-        "start_iso": null,
-        "league": "Ukraine • D1 Ukraine",
-        "home": "LNZ Cherkasy",
-        "away": "Obolon Kiev",
-        "odds": 1.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 12h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "m2": {
-        "id": "3372631",
-        "time": "Sam. 12/09 à 13h00",
-        "start_iso": "2026-09-12T11:00:00.000Z",
-        "league": "Allemagne • Bundesliga 2",
-        "home": "FC Magdeburg",
-        "away": "Kaiserslautern",
-        "odds": 2.0,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 13h00",
-        "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
-      },
-      "email_ticket_num": 27
+      "email_ticket_num": 25
     },
     {
       "id": "m2_combo_64",
       "ticket_num": 64,
       "session": "2026-09-12",
-      "odds": 2.68,
+      "odds": 2.65,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.04,
+      "gain_eur": 7.95,
       "profit_eur": 0.0,
       "m1": {
         "id": "3375064",
@@ -13123,7 +13506,7 @@
         "league": "Coree Du Sud • D1 Coree Du Sud",
         "home": "Daejeon",
         "away": "Pohang",
-        "odds": 1.72,
+        "odds": 1.7,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -13134,7 +13517,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 28
+      "email_ticket_num": 26
     },
     {
       "id": "m2_combo_65",
@@ -13182,7 +13565,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 29
+      "email_ticket_num": 27
     },
     {
       "id": "m2_combo_66",
@@ -13230,7 +13613,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 30
+      "email_ticket_num": 28
     },
     {
       "id": "m2_combo_69",
@@ -13278,7 +13661,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 31
+      "email_ticket_num": 29
     },
     {
       "id": "m2_combo_70",
@@ -13326,7 +13709,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 32
+      "email_ticket_num": 30
     },
     {
       "id": "m2_combo_71",
@@ -13374,7 +13757,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 33
+      "email_ticket_num": 31
     },
     {
       "id": "m2_combo_72",
@@ -13422,7 +13805,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 34
+      "email_ticket_num": 32
     },
     {
       "id": "m2_combo_73",
@@ -13470,7 +13853,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 35
+      "email_ticket_num": 33
     },
     {
       "id": "m2_combo_75",
@@ -13518,7 +13901,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 36
+      "email_ticket_num": 34
     },
     {
       "id": "m2_combo_76",
@@ -13566,7 +13949,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 37
+      "email_ticket_num": 35
     },
     {
       "id": "m2_combo_78",
@@ -13614,7 +13997,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 38
+      "email_ticket_num": 36
     },
     {
       "id": "m2_combo_79",
@@ -13662,7 +14045,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 39
+      "email_ticket_num": 37
     },
     {
       "id": "m2_combo_81",
@@ -13710,7 +14093,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 40
+      "email_ticket_num": 38
     },
     {
       "id": "m2_combo_82",
@@ -13758,17 +14141,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 41
+      "email_ticket_num": 39
     },
     {
       "id": "m2_combo_84",
       "ticket_num": 84,
       "session": "2026-09-12",
-      "odds": 3.89,
+      "odds": 3.99,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 11.67,
+      "gain_eur": 11.97,
       "profit_eur": 0.0,
       "m1": {
         "id": "3372008",
@@ -13777,7 +14160,7 @@
         "league": "Slovaquie • D1 Slovaquie",
         "home": "MFK Ruzomberok",
         "away": "MFK Zemplin",
-        "odds": 1.85,
+        "odds": 1.9,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -13806,7 +14189,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 42
+      "email_ticket_num": 40
     },
     {
       "id": "m2_combo_86",
@@ -13854,7 +14237,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 43
+      "email_ticket_num": 41
     },
     {
       "id": "m2_combo_87",
@@ -13902,7 +14285,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 44
+      "email_ticket_num": 42
     },
     {
       "id": "m2_combo_88",
@@ -13950,7 +14333,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 45
+      "email_ticket_num": 43
     },
     {
       "id": "m2_combo_89",
@@ -13998,7 +14381,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 46
+      "email_ticket_num": 44
     },
     {
       "id": "m2_combo_90",
@@ -14046,7 +14429,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 47
+      "email_ticket_num": 45
     },
     {
       "id": "m2_combo_91",
@@ -14094,7 +14477,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 48
+      "email_ticket_num": 46
     },
     {
       "id": "m2_combo_92",
@@ -14142,7 +14525,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 49
+      "email_ticket_num": 47
     },
     {
       "id": "m2_combo_93",
@@ -14238,7 +14621,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 50
+      "email_ticket_num": 48
     },
     {
       "id": "m2_combo_95",
@@ -14286,7 +14669,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 51
+      "email_ticket_num": 49
     },
     {
       "id": "m2_combo_96",
@@ -14334,7 +14717,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 52
+      "email_ticket_num": 50
     },
     {
       "id": "m2_combo_97",
@@ -14382,7 +14765,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 53
+      "email_ticket_num": 51
     },
     {
       "id": "m2_combo_98",
@@ -14430,7 +14813,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 54
+      "email_ticket_num": 52
     },
     {
       "id": "m2_combo_99",
@@ -14478,7 +14861,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 55
+      "email_ticket_num": 53
     },
     {
       "id": "m2_combo_100",
@@ -14526,7 +14909,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 56
+      "email_ticket_num": 54
     },
     {
       "id": "m2_combo_101",
@@ -14574,17 +14957,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 57
+      "email_ticket_num": 55
     },
     {
       "id": "m2_combo_102",
       "ticket_num": 102,
       "session": "2026-09-12",
-      "odds": 3.07,
+      "odds": 3.12,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 9.21,
+      "gain_eur": 9.36,
       "profit_eur": 0.0,
       "m1": {
         "id": "3378667",
@@ -14593,7 +14976,7 @@
         "league": "Equateur • D1 Equateur",
         "home": "LDU Quito",
         "away": "Dep.Cuenca",
-        "odds": 1.5,
+        "odds": 1.52,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -14622,17 +15005,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 58
+      "email_ticket_num": 56
     },
     {
       "id": "m2_combo_103",
       "ticket_num": 103,
       "session": "2026-09-12",
-      "odds": 3.64,
+      "odds": 3.8,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 10.92,
+      "gain_eur": 11.4,
       "profit_eur": 0.0,
       "m1": {
         "id": "3358310",
@@ -14641,7 +15024,7 @@
         "league": "Etats Unis • Mls",
         "home": "Inter Miami",
         "away": "Nashville SC",
-        "odds": 1.82,
+        "odds": 1.9,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -14670,7 +15053,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 59
+      "email_ticket_num": 57
     },
     {
       "id": "m2_combo_104",
@@ -14718,7 +15101,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 60
+      "email_ticket_num": 58
     },
     {
       "id": "m2_combo_105",
@@ -14766,7 +15149,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 61
+      "email_ticket_num": 59
     },
     {
       "id": "m2_combo_106",
@@ -14814,17 +15197,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 62
+      "email_ticket_num": 60
     },
     {
       "id": "m2_combo_107",
       "ticket_num": 107,
       "session": "2026-09-12",
-      "odds": 3.82,
+      "odds": 3.89,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 11.46,
+      "gain_eur": 11.67,
       "profit_eur": 0.0,
       "m1": {
         "id": "3358395",
@@ -14833,7 +15216,7 @@
         "league": "Etats Unis • Mls",
         "home": "Salt Lake",
         "away": "NY City FC",
-        "odds": 1.82,
+        "odds": 1.85,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -14862,7 +15245,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 63
+      "email_ticket_num": 61
     },
     {
       "id": "m2_combo_108",
@@ -14910,17 +15293,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 64
+      "email_ticket_num": 62
     },
     {
       "id": "m2_combo_110",
       "ticket_num": 110,
       "session": "2026-09-12",
-      "odds": 3.43,
+      "odds": 3.45,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 10.29,
+      "gain_eur": 10.35,
       "profit_eur": 0.0,
       "m1": {
         "id": "3375642",
@@ -14929,7 +15312,7 @@
         "league": "Algerie • D1 Algerie",
         "home": "CS Constantine",
         "away": "ASO Chlef",
-        "odds": 1.46,
+        "odds": 1.47,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -14958,7 +15341,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 65
+      "email_ticket_num": 63
     },
     {
       "id": "m2_combo_111",
@@ -15006,7 +15389,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 66
+      "email_ticket_num": 64
     },
     {
       "id": "m2_combo_112",
@@ -15054,7 +15437,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 67
+      "email_ticket_num": 65
     },
     {
       "id": "m2_combo_113",
@@ -15102,7 +15485,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 68
+      "email_ticket_num": 66
     },
     {
       "id": "m2_combo_114",
@@ -15150,7 +15533,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 69
+      "email_ticket_num": 67
     },
     {
       "id": "m2_combo_115",
@@ -15198,7 +15581,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 70
+      "email_ticket_num": 68
     },
     {
       "id": "m2_combo_116",
@@ -15246,7 +15629,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 71
+      "email_ticket_num": 69
     },
     {
       "id": "m2_combo_117",
@@ -15294,7 +15677,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 72
+      "email_ticket_num": 70
     },
     {
       "id": "m2_combo_118",
@@ -15342,7 +15725,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 73
+      "email_ticket_num": 71
     },
     {
       "id": "m2_combo_119",
@@ -15390,7 +15773,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 74
+      "email_ticket_num": 72
     },
     {
       "id": "m2_combo_120",
@@ -15438,17 +15821,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 75
+      "email_ticket_num": 73
     },
     {
       "id": "m2_combo_122",
       "ticket_num": 122,
       "session": "2026-09-13",
-      "odds": 2.99,
+      "odds": 3.01,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.97,
+      "gain_eur": 9.03,
       "profit_eur": 0.0,
       "m1": {
         "id": "3368781",
@@ -15457,7 +15840,7 @@
         "league": "Allemagne • Bundesliga 1",
         "home": "RB Leipzig",
         "away": "Hambourg",
-        "odds": 1.3,
+        "odds": 1.31,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -15486,7 +15869,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 76
+      "email_ticket_num": 74
     },
     {
       "id": "m2_combo_123",
@@ -15534,7 +15917,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 77
+      "email_ticket_num": 75
     },
     {
       "id": "m2_combo_124",
@@ -15582,7 +15965,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 78
+      "email_ticket_num": 76
     },
     {
       "id": "m2_combo_125",
@@ -15630,7 +16013,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 79
+      "email_ticket_num": 77
     },
     {
       "id": "m2_combo_126",
@@ -15678,7 +16061,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 80
+      "email_ticket_num": 78
     },
     {
       "id": "m2_combo_127",
@@ -15726,7 +16109,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 81
+      "email_ticket_num": 79
     },
     {
       "id": "m2_combo_128",
@@ -15774,7 +16157,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 82
+      "email_ticket_num": 80
     },
     {
       "id": "m2_combo_129",
@@ -15822,7 +16205,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 83
+      "email_ticket_num": 81
     },
     {
       "id": "m2_combo_130",
@@ -15870,17 +16253,17 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 84
+      "email_ticket_num": 82
     },
     {
       "id": "m2_combo_131",
       "ticket_num": 131,
       "session": "2026-09-13",
-      "odds": 2.67,
+      "odds": 2.69,
       "default_stake": 3.0,
       "ticket_status": "PENDING",
       "profit_unit": 0.0,
-      "gain_eur": 8.01,
+      "gain_eur": 8.07,
       "profit_eur": 0.0,
       "m1": {
         "id": "3376238",
@@ -15889,7 +16272,7 @@
         "league": "France • Ligue 1 Mcdonalds",
         "home": "Lille",
         "away": "Troyes",
-        "odds": 1.35,
+        "odds": 1.36,
         "status": "UPCOMING",
         "selection_status": "PENDING",
         "score_display": "VS",
@@ -15918,7 +16301,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 85
+      "email_ticket_num": 83
     },
     {
       "id": "m2_combo_132",
@@ -15966,7 +16349,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 86
+      "email_ticket_num": 84
     },
     {
       "id": "m2_combo_133",
@@ -16014,7 +16397,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 87
+      "email_ticket_num": 85
     },
     {
       "id": "m2_combo_134",
@@ -16062,7 +16445,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 88
+      "email_ticket_num": 86
     },
     {
       "id": "m2_combo_135",
@@ -16110,7 +16493,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 89
+      "email_ticket_num": 87
     },
     {
       "id": "m2_combo_136",
@@ -16158,7 +16541,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 90
+      "email_ticket_num": 88
     },
     {
       "id": "m2_combo_137",
@@ -16206,7 +16589,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 91
+      "email_ticket_num": 89
     },
     {
       "id": "m2_combo_138",
@@ -16254,7 +16637,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 92
+      "email_ticket_num": 90
     },
     {
       "id": "m2_combo_139",
@@ -16302,7 +16685,535 @@
         "is_finished": false,
         "profit": 0.0
       },
+      "email_ticket_num": 91
+    },
+    {
+      "id": "m2_combo_140",
+      "ticket_num": 140,
+      "session": "2026-09-12",
+      "odds": 2.79,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 8.37,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3373750",
+        "time": "Sam. 12/09 à 12h00",
+        "start_iso": null,
+        "league": "Ukraine • D1 Ukraine",
+        "home": "LNZ Cherkasy",
+        "away": "Obolon Kiev",
+        "odds": 1.3,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 12h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3368579",
+        "time": "Sam. 12/09 à 19h00",
+        "start_iso": null,
+        "league": "Suisse • D1 Suisse",
+        "home": "FC Lugano",
+        "away": "Young Boys",
+        "odds": 2.15,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 19h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 92
+    },
+    {
+      "id": "m2_combo_141",
+      "ticket_num": 141,
+      "session": "2026-09-12",
+      "odds": 3.08,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 9.24,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3376856",
+        "time": "Sam. 12/09 à 18h00",
+        "start_iso": null,
+        "league": "Bulgarie • D1 Bulgarie",
+        "home": "FC CSKA 1948",
+        "away": "Dunav Rousse",
+        "odds": 1.31,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 18h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3360656",
+        "time": "Sam. 12/09 à 16h15",
+        "start_iso": "2026-09-12T14:15:00.000Z",
+        "league": "Espagne • Laliga 2",
+        "home": "Cadix",
+        "away": "Las Palmas",
+        "odds": 2.35,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 16h15",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
       "email_ticket_num": 93
+    },
+    {
+      "id": "m2_combo_142",
+      "ticket_num": 142,
+      "session": "2026-09-12",
+      "odds": 4.66,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 13.98,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3372631",
+        "time": "Sam. 12/09 à 13h00",
+        "start_iso": null,
+        "league": "Allemagne • Bundesliga 2",
+        "home": "FC Magdeburg",
+        "away": "Kaiserslautern",
+        "odds": 1.94,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 13h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3368559",
+        "time": "Sam. 12/09 à 17h30",
+        "start_iso": "2026-09-12T15:30:00.000Z",
+        "league": "Roumanie • D1 Roumanie",
+        "home": "ACS Sepsi",
+        "away": "Cfr Cluj",
+        "odds": 2.4,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Sam. 12/09 à 17h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 94
+    },
+    {
+      "id": "m2_combo_143",
+      "ticket_num": 143,
+      "session": "2026-09-13",
+      "odds": 2.61,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 7.83,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3376426",
+        "time": "Dim. 13/09 à 18h20",
+        "start_iso": null,
+        "league": "Arabie Saoudite • D1 Arabie Saoudite",
+        "home": "Neom SC",
+        "away": "Al Fateh",
+        "odds": 1.59,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 18h20",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3376855",
+        "time": "Dim. 13/09 à 19h30",
+        "start_iso": null,
+        "league": "Bulgarie • D1 Bulgarie",
+        "home": "Botev Plovdiv",
+        "away": "Lokomo.Plovdiv",
+        "odds": 1.64,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 95
+    },
+    {
+      "id": "m2_combo_144",
+      "ticket_num": 144,
+      "session": "2026-09-13",
+      "odds": 2.73,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 8.19,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3360638",
+        "time": "Dim. 13/09 à 18h30",
+        "start_iso": null,
+        "league": "Espagne • Laliga 2",
+        "home": "Majorque",
+        "away": "Sabadell",
+        "odds": 1.58,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 18h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3377624",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": null,
+        "league": "Equateur • D1 Equateur",
+        "home": "FC Leones",
+        "away": "Tecnico Uni.",
+        "odds": 1.73,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 20h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 96
+    },
+    {
+      "id": "m2_combo_145",
+      "ticket_num": 145,
+      "session": "2026-09-13",
+      "odds": 2.99,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 8.97,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3374316",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": null,
+        "league": "Grece • D1 Grece",
+        "home": "PAOK Salonique",
+        "away": "Aris Salonique",
+        "odds": 1.39,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 20h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3378971",
+        "time": "Dim. 13/09 à 18h30",
+        "start_iso": "2026-09-13T16:30:00.000Z",
+        "league": "Bosnie Herzeg • D1 Bosnie",
+        "home": "Sloga Doboj",
+        "away": "FK Zeljeznicar",
+        "odds": 2.15,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 18h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 97
+    },
+    {
+      "id": "m2_combo_146",
+      "ticket_num": 146,
+      "session": "2026-09-13",
+      "odds": 5.52,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 16.56,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3368812",
+        "time": "Dim. 13/09 à 18h30",
+        "start_iso": "2026-09-13T16:30:00.000Z",
+        "league": "Belgique • D1 Belgique",
+        "home": "Zulte Waregem",
+        "away": "Charleroi",
+        "odds": 2.35,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 18h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3360695",
+        "time": "Dim. 13/09 à 18h30",
+        "start_iso": "2026-09-13T16:30:00.000Z",
+        "league": "Espagne • Laliga",
+        "home": "Getafe",
+        "away": "La Corogne",
+        "odds": 2.35,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 18h30",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 98
+    },
+    {
+      "id": "m2_combo_147",
+      "ticket_num": 147,
+      "session": "2026-09-13",
+      "odds": 3.66,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 10.98,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3363780",
+        "time": "Dim. 13/09 à 19h00",
+        "start_iso": "2026-09-13T17:00:00.000Z",
+        "league": "Turquie • D1 Turquie",
+        "home": "Amedspor",
+        "away": "Basaksehir",
+        "odds": 2.3,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3372012",
+        "time": "Dim. 13/09 à 19h00",
+        "start_iso": "2026-09-13T17:00:00.000Z",
+        "league": "Slovaquie • D1 Slovaquie",
+        "home": "Slo.Bratislava",
+        "away": "MSK Zilina",
+        "odds": 1.59,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 99
+    },
+    {
+      "id": "m2_combo_148",
+      "ticket_num": 148,
+      "session": "2026-09-13",
+      "odds": 5.28,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 15.84,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3378057",
+        "time": "Dim. 13/09 à 19h00",
+        "start_iso": "2026-09-13T17:00:00.000Z",
+        "league": "Portugal • Liga Portugal",
+        "home": "Arouca",
+        "away": "Santa Clara",
+        "odds": 2.4,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3368813",
+        "time": "Dim. 13/09 à 19h15",
+        "start_iso": "2026-09-13T17:15:00.000Z",
+        "league": "Belgique • D1 Belgique",
+        "home": "La Louviere",
+        "away": "KV Kortrijk",
+        "odds": 2.2,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h15",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 100
+    },
+    {
+      "id": "m2_combo_149",
+      "ticket_num": 149,
+      "session": "2026-09-13",
+      "odds": 5.5,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 16.5,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3368802",
+        "time": "Dim. 13/09 à 19h15",
+        "start_iso": "2026-09-13T17:15:00.000Z",
+        "league": "Norvege • D1 Norvege",
+        "home": "Fredrikstad",
+        "away": "Sarpsborg 08",
+        "odds": 2.2,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h15",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3367864",
+        "time": "Dim. 13/09 à 19h45",
+        "start_iso": "2026-09-13T17:45:00.000Z",
+        "league": "Argentine • D1 Argentine",
+        "home": "C.A. Tigre",
+        "away": "RosarioCentral",
+        "odds": 2.5,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 19h45",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 101
+    },
+    {
+      "id": "m2_combo_150",
+      "ticket_num": 150,
+      "session": "2026-09-13",
+      "odds": 3.03,
+      "default_stake": 3.0,
+      "ticket_status": "PENDING",
+      "profit_unit": 0.0,
+      "gain_eur": 9.09,
+      "profit_eur": 0.0,
+      "m1": {
+        "id": "3376424",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": "2026-09-13T18:00:00.000Z",
+        "league": "Arabie Saoudite • D1 Arabie Saoudite",
+        "home": "Diriyah Club",
+        "away": "Abha",
+        "odds": 1.41,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 20h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "m2": {
+        "id": "3374315",
+        "time": "Dim. 13/09 à 20h00",
+        "start_iso": "2026-09-13T18:00:00.000Z",
+        "league": "Grece • D1 Grece",
+        "home": "Kifisias AE",
+        "away": "Levadiakos",
+        "odds": 2.15,
+        "status": "UPCOMING",
+        "selection_status": "PENDING",
+        "score_display": "VS",
+        "home_score": null,
+        "away_score": null,
+        "minute": "Dim. 13/09 à 20h00",
+        "is_live": false,
+        "is_finished": false,
+        "profit": 0.0
+      },
+      "email_ticket_num": 102
     }
   ]
 }

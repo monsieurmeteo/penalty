@@ -27835,5 +27835,397 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3368579",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "FC Lugano vs Young Boys",
+    "league": "Suisse • D1 Suisse",
+    "date_str": "Sam. 12/09 à 19h00",
+    "fav_team": "FC Lugano",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376426",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Neom SC vs Al Fateh",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Dim. 13/09 à 18h20",
+    "fav_team": "Neom SC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.59,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360638",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Majorque vs Sabadell",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 13/09 à 18h30",
+    "fav_team": "Majorque",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 66,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 60
+    },
+    "odds": {
+      "fav_odds": 1.58,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378971",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Sloga Doboj vs FK Zeljeznicar",
+    "league": "Bosnie Herzeg • D1 Bosnie",
+    "date_str": "Dim. 13/09 à 18h30",
+    "fav_team": "Sloga Doboj",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378411",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "IMT N.Belgrade vs Etoile Rouge",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Dim. 13/09 à 19h00",
+    "fav_team": "Etoile Rouge",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.31,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372012",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Slo.Bratislava vs MSK Zilina",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Dim. 13/09 à 19h00",
+    "fav_team": "Slo.Bratislava",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.59,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368813",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "La Louviere vs KV Kortrijk",
+    "league": "Belgique • D1 Belgique",
+    "date_str": "Dim. 13/09 à 19h15",
+    "fav_team": "La Louviere",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 34,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368802",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Fredrikstad vs Sarpsborg 08",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 13/09 à 19h15",
+    "fav_team": "Fredrikstad",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 44,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376855",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Botev Plovdiv vs Lokomo.Plovdiv",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Dim. 13/09 à 19h30",
+    "fav_team": "Botev Plovdiv",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.64,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368557",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Hunedoara vs Uni.Craiova",
+    "league": "Roumanie • D1 Roumanie",
+    "date_str": "Dim. 13/09 à 19h30",
+    "fav_team": "Uni.Craiova",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 28,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.74,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378995",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Hap.PetachTikv vs Hap.Beer Sheva",
+    "league": "Israel • D1 Israel",
+    "date_str": "Dim. 13/09 à 19h30",
+    "fav_team": "Hap.Beer Sheva",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 29,
+      "pct_fav_success": 20,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.37,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367856",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Sarmiento vs Belgrano",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 13/09 à 19h45",
+    "fav_team": "Belgrano",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 37,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3377624",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "FC Leones vs Tecnico Uni.",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "FC Leones",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 62,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374316",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "PAOK Salonique vs Aris Salonique",
+    "league": "Grece • D1 Grece",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "PAOK Salonique",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 65,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 70
+    },
+    "odds": {
+      "fav_odds": 1.39,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376424",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Diriyah Club vs Abha",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "Diriyah Club",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 0,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.41,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374315",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Kifisias AE vs Levadiakos",
+    "league": "Grece • D1 Grece",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "Kifisias AE",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374048",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "La Serena vs Uni.De Chile",
+    "league": "Chili • D1 Chili",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "Uni.De Chile",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 39,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376422",
+    "timestamp_utc": "2026-09-12T06:05:46.483288+00:00",
+    "match": "Al Riyadh vs Al Kholood",
+    "league": "Arabie Saoudite • D1 Arabie Saoudite",
+    "date_str": "Dim. 13/09 à 20h00",
+    "fav_team": "Al Kholood",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
