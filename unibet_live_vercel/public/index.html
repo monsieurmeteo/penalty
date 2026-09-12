@@ -506,13 +506,19 @@
                     goalTimestamps[key] = now;
                     expandedSet.add(key);
                     
-                    if (favoritesSet.has(key)) {
+                    const isComboMatch = getComboTagForGame(g);
+                    if (favoritesSet.has(key) || isComboMatch) {
                         sendSystemNotification(g);
                         if (isSoundEnabled) playStadiumGoalSound();
                     }
                 }
                 prevScores[key] = scoreStr;
             });
+
+            if (activeTab === 'combos') {
+                renderCombosView();
+                return;
+            }
 
             let filtered = games.filter(g => 
                 g.dom.toLowerCase().includes(query) || 
@@ -779,18 +785,25 @@
             const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
             const activeList = (currentMethod === 'm1') ? m1List : m2List;
 
-            // KPIs
+            // ⚡ ÉVALUATION TEMPS RÉEL DE CHAQUE TICKET (FLUX LIVE DIRECT)
+            const evaluatedList = activeList.map(c => {
+                const evalRes = evalTicketLive(c);
+                return { ...c, live_eval: evalRes };
+            });
+
+            // KPIs EN TEMPS RÉEL
             let won = 0, lost = 0, live = 0, upcoming = 0;
             let profitUnits = 0.0;
 
-            activeList.forEach(c => {
-                if (c.ticket_status === 'WON') {
+            evaluatedList.forEach(c => {
+                const st = c.live_eval.ticketStatus;
+                if (st === 'WON') {
                     won++;
                     profitUnits += (c.odds - 1.0);
-                } else if (c.ticket_status === 'LOST') {
+                } else if (st === 'LOST') {
                     lost++;
                     profitUnits -= 1.0;
-                } else if (c.ticket_status === 'LIVE') {
+                } else if (st === 'LIVE') {
                     live++;
                 } else {
                     upcoming++;
@@ -803,11 +816,12 @@
             const profitEur = (profitUnits * currentComboStake).toFixed(2);
 
             // Filtrage des tickets
-            let filtered = activeList.filter(c => {
-                if (currentComboFilter === 'LIVE') return c.ticket_status === 'LIVE';
-                if (currentComboFilter === 'WON') return c.ticket_status === 'WON';
-                if (currentComboFilter === 'LOST') return c.ticket_status === 'LOST';
-                if (currentComboFilter === 'PENDING') return c.ticket_status === 'PENDING';
+            let filtered = evaluatedList.filter(c => {
+                const st = c.live_eval.ticketStatus;
+                if (currentComboFilter === 'LIVE') return st === 'LIVE';
+                if (currentComboFilter === 'WON') return st === 'WON';
+                if (currentComboFilter === 'LOST') return st === 'LOST';
+                if (currentComboFilter === 'PENDING') return st === 'PENDING';
                 return true;
             });
 
@@ -823,7 +837,7 @@
                     </div>
                 </div>
 
-                <!-- KPI BANNER -->
+                <!-- KPI BANNER EN DIRECT -->
                 <div class="combos-kpi-grid">
                     <div class="combos-kpi-card">
                         <div class="combos-kpi-val" style="color:#10b981;">${won}/${decided}</div>
@@ -870,9 +884,10 @@
 
             // Cartes de tickets
             html += filtered.map(c => {
-                const isWon = (c.ticket_status === 'WON');
-                const isLost = (c.ticket_status === 'LOST');
-                const isLive = (c.ticket_status === 'LIVE');
+                const tSt = c.live_eval.ticketStatus;
+                const isWon = (tSt === 'WON');
+                const isLost = (tSt === 'LOST');
+                const isLive = (tSt === 'LIVE');
 
                 let cardClass = 'ticket-card';
                 if (isWon) cardClass += ' is-won';
@@ -902,27 +917,24 @@
                     ? `TICKET #${c.email_ticket_num} DU MAIL` 
                     : `COMBINÉ #${c.ticket_num}`;
 
-                function renderLegHtml(m) {
+                function renderLegHtml(m, legEval) {
                     if (!m) return '';
-                    const legWon = m.selection_status && m.selection_status.startsWith('WON');
-                    const legLost = (m.selection_status === 'LOST');
-                    const legLive = (m.status === 'LIVE');
+                    const legWon = legEval.selStatus && legEval.selStatus.startsWith('WON');
+                    const legLost = (legEval.selStatus === 'LOST');
+                    const legLive = (legEval.isLive || legEval.selStatus === 'LIVE');
 
                     let legBadge = '<span class="ticket-leg-badge" style="background:rgba(148,163,184,0.15); color:#94a3b8;">⏳ À venir</span>';
-                    if (m.selection_status === 'WON_LEAD2') {
+                    if (legEval.selStatus === 'WON_LEAD2') {
                         legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">👑 +2b Gagné</span>';
                     } else if (legWon) {
                         legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">✅ Victoire</span>';
                     } else if (legLost) {
                         legBadge = '<span class="ticket-leg-badge" style="background:rgba(239,68,68,0.2); color:#f87171;">❌ Perdu</span>';
                     } else if (legLive) {
-                        legBadge = `<span class="ticket-leg-badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">🔴 ${m.minute || 'Live'}</span>`;
+                        legBadge = `<span class="ticket-leg-badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">🔴 ${legEval.min}</span>`;
                     }
 
                     const favLabel = m.fav_team ? `👑 ${m.fav_team}` : (m.home || '');
-                    const score = (m.home_score !== null && m.home_score !== undefined && m.away_score !== null && m.away_score !== undefined)
-                        ? `${m.home_score} - ${m.away_score}`
-                        : (m.score_display || 'VS');
 
                     return `
                     <div class="ticket-leg">
@@ -934,7 +946,7 @@
                             </div>
                         </div>
                         <div class="ticket-leg-right">
-                            <div class="ticket-leg-score">${score}</div>
+                            <div class="ticket-leg-score">${legEval.score}</div>
                             ${legBadge}
                         </div>
                     </div>`;
@@ -954,14 +966,73 @@
                         </div>
                     </div>
                     <div class="ticket-legs">
-                        ${renderLegHtml(c.m1)}
-                        ${renderLegHtml(c.m2)}
+                        ${renderLegHtml(c.m1, c.live_eval.l1)}
+                        ${renderLegHtml(c.m2, c.live_eval.l2)}
                     </div>
                 </div>`;
             }).join('');
 
             html += '</div>';
             combosContainer.innerHTML = html;
+        }
+
+        // Évaluation en temps réel d'une sélection par rapport au flux Livescore direct
+        function evalLegLive(m) {
+            if (!m) return { status: 'UPCOMING', selStatus: 'PENDING', score: 'VS', min: 'À venir', isLive: false };
+            let selStatus = m.selection_status || 'PENDING';
+            let status = m.status || 'UPCOMING';
+            let score = (m.home_score !== null && m.home_score !== undefined && m.away_score !== null && m.away_score !== undefined) 
+                ? `${m.home_score} - ${m.away_score}` 
+                : (m.score_display || 'VS');
+            let min = m.minute || (m.time ? m.time.replace(' à ', ' ') : 'À venir');
+            let isLive = (status === 'LIVE');
+
+            // Recherche dans le flux live de la page
+            const g = findGameInLatest(m.home, m.away);
+            if (g) {
+                score = `${g.score_dom} - ${g.score_ext}`;
+                min = g.minute;
+                status = g.status_type;
+                isLive = (g.status_type === 'LIVE');
+
+                const isFavHome = (m.fav_side === 'dom' || m.fav_team === m.home);
+                const favScore = isFavHome ? g.score_dom : g.score_ext;
+                const oppScore = isFavHome ? g.score_ext : g.score_dom;
+                const lead = favScore - oppScore;
+
+                if (lead >= 2) {
+                    selStatus = 'WON_LEAD2';
+                } else if (g.status_type === 'FINISHED') {
+                    if (favScore > oppScore) selStatus = 'WON_FINAL';
+                    else selStatus = 'LOST';
+                } else if (g.status_type === 'LIVE') {
+                    selStatus = 'LIVE';
+                }
+            }
+            return { status, selStatus, score, min, isLive };
+        }
+
+        function evalTicketLive(c) {
+            const l1 = evalLegLive(c.m1);
+            const l2 = evalLegLive(c.m2);
+
+            let ticketStatus = c.ticket_status;
+            const w1 = l1.selStatus.startsWith('WON');
+            const w2 = l2.selStatus.startsWith('WON');
+            const lost1 = (l1.selStatus === 'LOST');
+            const lost2 = (l2.selStatus === 'LOST');
+            const live1 = (l1.selStatus === 'LIVE' || l1.isLive);
+            const live2 = (l2.selStatus === 'LIVE' || l2.isLive);
+
+            if (lost1 || lost2) {
+                ticketStatus = 'LOST';
+            } else if (w1 && w2) {
+                ticketStatus = 'WON';
+            } else if (live1 || live2 || w1 || w2) {
+                ticketStatus = 'LIVE';
+            }
+
+            return { ticketStatus, l1, l2 };
         }
 
         async function fetchCombosData() {
