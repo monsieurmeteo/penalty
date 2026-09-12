@@ -325,7 +325,8 @@
         let prevScores = {};
         let goalTimestamps = {};
         let activeTab = 'all';
-        let isSoundEnabled = localStorage.getItem('flashscore_sound') === 'true';
+        const GOAL_ALERT_DURATION = 20000; // ⚡ 20 SECONDES D'ALERTE BUT EN ROUGE VIF
+        let isSoundEnabled = localStorage.getItem('flashscore_sound') !== 'false';
         let failedPollCount = 0;
         window.latestGames = [];
 
@@ -389,39 +390,75 @@
             }
         }
 
-        // 🏟️ SON DE STADE (SIFFLET + CORNE GOAL)
+        // 🏟️ SON DE STADE AMÉLIORÉ (DOUBLE SIFFLET + CORNE DE BRUME GOAL)
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        // Débloque l'audio sur la première interaction utilisateur
+        document.addEventListener('click', () => { getAudioContext(); }, { once: true });
+        document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
+
         function playStadiumGoalSound() {
             try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const ctx = getAudioContext();
                 const t = ctx.currentTime;
 
+                // 1. Coup de sifflet d'arbitre 1 (court)
                 const oscW1 = ctx.createOscillator();
                 const oscW2 = ctx.createOscillator();
-                const gainW = ctx.createGain();
-                oscW1.type = 'sine'; oscW2.type = 'sine';
-                oscW1.frequency.setValueAtTime(2800, t);
-                oscW2.frequency.setValueAtTime(2950, t);
-                gainW.gain.setValueAtTime(0, t);
-                gainW.gain.linearRampToValueAtTime(0.35, t + 0.02);
-                gainW.gain.exponentialRampToValueAtTime(0.01, t + 0.35);
-                oscW1.connect(gainW); oscW2.connect(gainW);
-                gainW.connect(ctx.destination);
+                const gainW1 = ctx.createGain();
+                oscW1.type = 'sine'; oscW2.type = 'triangle';
+                oscW1.frequency.setValueAtTime(2600, t);
+                oscW2.frequency.setValueAtTime(2850, t);
+                gainW1.gain.setValueAtTime(0, t);
+                gainW1.gain.linearRampToValueAtTime(0.4, t + 0.02);
+                gainW1.gain.exponentialRampToValueAtTime(0.01, t + 0.15);
+                oscW1.connect(gainW1); oscW2.connect(gainW1);
+                gainW1.connect(ctx.destination);
                 oscW1.start(t); oscW2.start(t);
-                oscW1.stop(t + 0.35); oscW2.stop(t + 0.35);
+                oscW1.stop(t + 0.15); oscW2.stop(t + 0.15);
 
-                const freqs = [220, 277.18, 329.63, 440];
-                freqs.forEach((freq) => {
+                // 2. Coup de sifflet d'arbitre 2 (long strident)
+                const t2 = t + 0.22;
+                const oscW3 = ctx.createOscillator();
+                const oscW4 = ctx.createOscillator();
+                const gainW2 = ctx.createGain();
+                oscW3.type = 'sine'; oscW4.type = 'triangle';
+                oscW3.frequency.setValueAtTime(2800, t2);
+                oscW4.frequency.setValueAtTime(3100, t2);
+                gainW2.gain.setValueAtTime(0, t2);
+                gainW2.gain.linearRampToValueAtTime(0.5, t2 + 0.02);
+                gainW2.gain.exponentialRampToValueAtTime(0.01, t2 + 0.45);
+                oscW3.connect(gainW2); oscW4.connect(gainW2);
+                gainW2.connect(ctx.destination);
+                oscW3.start(t2); oscW4.start(t2);
+                oscW3.stop(t2 + 0.45); oscW4.stop(t2 + 0.45);
+
+                // 3. Corne de stade festive puissante (Accord Majeur F-A-C-F)
+                const tHorn = t + 0.55;
+                const freqs = [174.61, 220.00, 261.63, 349.23, 440.00];
+                freqs.forEach((freq, idx) => {
                     const osc = ctx.createOscillator();
                     const gain = ctx.createGain();
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(freq, t + 0.2);
-                    gain.gain.setValueAtTime(0, t + 0.2);
-                    gain.gain.linearRampToValueAtTime(0.22, t + 0.32);
-                    gain.gain.exponentialRampToValueAtTime(0.001, t + 1.8);
+                    osc.type = (idx % 2 === 0) ? 'sawtooth' : 'triangle';
+                    osc.frequency.setValueAtTime(freq, tHorn);
+                    gain.gain.setValueAtTime(0, tHorn);
+                    gain.gain.linearRampToValueAtTime(0.18, tHorn + 0.12);
+                    gain.gain.exponentialRampToValueAtTime(0.001, tHorn + 2.2);
                     osc.connect(gain); gain.connect(ctx.destination);
-                    osc.start(t + 0.2); osc.stop(t + 1.8);
+                    osc.start(tHorn); osc.stop(tHorn + 2.2);
                 });
-            } catch(e) {}
+            } catch(e) {
+                console.warn('Audio error:', e);
+            }
         }
 
         function sendSystemNotification(game) {
@@ -538,8 +575,8 @@
 
             let html = '';
 
-            // SECTION 0: BUT EN DIRECT (8 SECONDES) PROPULSÉ AU SOMMET
-            const goalAlertMatches = filtered.filter(g => (now - (goalTimestamps[g.id] || 0)) < 8000);
+            // SECTION 0: BUT EN DIRECT (20 SECONDES) PROPULSÉ AU SOMMET
+            const goalAlertMatches = filtered.filter(g => (now - (goalTimestamps[g.id] || 0)) < GOAL_ALERT_DURATION);
             goalAlertMatches.sort((a, b) => (goalTimestamps[b.id] || 0) - (goalTimestamps[a.id] || 0));
 
             if (goalAlertMatches.length > 0) {
@@ -547,14 +584,14 @@
                 <div class="league-group" style="border-color:#b91c1c; margin-bottom: 8px;">
                     <div class="league-header" style="background:#b91c1c; color:#fff; font-size: 10px;">
                         <span>⚽ ALERTE BUT EN DIRECT</span>
-                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">8s</span>
+                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">20s</span>
                     </div>
                     ${goalAlertMatches.map(g => renderMatchBlock(g, now)).join('')}
                 </div>`;
             }
 
             // SECTION 1: ⭐ MES MATCHS FAVORIS (TRIÉS LIVE EN PREMIER, MAX 4 DANS L'ÉCRAN GÉNÉRAL)
-            const favMatches = filtered.filter(g => favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= 8000);
+            const favMatches = filtered.filter(g => favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
             favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
 
             if (favMatches.length > 0) {
@@ -579,7 +616,7 @@
 
             // SECTION 2: TOUS LES CHAMPIONNATS
             if (activeTab !== 'fav') {
-                const normalLeaguesMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= 8000);
+                const normalLeaguesMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
                 const leaguesMap = {};
                 normalLeaguesMatches.forEach(g => {
                     leaguesMap[g.league] = leaguesMap[g.league] || [];
@@ -604,7 +641,7 @@
         function renderMatchBlock(g, now) {
             const key = g.id;
             const goalTime = goalTimestamps[key] || 0;
-            const isRecentGoal = (now - goalTime) < 8000;
+            const isRecentGoal = (now - goalTime) < GOAL_ALERT_DURATION;
             const isStarred = favoritesSet.has(key);
             const isExpanded = isStarred || isRecentGoal || expandedSet.has(key);
             const incs = g.incidents || [];
@@ -670,6 +707,27 @@
         // ==========================================
         function cleanStr(s) {
             return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        }
+
+        function findGameInLatest(home, away) {
+            if (!window.latestGames || !window.latestGames.length) return null;
+            const ch = cleanStr(home);
+            const ca = cleanStr(away);
+            if (!ch || !ca) return null;
+
+            for (const g of window.latestGames) {
+                const gh = cleanStr(g.dom);
+                const ga = cleanStr(g.ext);
+                if (!gh || !ga) continue;
+
+                const matchH = (gh === ch || gh.includes(ch) || ch.includes(gh));
+                const matchA = (ga === ca || ga.includes(ca) || ca.includes(ga));
+
+                if (matchH && matchA) {
+                    return g;
+                }
+            }
+            return null;
         }
 
         function isM2Conform(c) {
@@ -922,9 +980,12 @@
                     const legWon = legEval.selStatus && legEval.selStatus.startsWith('WON');
                     const legLost = (legEval.selStatus === 'LOST');
                     const legLive = (legEval.isLive || legEval.selStatus === 'LIVE');
+                    const isGoalNow = legEval.isRecentGoal;
 
                     let legBadge = '<span class="ticket-leg-badge" style="background:rgba(148,163,184,0.15); color:#94a3b8;">⏳ À venir</span>';
-                    if (legEval.selStatus === 'WON_LEAD2') {
+                    if (isGoalNow) {
+                        legBadge = '<span class="ticket-leg-badge" style="background:#ef4444; color:#ffffff; font-weight:900; box-shadow:0 0 12px rgba(239,68,68,0.9); animation: pulse 0.8s infinite;">⚽ BUT !</span>';
+                    } else if (legEval.selStatus === 'WON_LEAD2') {
                         legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">👑 +2b Gagné</span>';
                     } else if (legWon) {
                         legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">✅ Victoire</span>';
@@ -935,9 +996,12 @@
                     }
 
                     const favLabel = m.fav_team ? `👑 ${m.fav_team}` : (m.home || '');
+                    const scoreStyle = isGoalNow
+                        ? 'background:#b91c1c; border:1px solid #ef4444; color:#fff; box-shadow:0 0 12px rgba(239,68,68,0.8); animation: pulseScoreHighlight 0.6s infinite alternate;'
+                        : '';
 
                     return `
-                    <div class="ticket-leg">
+                    <div class="ticket-leg ${isGoalNow ? 'goal-flash' : ''}" style="${isGoalNow ? 'background:rgba(185,28,28,0.15);' : ''}">
                         <div class="ticket-leg-left">
                             <div class="ticket-leg-match">${m.home} vs ${m.away}</div>
                             <div class="ticket-leg-sub">
@@ -946,7 +1010,7 @@
                             </div>
                         </div>
                         <div class="ticket-leg-right">
-                            <div class="ticket-leg-score">${legEval.score}</div>
+                            <div class="ticket-leg-score" style="${scoreStyle}">${legEval.score}</div>
                             ${legBadge}
                         </div>
                     </div>`;
@@ -978,7 +1042,7 @@
 
         // Évaluation en temps réel d'une sélection par rapport au flux Livescore direct
         function evalLegLive(m) {
-            if (!m) return { status: 'UPCOMING', selStatus: 'PENDING', score: 'VS', min: 'À venir', isLive: false };
+            if (!m) return { status: 'UPCOMING', selStatus: 'PENDING', score: 'VS', min: 'À venir', isLive: false, isRecentGoal: false };
             let selStatus = m.selection_status || 'PENDING';
             let status = m.status || 'UPCOMING';
             let score = (m.home_score !== null && m.home_score !== undefined && m.away_score !== null && m.away_score !== undefined) 
@@ -986,6 +1050,7 @@
                 : (m.score_display || 'VS');
             let min = m.minute || (m.time ? m.time.replace(' à ', ' ') : 'À venir');
             let isLive = (status === 'LIVE');
+            let isRecentGoal = false;
 
             // Recherche dans le flux live de la page
             const g = findGameInLatest(m.home, m.away);
@@ -994,6 +1059,7 @@
                 min = g.minute;
                 status = g.status_type;
                 isLive = (g.status_type === 'LIVE');
+                isRecentGoal = (Date.now() - (goalTimestamps[g.id] || 0)) < GOAL_ALERT_DURATION;
 
                 const isFavHome = (m.fav_side === 'dom' || m.fav_team === m.home);
                 const favScore = isFavHome ? g.score_dom : g.score_ext;
@@ -1009,7 +1075,7 @@
                     selStatus = 'LIVE';
                 }
             }
-            return { status, selStatus, score, min, isLive };
+            return { status, selStatus, score, min, isLive, isRecentGoal };
         }
 
         function evalTicketLive(c) {
