@@ -905,6 +905,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         # ponytail: Règle d'or — Un ticket déjà DÉCIDÉ (WON ou LOST) est figé à jamais dans l'historique !
         if c.get("ticket_status") in ["WON", "LOST"]:
             combos_today.append(c)
+            # Les équipes des combos terminés restent bloquées pour éviter les doublons
+            for _leg in [c.get("m1", {}), c.get("m2", {})]:
+                if _leg.get("home"): used_teams.add(_clean_team_key(_leg["home"]))
+                if _leg.get("away"): used_teams.add(_clean_team_key(_leg["away"]))
             continue
 
         m1 = c.get("m1", {})
@@ -937,7 +941,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
 
         # Purge des combinés non conformes créés avant les nouvelles règles
         # Si un combiné n'a pas débuté (ni live, ni won/lost) et :
-        # - ne respecte pas le plancher Sweet Spot (< 2.00)
+        # - ne respecte pas le plancher Sweet Spot (< 2.20)
         # - ou ne relève pas de la méthode 100% Favoris 1N2 (+2 Buts) (ex: anciens BTTS ou Over 1.5)
         # - ou comprend une cote inférieure au plancher (< 1.30)
         # - ou chevauche deux journées sportives différentes (Option 1 : combinés strictement Jour par Jour)
@@ -952,10 +956,14 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         if not is_started and (is_subpar or is_cross_day or is_night):
             continue
 
-        if k1: used_teams.add(k1)
-        if k2: used_teams.add(k2)
-        if m1.get("away"): used_teams.add(_clean_team_key(m1.get("away")))
-        if m2.get("away"): used_teams.add(_clean_team_key(m2.get("away")))
+        # Déduplication stricte par nom d'équipe (home ET away, strings uniquement)
+        t1h = _clean_team_key(m1.get("home", ""))
+        t1a = _clean_team_key(m1.get("away", ""))
+        t2h = _clean_team_key(m2.get("home", ""))
+        t2a = _clean_team_key(m2.get("away", ""))
+        if not is_started and (t1h in used_teams or t1a in used_teams or t2h in used_teams or t2a in used_teams):
+            continue  # Une équipe de ce combo est déjà dans un autre combo actif — on purge
+        used_teams.update([t1h, t1a, t2h, t2a])
 
         if w1 and w2:
             c["ticket_status"] = "WON"
@@ -1497,6 +1505,58 @@ def main():
 
     # Tri chronologique par heure de coup d'envoi du 1er match
     active_combos = sorted(active_combos, key=lambda c: c.get("m1", {}).get("start_iso") or "")
+
+    # ── Reconstruction du planning depuis active_combos (Source Unique de Vérité) ──
+    # ponytail: on repart des legs des combinés actifs pour garantir la parité
+    # email/site même si le match vient d'un run précédent et n'est plus dans retained_favs.
+    plan_rows_html = ""
+    seen_plan_legs = set()
+    for c in active_combos:
+        for leg in [c.get("m1", {}), c.get("m2", {})]:
+            leg_key = (leg.get("home", ""), leg.get("away", ""))
+            if leg_key in seen_plan_legs or not leg.get("home"):
+                continue
+            seen_plan_legs.add(leg_key)
+            sc = leg.get("domination_score", 0)
+            sc_bg = "#1e40af" if sc >= 85 else ("#15803d" if sc >= 75 else ("#b45309" if sc >= 65 else "#64748b"))
+            fav_team = leg.get("fav_team", leg.get("home", ""))
+            odds_val = leg.get("odds", 1.50)
+            market = leg.get("market", "FAV_1N2")
+            if market == "OVER_15":
+                cote_lbl = f"@{odds_val:.2f} <span style='font-size:9px; color:#16a34a;'>(+1.5b)</span>"
+                fav_icon = "⚽"; succ_lbl = "2+ Buts"
+            elif market == "BTTS":
+                cote_lbl = f"@{odds_val:.2f} <span style='font-size:9px; color:#2563eb;'>(BTTS)</span>"
+                fav_icon = "🤝"; succ_lbl = "BTTS"
+            else:
+                cote_lbl = f"@{odds_val:.2f} <span style='font-size:9px; color:#1d4ed8;'>(+2)</span>"
+                fav_icon = "👑"; succ_lbl = "Win / +2b"
+            badge = leg.get("badge_tier", "")
+            pct_succ = leg.get("win_pct_historical", 0)
+            time_str = leg.get("time", "")
+            league = leg.get("league", "Football")
+            plan_rows_html += (
+                f'<tr>'
+                f'<td style="padding:9px 8px; white-space:nowrap; border-bottom:1px solid #f1f5f9;">'
+                f'<span style="background:#0f172a; color:#ffffff; font-weight:800; font-size:12px; padding:4px 9px; border-radius:6px; letter-spacing:0.3px; display:inline-block; white-space:nowrap;">⏰ {time_str}</span></td>'
+                f'<td style="padding:9px 8px; border-bottom:1px solid #f1f5f9;">'
+                f'<b style="font-size:13px; color:#0f172a;">{leg["home"]} <span style="color:#94a3b8; font-weight:400; font-size:11px;">vs</span> {leg["away"]}</b><br>'
+                f'<span style="font-size:10px; color:#94a3b8;">{league}</span></td>'
+                f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
+                f'<span style="background:#eff6ff; color:#1d4ed8; font-weight:800; font-size:12px; padding:4px 8px; border-radius:6px; border:1px solid #bfdbfe; white-space:nowrap;">'
+                f'{fav_icon} {fav_team}</span></td>'
+                f'<td style="padding:9px 6px; text-align:center; font-weight:900; font-size:14px; color:#0f172a; border-bottom:1px solid #f1f5f9;">{cote_lbl}</td>'
+                f'<td style="padding:9px 6px; text-align:center; border-bottom:1px solid #f1f5f9;">'
+                f'<span style="background:{sc_bg}; color:#fff; font-weight:800; font-size:11px; padding:3px 7px; border-radius:5px; white-space:nowrap;">'
+                f'{sc}/100</span></td>'
+                f'<td style="padding:9px 6px; text-align:center; font-size:11px; font-weight:700; color:#15803d; border-bottom:1px solid #f1f5f9; white-space:nowrap;">'
+                f'{pct_succ}% {succ_lbl}</td>'
+                f'</tr>'
+            )
+    if not plan_rows_html:
+        plan_rows_html = '<tr><td colspan="6" style="padding:20px; text-align:center; color:#94a3b8; font-style:italic;">Aucun favori retenu sur le créneau à venir.</td></tr>'
+
+
 
     for c in active_combos:
         c_num = c.get("email_ticket_num", c.get("ticket_num", 1))
