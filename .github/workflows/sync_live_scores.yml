@@ -1,0 +1,42 @@
+name: Sync Live Scores (toutes les 5 min)
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: penalty-live-sync
+  cancel-in-progress: true
+
+jobs:
+  sync-scores:
+    runs-on: ubuntu-latest
+    permissions: write-all
+
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Install Dependencies
+        run: pip install requests
+
+      - name: ⚡ Sync Live Scores
+        run: python scripts/sync_live_scores.py
+
+      - name: 💾 Commit & Push data.json
+        if: always()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/data.json
+          git diff --staged --quiet || git commit -m "Live sync scores [skip ci]"
+          for i in {1..5}; do
+            git fetch origin master
+            git rebase -X ours origin/master && git push origin master && exit 0
+            sleep 2
+          done
+          echo "Warning: Could not push after 5 retries"
