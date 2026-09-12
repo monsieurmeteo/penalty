@@ -1,11 +1,11 @@
 # ⚽ SÉLECTION OFFICIELLE UNIBET — +2 GAGNANT (MÈNE DE 2 BUTS OU GAGNE)
-**Généré le** : 12/09/2026 à 19:20 UTC  |  **Matchs scannés** : 171  |  **Favoris analysés** : 38  |  **Favoris retenus** : 14
+**Généré le** : 12/09/2026 à 20:03 UTC  |  **Matchs scannés** : 170  |  **Favoris analysés** : 38  |  **Favoris retenus** : 14
 **Règle d'or Unibet** : Si l'équipe mène de 2 buts (2-0, 3-1, 4-2...) à n'importe quel moment du match, le pari est PAYÉ GAGNANT immédiatement (même en cas d'égalisation à 2-2 ou défaite 2-3). Si l'équipe gagne simplement 1-0 ou 2-1, le pari est également gagnant à la fin du match.
 
 ## 📅 Planning Chronologique des Favoris Retenus
 | Heure | Ligue | Match | Favori Conseillé | Cote (+2 / 1N2) | Score Domination | Réussite Win / +2b |
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: |
-| Sam. 12/09 à 22h00 | Algerie • D1 Algerie | **CS Constantine vs ASO Chlef** | **CS Constantine** | **@1.48 (1N2)** | **63/100** (🥉 BRONZE) | **70%** |
+| Sam. 12/09 à 22h00 | Algerie • D1 Algerie | **CS Constantine vs ASO Chlef** | **CS Constantine** | **@1.47 (1N2)** | **63/100** (🥉 BRONZE) | **70%** |
 | Dim. 13/09 à 01h30 | Etats Unis • Mls | **FC Cincinnati vs Charlotte FC** | **FC Cincinnati** | **@1.94 (1N2)** | **60/100** (🥉 BRONZE) | **70%** |
 | Dim. 13/09 à 03h10 | Mexique • D1 Mexique | **Monterrey vs Tigres UANL** | **Monterrey** | **@1.99 (1N2)** | **62/100** (🥉 BRONZE) | **60%** |
 | Dim. 13/09 à 03h30 | Etats Unis • Mls | **Colorado vs CF Montreal** | **Colorado** | **@1.54 (1N2)** | **66/100** (🥈 ARGENT) | **80%** |
