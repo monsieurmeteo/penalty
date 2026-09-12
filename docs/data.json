@@ -10789,16 +10789,16 @@
   ],
   "methode2_summary": {
     "total_combos": 105,
-    "decided_combos": 21,
-    "won": 6,
-    "lost": 15,
+    "decided_combos": 29,
+    "won": 9,
+    "lost": 20,
     "live": 0,
-    "upcoming": 84,
+    "upcoming": 76,
     "default_stake": 3.0,
-    "win_rate": 28.6,
-    "profit_units": -0.18,
-    "profit_eur": -0.54,
-    "roi_pct": -0.86
+    "win_rate": 31.0,
+    "profit_units": 3.38,
+    "profit_eur": 10.14,
+    "roi_pct": 11.66
   },
   "methode2_combos": [
     {
@@ -14359,7 +14359,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 52
+      "email_ticket_num": 44
     },
     {
       "id": "m2_combo_166",
@@ -14409,7 +14409,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 53
+      "email_ticket_num": 45
     },
     {
       "id": "m2_combo_167",
@@ -14459,7 +14459,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 54
+      "email_ticket_num": 46
     },
     {
       "id": "m2_combo_168",
@@ -14509,7 +14509,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 55
+      "email_ticket_num": 47
     },
     {
       "id": "m2_combo_169",
@@ -14559,7 +14559,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 56
+      "email_ticket_num": 48
     },
     {
       "id": "m2_combo_170",
@@ -14609,7 +14609,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 57
+      "email_ticket_num": 49
     },
     {
       "id": "m2_combo_171",
@@ -14659,7 +14659,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 58
+      "email_ticket_num": 50
     },
     {
       "id": "m2_combo_172",
@@ -14709,7 +14709,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 59
+      "email_ticket_num": 51
     },
     {
       "id": "m2_combo_173",
@@ -14759,7 +14759,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 60
+      "email_ticket_num": 52
     },
     {
       "id": "m2_combo_174",
@@ -14809,7 +14809,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 61
+      "email_ticket_num": 53
     },
     {
       "id": "m2_combo_175",
@@ -14859,7 +14859,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 62
+      "email_ticket_num": 54
     },
     {
       "id": "m2_combo_176",
@@ -14909,7 +14909,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 63
+      "email_ticket_num": 55
     },
     {
       "id": "m2_combo_178",
@@ -14959,7 +14959,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 64
+      "email_ticket_num": 56
     },
     {
       "id": "m2_combo_179",
@@ -15009,7 +15009,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 65
+      "email_ticket_num": 57
     },
     {
       "id": "m2_combo_180",
@@ -15059,7 +15059,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 66
+      "email_ticket_num": 58
     },
     {
       "id": "m2_combo_181",
@@ -15109,7 +15109,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 67
+      "email_ticket_num": 59
     },
     {
       "id": "m2_combo_182",
@@ -15159,7 +15159,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 68
+      "email_ticket_num": 60
     },
     {
       "id": "m2_combo_183",
@@ -15209,7 +15209,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 69
+      "email_ticket_num": 61
     },
     {
       "id": "m2_combo_184",
@@ -15259,7 +15259,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 70
+      "email_ticket_num": 62
     },
     {
       "id": "m2_combo_185",
@@ -15309,7 +15309,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 71
+      "email_ticket_num": 63
     },
     {
       "id": "m2_combo_186",
@@ -15359,7 +15359,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 72
+      "email_ticket_num": 64
     },
     {
       "id": "m2_combo_187",
@@ -15409,7 +15409,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 73
+      "email_ticket_num": 65
     },
     {
       "id": "m2_combo_188",
@@ -15459,7 +15459,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 74
+      "email_ticket_num": 66
     },
     {
       "id": "m2_combo_189",
@@ -15509,7 +15509,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 75
+      "email_ticket_num": 67
     },
     {
       "id": "m2_combo_190",
@@ -15559,7 +15559,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 76
+      "email_ticket_num": 68
     },
     {
       "id": "m2_combo_191",
@@ -15609,7 +15609,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 77
+      "email_ticket_num": 69
     },
     {
       "id": "m2_combo_192",
@@ -15659,7 +15659,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 78
+      "email_ticket_num": 70
     },
     {
       "id": "m2_combo_193",
@@ -15709,7 +15709,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 79
+      "email_ticket_num": 71
     },
     {
       "id": "m2_combo_194",
@@ -15759,7 +15759,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 80
+      "email_ticket_num": 72
     },
     {
       "id": "m2_combo_195",
@@ -15809,7 +15809,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 81
+      "email_ticket_num": 73
     },
     {
       "id": "m2_combo_196",
@@ -15859,7 +15859,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 82
+      "email_ticket_num": 74
     },
     {
       "id": "m2_combo_197",
@@ -15909,7 +15909,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 83
+      "email_ticket_num": 75
     },
     {
       "id": "m2_combo_198",
@@ -15959,7 +15959,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 84
+      "email_ticket_num": 76
     }
   ]
 }
