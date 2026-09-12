@@ -28644,5 +28644,137 @@
     ],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3371312",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "Racing Union vs Jeunesse Esch",
+    "league": "Luxembourg • D1 Luxembourg",
+    "date_str": "Sam. 12/09 à 16h00",
+    "fav_team": "Racing Union",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 50,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.54,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378930",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "FC Crusaders vs Limavady",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 12/09 à 16h00",
+    "fav_team": "FC Crusaders",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 52,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.91,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367853",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "Independiente vs San Lorenzo",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Lun. 14/09 à 00h15",
+    "fav_team": "Independiente",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.93,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378678",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "Barcelona SC vs Delfin SC",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Lun. 14/09 à 01h00",
+    "fav_team": "Barcelona SC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.55,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378679",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "Libertad Loja vs Ind.Del Valle",
+    "league": "Equateur • D1 Equateur",
+    "date_str": "Lun. 14/09 à 01h00",
+    "fav_team": "Ind.Del Valle",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 31,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.84,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372683",
+    "timestamp_utc": "2026-09-12T12:06:29.292504+00:00",
+    "match": "Once Caldas vs Deportivo Cali",
+    "league": "Colombie • D1 Colombie",
+    "date_str": "Lun. 14/09 à 01h10",
+    "fav_team": "Once Caldas",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.88,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
