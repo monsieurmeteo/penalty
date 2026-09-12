@@ -232,14 +232,39 @@
             font-size: 12px; 
             font-weight: 900; 
             background: #f1f5f9; 
-            border: 1px solid #cbd5e1;
-            padding: 1px 6px; 
-            border-radius: 4px; 
+            border: 1.5px solid #cbd5e1;
+            padding: 1px 7px; 
+            border-radius: 5px; 
             color: #0f172a; 
             flex: 0 0 auto; 
-            min-width: 42px; 
+            min-width: 44px; 
             letter-spacing: 0.5px;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,0.04);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            transition: all 0.2s ease;
+        }
+
+        /* 🔵 MÉTHODE 1 (+2b) : BLEU */
+        .score-box.m1, .ticket-leg-score.m1 {
+            background: #eff6ff !important;
+            border-color: #3b82f6 !important;
+            color: #1d4ed8 !important;
+            box-shadow: 0 1px 3px rgba(37, 99, 235, 0.15) !important;
+        }
+
+        /* 🟣 MÉTHODE 2 (@3.50+) : VIOLET */
+        .score-box.m2, .ticket-leg-score.m2 {
+            background: #faf5ff !important;
+            border-color: #a855f7 !important;
+            color: #6b21a8 !important;
+            box-shadow: 0 1px 3px rgba(168, 85, 247, 0.15) !important;
+        }
+
+        /* 🔷/🔮 COMBINÉ DANS LES DEUX MÉTHODES (M1 + M2) */
+        .score-box.m-both, .ticket-leg-score.m-both {
+            background: linear-gradient(135deg, #eff6ff 0%, #faf5ff 100%) !important;
+            border-color: #6366f1 !important;
+            color: #4338ca !important;
+            box-shadow: 0 1px 3px rgba(99, 102, 241, 0.18) !important;
         }
 
         /* 👑 BADGE GAGNÉ */
@@ -289,18 +314,27 @@
             flex-wrap: wrap;
         }
         .badge-combo-indicator { 
-            background: #ede9fe; 
-            color: #6d28d9; 
-            border: 1px solid #c4b5fd; 
             font-size: 8px; 
             font-weight: 900; 
-            padding: 1px 4px; 
-            border-radius: 3px; 
+            padding: 1px 5px; 
+            border-radius: 4px; 
             text-transform: uppercase; 
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+        .badge-combo-indicator.m1 { 
+            background: #dbeafe; 
+            color: #1e40af; 
+            border: 1px solid #93c5fd; 
+        }
+        .badge-combo-indicator.m2 { 
+            background: #ede9fe; 
+            color: #5b21b6; 
+            border: 1px solid #c4b5fd; 
         }
 
-        /* 🚨 ALERTE BUT (20 SECONDES) */
+        /* 🚨 ALERTE BUT (20 SECONDES) - RESTE PRIORITAIRE SUR TOUTES LES COULEURS */
         .match-row.goal-flash {
             background: #fff5f5 !important;
             border-left: 3px solid #ef4444 !important;
@@ -309,8 +343,8 @@
             background: #fee2e2 !important;
             border-color: #ef4444 !important;
             color: #b91c1c !important;
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
-            animation: pulseScore 0.6s infinite alternate;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important;
+            animation: pulseScore 0.6s infinite alternate !important;
         }
         @keyframes pulseScore {
             0% { transform: scale(1); }
@@ -603,37 +637,30 @@
                 if (!ctx) return;
                 const t = ctx.currentTime;
 
+                // 🔔 Carillon feutré ultra-doux (ondes sinusoïdales pures, volume doux, attaque veloutée)
                 const notes = [
-                    { f: 523.25, time: 0.00, dur: 0.5, gain: 0.14 },
-                    { f: 659.25, time: 0.11, dur: 0.6, gain: 0.16 },
-                    { f: 783.99, time: 0.22, dur: 0.7, gain: 0.18 },
-                    { f: 1046.50, time: 0.35, dur: 1.1, gain: 0.22 }
+                    { f: 392.00, time: 0.00, dur: 0.6, gain: 0.06 }, // Sol 4 (doux)
+                    { f: 523.25, time: 0.12, dur: 0.7, gain: 0.07 }, // Do 5 (mélodieux)
+                    { f: 659.25, time: 0.25, dur: 1.0, gain: 0.08 }  // Mi 5 (apaisant)
                 ];
 
                 notes.forEach(n => {
                     const osc = ctx.createOscillator();
-                    const osc2 = ctx.createOscillator();
                     const gain = ctx.createGain();
 
-                    osc.type = 'sine';
+                    osc.type = 'sine'; // Onde pure 100% sans agressivité
                     osc.frequency.setValueAtTime(n.f, t + n.time);
 
-                    osc2.type = 'triangle';
-                    osc2.frequency.setValueAtTime(n.f * 2, t + n.time);
-
                     const noteStart = t + n.time;
-                    gain.gain.setValueAtTime(0.001, noteStart);
-                    gain.gain.linearRampToValueAtTime(n.gain, noteStart + 0.02);
-                    gain.gain.exponentialRampToValueAtTime(0.0001, noteStart + n.dur);
+                    gain.gain.setValueAtTime(0.0001, noteStart);
+                    gain.gain.linearRampToValueAtTime(n.gain, noteStart + 0.03); // Attaque progressive sans clic
+                    gain.gain.exponentialRampToValueAtTime(0.00001, noteStart + n.dur); // Extinction douce
 
                     osc.connect(gain);
-                    osc2.connect(gain);
                     gain.connect(ctx.destination);
 
                     osc.start(noteStart);
-                    osc2.start(noteStart);
                     osc.stop(noteStart + n.dur);
-                    osc2.stop(noteStart + n.dur);
                 });
             } catch(e) {
                 console.warn('Audio error:', e);
@@ -770,11 +797,26 @@
             return filtered.length > 0 ? filtered : words;
         }
 
-        function tokenMatch(arr1, arr2) {
-            for (let w1 of arr1) {
-                for (let w2 of arr2) {
-                    if (w1 === w2) return true;
-                    if (w1.length >= 4 && w2.length >= 4 && (w1.includes(w2) || w2.includes(w1))) return true;
+        const GENERIC_CLUB_WORDS = new Set(['city', 'united', 'town', 'athletic', 'rovers', 'wanderers', 'county', 'sporting', 'deportivo', 'union', 'inter', 'real', 'dynamo', 'olympic', 'olympique', 'central', 'star', 'stars', 'club']);
+
+        function isYouthOrWomen(text) {
+            return /\b(u18|u19|u20|u21|u23|women|femmes|feminine|feminines|reserves|reserve)\b/i.test(text || '');
+        }
+
+        function strictTeamMatch(tokens1, tokens2) {
+            const exact = tokens1.filter(w => tokens2.includes(w));
+            if (exact.length > 0) {
+                // Doit correspondre sur au moins un mot de club spécifique et non-générique
+                return exact.some(w => !GENERIC_CLUB_WORDS.has(w));
+            }
+            // Tolérance préfixe strict pour noms abrégés (len >= 5)
+            for (let w1 of tokens1) {
+                for (let w2 of tokens2) {
+                    if (!GENERIC_CLUB_WORDS.has(w1) && !GENERIC_CLUB_WORDS.has(w2)) {
+                        if (w1.length >= 5 && w2.length >= 5 && (w1.startsWith(w2) || w2.startsWith(w1))) {
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
@@ -814,6 +856,7 @@
                             num: c.email_ticket_num || c.ticket_num,
                             tHome: getTokens(leg.home),
                             tAway: getTokens(leg.away),
+                            isYouth: isYouthOrWomen((leg.home || '') + ' ' + (leg.away || '')),
                             label: `🎫 M1 #${c.email_ticket_num || c.ticket_num}`
                         });
                     }
@@ -831,6 +874,7 @@
                             num: c.email_ticket_num || c.ticket_num,
                             tHome: getTokens(leg.home),
                             tAway: getTokens(leg.away),
+                            isYouth: isYouthOrWomen((leg.home || '') + ' ' + (leg.away || '')),
                             label: `🎯 M2 #${c.email_ticket_num || c.ticket_num}`
                         });
                     }
@@ -850,11 +894,14 @@
 
             allGames.forEach(g => {
                 g._comboTags = [];
+                const gText = `${g.dom || ''} ${g.ext || ''} ${g.league || ''}`;
+                const gIsYouth = isYouthOrWomen(gText);
                 const tDom = getTokens(g.dom);
                 const tExt = getTokens(g.ext);
 
                 cachedComboLegs.forEach(cl => {
-                    if (tokenMatch(cl.tHome, tDom) && tokenMatch(cl.tAway, tExt)) {
+                    if (cl.isYouth !== gIsYouth) return;
+                    if (strictTeamMatch(cl.tHome, tDom) && strictTeamMatch(cl.tAway, tExt)) {
                         cl.leg._liveGame = g;
                         g._comboTags.push({
                             method: cl.method,
@@ -1040,8 +1087,15 @@
             const comboTags = g._comboTags || [];
             const wonStatus = getGameWonStatus(g);
 
+            const hasM1 = comboTags.some(t => t.method === 'm1');
+            const hasM2 = comboTags.some(t => t.method === 'm2');
+            let methodScoreClass = 'm1';
+            if (hasM1 && hasM2) methodScoreClass = 'm-both';
+            else if (hasM2) methodScoreClass = 'm2';
+            else methodScoreClass = 'm1';
+
             const comboTagsHtml = comboTags.map(t => 
-                `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${t.method}', ${t.num})">${t.label}</span>`
+                `<span class="badge-combo-indicator ${t.method}" onclick="openComboFromTag(event, '${t.method}', ${t.num})">${t.label}</span>`
             ).join(' ');
 
             let statusClass = 'status-col';
@@ -1074,7 +1128,7 @@
                 <div class="${statusClass}">${statusText}</div>
                 <div class="teams-block">
                     <div class="team-home">${g.dom}</div>
-                    <div class="score-box">${scoreDisplay}</div>
+                    <div class="score-box ${methodScoreClass}">${scoreDisplay}</div>
                     <div class="team-away">${g.ext}</div>
                 </div>
                 <div class="won-badge-col">
@@ -1291,7 +1345,7 @@
                             </div>
                         </div>
                         <div class="ticket-leg-right">
-                            <div class="ticket-leg-score">${legEval.score}</div>
+                            <div class="ticket-leg-score ${currentMethod === 'm2' ? 'm2' : 'm1'}">${legEval.score}</div>
                             ${legBadge}
                         </div>
                     </div>`;
