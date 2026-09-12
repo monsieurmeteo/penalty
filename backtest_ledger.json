@@ -28994,5 +28994,114 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3374817",
+    "timestamp_utc": "2026-09-12T16:03:44.567644+00:00",
+    "match": "Omonia Nicosie vs Apoll.Limassol",
+    "league": "Chypre • D1 Chypre",
+    "date_str": "Sam. 12/09 à 19h00",
+    "fav_team": "Omonia Nicosie",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 63,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 60
+    },
+    "odds": {
+      "fav_odds": 1.7,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378606",
+    "timestamp_utc": "2026-09-12T16:03:44.567644+00:00",
+    "match": "Dungannon vs Linfield",
+    "league": "Irlande Du Nord • D1 Irlande Nord",
+    "date_str": "Sam. 12/09 à 19h00",
+    "fav_team": "Linfield",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.86,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378639",
+    "timestamp_utc": "2026-09-12T16:03:44.567644+00:00",
+    "match": "NK Bravo vs NK Celje",
+    "league": "Slovenie • D1 Slovenie",
+    "date_str": "Sam. 12/09 à 20h15",
+    "fav_team": "NK Celje",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 50
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373772",
+    "timestamp_utc": "2026-09-12T16:03:44.567644+00:00",
+    "match": "Marsaxlokk FC vs Floriana FC",
+    "league": "Malte • D1 Malte",
+    "date_str": "Sam. 12/09 à 20h30",
+    "fav_team": "Floriana FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 26,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3373746",
+    "timestamp_utc": "2026-09-12T16:03:44.567644+00:00",
+    "match": "Bukovyna vs Zorya Lugansk",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Bukovyna",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 46,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
