@@ -1076,10 +1076,11 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     }
     existing_docs["combos_today"] = combos_today
 
-    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COTE ≥ 1.30 — COMBO ≥ 2.60) ──
-    # ponytail: Règle d'or — favoris domicile avec cote individuelle >= 1.30 et cote combinée >= 2.60
-    MIN_M2_COMBO_ODDS = 2.60
+    # ── 5bis. MÉTHODE 2 (TEST) : TOUS LES FAVORIS DOMICILE (COTE ≥ 1.30 — COMBO ≥ 3.25 — SCORE ≥ 33) ──
+    # ponytail: Règle d'or — favoris domicile avec cote individuelle >= 1.30, score >= 33 et cote combinée >= 3.25
+    MIN_M2_COMBO_ODDS = 3.25
     MIN_M2_FAV_ODDS   = 1.30  # Cote minimale du favori domicile sur chaque match individuel
+    MIN_M2_FAV_SCORE  = 33    # Score de domination minimal (>= 33/100)
     m2_existing = existing_docs.get("methode2_combos", [])
     m2_combos = []
     m2_used_keys = set()
@@ -1107,6 +1108,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m1["profit"] = src.get("profit", m1.get("profit", 0.0))
             if src.get("odds"):
                 m1["odds"] = float(src.get("odds"))
+            if src.get("domination_score") is not None:
+                m1["domination_score"] = src.get("domination_score")
 
         if k2 in match_by_key:
             src = match_by_key[k2]
@@ -1117,14 +1120,21 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m2["profit"] = src.get("profit", m2.get("profit", 0.0))
             if src.get("odds"):
                 m2["odds"] = float(src.get("odds"))
+            if src.get("domination_score") is not None:
+                m2["domination_score"] = src.get("domination_score")
 
         c1 = float(m1.get("odds", 1.50))
         c2 = float(m2.get("odds", 1.50))
+        sc1 = m1.get("domination_score")
+        sc2 = m2.get("domination_score")
         comb_odds = round(c1 * c2, 2)
 
-        # Si les cotes réelles ont baissé (< 2.60) ou si une cote individuelle est < 1.30, libérer les matchs pour ré-appairage
-        if c.get("ticket_status") == "PENDING" and (c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS):
-            continue
+        # Si les cotes réelles ont baissé (< 3.25), si une cote individuelle est < 1.30, ou si score < 33, libérer les matchs pour ré-appairage
+        if c.get("ticket_status") == "PENDING":
+            if c1 < MIN_M2_FAV_ODDS or c2 < MIN_M2_FAV_ODDS or comb_odds < MIN_M2_COMBO_ODDS:
+                continue
+            if (sc1 is not None and sc1 < MIN_M2_FAV_SCORE) or (sc2 is not None and sc2 < MIN_M2_FAV_SCORE):
+                continue
 
         c["odds"] = comb_odds
         c["gain_eur"] = round(comb_odds * combo_stake, 2)
@@ -1169,6 +1179,9 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             continue
         if float(m.get("odds", 0)) < MIN_M2_FAV_ODDS:
             continue
+        sc = m.get("domination_score")
+        if sc is not None and sc < MIN_M2_FAV_SCORE:
+            continue
         k = (_clean_team_key(m.get("home", "")), _clean_team_key(m.get("away", "")))
         if k not in m2_used_keys and k not in seen_unpaired_keys:
             unpaired_home_favs.append(m)
@@ -1184,6 +1197,9 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                     c1_f = float(c1)
                     c2_f = float(c2)
                     if c1_f >= MIN_M2_FAV_ODDS and c1_f < c2_f:
+                        sc = m.get("fav_info", {}).get("fav_score")
+                        if sc is not None and sc < MIN_M2_FAV_SCORE:
+                            continue
                         k = (_clean_team_key(m.get("dom", "")), _clean_team_key(m.get("ext", "")))
                         if k not in m2_used_keys and k not in seen_unpaired_keys:
                             unpaired_home_favs.append({
@@ -1194,6 +1210,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                                 "home": m.get("dom", ""),
                                 "away": m.get("ext", ""),
                                 "odds": c1_f,
+                                "domination_score": sc,
                                 "fav_side": "dom",
                                 "status": "UPCOMING",
                                 "selection_status": "PENDING",
@@ -1207,7 +1224,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                 except Exception:
                     pass
 
-    # Appairage chronologique par session Jour par Jour (Option 1) avec comb_odds >= 2.60
+    # Appairage chronologique par session Jour par Jour (Option 1) avec comb_odds >= 3.25
     m2_by_session = {}
     for m in unpaired_home_favs:
         s_day = _get_session_day(m)
@@ -1239,6 +1256,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                     "home": m1.get("home", ""),
                     "away": m1.get("away", ""),
                     "odds": c1,
+                    "domination_score": m1.get("domination_score"),
                     "status": m1.get("status", "UPCOMING"),
                     "selection_status": m1.get("selection_status", "PENDING"),
                     "score_display": m1.get("score_display", "VS"),
@@ -1257,6 +1275,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
                     "home": m2.get("home", ""),
                     "away": m2.get("away", ""),
                     "odds": c2,
+                    "domination_score": m2.get("domination_score"),
                     "status": m2.get("status", "UPCOMING"),
                     "selection_status": m2.get("selection_status", "PENDING"),
                     "score_display": m2.get("score_display", "VS"),
@@ -2027,11 +2046,11 @@ def main():
           <!-- SECTION COMBINÉS MÉTHODE 2 (TEST EXPÉRIMENTAL) -->
           <div style="padding:14px 16px 8px 16px; background:#faf5ff; border-top:2px solid #e9d5ff;">
             <div style="font-size:14px; font-weight:900; color:#4c1d95; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-              <span>🎯 MÉTHODE 2 (TEST) · TOUS FAVORIS DOMICILE (COTE TOTALE ≥ 2.60)</span>
+              <span>🎯 MÉTHODE 2 (TEST) · FAVORIS DOMICILE (COTE TOTALE ≥ 3.25 & SCORE ≥ 33)</span>
               <span style="font-size:11px; background:#7c3aed; color:#ffffff; font-weight:700; padding:2px 8px; border-radius:6px;">Mise : 3,00 € &bull; {len(m2_active)} ticket(s)</span>
             </div>
             <div style="font-size:11px; color:#6b21a8; margin-bottom:10px; line-height:1.4;">
-              💡 <b>Stratégie Test</b> : 100% des équipes à domicile favorites (cote &lt; extérieur), combinées par session jour sans filtre statistique. Gain dès +2 buts d'avance ou victoire.
+              💡 <b>Stratégie Test</b> : Équipes à domicile favorites (cote &ge; 1.30, score &ge; 33/100), combinées par session jour avec cote &ge; 3.25. Gain dès +2 buts d'avance ou victoire.
             </div>
             {m2_combos_html}
           </div>
@@ -2101,7 +2120,7 @@ def main():
         fi = m["fav_info"]
         c_val = f"@{fi['p2_fav_odds']:.2f}" if fi.get("p2_fav_odds") else f"@{fi['fav_odds']:.2f}"
         stat = "✅ RETENU" if fi["fav_score"] >= MIN_SCORE_FAV_RETAINED else "⚠️ ÉCARTÉ"
-    report.append(f"\n## 🎯 Méthode 2 (Test) : Tous Favoris Domicile (Cote Combinée ≥ 2.60)\n")
+    report.append(f"\n## 🎯 Méthode 2 (Test) : Favoris Domicile (Cote Combinée ≥ 3.25 & Score ≥ 33)\n")
     report.append(f"**Tickets actifs** : {len(m2_active)}  |  **Mise** : 3.00 €  |  **Règle** : +2 Buts d'Avance ou Victoire 1N2\n")
     report.append("| Ticket | Cote Totale | Match 1 (Heure & Cote) | Match 2 (Heure & Cote) | Statut |")
     report.append("| :---: | :---: | :--- | :--- | :---: |")
