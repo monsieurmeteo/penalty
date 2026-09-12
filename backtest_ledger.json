@@ -28399,5 +28399,49 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3378666",
+    "timestamp_utc": "2026-09-12T08:12:49.068600+00:00",
+    "match": "Famalicao vs Sporting",
+    "league": "Portugal • Liga Portugal",
+    "date_str": "Dim. 13/09 à 21h30",
+    "fav_team": "Sporting",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.41,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3367861",
+    "timestamp_utc": "2026-09-12T08:12:49.068600+00:00",
+    "match": "Argentinos Jrs vs Gimnasia LP",
+    "league": "Argentine • D1 Argentine",
+    "date_str": "Dim. 13/09 à 22h00",
+    "fav_team": "Argentinos Jrs",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 63,
+      "pct_fav_success": 80,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
