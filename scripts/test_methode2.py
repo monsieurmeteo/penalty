@@ -13,7 +13,9 @@ m2_summary = d.get("methode2_summary", {})
 assert len(m2_combos) >= 20, f"Attendu au moins 20 combinés M2, obtenu {len(m2_combos)}"
 assert m2_summary.get("default_stake") == 3.0, f"Mise attendue 3.0€, obtenu {m2_summary.get('default_stake')}"
 assert m2_summary.get("won") + m2_summary.get("lost") == m2_summary.get("decided_combos"), "Won + Lost mismatch M2"
-assert m2_summary.get("decided_combos") + m2_summary.get("live") + m2_summary.get("upcoming") == len(m2_combos), "Counts mismatch M2"
+# decided_combos ne comptabilise que les tickets conformes aux critères actuels (exclut les anciens tickets à cote < 3.25)
+assert m2_summary.get("decided_combos") <= sum(1 for c in m2_combos if c.get("ticket_status") in ("WON", "LOST")), "Decided combos exceeds total decided"
+assert m2_summary.get("total_combos") == len(m2_combos), "Total combos mismatch M2"
 
 for c in m2_combos:
     # Les deux sélections sont à domicile
