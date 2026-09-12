@@ -3,230 +3,456 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ Flashscore Live Stream (Application PWA Mobile & Notifications Push)</title>
+    <title>⚡ Flashscore Live Stream — Suivi Direct Combinés</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0d1117">
+    <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Flashscore">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/53/53283.png">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0d1117;
-            --panel: #161b22;
-            --header-bg: #1f242d;
-            --border: #30363d;
+            --bg: #f8fafc;
+            --panel: #ffffff;
+            --header-bg: #ffffff;
+            --border: #e2e8f0;
+            --border-subtle: #f1f5f9;
             --accent: #10b981;
-            --text: #f0f6fc;
-            --muted: #8b949e;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --muted: #64748b;
             --yellow-star: #f59e0b;
-            --blue-pre: #3b82f6;
-            --crimson-soft: #b91c1c;
-            --crimson-border: #ef4444;
+            --blue-pre: #2563eb;
+            --crimson: #dc2626;
+            --crimson-soft: #fef2f2;
+            --crimson-border: #f87171;
+            --emerald-soft: #ecfdf5;
+            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg); color: var(--text); padding: 8px 8px 90px 8px; min-height: 100vh; }
+        body { background-color: var(--bg); color: var(--text); padding: 10px 10px 90px 10px; min-height: 100vh; }
         .container { max-width: 980px; margin: 0 auto; }
         
-        /* HEADER COMPACT */
-        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
-        .logo { font-size: 16px; font-weight: 900; background: linear-gradient(135deg, #10b981, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* HEADER COMPACT & LUMINEUX */
+        header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 8px 12px; 
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 10px; 
+        }
+        .logo { 
+            font-size: 17px; 
+            font-weight: 900; 
+            letter-spacing: -0.3px;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .logo span.bolt { color: #10b981; }
         
-        .header-actions { display: flex; align-items: center; gap: 6px; }
-        .sound-btn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; padding: 3px 8px; border-radius: 14px; font-size: 10px; font-weight: 800; cursor: pointer; display: flex; align-items: center; gap: 3px; }
-        .sound-btn.active { background: #d97706; border-color: #f59e0b; color: #fff; }
+        .header-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .sound-btn { 
+            background: #f8fafc; 
+            border: 1px solid #cbd5e1; 
+            color: #334155; 
+            padding: 4px 9px; 
+            border-radius: 14px; 
+            font-size: 10px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            transition: all 0.2s;
+        }
+        .sound-btn:hover { background: #f1f5f9; }
+        .sound-btn.active { background: #ecfdf5; border-color: #10b981; color: #047857; }
+        .sound-btn.test-btn { background: #ecfdf5; border-color: #10b981; color: #047857; }
+        .sound-btn.test-btn:hover { background: #d1fae5; }
 
-        .live-badge { display: flex; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); padding: 2px 7px; border-radius: 14px; font-size: 10px; font-weight: 700; color: #10b981; }
-        .live-badge.offline { background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5; }
-        .pulse { width: 5px; height: 5px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
+        .live-badge { 
+            display: flex; 
+            align-items: center; 
+            gap: 5px; 
+            background: #ecfdf5; 
+            border: 1px solid #a7f3d0; 
+            padding: 4px 8px; 
+            border-radius: 14px; 
+            font-size: 10px; 
+            font-weight: 800; 
+            color: #059669; 
+        }
+        .live-badge.offline { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
+        .pulse { width: 6px; height: 6px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 5px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
-        /* BARRE DE RECHERCHE ET TABS HAUT */
-        .toolbar { display: flex; flex-direction: column; gap: 6px; margin-bottom: 8px; }
-        .search-bar { width: 100%; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--panel); color: #fff; font-size: 12px; outline: none; }
+        /* BARRE DE RECHERCHE ET TABS */
+        .toolbar { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+        .search-bar { 
+            width: 100%; 
+            padding: 8px 14px; 
+            border-radius: 10px; 
+            border: 1px solid var(--border); 
+            background: #ffffff; 
+            color: #0f172a; 
+            font-size: 13px; 
+            outline: none; 
+            box-shadow: var(--card-shadow);
+        }
+        .search-bar::placeholder { color: #94a3b8; }
+        .search-bar:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15); }
         
-        .tabs-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; width: 100%; }
-        .tab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 5px 2px; border-radius: 8px; font-size: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 2px; white-space: nowrap; }
-        .tab-btn.active { background: #238636; border-color: #2ea043; color: #fff; }
-        .tab-btn.active-live { background: var(--crimson-soft); border-color: #ef4444; color: #fff; }
-        .tab-btn.active-pre { background: #2563eb; border-color: #3b82f6; color: #fff; }
-        .tab-btn.active-fav { background: #d97706; border-color: #f59e0b; color: #fff; }
-        .tab-btn.active-combos { background: linear-gradient(135deg, #1e3a8a, #7c3aed); border-color: #818cf8; color: #fff; }
+        .tabs-row { 
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 4px; 
+            width: 100%; 
+            background: #e2e8f0;
+            padding: 4px;
+            border-radius: 10px;
+        }
+        .tab-btn { 
+            background: transparent; 
+            border: none; 
+            color: #475569; 
+            padding: 7px 2px; 
+            border-radius: 7px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 3px; 
+            white-space: nowrap; 
+            transition: all 0.15s;
+        }
+        .tab-btn:hover { color: #0f172a; }
+        .tab-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-btn.active-live { background: #fee2e2; color: #b91c1c; box-shadow: 0 1px 3px rgba(185,28,28,0.15); }
+        .tab-btn.active-pre { background: #dbeafe; color: #1d4ed8; box-shadow: 0 1px 3px rgba(29,78,216,0.15); }
+        .tab-btn.active-fav { background: #fef3c7; color: #b45309; box-shadow: 0 1px 3px rgba(180,83,9,0.15); }
+        .tab-btn.active-combos { background: #ede9fe; color: #6d28d9; box-shadow: 0 1px 3px rgba(109,40,217,0.15); }
 
-        /* CHAMPIONNATS ET BANDEAU FAVORIS HYPER COMPACT */
-        .league-group { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--panel); }
-        .league-header { background: var(--header-bg); padding: 4px 8px; font-size: 10px; font-weight: 800; color: #c9d1d9; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; letter-spacing: 0.3px; }
-        .league-header span.count { background: rgba(255, 255, 255, 0.1); padding: 1px 4px; border-radius: 6px; font-size: 9px; color: var(--muted); }
+        /* BANDEAU DE FILTRAGE LIVE SCOPE (COMBINÉS VS MONDE) */
+        .live-scope-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            box-shadow: var(--card-shadow);
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .live-scope-label { font-size: 11px; font-weight: 800; color: #b91c1c; display: flex; align-items: center; gap: 4px; }
+        .live-scope-pills { display: flex; gap: 4px; }
+        .scope-pill {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 4px 9px;
+            border-radius: 14px;
+            font-size: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .scope-pill:hover { background: #e2e8f0; }
+        .scope-pill.active-combos { background: #ede9fe; border-color: #8b5cf6; color: #6d28d9; }
+        .scope-pill.active-all { background: #e0f2fe; border-color: #38bdf8; color: #0369a1; }
+
+        /* GROUPES PAR CHAMPIONNAT & CARTES */
+        .league-group { 
+            margin-bottom: 10px; 
+            border: 1px solid var(--border); 
+            border-radius: 10px; 
+            overflow: hidden; 
+            background: var(--panel); 
+            box-shadow: var(--card-shadow);
+        }
+        .league-header { 
+            background: #f1f5f9; 
+            padding: 6px 10px; 
+            font-size: 11px; 
+            font-weight: 800; 
+            color: #334155; 
+            border-bottom: 1px solid var(--border); 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            text-transform: uppercase; 
+            letter-spacing: 0.3px; 
+        }
+        .league-header span.count { background: #e2e8f0; padding: 2px 6px; border-radius: 6px; font-size: 9px; color: #475569; font-weight: 800; }
         
-        .see-more-favs-link { text-align: center; padding: 6px; background: rgba(245, 158, 11, 0.08); color: var(--yellow-star); font-size: 10px; font-weight: 800; cursor: pointer; border-top: 1px solid rgba(245, 158, 11, 0.2); text-transform: uppercase; letter-spacing: 0.5px; }
-        .see-more-favs-link:hover { background: rgba(245, 158, 11, 0.15); }
+        .see-more-favs-link { text-align: center; padding: 8px; background: #fffbeb; color: #b45309; font-size: 11px; font-weight: 800; cursor: pointer; border-top: 1px solid #fef3c7; text-transform: uppercase; letter-spacing: 0.5px; }
+        .see-more-favs-link:hover { background: #fef3c7; }
 
-        /* 1. LIGNE COMPACTE STANDARD (MINUTES AGRANDIES À 13PX BOLD) */
-        .match-row-compact { display: flex; align-items: center; padding: 6px 8px; font-size: 11px; font-weight: 600; border-bottom: 1px solid rgba(255, 255, 255, 0.03); cursor: pointer; gap: 6px; }
+        /* 1. LIGNE COMPACTE STANDARD */
+        .match-row-compact { 
+            display: flex; 
+            align-items: center; 
+            padding: 8px 10px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            border-bottom: 1px solid var(--border-subtle); 
+            cursor: pointer; 
+            gap: 8px; 
+            background: #ffffff;
+            transition: background 0.15s;
+        }
         .match-row-compact:last-child { border-bottom: none; }
+        .match-row-compact:hover { background: #f8fafc; }
         
-        .star-btn { font-size: 14px; cursor: pointer; color: var(--muted); user-select: none; display: inline-block; flex: 0 0 auto; padding: 2px; }
+        .star-btn { font-size: 15px; cursor: pointer; color: #cbd5e1; user-select: none; display: inline-block; flex: 0 0 auto; padding: 2px; }
         .star-btn.starred { color: var(--yellow-star); }
 
-        /* 🕒 STATUT / MINUTE EN CARACTÈRES AGRANDIS (13PX BOLD) */
         .status-col { font-size: 13px; font-weight: 900; color: var(--accent); flex: 0 0 62px; }
         .status-col.pre-match { color: var(--blue-pre); font-size: 12px; }
         .status-col.finished { color: var(--muted); font-size: 11px; }
 
-        .home-col { text-align: right; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .away-col { text-align: left; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .score-pill-compact { text-align: center; font-size: 11px; font-weight: 900; background: rgba(255, 255, 255, 0.08); padding: 2px 5px; border-radius: 4px; color: #fff; flex: 0 0 auto; min-width: 42px; }
-
-        /* 2. CARTE FAVORIS / SÉLECTIONNÉ : MINUTE AGRANDIE À 13PX BOLD EN HAUT À DROITE */
-        .match-card-expanded { background: rgba(22, 27, 34, 0.98); border-bottom: 1px solid var(--border); padding: 6px 8px; cursor: pointer; position: relative; transition: background 0.3s; }
-        .match-card-expanded:last-child { border-bottom: none; }
+        .home-col { text-align: right; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; color: #0f172a; }
+        .away-col { text-align: left; flex: 1 1 0; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 700; color: #0f172a; }
         
-        .expanded-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-        
-        /* MINUTE DANS LA CARTE AGRANDIE À 13PX ULTRA-BOOSTÉE ET LISIBLE */
-        .expanded-header-line .live-status-tag { 
-            font-size: 13px; 
+        .score-pill-compact { 
+            text-align: center; 
+            font-size: 12px; 
             font-weight: 900; 
-            letter-spacing: 0.3px;
+            background: #f1f5f9; 
+            border: 1px solid #cbd5e1;
+            padding: 2px 7px; 
+            border-radius: 6px; 
+            color: #0f172a; 
+            flex: 0 0 auto; 
+            min-width: 46px; 
         }
 
-        /* Ligne Principale : ANDERLECHT   2 — 1   RAAL LA LOUVIÈRE (SCORE 24PX AU CENTRE) */
-        .teams-score-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin: 1px 0; }
+        /* 2. CARTE ÉTENDUE / FAVORIS */
+        .match-card-expanded { 
+            background: #ffffff; 
+            border-bottom: 1px solid var(--border-subtle); 
+            padding: 10px 12px; 
+            cursor: pointer; 
+            position: relative; 
+            transition: background 0.2s; 
+        }
+        .match-card-expanded:last-child { border-bottom: none; }
+        
+        .expanded-header-line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+        .expanded-header-line .live-status-tag { font-size: 13px; font-weight: 900; letter-spacing: 0.3px; }
+
+        /* LIGNE PRINCIPALE : ÉQUIPE DOM   [ SCORE + BADGE GAGNÉ ]   ÉQUIPE EXT */
+        .teams-score-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0; }
         
         .team-name-exp { 
-            font-size: 12px; 
+            font-size: 13px; 
             font-weight: 800; 
-            color: #ffffff; 
+            color: #0f172a; 
             text-transform: uppercase; 
             flex: 1 1 0; 
             min-width: 0; 
             word-wrap: break-word; 
             overflow-wrap: break-word; 
-            line-height: 1.15;
+            line-height: 1.2; 
         }
         .team-name-exp.home { text-align: right; }
         .team-name-exp.away { text-align: left; }
         
-        /* SCORE 24PX INAMOVIBLE AVEC CONTRASTE ÉLEVÉ */
+        /* BLOC CENTRAL AVEC SCORE ET BADGE GAGNÉ IMMÉDIAT */
+        .score-center-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+            gap: 3px;
+        }
+
         .giant-score-val { 
             font-size: 24px; 
             font-weight: 900; 
-            color: #ffffff; 
-            background: rgba(255, 255, 255, 0.12); 
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            padding: 1px 8px; 
-            border-radius: 6px; 
-            text-align: center;
-            letter-spacing: 1px;
-            white-space: nowrap;
-            flex: 0 0 auto;
-            min-width: 68px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            color: #0f172a; 
+            background: #f1f5f9; 
+            border: 1px solid #cbd5e1; 
+            padding: 2px 10px; 
+            border-radius: 8px; 
+            text-align: center; 
+            letter-spacing: 1px; 
+            white-space: nowrap; 
+            min-width: 72px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05); 
+            transition: all 0.25s ease; 
         }
 
-        /* 🚨 ALERTE BUT (8s) : SCORE TEMPORAIREMENT ROUGE + LEGER CONTOUR LUMINEUX */
+        /* 👑 BADGE GAGNÉ / EN COURS JUSTE À CÔTÉ DU SCORE */
+        .score-status-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .score-status-badge.won-lead2 {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+            box-shadow: 0 1px 3px rgba(21, 128, 61, 0.15);
+            animation: bounceSmall 1.5s infinite;
+        }
+        .score-status-badge.won-final {
+            background: #dcfce7;
+            border: 1px solid #86efac;
+            color: #15803d;
+        }
+        .score-status-badge.live {
+            background: #fef3c7;
+            border: 1px solid #fde68a;
+            color: #b45309;
+        }
+        .score-status-badge.lost {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+        }
+        @keyframes bounceSmall {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-2px); }
+        }
+
+        /* 🚨 ALERTE BUT (20 SECONDES) : SCORE ROUGE ÉTINCELANT */
         .match-card-expanded.goal-flash {
-            border-left: 3px solid #ef4444 !important;
+            background: #fff5f5 !important;
+            border-left: 4px solid #ef4444 !important;
         }
         .match-card-expanded.goal-flash .giant-score-val {
-            background: var(--crimson-soft) !important;
+            background: #fee2e2 !important;
             border-color: #ef4444 !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6);
+            color: #b91c1c !important;
+            box-shadow: 0 0 14px rgba(239, 68, 68, 0.5);
             animation: pulseScoreHighlight 0.6s infinite alternate;
         }
         @keyframes pulseScoreHighlight {
             0% { transform: scale(1); }
-            100% { transform: scale(1.05); }
+            100% { transform: scale(1.06); }
         }
 
-        /* 3. ÉVÉNEMENTS COMPACTS (PASTILLES DISCRÈTES) */
-        .events-compact-list { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; padding-top: 3px; border-top: 1px dashed rgba(255, 255, 255, 0.05); }
-        .event-pill-mini { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); color: #cbd5e1; }
-        .event-pill-mini.goal { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
-        .event-pill-mini.redcard { background: rgba(220, 38, 38, 0.2); border-color: rgba(220, 38, 38, 0.4); color: #fca5a5; }
+        /* ÉVÉNEMENTS COMPACTS (BUTS, CARTONS) */
+        .events-compact-list { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; padding-top: 4px; border-top: 1px dashed #e2e8f0; }
+        .event-pill-mini { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; background: #f1f5f9; border: 1px solid #e2e8f0; color: #334155; }
+        .event-pill-mini.goal { background: #ecfdf5; border-color: #a7f3d0; color: #047857; font-weight: 800; }
+        .event-pill-mini.redcard { background: #fee2e2; border-color: #fecaca; color: #b91c1c; font-weight: 800; }
 
-        /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) */
-        /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) */
+        /* 📱 BARRE FIXE EN BAS (STICKY BOTTOM NAV BAR) — MODE CLAIR */
         .bottom-nav { 
             position: fixed; 
             bottom: 0; 
             left: 0; 
             right: 0; 
-            height: 50px; 
-            background: rgba(15, 20, 28, 0.98); 
-            backdrop-filter: blur(10px); 
-            -webkit-backdrop-filter: blur(10px);
+            height: 52px; 
+            background: rgba(255, 255, 255, 0.96); 
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
             border-top: 1px solid var(--border); 
             display: grid; 
             grid-template-columns: repeat(5, 1fr); 
             z-index: 9999; 
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.03);
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--muted); text-decoration: none; font-size: 9px; font-weight: 700; cursor: pointer; }
-        .nav-item .icon { font-size: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--muted); text-decoration: none; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .nav-item .icon { font-size: 16px; }
         .nav-item.active { color: #10b981; }
         .nav-item.active-live { color: #ef4444; }
-        .nav-item.active-pre { color: #3b82f6; }
+        .nav-item.active-pre { color: #2563eb; }
         .nav-item.active-fav { color: #f59e0b; }
-        .nav-item.active-combos { color: #a78bfa; }
+        .nav-item.active-combos { color: #7c3aed; }
 
-        /* 🎫 STYLES COMBINÉS INTÉGRÉS */
-        .combos-container-view { display: flex; flex-direction: column; gap: 8px; }
-        .combos-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 6px; }
-        .combos-kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 3px; text-align: center; }
-        .combos-kpi-val { font-size: 14px; font-weight: 900; }
-        .combos-kpi-sub { font-size: 8px; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-top: 2px; }
+        /* 🎫 STYLES COMBINÉS INTÉGRÉS — MODE CLAIR */
+        .combos-container-view { display: flex; flex-direction: column; gap: 10px; }
+        .combos-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 4px; }
+        .combos-kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 8px 4px; text-align: center; box-shadow: var(--card-shadow); }
+        .combos-kpi-val { font-size: 15px; font-weight: 900; }
+        .combos-kpi-sub { font-size: 9px; color: var(--muted); font-weight: 800; text-transform: uppercase; margin-top: 2px; }
 
-        .combos-subtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 6px; }
-        .subtab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 7px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; }
-        .subtab-btn.active { background: #1e3a8a; border-color: #3b82f6; color: #fff; }
-        .subtab-btn.active-m2 { background: #4c1d95; border-color: #8b5cf6; color: #fff; }
+        .combos-subtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 4px; }
+        .subtab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 8px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; box-shadow: var(--card-shadow); transition: all 0.2s; }
+        .subtab-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
+        .subtab-btn.active-m2 { background: #ede9fe; border-color: #8b5cf6; color: #5b21b6; }
 
         .combos-filters-row { display: flex; gap: 4px; margin-bottom: 6px; overflow-x: auto; padding-bottom: 2px; }
-        .cfilter-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 3px 8px; border-radius: 12px; font-size: 9px; font-weight: 800; cursor: pointer; white-space: nowrap; }
-        .cfilter-btn.active { background: #238636; border-color: #2ea043; color: #fff; }
+        .cfilter-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 14px; font-size: 10px; font-weight: 800; cursor: pointer; white-space: nowrap; box-shadow: var(--card-shadow); }
+        .cfilter-btn.active { background: #0f172a; border-color: #0f172a; color: #fff; }
 
-        .stake-bar-mini { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; margin-bottom: 8px; font-size: 10px; font-weight: 700; }
-        .stake-btn-mini { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 4px; font-size: 9px; font-weight: 800; cursor: pointer; }
-        .stake-btn-mini.active { background: #2563eb; border-color: #3b82f6; color: #fff; }
+        .stake-bar-mini { display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; margin-bottom: 6px; font-size: 11px; font-weight: 800; box-shadow: var(--card-shadow); }
+        .stake-btn-mini { background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .stake-btn-mini.active { background: #2563eb; border-color: #1d4ed8; color: #fff; }
 
-        .ticket-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; overflow: hidden; }
-        .ticket-card.is-won { border-left: 4px solid #10b981; }
-        .ticket-card.is-lost { border-left: 4px solid #ef4444; }
-        .ticket-card.is-live { border-left: 4px solid #f59e0b; }
+        .ticket-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; overflow: hidden; box-shadow: var(--card-shadow); }
+        .ticket-card.is-won { border-left: 5px solid #10b981; background: #f0fdf4; }
+        .ticket-card.is-lost { border-left: 5px solid #ef4444; }
+        .ticket-card.is-live { border-left: 5px solid #f59e0b; }
 
-        .ticket-header { background: var(--header-bg); padding: 5px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .ticket-odds-badge { background: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: 900; }
-        .ticket-res-badge { padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 800; }
-        .ticket-res-badge.won { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .ticket-res-badge.lost { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-        .ticket-res-badge.live { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .ticket-res-badge.pending { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+        .ticket-header { background: #f8fafc; padding: 6px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--border); }
+        .ticket-odds-badge { background: #2563eb; color: #fff; padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 900; }
+        .ticket-res-badge { padding: 3px 7px; border-radius: 6px; font-size: 10px; font-weight: 800; }
+        .ticket-res-badge.won { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+        .ticket-res-badge.lost { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .ticket-res-badge.live { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+        .ticket-res-badge.pending { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
 
-        .ticket-leg { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; }
+        .ticket-leg { padding: 8px 10px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; }
         .ticket-leg:last-child { border-bottom: none; }
         .ticket-leg-left { flex: 1; min-width: 0; }
-        .ticket-leg-match { font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ticket-leg-match { font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ticket-leg-sub { font-size: 10px; color: var(--muted); margin-top: 2px; display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-        .ticket-leg-fav { color: #38bdf8; font-weight: 800; }
+        .ticket-leg-fav { color: #0284c7; font-weight: 800; }
         .ticket-leg-right { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
-        .ticket-leg-score { font-size: 12px; font-weight: 900; background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; color: #fff; }
-        .ticket-leg-badge { font-size: 9px; font-weight: 800; padding: 2px 5px; border-radius: 4px; }
-        .pin-match-btn { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b; padding: 2px 6px; border-radius: 4px; font-size: 9px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 2px; }
-        .pin-match-btn:hover { background: #f59e0b; color: #000; }
+        .ticket-leg-score { font-size: 13px; font-weight: 900; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 2px 7px; border-radius: 6px; color: #0f172a; }
+        .ticket-leg-badge { font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 6px; }
+        .pin-match-btn { background: #fffbeb; border: 1px solid #fde68a; color: #b45309; padding: 2px 7px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 3px; }
+        .pin-match-btn:hover { background: #fef3c7; }
 
-        .badge-combo-indicator { background: linear-gradient(135deg, #1e3a8a, #4338ca); color: #93c5fd; border: 1px solid #3b82f6; font-size: 8px; font-weight: 900; padding: 1px 4px; border-radius: 3px; margin-left: 4px; text-transform: uppercase; }
+        .badge-combo-indicator { 
+            background: #ede9fe; 
+            color: #6d28d9; 
+            border: 1px solid #c4b5fd; 
+            font-size: 9px; 
+            font-weight: 900; 
+            padding: 2px 5px; 
+            border-radius: 4px; 
+            margin-left: 4px; 
+            text-transform: uppercase; 
+            display: inline-block;
+        }
 
-        .empty-state { text-align: center; padding: 30px 15px; color: var(--muted); font-size: 12px; }
+        .empty-state { text-align: center; padding: 35px 15px; color: var(--muted); font-size: 13px; }
+        .empty-state-card { background: #ffffff; border: 1px solid var(--border); border-radius: 12px; padding: 30px 20px; text-align: center; box-shadow: var(--card-shadow); }
+        .empty-icon { font-size: 32px; margin-bottom: 8px; }
+        .empty-title { font-weight: 800; font-size: 15px; color: #0f172a; margin-bottom: 4px; }
+        .empty-desc { color: var(--muted); font-size: 12px; margin-bottom: 14px; line-height: 1.4; }
+        .empty-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
 
-        /* 💻 COMPATIBILITÉ DESKTOP SANS RÉGRESSION */
+        /* 💻 COMPATIBILITÉ DESKTOP */
         @media (min-width: 641px) {
-            body { padding-bottom: 20px; }
+            body { padding-bottom: 25px; }
             .bottom-nav { display: none; }
-            .giant-score-val { font-size: 24px; min-width: 76px; }
-            .team-name-exp { font-size: 13px; }
+            .giant-score-val { font-size: 26px; min-width: 80px; }
+            .team-name-exp { font-size: 14px; }
             .expanded-header-line .live-status-tag { font-size: 14px; }
             .status-col { font-size: 13px; flex: 0 0 66px; }
         }
@@ -235,11 +461,16 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">⚡ FLASHSCORE LIVE</div>
+            <div class="logo">
+                <span class="bolt">⚡</span> FLASHSCORE LIVE
+            </div>
             
             <div class="header-actions">
-                <button id="soundToggleBtn" class="sound-btn" onclick="toggleSoundAlerts()">
+                <button id="soundToggleBtn" class="sound-btn" onclick="toggleSoundAlerts()" title="Activer ou désactiver les sonneries de but">
                     <span id="soundIcon">📢</span> <span id="soundText">Son Stade ⭐</span>
+                </button>
+                <button id="testSoundBtn" class="sound-btn test-btn" onclick="testGoalSound()" title="Tester la sonnerie de but immédiatement (débloque l'audio navigateur)">
+                    <span>🔊 Tester</span>
                 </button>
                 
                 <div id="connectionStatus" class="live-badge">
@@ -250,7 +481,7 @@
         </header>
 
         <div class="toolbar">
-            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher un match, équipe (ex: Lille, Benfica)...">
+            <input type="text" id="searchInput" class="search-bar" placeholder="🔍 Rechercher un match, équipe (ex: Lille, Benfica, Hiroshima)...">
             
             <div class="tabs-row">
                 <button id="tabAll" class="tab-btn active" onclick="setFilter('all')">Tous (<span id="countAll">0</span>)</button>
@@ -258,6 +489,15 @@
                 <button id="tabPre" class="tab-btn" onclick="setFilter('pre')">🕒 Pré (<span id="countPre">0</span>)</button>
                 <button id="tabFav" class="tab-btn" onclick="setFilter('fav')">⭐ Fav (<span id="countFav">0</span>)</button>
                 <button id="tabCombos" class="tab-btn" onclick="setFilter('combos')">🎫 Combos (<span id="countCombos">0</span>)</button>
+            </div>
+        </div>
+
+        <!-- 🔴 SOUS-BANDEAU FILTRAGE LIVE SCOPE (UNIQUEMENT NOS COMBINÉS PAR DÉFAUT) -->
+        <div id="liveScopeBar" class="live-scope-bar" style="display:none;">
+            <span class="live-scope-label">🔴 MATCHS EN DIRECT :</span>
+            <div class="live-scope-pills">
+                <button id="scopeCombosBtn" class="scope-pill active-combos" onclick="setLiveScope('combos')">🎯 Nos Combinés (<span id="scopeComboCount">0</span>)</button>
+                <button id="scopeAllBtn" class="scope-pill" onclick="setLiveScope('all')">🌐 Tout le Live mondial (<span id="scopeAllCount">0</span>)</button>
             </div>
         </div>
 
@@ -269,7 +509,7 @@
         <div id="combosContent" style="display:none;"></div>
     </div>
 
-    <!-- 📱 BARRE DE NAVIGATION FIXE EN BAS DE L'ÉCRAN (STICKY BOTTOM NAV) -->
+    <!-- 📱 BARRE DE NAVIGATION FIXE EN BAS DE L'ÉCRAN -->
     <nav class="bottom-nav">
         <div id="navAll" class="nav-item active" onclick="setFilter('all')">
             <span class="icon">⚽</span>
@@ -297,6 +537,11 @@
         const container = document.getElementById('liveContent');
         const combosContainer = document.getElementById('combosContent');
         const searchInput = document.getElementById('searchInput');
+        const liveScopeBar = document.getElementById('liveScopeBar');
+        const scopeCombosBtn = document.getElementById('scopeCombosBtn');
+        const scopeAllBtn = document.getElementById('scopeAllBtn');
+        const scopeComboCount = document.getElementById('scopeComboCount');
+        const scopeAllCount = document.getElementById('scopeAllCount');
         
         const countAllEl = document.getElementById('countAll');
         const countLiveEl = document.getElementById('countLive');
@@ -325,6 +570,7 @@
         let prevScores = {};
         let goalTimestamps = {};
         let activeTab = 'all';
+        let liveScope = 'combos'; // 🎯 'combos' par défaut = UNIQUEMENT les combinés !
         const GOAL_ALERT_DURATION = 20000; // ⚡ 20 SECONDES D'ALERTE BUT EN ROUGE VIF
         let isSoundEnabled = localStorage.getItem('flashscore_sound') !== 'false';
         let failedPollCount = 0;
@@ -381,7 +627,7 @@
             updateSoundBtnUI();
 
             if (isSoundEnabled) {
-                playStadiumGoalSound();
+                testGoalSound();
                 if ("Notification" in window && Notification.permission !== "granted") {
                     Notification.requestPermission().then(perm => {
                         console.log('[Notif] Permission:', perm);
@@ -390,28 +636,37 @@
             }
         }
 
-        // 🏟️ SON DE STADE AMÉLIORÉ (DOUBLE SIFFLET + CORNE DE BRUME GOAL)
+        // 🏟️ GESTION AUDIO ET SONNERIE DE BUT (DOUBLE SIFFLET + CORNE DE STADE)
         let audioCtx = null;
         function getAudioContext() {
             if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const AudioClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioClass) audioCtx = new AudioClass();
             }
-            if (audioCtx.state === 'suspended') {
+            if (audioCtx && audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
             return audioCtx;
         }
 
         // Débloque l'audio sur la première interaction utilisateur
-        document.addEventListener('click', () => { getAudioContext(); }, { once: true });
-        document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
+        if (typeof document !== 'undefined') {
+            document.addEventListener('click', () => { getAudioContext(); }, { once: true });
+            document.addEventListener('touchstart', () => { getAudioContext(); }, { once: true });
+        }
 
+        let lastSoundTime = 0;
         function playStadiumGoalSound() {
+            const now = Date.now();
+            if (now - lastSoundTime < 1500) return; // Anti-chevauchement
+            lastSoundTime = now;
+
             try {
                 const ctx = getAudioContext();
+                if (!ctx) return;
                 const t = ctx.currentTime;
 
-                // 1. Coup de sifflet d'arbitre 1 (court)
+                // 1. Coup de sifflet d'arbitre 1 (court strident)
                 const oscW1 = ctx.createOscillator();
                 const oscW2 = ctx.createOscillator();
                 const gainW1 = ctx.createGain();
@@ -442,7 +697,7 @@
                 oscW3.start(t2); oscW4.start(t2);
                 oscW3.stop(t2 + 0.45); oscW4.stop(t2 + 0.45);
 
-                // 3. Corne de stade festive puissante (Accord Majeur F-A-C-F)
+                // 3. Corne de brume festive puissante de stade (Accord F-A-C-F)
                 const tHorn = t + 0.55;
                 const freqs = [174.61, 220.00, 261.63, 349.23, 440.00];
                 freqs.forEach((freq, idx) => {
@@ -451,7 +706,7 @@
                     osc.type = (idx % 2 === 0) ? 'sawtooth' : 'triangle';
                     osc.frequency.setValueAtTime(freq, tHorn);
                     gain.gain.setValueAtTime(0, tHorn);
-                    gain.gain.linearRampToValueAtTime(0.18, tHorn + 0.12);
+                    gain.gain.linearRampToValueAtTime(0.2, tHorn + 0.12);
                     gain.gain.exponentialRampToValueAtTime(0.001, tHorn + 2.2);
                     osc.connect(gain); gain.connect(ctx.destination);
                     osc.start(tHorn); osc.stop(tHorn + 2.2);
@@ -461,10 +716,37 @@
             }
         }
 
+        // 🔊 BOUTON DE TEST SON DIRECT (DÉBLOQUE L'AUDIO ET JOUE LA SONNERIE)
+        function testGoalSound() {
+            try {
+                isSoundEnabled = true;
+                localStorage.setItem('flashscore_sound', 'true');
+                updateSoundBtnUI();
+
+                const ctx = getAudioContext();
+                if (ctx && ctx.state === 'suspended') {
+                    ctx.resume();
+                }
+                playStadiumGoalSound();
+
+                const testBtn = document.getElementById('testSoundBtn');
+                if (testBtn) {
+                    const origHtml = testBtn.innerHTML;
+                    testBtn.innerHTML = '<span>✅ Son OK !</span>';
+                    testBtn.style.background = '#dcfce7';
+                    setTimeout(() => { 
+                        testBtn.innerHTML = origHtml; 
+                        testBtn.style.background = '';
+                    }, 2500);
+                }
+            } catch(err) {
+                console.warn('Test audio error:', err);
+            }
+        }
+
         function sendSystemNotification(game) {
             if (!("Notification" in window) || Notification.permission !== "granted") return;
 
-            // Méthode 1 : Via Service Worker (fonctionne en arrière-plan Android Chrome)
             if (swRegistration && swRegistration.active) {
                 swRegistration.active.postMessage({
                     type: 'GOAL_NOTIFICATION',
@@ -478,13 +760,11 @@
                     }
                 });
             } else {
-                // Méthode 2 : Fallback direct (desktop, onglet actif)
                 new Notification(`⚽ BUT ! ${game.dom} ${game.score_dom} - ${game.score_ext} ${game.ext}`, {
-                    body: `⭐ Match Favori • ${game.league}`,
-                    icon: 'https://unibetlivevercel.vercel.app/favicon.ico',
+                    body: `⭐ Match Suivi • ${game.league}`,
+                    icon: 'https://cdn-icons-png.flaticon.com/512/53/53283.png',
                     tag: game.id,
-                    requireInteraction: false,
-                    vibrate: [200, 100, 200, 100, 400]
+                    requireInteraction: false
                 });
             }
         }
@@ -506,6 +786,10 @@
                 tabCombosBtn.classList.add('active-combos'); navCombos.classList.add('active-combos');
             }
 
+            if (liveScopeBar) {
+                liveScopeBar.style.display = (tab === 'live') ? 'flex' : 'none';
+            }
+
             if (tab === 'combos') {
                 container.style.display = 'none';
                 combosContainer.style.display = 'block';
@@ -517,6 +801,20 @@
             }
         }
 
+        function setLiveScope(scope) {
+            liveScope = scope;
+            if (scopeCombosBtn && scopeAllBtn) {
+                if (scope === 'combos') {
+                    scopeCombosBtn.className = 'scope-pill active-combos';
+                    scopeAllBtn.className = 'scope-pill';
+                } else {
+                    scopeCombosBtn.className = 'scope-pill';
+                    scopeAllBtn.className = 'scope-pill active-all';
+                }
+            }
+            if (window.latestGames) renderFlashscore(window.latestGames);
+        }
+
         function getStatusPriority(g) {
             if (g.status_type === 'LIVE') {
                 if (g.minute === 'PAUSE' || g.minute === 'HT') return 2;
@@ -526,16 +824,165 @@
             return 4;
         }
 
+        // ==========================================
+        // 🔍 TOKENIZER & MATCHING D'ÉQUIPES ROBUSTE
+        // ==========================================
+        function getTokens(name) {
+            const clean = (name || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ');
+            const words = clean.split(/\s+/).filter(Boolean);
+            const stop = new Set(['fc', 'as', 'cf', 'ac', 'sc', 'sk', 'fk', 'sv', 'sp', 'vfb', 'rks', 'cs', 'club', 'de', 'la', 'le', 'the', 'w', 'u21', 'u18', 'u19']);
+            const filtered = words.filter(w => !stop.has(w) && w.length >= 3);
+            return filtered.length > 0 ? filtered : words;
+        }
+
+        function tokenMatch(arr1, arr2) {
+            for (let w1 of arr1) {
+                for (let w2 of arr2) {
+                    if (w1 === w2) return true;
+                    if (w1.length >= 4 && w2.length >= 4 && (w1.includes(w2) || w2.includes(w1))) return true;
+                }
+            }
+            return false;
+        }
+
+        function matchTeams(h1, a1, h2, a2) {
+            if (!h1 || !a1 || !h2 || !a2) return false;
+            const tH1 = getTokens(h1);
+            const tA1 = getTokens(a1);
+            const tH2 = getTokens(h2);
+            const tA2 = getTokens(a2);
+            return tokenMatch(tH1, tH2) && tokenMatch(tA1, tA2);
+        }
+
+        function findGameInLatest(home, away) {
+            if (!window.latestGames || !window.latestGames.length) return null;
+            for (const g of window.latestGames) {
+                if (matchTeams(home, away, g.dom, g.ext)) {
+                    return g;
+                }
+            }
+            return null;
+        }
+
+        function isM2Conform(c) {
+            if ((c.odds || 0) < 3.50) return false;
+            for (let leg of ['m1', 'm2']) {
+                const m = c[leg] || {};
+                if ((m.odds || 0) < 1.30) return false;
+                const sc = m.domination_score;
+                if (sc !== undefined && sc !== null && sc < 35) return false;
+                if (m.market === 'OVER_15' || m.market === 'BTTS') return false;
+                if (m.fav_team === 'Over 1.5 Buts' || m.fav_team === 'Les 2 Marquent') return false;
+                if (m.fav_side && m.fav_side !== 'dom') return false;
+                if (m.fav_team && m.away && m.fav_team === m.away) return false;
+                if (m.away_odds && m.odds >= m.away_odds) return false;
+            }
+            return true;
+        }
+
+        function getComboTagsForGame(g) {
+            if (!globalCombosData) return [];
+            const tags = [];
+            const seen = new Set();
+
+            const m1List = globalCombosData.combos_today || [];
+            for (let c of m1List) {
+                for (let leg of [c.m1, c.m2]) {
+                    if (!leg) continue;
+                    if (matchTeams(leg.home, leg.away, g.dom, g.ext)) {
+                        const num = c.email_ticket_num || c.ticket_num;
+                        const key = `m1_${num}`;
+                        if (!seen.has(key)) {
+                            seen.add(key);
+                            tags.push({ method: 'm1', num: num, label: `🎫 M1 #${num}`, leg: leg, ticket: c });
+                        }
+                    }
+                }
+            }
+
+            const m2List = globalCombosData.methode2_combos || [];
+            for (let c of m2List) {
+                if (!isM2Conform(c)) continue;
+                for (let leg of [c.m1, c.m2]) {
+                    if (!leg) continue;
+                    if (matchTeams(leg.home, leg.away, g.dom, g.ext)) {
+                        const num = c.email_ticket_num || c.ticket_num;
+                        const key = `m2_${num}`;
+                        if (!seen.has(key)) {
+                            seen.add(key);
+                            tags.push({ method: 'm2', num: num, label: `🎯 M2 #${num}`, leg: leg, ticket: c });
+                        }
+                    }
+                }
+            }
+            return tags;
+        }
+
+        function getComboTagForGame(g) {
+            const tags = getComboTagsForGame(g);
+            return tags.length > 0 ? tags[0] : null;
+        }
+
+        // 👑 STATUT GAGNÉ OU EN COURS AFFICHÉ À CÔTÉ DU SCORE
+        function getGameWonStatus(g) {
+            const tags = getComboTagsForGame(g);
+            if (!tags || tags.length === 0) {
+                if (g.status_type === 'FINISHED') {
+                    return { text: 'TERMINÉ', type: 'won-final' };
+                }
+                return null;
+            }
+
+            for (let t of tags) {
+                const leg = t.leg;
+                if (!leg) continue;
+                const isFavHome = (leg.fav_side === 'dom' || leg.fav_team === leg.home);
+                const favScore = isFavHome ? g.score_dom : g.score_ext;
+                const oppScore = isFavHome ? g.score_ext : g.score_dom;
+                const lead = favScore - oppScore;
+
+                if (lead >= 2) {
+                    return { text: '👑 +2b GAGNÉ', type: 'won-lead2' };
+                }
+                if (g.status_type === 'FINISHED') {
+                    if (favScore > oppScore) return { text: '✅ GAGNÉ', type: 'won-final' };
+                    return { text: '❌ PERDU', type: 'lost' };
+                }
+            }
+
+            if (g.status_type === 'LIVE') {
+                return { text: '🔴 EN COURS', type: 'live' };
+            }
+            return null;
+        }
+
+        function openComboFromTag(e, method, ticketNum) {
+            if (e) e.stopPropagation();
+            currentMethod = method;
+            setFilter('combos');
+        }
+
+        // ==========================================
+        // 📊 RENDU PRINCIPAL DU FLASHSCORE
+        // ==========================================
         function renderFlashscore(games) {
             const now = Date.now();
             window.latestGames = games;
-            const query = searchInput.value.toLowerCase();
+            const query = (searchInput.value || '').toLowerCase();
+
+            // Matchs en direct totaux et matchs combinés en direct
+            const allLiveGames = games.filter(g => g.status_type === 'LIVE');
+            const comboLiveGames = allLiveGames.filter(g => getComboTagsForGame(g).length > 0);
+
+            if (scopeComboCount) scopeComboCount.textContent = comboLiveGames.length;
+            if (scopeAllCount) scopeAllCount.textContent = allLiveGames.length;
 
             countAllEl.textContent = games.length;
-            countLiveEl.textContent = games.filter(g => g.status_type === 'LIVE').length;
+            countLiveEl.textContent = (liveScope === 'combos') ? comboLiveGames.length : allLiveGames.length;
             countPreEl.textContent = games.filter(g => g.status_type === 'PRE_MATCH').length;
             countFavEl.textContent = games.filter(g => favoritesSet.has(g.id)).length;
 
+            // Détection de but & déclenchement de sonnerie
             games.forEach(g => {
                 const key = g.id;
                 const scoreStr = `${g.score_dom}-${g.score_ext}`;
@@ -543,10 +990,9 @@
                     goalTimestamps[key] = now;
                     expandedSet.add(key);
                     
-                    const isComboMatch = getComboTagForGame(g);
-                    if (favoritesSet.has(key) || isComboMatch) {
-                        sendSystemNotification(g);
-                        if (isSoundEnabled) playStadiumGoalSound();
+                    sendSystemNotification(g);
+                    if (isSoundEnabled) {
+                        playStadiumGoalSound();
                     }
                 }
                 prevScores[key] = scoreStr;
@@ -558,18 +1004,44 @@
             }
 
             let filtered = games.filter(g => 
-                g.dom.toLowerCase().includes(query) || 
-                g.ext.toLowerCase().includes(query) || 
-                g.league.toLowerCase().includes(query)
+                (g.dom || '').toLowerCase().includes(query) || 
+                (g.ext || '').toLowerCase().includes(query) || 
+                (g.league || '').toLowerCase().includes(query)
             );
 
-            if (activeTab === 'live') filtered = filtered.filter(g => g.status_type === 'LIVE');
-            else if (activeTab === 'pre') filtered = filtered.filter(g => g.status_type === 'PRE_MATCH');
-            else if (activeTab === 'fav') filtered = filtered.filter(g => favoritesSet.has(g.id));
+            // 🎯 GESTION DE L'ONGLET LIVE : PAR DÉFAUT UNIQUEMENT LES COMBINÉS !
+            if (activeTab === 'live') {
+                if (liveScope === 'combos') {
+                    filtered = filtered.filter(g => g.status_type === 'LIVE' && getComboTagsForGame(g).length > 0);
+                } else {
+                    filtered = filtered.filter(g => g.status_type === 'LIVE');
+                }
+            } else if (activeTab === 'pre') {
+                filtered = filtered.filter(g => g.status_type === 'PRE_MATCH');
+            } else if (activeTab === 'fav') {
+                filtered = filtered.filter(g => favoritesSet.has(g.id));
+            }
 
             if (filtered.length === 0) {
-                if (activeTab === 'fav') container.innerHTML = '<div class="empty-state">Aucun match favori. Cliquez sur ★ pour suivre un match.</div>';
-                else container.innerHTML = '<div class="empty-state">Aucun match trouvé.</div>';
+                if (activeTab === 'live' && liveScope === 'combos') {
+                    container.innerHTML = `
+                    <div class="empty-state-card">
+                        <div class="empty-icon">🎯</div>
+                        <div class="empty-title">Aucun match de vos combinés n'est actuellement en direct</div>
+                        <div class="empty-desc">
+                            Vos combinés comportent ${allLiveGames.length > 0 ? `${allLiveGames.length} autre(s) match(s) en direct dans le monde` : 'des matchs programmés aujourd\'hui'}.<br>
+                            Consultez les tickets pour voir les horaires des prochains coups d'envoi.
+                        </div>
+                        <div class="empty-actions">
+                            <button class="cfilter-btn" onclick="setLiveScope('all')">🌐 Voir tous les matchs en direct (${allLiveGames.length})</button>
+                            <button class="cfilter-btn active" onclick="setFilter('combos')">🎫 Voir les Tickets Combinés</button>
+                        </div>
+                    </div>`;
+                } else if (activeTab === 'fav') {
+                    container.innerHTML = '<div class="empty-state">Aucun match favori. Cliquez sur ★ pour suivre un match en priorité.</div>';
+                } else {
+                    container.innerHTML = '<div class="empty-state">Aucun match trouvé pour ce filtre.</div>';
+                }
                 return;
             }
 
@@ -581,16 +1053,16 @@
 
             if (goalAlertMatches.length > 0) {
                 html += `
-                <div class="league-group" style="border-color:#b91c1c; margin-bottom: 8px;">
-                    <div class="league-header" style="background:#b91c1c; color:#fff; font-size: 10px;">
+                <div class="league-group" style="border-color:#f87171; margin-bottom: 10px;">
+                    <div class="league-header" style="background:#ef4444; color:#fff; font-size: 11px;">
                         <span>⚽ ALERTE BUT EN DIRECT</span>
-                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">20s</span>
+                        <span class="count" style="background:rgba(0,0,0,0.25); color:#fff;">20s</span>
                     </div>
                     ${goalAlertMatches.map(g => renderMatchBlock(g, now)).join('')}
                 </div>`;
             }
 
-            // SECTION 1: ⭐ MES MATCHS FAVORIS (TRIÉS LIVE EN PREMIER, MAX 4 DANS L'ÉCRAN GÉNÉRAL)
+            // SECTION 1: ⭐ MES MATCHS FAVORIS
             const favMatches = filtered.filter(g => favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
             favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
 
@@ -600,10 +1072,10 @@
                 const hiddenFavsCount = favMatches.length - visibleFavs.length;
 
                 html += `
-                <div class="league-group" style="border-color:#f59e0b;">
-                    <div class="league-header" style="background:#d97706; color:#fff;">
+                <div class="league-group" style="border-color:#fde68a;">
+                    <div class="league-header" style="background:#f59e0b; color:#fff;">
                         <span>⭐ MES MATCHS FAVORIS (${favMatches.length})</span>
-                        <span class="count" style="background:rgba(0,0,0,0.3); color:#fff;">DIRECT</span>
+                        <span class="count" style="background:rgba(0,0,0,0.25); color:#fff;">DIRECT</span>
                     </div>
                     ${visibleFavs.map(g => renderMatchBlock(g, now)).join('')}
                     ${hiddenFavsCount > 0 ? `
@@ -614,7 +1086,7 @@
                 </div>`;
             }
 
-            // SECTION 2: TOUS LES CHAMPIONNATS
+            // SECTION 2: CHAMPIONNATS
             if (activeTab !== 'fav') {
                 const normalLeaguesMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
                 const leaguesMap = {};
@@ -638,6 +1110,9 @@
             container.innerHTML = html;
         }
 
+        // ==========================================
+        // 🧱 RENDU D'UN MATCH (BLOC ÉTENDU OU COMPACT)
+        // ==========================================
         function renderMatchBlock(g, now) {
             const key = g.id;
             const goalTime = goalTimestamps[key] || 0;
@@ -645,6 +1120,12 @@
             const isStarred = favoritesSet.has(key);
             const isExpanded = isStarred || isRecentGoal || expandedSet.has(key);
             const incs = g.incidents || [];
+            const comboTags = getComboTagsForGame(g);
+            const wonStatus = getGameWonStatus(g);
+
+            const comboTagsHtml = comboTags.map(t => 
+                `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${t.method}', ${t.num})">${t.label}</span>`
+            ).join(' ');
 
             if (isExpanded) {
                 const eventPills = incs.map(inc => {
@@ -659,17 +1140,17 @@
                 let statusBadgeText = `🔴 LIVE ${g.minute}`;
                 if (g.status_type === 'PRE_MATCH') statusBadgeText = `🕒 PRÉ-MATCH`;
                 else if (g.status_type === 'FINISHED') statusBadgeText = `TERMINÉ`;
-
                 if (isRecentGoal) statusBadgeText = `⚽ BUT ! ${g.minute}`;
-                const comboTag = getComboTagForGame(g);
+
+                const scoreDisplay = (g.status_type === 'PRE_MATCH') ? (g.kickoff || 'VS') : `${g.score_dom} — ${g.score_ext}`;
 
                 return `
                 <div class="match-card-expanded ${isRecentGoal ? 'goal-flash' : ''}" onclick="toggleExpand('${key}')">
                     <div class="expanded-header-line">
                         <span class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</span>
                         <div style="display:flex; align-items:center; gap:4px;">
-                            ${comboTag ? `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${comboTag.method}', ${comboTag.num})">${comboTag.label}</span>` : ''}
-                            <span class="live-status-tag" style="color: ${isRecentGoal ? '#ef4444' : (g.status_type === 'LIVE' ? '#10b981' : (g.status_type === 'PRE_MATCH' ? '#3b82f6' : '#8b949e'))}">
+                            ${comboTagsHtml}
+                            <span class="live-status-tag" style="color: ${isRecentGoal ? '#ef4444' : (g.status_type === 'LIVE' ? '#059669' : (g.status_type === 'PRE_MATCH' ? '#2563eb' : '#64748b'))}">
                                 ${statusBadgeText}
                             </span>
                         </div>
@@ -677,7 +1158,10 @@
 
                     <div class="teams-score-row">
                         <div class="team-name-exp home">${g.dom}</div>
-                        <div class="giant-score-val">${g.status_type === 'PRE_MATCH' ? (g.kickoff || 'VS') : `${g.score_dom} — ${g.score_ext}`}</div>
+                        <div class="score-center-block">
+                            <div class="giant-score-val">${scoreDisplay}</div>
+                            ${wonStatus ? `<div class="score-status-badge ${wonStatus.type}">${wonStatus.text}</div>` : ''}
+                        </div>
                         <div class="team-name-exp away">${g.ext}</div>
                     </div>
 
@@ -690,103 +1174,24 @@
             if (g.status_type === 'PRE_MATCH') statusClass += ' pre-match';
             else if (g.status_type === 'FINISHED') statusClass += ' finished';
 
-            const comboTag = getComboTagForGame(g);
+            const scoreDisplay = (g.status_type === 'PRE_MATCH') ? (g.kickoff || 'VS') : `${g.score_dom} - ${g.score_ext}`;
 
             return `
             <div class="match-row-compact" onclick="toggleExpand('${key}')">
                 <div class="star-btn ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
                 <div class="${statusClass}">${statusText}</div>
                 <div class="home-col">${g.dom}</div>
-                <div class="score-pill-compact">${g.status_type === 'PRE_MATCH' ? (g.kickoff || 'VS') : `${g.score_dom} - ${g.score_ext}`}</div>
-                <div class="away-col">${g.ext} ${comboTag ? `<span class="badge-combo-indicator" onclick="openComboFromTag(event, '${comboTag.method}', ${comboTag.num})">${comboTag.label}</span>` : ''}</div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:2px;">
+                    <div class="score-pill-compact">${scoreDisplay}</div>
+                    ${wonStatus ? `<span class="score-status-badge ${wonStatus.type}" style="font-size:8px; padding:1px 5px;">${wonStatus.text}</span>` : ''}
+                </div>
+                <div class="away-col">${g.ext} ${comboTagsHtml}</div>
             </div>`;
         }
 
         // ==========================================
-        // 🎫 LOGIQUE COMBINÉS MÉTHODE 1 & MÉTHODE 2
+        // 🎫 VUE DES COMBINÉS MÉTHODE 1 & MÉTHODE 2
         // ==========================================
-        function cleanStr(s) {
-            return (s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-        }
-
-        function findGameInLatest(home, away) {
-            if (!window.latestGames || !window.latestGames.length) return null;
-            const ch = cleanStr(home);
-            const ca = cleanStr(away);
-            if (!ch || !ca) return null;
-
-            for (const g of window.latestGames) {
-                const gh = cleanStr(g.dom);
-                const ga = cleanStr(g.ext);
-                if (!gh || !ga) continue;
-
-                const matchH = (gh === ch || gh.includes(ch) || ch.includes(gh));
-                const matchA = (ga === ca || ga.includes(ca) || ca.includes(ga));
-
-                if (matchH && matchA) {
-                    return g;
-                }
-            }
-            return null;
-        }
-
-        function isM2Conform(c) {
-            if ((c.odds || 0) < 3.50) return false;
-            for (let leg of ['m1', 'm2']) {
-                const m = c[leg] || {};
-                if ((m.odds || 0) < 1.30) return false;
-                const sc = m.domination_score;
-                if (sc !== undefined && sc !== null && sc < 35) return false;
-                if (m.market === 'OVER_15' || m.market === 'BTTS') return false;
-                if (m.fav_team === 'Over 1.5 Buts' || m.fav_team === 'Les 2 Marquent') return false;
-                if (m.fav_side && m.fav_side !== 'dom') return false;
-                if (m.fav_team && m.away && m.fav_team === m.away) return false;
-                if (m.away_odds && m.odds >= m.away_odds) return false;
-            }
-            return true;
-        }
-
-        function getComboTagForGame(g) {
-            if (!globalCombosData) return null;
-            const ch = cleanStr(g.dom);
-            const ca = cleanStr(g.ext);
-            if (!ch || !ca) return null;
-
-            // Cherche dans Méthode 1
-            const m1List = globalCombosData.combos_today || [];
-            for (let c of m1List) {
-                for (let leg of [c.m1, c.m2]) {
-                    if (!leg) continue;
-                    const lh = cleanStr(leg.home);
-                    const la = cleanStr(leg.away);
-                    if ((lh.includes(ch) || ch.includes(lh)) && (la.includes(ca) || ca.includes(la))) {
-                        return { method: 'm1', num: c.email_ticket_num || c.ticket_num, label: `🎫 M1 #${c.email_ticket_num || c.ticket_num}` };
-                    }
-                }
-            }
-
-            // Cherche dans Méthode 2
-            const m2List = globalCombosData.methode2_combos || [];
-            for (let c of m2List) {
-                if (!isM2Conform(c)) continue;
-                for (let leg of [c.m1, c.m2]) {
-                    if (!leg) continue;
-                    const lh = cleanStr(leg.home);
-                    const la = cleanStr(leg.away);
-                    if ((lh.includes(ch) || ch.includes(lh)) && (la.includes(ca) || ca.includes(la))) {
-                        return { method: 'm2', num: c.email_ticket_num || c.ticket_num, label: `🎯 M2 #${c.email_ticket_num || c.ticket_num}` };
-                    }
-                }
-            }
-            return null;
-        }
-
-        function openComboFromTag(e, method, ticketNum) {
-            if (e) e.stopPropagation();
-            currentMethod = method;
-            setFilter('combos');
-        }
-
         function setCombosMethod(m) {
             currentMethod = m;
             renderCombosView();
@@ -808,17 +1213,11 @@
             let pinned = 0;
 
             [ [h1, a1], [h2, a2] ].forEach(([h, a]) => {
-                const ch = cleanStr(h);
-                const ca = cleanStr(a);
-                for (const g of window.latestGames) {
-                    const gh = cleanStr(g.dom);
-                    const ga = cleanStr(g.ext);
-                    if ((gh.includes(ch) || ch.includes(gh)) && (ga.includes(ca) || ca.includes(ga))) {
-                        favoritesSet.add(g.id);
-                        expandedSet.add(g.id);
-                        pinned++;
-                        break;
-                    }
+                const g = findGameInLatest(h, a);
+                if (g) {
+                    favoritesSet.add(g.id);
+                    expandedSet.add(g.id);
+                    pinned++;
                 }
             });
 
@@ -843,13 +1242,11 @@
             const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
             const activeList = (currentMethod === 'm1') ? m1List : m2List;
 
-            // ⚡ ÉVALUATION TEMPS RÉEL DE CHAQUE TICKET (FLUX LIVE DIRECT)
             const evaluatedList = activeList.map(c => {
                 const evalRes = evalTicketLive(c);
                 return { ...c, live_eval: evalRes };
             });
 
-            // KPIs EN TEMPS RÉEL
             let won = 0, lost = 0, live = 0, upcoming = 0;
             let profitUnits = 0.0;
 
@@ -873,7 +1270,6 @@
             const roiPct = decided > 0 ? ((profitUnits / decided) * 100).toFixed(1) : '0.0';
             const profitEur = (profitUnits * currentComboStake).toFixed(2);
 
-            // Filtrage des tickets
             let filtered = evaluatedList.filter(c => {
                 const st = c.live_eval.ticketStatus;
                 if (currentComboFilter === 'LIVE') return st === 'LIVE';
@@ -918,7 +1314,7 @@
                 <!-- SIMULATEUR DE MISE & FILTRES -->
                 <div class="stake-bar-mini">
                     <span>Mise / Ticket :</span>
-                    <div style="display:flex; gap:3px;">
+                    <div style="display:flex; gap:4px;">
                         ${[3, 5, 10, 20].map(s => `
                             <button class="stake-btn-mini ${currentComboStake === s ? 'active' : ''}" onclick="setComboStake(${s})">${s}€</button>
                         `).join('')}
@@ -940,7 +1336,6 @@
                 return;
             }
 
-            // Cartes de tickets
             html += filtered.map(c => {
                 const tSt = c.live_eval.ticketStatus;
                 const isWon = (tSt === 'WON');
@@ -954,7 +1349,7 @@
 
                 let resBadge = '<span class="ticket-res-badge pending">⏳ À VENIR</span>';
                 let gainText = `Gain pot. : ${(c.odds * currentComboStake).toFixed(2)} €`;
-                let gainColor = '#38bdf8';
+                let gainColor = '#0284c7';
 
                 if (isWon) {
                     resBadge = '<span class="ticket-res-badge won">✅ GAGNÉ</span>';
@@ -968,7 +1363,7 @@
                 } else if (isLive) {
                     resBadge = '<span class="ticket-res-badge live">🔴 EN COURS</span>';
                     gainText = `En jeu (${(c.odds * currentComboStake).toFixed(2)} €)`;
-                    gainColor = '#f59e0b';
+                    gainColor = '#d97706';
                 }
 
                 const title = c.email_ticket_num 
@@ -982,26 +1377,26 @@
                     const legLive = (legEval.isLive || legEval.selStatus === 'LIVE');
                     const isGoalNow = legEval.isRecentGoal;
 
-                    let legBadge = '<span class="ticket-leg-badge" style="background:rgba(148,163,184,0.15); color:#94a3b8;">⏳ À venir</span>';
+                    let legBadge = '<span class="ticket-leg-badge" style="background:#f1f5f9; color:#64748b;">⏳ À venir</span>';
                     if (isGoalNow) {
-                        legBadge = '<span class="ticket-leg-badge" style="background:#ef4444; color:#ffffff; font-weight:900; box-shadow:0 0 12px rgba(239,68,68,0.9); animation: pulse 0.8s infinite;">⚽ BUT !</span>';
+                        legBadge = '<span class="ticket-leg-badge" style="background:#ef4444; color:#ffffff; font-weight:900; box-shadow:0 0 10px rgba(239,68,68,0.7); animation: pulse 0.8s infinite;">⚽ BUT !</span>';
                     } else if (legEval.selStatus === 'WON_LEAD2') {
-                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">👑 +2b Gagné</span>';
+                        legBadge = '<span class="ticket-leg-badge" style="background:#dcfce7; color:#15803d; font-weight:900;">👑 +2b Gagné</span>';
                     } else if (legWon) {
-                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(16,185,129,0.2); color:#34d399;">✅ Victoire</span>';
+                        legBadge = '<span class="ticket-leg-badge" style="background:#dcfce7; color:#15803d; font-weight:900;">✅ Victoire</span>';
                     } else if (legLost) {
-                        legBadge = '<span class="ticket-leg-badge" style="background:rgba(239,68,68,0.2); color:#f87171;">❌ Perdu</span>';
+                        legBadge = '<span class="ticket-leg-badge" style="background:#fee2e2; color:#b91c1c; font-weight:900;">❌ Perdu</span>';
                     } else if (legLive) {
-                        legBadge = `<span class="ticket-leg-badge" style="background:rgba(245,158,11,0.2); color:#fbbf24;">🔴 ${legEval.min}</span>`;
+                        legBadge = `<span class="ticket-leg-badge" style="background:#fef3c7; color:#b45309; font-weight:800;">🔴 ${legEval.min}</span>`;
                     }
 
                     const favLabel = m.fav_team ? `👑 ${m.fav_team}` : (m.home || '');
                     const scoreStyle = isGoalNow
-                        ? 'background:#b91c1c; border:1px solid #ef4444; color:#fff; box-shadow:0 0 12px rgba(239,68,68,0.8); animation: pulseScoreHighlight 0.6s infinite alternate;'
+                        ? 'background:#fee2e2; border:1px solid #ef4444; color:#b91c1c; box-shadow:0 0 10px rgba(239,68,68,0.6); animation: pulseScoreHighlight 0.6s infinite alternate;'
                         : '';
 
                     return `
-                    <div class="ticket-leg ${isGoalNow ? 'goal-flash' : ''}" style="${isGoalNow ? 'background:rgba(185,28,28,0.15);' : ''}">
+                    <div class="ticket-leg ${isGoalNow ? 'goal-flash' : ''}" style="${isGoalNow ? 'background:#fff5f5;' : ''}">
                         <div class="ticket-leg-left">
                             <div class="ticket-leg-match">${m.home} vs ${m.away}</div>
                             <div class="ticket-leg-sub">
@@ -1026,7 +1421,7 @@
                         </div>
                         <div style="display:flex; align-items:center; gap:6px;">
                             ${resBadge}
-                            <span style="color:${gainColor}; font-size:10px; font-weight:800;">${gainText}</span>
+                            <span style="color:${gainColor}; font-size:11px; font-weight:900;">${gainText}</span>
                         </div>
                     </div>
                     <div class="ticket-legs">
@@ -1040,7 +1435,6 @@
             combosContainer.innerHTML = html;
         }
 
-        // Évaluation en temps réel d'une sélection par rapport au flux Livescore direct
         function evalLegLive(m) {
             if (!m) return { status: 'UPCOMING', selStatus: 'PENDING', score: 'VS', min: 'À venir', isLive: false, isRecentGoal: false };
             let selStatus = m.selection_status || 'PENDING';
@@ -1052,7 +1446,6 @@
             let isLive = (status === 'LIVE');
             let isRecentGoal = false;
 
-            // Recherche dans le flux live de la page
             const g = findGameInLatest(m.home, m.away);
             if (g) {
                 score = `${g.score_dom} - ${g.score_ext}`;
@@ -1103,10 +1496,8 @@
 
         async function fetchCombosData() {
             try {
-                // Essai 1 : Serveur local /api/combos
                 let res = await fetch('/api/combos?t=' + Date.now());
                 if (!res.ok) {
-                    // Essai 2 : Fallback sur GitHub Pages si en ligne sur Vercel
                     res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
                 }
                 if (res.ok) {
@@ -1159,7 +1550,7 @@
                     connectionText.textContent = 'RECONNEXION...';
                 }
             } finally {
-                setTimeout(pollLiveLoop, 300);
+                setTimeout(pollLiveLoop, 500);
             }
         }
 
@@ -1169,7 +1560,7 @@
             if (window.latestGames) renderFlashscore(window.latestGames);
         });
 
-        // 📱 SERVICE WORKER — Notifications push réelles sur Android Chrome même onglet en arrière-plan
+        // 📱 SERVICE WORKER PUSH
         let swRegistration = null;
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js')
