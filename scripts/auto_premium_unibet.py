@@ -1392,13 +1392,14 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     # ponytail: summary uniquement sur tickets conformes aux critères actuels (combo ≥ 3.25, fav ≥ 1.30, score ≥ 33)
     # Les anciens tickets joués avant la mise en place de ces règles sont dans m2_combos mais exclus du bilan
     def _m2_conforms(c):
-        if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
+        if (c.get("odds") or 0) < MIN_M2_COMBO_ODDS:
             return False
         for leg in ["m1", "m2"]:
             m = c.get(leg, {})
-            if m.get("odds", 0) < MIN_M2_FAV_ODDS:
+            if (m.get("odds") or 0) < MIN_M2_FAV_ODDS:
                 return False
-            if m.get("domination_score", 0) < MIN_M2_FAV_SCORE:
+            sc = m.get("domination_score")
+            if sc is not None and sc < MIN_M2_FAV_SCORE:
                 return False
         return True
 

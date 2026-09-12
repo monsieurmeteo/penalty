@@ -1,15 +1,15 @@
 {
   "summary": {
-    "total_matches": 324,
+    "total_matches": 328,
     "decided_matches": 145,
     "won": 96,
     "lost": 49,
-    "live": 0,
-    "upcoming": 179,
+    "live": 1,
+    "upcoming": 182,
     "win_rate": 66.2,
     "profit_units": 7.68,
     "roi_pct": 5.3,
-    "last_updated": "2026-09-12T07:10:12.366306+00:00"
+    "last_updated": "2026-09-12T08:06:40.822167+00:00"
   },
   "matches_today": [
     {
@@ -7163,6 +7163,82 @@
       "is_live": false,
       "is_finished": false,
       "profit": 0.0
+    },
+    {
+      "id": "3372382",
+      "time": "Sam. 12/09 à 09h30",
+      "start_iso": "2026-09-12T07:30:00.000Z",
+      "league": "Coree Du Sud • D1 Coree Du Sud",
+      "home": "Ulsan",
+      "away": "Incheon FC",
+      "odds": 1.97,
+      "domination_score": 39,
+      "status": "LIVE",
+      "selection_status": "IN_PROGRESS",
+      "score_display": "0 - 0",
+      "home_score": 0,
+      "away_score": 0,
+      "minute": "36'",
+      "is_live": true,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3375298",
+      "time": "Sam. 12/09 à 12h00",
+      "start_iso": "2026-09-12T10:00:00.000Z",
+      "league": "Japon • D1 Japon",
+      "home": "FC Machida",
+      "away": "Yokohama F.Mar",
+      "odds": 1.78,
+      "domination_score": 43,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3369049",
+      "time": "Sam. 12/09 à 15h00",
+      "start_iso": "2026-09-12T13:00:00.000Z",
+      "league": "Italie • Serie A",
+      "home": "Genoa",
+      "away": "Frosinone",
+      "odds": 2.1,
+      "domination_score": 36,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
+    },
+    {
+      "id": "3377655",
+      "time": "Sam. 12/09 à 18h00",
+      "start_iso": "2026-09-12T16:00:00.000Z",
+      "league": "Finlande • D1 Finlande",
+      "home": "AC Oulu",
+      "away": "IF Gnistan",
+      "odds": 2.1,
+      "domination_score": null,
+      "status": "UPCOMING",
+      "selection_status": "PENDING",
+      "score_display": "VS",
+      "home_score": null,
+      "away_score": null,
+      "minute": "",
+      "is_live": false,
+      "is_finished": false,
+      "profit": 0.0
     }
   ],
   "history": [],
@@ -11091,7 +11167,7 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -11116,1342 +11192,21 @@
         "score_display": "VS",
         "home_score": 0,
         "away_score": 0,
-        "minute": "À venir",
+        "minute": "Dim. 13/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
       }
     }
   ],
-  "matches_discarded": [
-    {
-      "time": "Sam. 12/09 à 09h30",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "match": "Ulsan vs Incheon FC",
-      "fav_team": "Ulsan",
-      "odds": "@1.97",
-      "domination_score": "39/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 09h30",
-      "league": "Coree Du Sud • D1 Coree Du Sud",
-      "match": "Jeonbuk vs FC Seoul",
-      "fav_team": "FC Seoul",
-      "odds": "@2.00",
-      "domination_score": "49/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 11h00",
-      "league": "Japon • D1 Japon",
-      "match": "Mito Hollyhock vs KawasakiFront.",
-      "fav_team": "KawasakiFront.",
-      "odds": "@2.00",
-      "domination_score": "33/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "Portimonense vs CD Tondela",
-      "fav_team": "CD Tondela",
-      "odds": "@2.15",
-      "domination_score": "40/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Japon • D1 Japon",
-      "match": "VV Nagasaki vs Nagoya Grampus",
-      "fav_team": "Nagoya Grampus",
-      "odds": "@1.86",
-      "domination_score": "39/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Ukraine • D1 Ukraine",
-      "match": "Kryvbas vs FC Kharkiv",
-      "fav_team": "FC Kharkiv",
-      "odds": "@1.48",
-      "domination_score": "48/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 12h00",
-      "league": "Japon • D1 Japon",
-      "match": "FC Machida vs Yokohama F.Mar",
-      "fav_team": "FC Machida",
-      "odds": "@1.78",
-      "domination_score": "43/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h00",
-      "league": "Chine • D1 Chine",
-      "match": "Tianjin Tigers vs Liaoning Sheny",
-      "fav_team": "Tianjin Tigers",
-      "odds": "@1.88",
-      "domination_score": "49/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h00",
-      "league": "Allemagne • Bundesliga 2",
-      "match": "Bochum vs Greuther Furth",
-      "fav_team": "Bochum",
-      "odds": "@1.80",
-      "domination_score": "46/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h00",
-      "league": "Allemagne • Bundesliga 2",
-      "match": "FC Magdeburg vs Kaiserslautern",
-      "fav_team": "FC Magdeburg",
-      "odds": "@1.96",
-      "domination_score": "47/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h30",
-      "league": "Angleterre • Championship",
-      "match": "Derby vs Birmingham",
-      "fav_team": "Birmingham",
-      "odds": "@2.00",
-      "domination_score": "28/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 13h35",
-      "league": "Chine • D1 Chine",
-      "match": "Wuhan Th.Towns vs Henan SL",
-      "fav_team": "Henan SL",
-      "odds": "@2.15",
-      "domination_score": "34/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 14h00",
-      "league": "France • Ligue 2 Bkt",
-      "match": "Guingamp vs Annecy FC",
-      "fav_team": "Guingamp",
-      "odds": "@2.05",
-      "domination_score": "43/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 14h00",
-      "league": "France • Ligue 2 Bkt",
-      "match": "Sochaux vs Nantes",
-      "fav_team": "Nantes",
-      "odds": "@2.10",
-      "domination_score": "36/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Italie • Serie A",
-      "match": "Genoa vs Frosinone",
-      "fav_team": "Genoa",
-      "odds": "@2.10",
-      "domination_score": "36/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "FC Felgueiras vs Penafiel",
-      "fav_team": "FC Felgueiras",
-      "odds": "@2.15",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Zbrojovka Brno vs SK Lisen",
-      "fav_team": "Zbrojovka Brno",
-      "odds": "@1.48",
-      "domination_score": "33/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Italie • Serie B",
-      "match": "Padoue vs Ascoli",
-      "fav_team": "Padoue",
-      "odds": "@2.05",
-      "domination_score": "37/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Slovan Liberec vs Mlada Boleslav",
-      "fav_team": "Slovan Liberec",
-      "odds": "@1.56",
-      "domination_score": "30/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Bohemians 1905 vs FC Slovacko",
-      "fav_team": "Bohemians 1905",
-      "odds": "@2.00",
-      "domination_score": "44/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h00",
-      "league": "Afrique Du Sud • D1 Afrique Du Sud",
-      "match": "Polokwane vs Kaizer Chiefs",
-      "fav_team": "Kaizer Chiefs",
-      "odds": "@1.90",
-      "domination_score": "45/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h30",
-      "league": "Allemagne • Bundesliga 1",
-      "match": "Mayence vs Ein.Francfort",
-      "fav_team": "Mayence",
-      "odds": "@1.72",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h30",
-      "league": "Allemagne • Bundesliga 1",
-      "match": "Hoffenheim vs Stuttgart",
-      "fav_team": "Hoffenheim",
-      "odds": "@2.20",
-      "domination_score": "44/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 15h30",
-      "league": "Allemagne • Bundesliga 1",
-      "match": "Augsburg vs Leverkusen",
-      "fav_team": "Leverkusen",
-      "odds": "@1.76",
-      "domination_score": "38/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Premier League",
-      "match": "Crystal Palace vs Ipswich",
-      "fav_team": "Crystal Palace",
-      "odds": "@1.82",
-      "domination_score": "43/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Samsunspor vs Corum",
-      "fav_team": "Samsunspor",
-      "odds": "@2.05",
-      "domination_score": "49/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Lillestrøm vs Vålerenga",
-      "fav_team": "Lillestrøm",
-      "odds": "@1.83",
-      "domination_score": "49/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Finlande • D1 Finlande",
-      "match": "Mariehamn vs Turku PS",
-      "fav_team": "Mariehamn",
-      "odds": "@2.20",
-      "domination_score": "31/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Championship",
-      "match": "Swansea vs Burnley",
-      "fav_team": "Swansea",
-      "odds": "@1.94",
-      "domination_score": "39/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Championship",
-      "match": "Preston vs Lincoln",
-      "fav_team": "Preston",
-      "odds": "@2.15",
-      "domination_score": "26/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Championship",
-      "match": "Middlesbrough vs Norwich",
-      "fav_team": "Middlesbrough",
-      "odds": "@1.76",
-      "domination_score": "41/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Belgique • D1 Belgique",
-      "match": "KV Beveren vs St Trond",
-      "fav_team": "St Trond",
-      "odds": "@2.10",
-      "domination_score": "30/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Eyupspor vs Rizespor",
-      "fav_team": "Rizespor",
-      "odds": "@1.79",
-      "domination_score": "35/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 16h00",
-      "league": "Angleterre • Premier League",
-      "match": "Aston Villa vs Nottingham F.",
-      "fav_team": "Aston Villa",
-      "odds": "@2.15",
-      "domination_score": "33/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 17h00",
-      "league": "Ukraine • D1 Ukraine",
-      "match": "Veres Rivne vs FK Kudrivka",
-      "fav_team": "Veres Rivne",
-      "odds": "@2.10",
-      "domination_score": "38/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Suisse • D1 Suisse",
-      "match": "Saint Gall vs Sion",
-      "fav_team": "Saint Gall",
-      "odds": "@2.05",
-      "domination_score": "36/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "France • D1 Arkema F",
-      "match": "FC Nantes F vs FC Fleury F",
-      "fav_team": "FC Fleury F",
-      "odds": "@1.91",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "France • D1 Arkema F",
-      "match": "Marseille F vs Lens F",
-      "fav_team": "Marseille F",
-      "odds": "@1.63",
-      "domination_score": "40/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Finlande • D1 Finlande",
-      "match": "FF Jaro vs SJK Seinäjoen",
-      "fav_team": "SJK Seinäjoen",
-      "odds": "@1.95",
-      "domination_score": "29/100",
-      "reussite": "10%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "MFK Ruzomberok vs MFK Zemplin",
-      "fav_team": "MFK Ruzomberok",
-      "odds": "@1.92",
-      "domination_score": "41/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "France • D1 Arkema F",
-      "match": "Saint Malo vs Montpellier F",
-      "fav_team": "Montpellier F",
-      "odds": "@1.80",
-      "domination_score": "45/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "Dukla Bystrica vs MFK Skalica",
-      "fav_team": "Dukla Bystrica",
-      "odds": "@2.10",
-      "domination_score": "30/100",
-      "reussite": "10%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h00",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "Siroki Brijeg vs BSK Banja Luka",
-      "fav_team": "Siroki Brijeg",
-      "odds": "@1.61",
-      "domination_score": "40/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h30",
-      "league": "Angleterre • Premier League",
-      "match": "Tottenham vs Everton",
-      "fav_team": "Tottenham",
-      "odds": "@1.92",
-      "domination_score": "23/100",
-      "reussite": "10%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h30",
-      "league": "Allemagne • Bundesliga 1",
-      "match": "Cologne vs Werder Brême",
-      "fav_team": "Cologne",
-      "odds": "@1.94",
-      "domination_score": "48/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 18h30",
-      "league": "Espagne • Laliga 2",
-      "match": "Granada CF vs Albacete",
-      "fav_team": "Granada CF",
-      "odds": "@1.87",
-      "domination_score": "47/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 19h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Konyaspor vs Trabzonspor",
-      "fav_team": "Trabzonspor",
-      "odds": "@1.87",
-      "domination_score": "43/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 19h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Alanyaspor vs Göztepe AS",
-      "fav_team": "Alanyaspor",
-      "odds": "@2.05",
-      "domination_score": "46/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 19h30",
-      "league": "Italie • Serie B",
-      "match": "Cesena vs US Cremonese",
-      "fav_team": "US Cremonese",
-      "odds": "@2.10",
-      "domination_score": "42/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 19h30",
-      "league": "Autriche • D1 Autriche",
-      "match": "Wolfsberger AC vs Rapid Vienne",
-      "fav_team": "Rapid Vienne",
-      "odds": "@1.51",
-      "domination_score": "27/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
-      "league": "France • Ligue 2 Bkt",
-      "match": "Dunkerque vs St Etienne",
-      "fav_team": "St Etienne",
-      "odds": "@1.64",
-      "domination_score": "45/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
-      "league": "Croatie • D1 Croatie",
-      "match": "Lok.Zagreb vs HNK Rijeka",
-      "fav_team": "HNK Rijeka",
-      "odds": "@1.50",
-      "domination_score": "38/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "match": "Al Shabab vs Al Feiha",
-      "fav_team": "Al Shabab",
-      "odds": "@1.52",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h00",
-      "league": "Chili • D1 Chili",
-      "match": "Cobresal vs Coquimbo U.",
-      "fav_team": "Coquimbo U.",
-      "odds": "@1.93",
-      "domination_score": "40/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h30",
-      "league": "Serbie • D1 Serbie",
-      "match": "Radnicki 1923 vs Mladost Lucani",
-      "fav_team": "Radnicki 1923",
-      "odds": "@1.48",
-      "domination_score": "43/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 20h30",
-      "league": "Roumanie • D1 Roumanie",
-      "match": "Rapid Bucarest vs FC Voluntari",
-      "fav_team": "Rapid Bucarest",
-      "odds": "@1.42",
-      "domination_score": "49/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 21h00",
-      "league": "Paraguay • D1 Paraguay",
-      "match": "Guarani vs Cerro Porteno",
-      "fav_team": "Cerro Porteno",
-      "odds": "@2.00",
-      "domination_score": "31/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 21h00",
-      "league": "Espagne • Laliga 2",
-      "match": "Cordoba vs Almeria",
-      "fav_team": "Cordoba",
-      "odds": "@2.15",
-      "domination_score": "44/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 21h00",
-      "league": "Bresil • D1 Bresil",
-      "match": "Atletico MG vs Fluminense",
-      "fav_team": "Atletico MG",
-      "odds": "@2.00",
-      "domination_score": "47/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 21h00",
-      "league": "Equateur • D1 Equateur",
-      "match": "Manta FC vs SD Aucas",
-      "fav_team": "SD Aucas",
-      "odds": "@1.96",
-      "domination_score": "42/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 21h30",
-      "league": "Portugal • Liga Portugal",
-      "match": "Viseu vs Guimaraes",
-      "fav_team": "Guimaraes",
-      "odds": "@1.91",
-      "domination_score": "28/100",
-      "reussite": "10%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 22h00",
-      "league": "Canada • D1 Canada",
-      "match": "Supra Quebec vs HFX Wanderers",
-      "fav_team": "Supra Quebec",
-      "odds": "@1.85",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 22h00",
-      "league": "Bresil • D1 Bresil",
-      "match": "Chapecoense SC vs Internacional",
-      "fav_team": "Internacional",
-      "odds": "@2.05",
-      "domination_score": "39/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 22h30",
-      "league": "Argentine • D1 Argentine",
-      "match": "Tucuman vs River Plate",
-      "fav_team": "River Plate",
-      "odds": "@1.92",
-      "domination_score": "41/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 23h05",
-      "league": "Colombie • D1 Colombie",
-      "match": "Inter Bogota vs Llaneros FC",
-      "fav_team": "Inter Bogota",
-      "odds": "@1.65",
-      "domination_score": "44/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Sam. 12/09 à 23h30",
-      "league": "Paraguay • D1 Paraguay",
-      "match": "CD Recoleta vs CS Trinidense",
-      "fav_team": "CS Trinidense",
-      "odds": "@1.92",
-      "domination_score": "42/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h00",
-      "league": "Argentine • D1 Argentine",
-      "match": "CA Talleres vs Union Santa Fe",
-      "fav_team": "CA Talleres",
-      "odds": "@2.05",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h10",
-      "league": "Colombie • D1 Colombie",
-      "match": "Boyaca Chico vs Indep.Medellin",
-      "fav_team": "Indep.Medellin",
-      "odds": "@1.76",
-      "domination_score": "34/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h30",
-      "league": "Etats Unis • Mls",
-      "match": "DC United vs Atlanta Utd",
-      "fav_team": "DC United",
-      "odds": "@2.05",
-      "domination_score": "40/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 01h30",
-      "league": "Bresil • D1 Bresil",
-      "match": "Botafogo vs Bragantino SP",
-      "fav_team": "Botafogo",
-      "odds": "@2.15",
-      "domination_score": "39/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 02h30",
-      "league": "Etats Unis • Mls",
-      "match": "Kansas City vs Los Angeles FC",
-      "fav_team": "Los Angeles FC",
-      "odds": "@1.57",
-      "domination_score": "46/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 03h20",
-      "league": "Colombie • D1 Colombie",
-      "match": "Alianza FC vs Junior FC",
-      "fav_team": "Junior FC",
-      "odds": "@2.05",
-      "domination_score": "43/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 04h30",
-      "league": "Etats Unis • Mls",
-      "match": "LA Galaxy vs Seattle",
-      "fav_team": "LA Galaxy",
-      "odds": "@2.00",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 04h30",
-      "league": "Etats Unis • Mls",
-      "match": "San Jose vs Houston",
-      "fav_team": "San Jose",
-      "odds": "@2.20",
-      "domination_score": "34/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 05h15",
-      "league": "Mexique • D1 Mexique",
-      "match": "Cruz Azul vs Club America",
-      "fav_team": "Club America",
-      "odds": "@2.20",
-      "domination_score": "41/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 11h00",
-      "league": "Japon • D1 Japon",
-      "match": "Tokyo Verdy vs JEF Utd Chiba",
-      "fav_team": "Tokyo Verdy",
-      "odds": "@2.05",
-      "domination_score": "47/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 11h30",
-      "league": "Japon • D1 Japon",
-      "match": "Urawa Reds vs Okayama",
-      "fav_team": "Urawa Reds",
-      "odds": "@2.20",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 12h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "AVS Futebol vs SC Farense",
-      "fav_team": "SC Farense",
-      "odds": "@2.20",
-      "domination_score": "36/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 12h15",
-      "league": "Pays Bas • D1 Pays Bas",
-      "match": "Exce.Rotterdam vs Utrecht",
-      "fav_team": "Exce.Rotterdam",
-      "odds": "@2.05",
-      "domination_score": "31/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 13h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Banik Ostrava vs FK Pardubice",
-      "fav_team": "Banik Ostrava",
-      "odds": "@1.82",
-      "domination_score": "47/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 13h00",
-      "league": "Angleterre • Championship",
-      "match": "Sheffield Utd vs Wolverhampton",
-      "fav_team": "Wolverhampton",
-      "odds": "@1.93",
-      "domination_score": "37/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 13h30",
-      "league": "Lituanie • D1 Lituanie",
-      "match": "FK Panevezys vs Kauno Zalgiris",
-      "fav_team": "Kauno Zalgiris",
-      "odds": "@1.49",
-      "domination_score": "33/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
-      "league": "Roumanie • D1 Roumanie",
-      "match": "FC Arges vs FC Botosani",
-      "fav_team": "FC Arges",
-      "odds": "@2.15",
-      "domination_score": "41/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
-      "league": "Finlande • D1 Finlande",
-      "match": "Kups vs HJK Helsinki",
-      "fav_team": "Kups",
-      "odds": "@2.00",
-      "domination_score": "45/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
-      "league": "Danemark • D1 Danemark",
-      "match": "Silkeborg vs Viborg FF",
-      "fav_team": "Viborg FF",
-      "odds": "@1.73",
-      "domination_score": "45/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
-      "league": "Suisse • D1 Suisse",
-      "match": "FC Zurich vs FC Vaduz",
-      "fav_team": "FC Zurich",
-      "odds": "@2.20",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h00",
-      "league": "Espagne • Laliga",
-      "match": "Celta Vigo vs Malaga",
-      "fav_team": "Celta Vigo",
-      "odds": "@1.67",
-      "domination_score": "40/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h15",
-      "league": "Bulgarie • D1 Bulgarie",
-      "match": "Slavia Sofia vs Spartak Varna",
-      "fav_team": "Slavia Sofia",
-      "odds": "@1.91",
-      "domination_score": "45/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h30",
-      "league": "Autriche • D1 Autriche",
-      "match": "WSG Tirol vs TSV Hartberg",
-      "fav_team": "WSG Tirol",
-      "odds": "@1.95",
-      "domination_score": "35/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h30",
-      "league": "Autriche • D1 Autriche",
-      "match": "Austria Vienne vs Austria Luste.",
-      "fav_team": "Austria Vienne",
-      "odds": "@1.74",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 14h45",
-      "league": "Pologne • D1 Pologne",
-      "match": "Pogon Szczecin vs Wieczysta",
-      "fav_team": "Pogon Szczecin",
-      "odds": "@1.88",
-      "domination_score": "39/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "FC Fastav Zlin vs Hradec Kralové",
-      "fav_team": "Hradec Kralové",
-      "odds": "@1.85",
-      "domination_score": "48/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 15h00",
-      "league": "Portugal • D2 Portugal",
-      "match": "Chaves vs Feirense",
-      "fav_team": "Chaves",
-      "odds": "@1.96",
-      "domination_score": "47/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 15h00",
-      "league": "Rep Tcheque • D1 Rep Tcheque",
-      "match": "Viktoria Plzen vs Sigma Olomouc",
-      "fav_team": "Viktoria Plzen",
-      "odds": "@1.50",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 15h00",
-      "league": "Angleterre • Premier League",
-      "match": "Coventry vs Brighton Hove",
-      "fav_team": "Brighton Hove",
-      "odds": "@1.82",
-      "domination_score": "34/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
-      "league": "Danemark • D1 Danemark",
-      "match": "Randers FC vs Odense",
-      "fav_team": "Randers FC",
-      "odds": "@1.97",
-      "domination_score": "39/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
-      "league": "Georgie • D1 Georgie",
-      "match": "Dila Gori vs Dinamo Batumi",
-      "fav_team": "Dila Gori",
-      "odds": "@2.00",
-      "domination_score": "41/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
-      "league": "Islande • D1 Islande",
-      "match": "Stjarnan vs Vestmannaeyjar",
-      "fav_team": "Stjarnan",
-      "odds": "@1.60",
-      "domination_score": "47/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
-      "league": "Estonie • D1 Estonie",
-      "match": "FC Kuressaare vs Tammeka Tartu",
-      "fav_team": "Tammeka Tartu",
-      "odds": "@2.00",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h00",
-      "league": "Turquie • D1 Turquie",
-      "match": "Genclerbirligi vs Kasimpasa",
-      "fav_team": "Genclerbirligi",
-      "odds": "@2.10",
-      "domination_score": "47/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h15",
-      "league": "Espagne • Laliga 2",
-      "match": "Valladolid vs Real Oviedo",
-      "fav_team": "Valladolid",
-      "odds": "@2.20",
-      "domination_score": "45/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h30",
-      "league": "Suisse • D1 Suisse",
-      "match": "FC Lausanne vs Servette FC",
-      "fav_team": "Servette FC",
-      "odds": "@1.97",
-      "domination_score": "42/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h30",
-      "league": "Portugal • D2 Portugal",
-      "match": "Amarante FC vs Uniao Leiria",
-      "fav_team": "Uniao Leiria",
-      "odds": "@2.20",
-      "domination_score": "33/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 16h45",
-      "league": "Bulgarie • D1 Bulgarie",
-      "match": "Botev Vratsa vs Levski Sofia",
-      "fav_team": "Levski Sofia",
-      "odds": "@1.34",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Kfum Oslo vs Aalesunds",
-      "fav_team": "Kfum Oslo",
-      "odds": "@2.15",
-      "domination_score": "48/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "Start vs SK Brann",
-      "fav_team": "SK Brann",
-      "odds": "@1.87",
-      "domination_score": "43/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Norvege • D1 Norvege",
-      "match": "HamKam vs Molde",
-      "fav_team": "Molde",
-      "odds": "@1.62",
-      "domination_score": "33/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "Podbrezova vs KFC Komarno",
-      "fav_team": "Podbrezova",
-      "odds": "@1.87",
-      "domination_score": "42/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Croatie • D1 Croatie",
-      "match": "Istra 1961 vs NK Rudes",
-      "fav_team": "Istra 1961",
-      "odds": "@1.40",
-      "domination_score": "45/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Autriche • D1 Autriche",
-      "match": "Sturm Graz vs Lask Linz",
-      "fav_team": "Lask Linz",
-      "odds": "@1.98",
-      "domination_score": "31/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h00",
-      "league": "Serbie • D1 Serbie",
-      "match": "Parti.Belgrade vs Vojvodina",
-      "fav_team": "Parti.Belgrade",
-      "odds": "@2.10",
-      "domination_score": "49/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h15",
-      "league": "France • Ligue 1 Mcdonalds",
-      "match": "Le Mans vs Lens",
-      "fav_team": "Lens",
-      "odds": "@1.59",
-      "domination_score": "38/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h15",
-      "league": "Italie • Serie B",
-      "match": "Avellino vs Palerme",
-      "fav_team": "Palerme",
-      "odds": "@1.86",
-      "domination_score": "32/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 17h30",
-      "league": "Angleterre • Premier League",
-      "match": "Man. United vs Man. City",
-      "fav_team": "Man. City",
-      "odds": "@1.98",
-      "domination_score": "41/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 18h00",
-      "league": "Grece • D1 Grece",
-      "match": "Asteras T. vs AEK Athènes",
-      "fav_team": "AEK Athènes",
-      "odds": "@1.31",
-      "domination_score": "49/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 18h00",
-      "league": "Italie • Serie A",
-      "match": "Naples vs Bologne",
-      "fav_team": "Naples",
-      "odds": "@1.72",
-      "domination_score": "47/100",
-      "reussite": "60%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 18h30",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "Sloga Doboj vs FK Zeljeznicar",
-      "fav_team": "Sloga Doboj",
-      "odds": "@2.15",
-      "domination_score": "43/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h00",
-      "league": "Slovaquie • D1 Slovaquie",
-      "match": "Slo.Bratislava vs MSK Zilina",
-      "fav_team": "Slo.Bratislava",
-      "odds": "@1.59",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h15",
-      "league": "Belgique • D1 Belgique",
-      "match": "La Louviere vs KV Kortrijk",
-      "fav_team": "La Louviere",
-      "odds": "@2.20",
-      "domination_score": "34/100",
-      "reussite": "10%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h15",
-      "league": "Norvege • D1 Norvege",
-      "match": "Fredrikstad vs Sarpsborg 08",
-      "fav_team": "Fredrikstad",
-      "odds": "@2.20",
-      "domination_score": "44/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h30",
-      "league": "Roumanie • D1 Roumanie",
-      "match": "Hunedoara vs Uni.Craiova",
-      "fav_team": "Uni.Craiova",
-      "odds": "@1.74",
-      "domination_score": "28/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h30",
-      "league": "Israel • D1 Israel",
-      "match": "Hap.PetachTikv vs Hap.Beer Sheva",
-      "fav_team": "Hap.Beer Sheva",
-      "odds": "@1.37",
-      "domination_score": "29/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 19h45",
-      "league": "Argentine • D1 Argentine",
-      "match": "Sarmiento vs Belgrano",
-      "fav_team": "Belgrano",
-      "odds": "@2.15",
-      "domination_score": "37/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h00",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "match": "Diriyah Club vs Abha",
-      "fav_team": "Diriyah Club",
-      "odds": "@1.41",
-      "domination_score": "43/100",
-      "reussite": "0%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h00",
-      "league": "Arabie Saoudite • D1 Arabie Saoudite",
-      "match": "Al Riyadh vs Al Kholood",
-      "fav_team": "Al Kholood",
-      "odds": "@2.00",
-      "domination_score": "36/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h00",
-      "league": "Chili • D1 Chili",
-      "match": "La Serena vs Uni.De Chile",
-      "fav_team": "Uni.De Chile",
-      "odds": "@1.73",
-      "domination_score": "39/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h00",
-      "league": "Grece • D1 Grece",
-      "match": "Kifisias AE vs Levadiakos",
-      "fav_team": "Kifisias AE",
-      "odds": "@2.15",
-      "domination_score": "48/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h45",
-      "league": "Italie • Serie A",
-      "match": "Sassuolo vs Juventus Turin",
-      "fav_team": "Juventus Turin",
-      "odds": "@1.57",
-      "domination_score": "46/100",
-      "reussite": "50%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 20h45",
-      "league": "Bosnie Herzeg • D1 Bosnie",
-      "match": "Velez Mostar vs FK Sarajevo",
-      "fav_team": "FK Sarajevo",
-      "odds": "@2.05",
-      "domination_score": "20/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 21h00",
-      "league": "Espagne • Laliga",
-      "match": "Real Sociedad vs Atl. Madrid",
-      "fav_team": "Atl. Madrid",
-      "odds": "@2.20",
-      "domination_score": "31/100",
-      "reussite": "40%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 21h00",
-      "league": "Colombie • D1 Colombie",
-      "match": "Dep. Pereira vs Bucaramanga",
-      "fav_team": "Bucaramanga",
-      "odds": "@1.69",
-      "domination_score": "31/100",
-      "reussite": "20%",
-      "status": "ÉCARTÉ"
-    },
-    {
-      "time": "Dim. 13/09 à 21h00",
-      "league": "Canada • D1 Canada",
-      "match": "Inter Toronto vs Vancouver FC",
-      "fav_team": "Inter Toronto",
-      "odds": "@2.10",
-      "domination_score": "37/100",
-      "reussite": "30%",
-      "status": "ÉCARTÉ"
-    }
-  ],
+  "matches_discarded": [],
   "methode2_summary": {
     "total_combos": 88,
     "decided_combos": 18,
     "won": 7,
     "lost": 11,
-    "live": 0,
-    "upcoming": 70,
+    "live": 1,
+    "upcoming": 69,
     "default_stake": 3.0,
     "win_rate": 38.9,
     "profit_units": 9.79,
@@ -13347,7 +12102,7 @@
       "session": "2026-09-12",
       "odds": 3.51,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
+      "ticket_status": "LIVE",
       "profit_unit": 0.0,
       "gain_eur": 10.53,
       "profit_eur": 0.0,
@@ -13360,13 +12115,13 @@
         "away": "Incheon FC",
         "odds": 1.97,
         "domination_score": 39,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "",
-        "is_live": false,
+        "status": "LIVE",
+        "selection_status": "IN_PROGRESS",
+        "score_display": "0 - 0",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "36'",
+        "is_live": true,
         "is_finished": false,
         "profit": 0.0
       },
@@ -13388,7 +12143,8 @@
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 1
     },
     {
       "id": "m2_combo_20",
@@ -13414,7 +12170,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 12h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13433,11 +12189,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 2
     },
     {
       "id": "m2_combo_21",
@@ -13463,7 +12220,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 12h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13482,11 +12239,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 3
     },
     {
       "id": "m2_combo_22",
@@ -13512,7 +12270,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13531,11 +12289,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 4
     },
     {
       "id": "m2_combo_23",
@@ -13561,7 +12320,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13580,11 +12339,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 5
     },
     {
       "id": "m2_combo_24",
@@ -13610,7 +12370,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13629,11 +12389,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 6
     },
     {
       "id": "m2_combo_25",
@@ -13659,7 +12420,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13678,11 +12439,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 7
     },
     {
       "id": "m2_combo_26",
@@ -13708,7 +12470,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13727,11 +12489,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 8
     },
     {
       "id": "m2_combo_27",
@@ -13757,7 +12520,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13776,11 +12539,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 9
     },
     {
       "id": "m2_combo_28",
@@ -13806,7 +12570,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13825,11 +12589,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 10
     },
     {
       "id": "m2_combo_29",
@@ -13855,7 +12620,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13878,7 +12643,8 @@
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 11
     },
     {
       "id": "m2_combo_30",
@@ -13904,7 +12670,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13923,11 +12689,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 12
     },
     {
       "id": "m2_combo_31",
@@ -13953,7 +12720,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -13972,11 +12739,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 15h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 13
     },
     {
       "id": "m2_combo_32",
@@ -14002,7 +12770,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14021,11 +12789,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 14
     },
     {
       "id": "m2_combo_33",
@@ -14051,7 +12820,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14070,11 +12839,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 15
     },
     {
       "id": "m2_combo_34",
@@ -14100,7 +12870,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14119,11 +12889,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 16
     },
     {
       "id": "m2_combo_35",
@@ -14149,7 +12920,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14168,11 +12939,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 17
     },
     {
       "id": "m2_combo_36",
@@ -14198,7 +12970,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14217,11 +12989,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 18
     },
     {
       "id": "m2_combo_37",
@@ -14247,7 +13020,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14266,11 +13039,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 19
     },
     {
       "id": "m2_combo_38",
@@ -14296,7 +13070,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14315,11 +13089,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 20
     },
     {
       "id": "m2_combo_39",
@@ -14345,7 +13120,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 16h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14364,11 +13139,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 21
     },
     {
       "id": "m2_combo_40",
@@ -14394,7 +13170,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14413,11 +13189,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 22
     },
     {
       "id": "m2_combo_41",
@@ -14443,7 +13220,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14462,11 +13239,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 23
     },
     {
       "id": "m2_combo_42",
@@ -14492,7 +13270,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14511,11 +13289,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 24
     },
     {
       "id": "m2_combo_43",
@@ -14541,7 +13320,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14560,11 +13339,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 25
     },
     {
       "id": "m2_combo_44",
@@ -14590,7 +13370,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14609,11 +13389,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 26
     },
     {
       "id": "m2_combo_45",
@@ -14639,7 +13420,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14658,11 +13439,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 27
     },
     {
       "id": "m2_combo_46",
@@ -14688,7 +13470,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14707,11 +13489,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 28
     },
     {
       "id": "m2_combo_47",
@@ -14737,7 +13520,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14756,11 +13539,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 29
     },
     {
       "id": "m2_combo_48",
@@ -14786,7 +13570,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14809,7 +13593,8 @@
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 30
     },
     {
       "id": "m2_combo_49",
@@ -14835,7 +13620,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14854,11 +13639,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 31
     },
     {
       "id": "m2_combo_50",
@@ -14884,7 +13670,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14903,11 +13689,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 32
     },
     {
       "id": "m2_combo_51",
@@ -14933,7 +13720,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -14952,11 +13739,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 33
     },
     {
       "id": "m2_combo_52",
@@ -14982,7 +13770,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15001,11 +13789,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 18h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 34
     },
     {
       "id": "m2_combo_53",
@@ -15031,7 +13820,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 19h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15050,11 +13839,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 19h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 35
     },
     {
       "id": "m2_combo_54",
@@ -15080,7 +13870,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 19h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15099,11 +13889,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 36
     },
     {
       "id": "m2_combo_55",
@@ -15129,7 +13920,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15148,11 +13939,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 37
     },
     {
       "id": "m2_combo_56",
@@ -15178,7 +13970,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15197,11 +13989,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 38
     },
     {
       "id": "m2_combo_57",
@@ -15227,7 +14020,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15246,11 +14039,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 39
     },
     {
       "id": "m2_combo_58",
@@ -15276,7 +14070,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15295,11 +14089,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 21h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 40
     },
     {
       "id": "m2_combo_59",
@@ -15325,7 +14120,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 20h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15344,11 +14139,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Sam. 12/09 à 23h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 41
     },
     {
       "id": "m2_combo_60",
@@ -15374,7 +14170,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 09h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15393,11 +14189,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 11h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 42
     },
     {
       "id": "m2_combo_61",
@@ -15423,7 +14220,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 11h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15442,11 +14239,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 12h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 43
     },
     {
       "id": "m2_combo_62",
@@ -15472,7 +14270,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 12h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15491,11 +14289,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 12h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 44
     },
     {
       "id": "m2_combo_63",
@@ -15521,7 +14320,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 13h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15540,11 +14339,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 45
     },
     {
       "id": "m2_combo_64",
@@ -15570,7 +14370,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15589,11 +14389,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 46
     },
     {
       "id": "m2_combo_65",
@@ -15619,7 +14420,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15638,11 +14439,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 47
     },
     {
       "id": "m2_combo_66",
@@ -15668,7 +14470,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 13h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15687,11 +14489,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 48
     },
     {
       "id": "m2_combo_67",
@@ -15717,7 +14520,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15736,11 +14539,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 49
     },
     {
       "id": "m2_combo_68",
@@ -15766,7 +14570,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15785,11 +14589,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 50
     },
     {
       "id": "m2_combo_69",
@@ -15815,7 +14620,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15834,11 +14639,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 51
     },
     {
       "id": "m2_combo_70",
@@ -15864,7 +14670,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15883,11 +14689,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 52
     },
     {
       "id": "m2_combo_71",
@@ -15913,7 +14720,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15932,11 +14739,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 53
     },
     {
       "id": "m2_combo_72",
@@ -15962,7 +14770,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -15981,11 +14789,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 54
     },
     {
       "id": "m2_combo_73",
@@ -16011,7 +14820,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16030,11 +14839,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 55
     },
     {
       "id": "m2_combo_74",
@@ -16060,7 +14870,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16079,11 +14889,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 14h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 56
     },
     {
       "id": "m2_combo_75",
@@ -16109,7 +14920,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16128,11 +14939,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h45",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 57
     },
     {
       "id": "m2_combo_76",
@@ -16158,7 +14970,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 15h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16177,11 +14989,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 58
     },
     {
       "id": "m2_combo_77",
@@ -16207,7 +15020,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16226,11 +15039,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 59
     },
     {
       "id": "m2_combo_78",
@@ -16256,7 +15070,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16275,11 +15089,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 60
     },
     {
       "id": "m2_combo_79",
@@ -16305,7 +15120,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16324,11 +15139,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 61
     },
     {
       "id": "m2_combo_80",
@@ -16354,7 +15170,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 16h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16373,11 +15189,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 62
     },
     {
       "id": "m2_combo_81",
@@ -16403,7 +15220,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16422,11 +15239,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 63
     },
     {
       "id": "m2_combo_82",
@@ -16452,7 +15270,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16471,11 +15289,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 64
     },
     {
       "id": "m2_combo_83",
@@ -16501,7 +15320,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16520,11 +15339,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 65
     },
     {
       "id": "m2_combo_84",
@@ -16550,7 +15370,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 17h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16569,11 +15389,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 18h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 66
     },
     {
       "id": "m2_combo_85",
@@ -16599,7 +15420,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16618,11 +15439,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 67
     },
     {
       "id": "m2_combo_86",
@@ -16648,7 +15470,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 18h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16667,11 +15489,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 68
     },
     {
       "id": "m2_combo_87",
@@ -16697,7 +15520,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h15",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16716,11 +15539,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 19h30",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 69
     },
     {
       "id": "m2_combo_88",
@@ -16746,7 +15570,7 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 20h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
@@ -16765,11 +15589,12 @@
         "score_display": "VS",
         "home_score": null,
         "away_score": null,
-        "minute": "",
+        "minute": "Dim. 13/09 à 20h00",
         "is_live": false,
         "is_finished": false,
         "profit": 0.0
-      }
+      },
+      "email_ticket_num": 70
     }
   ]
 }

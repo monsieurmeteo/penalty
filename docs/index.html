@@ -520,7 +520,8 @@
             for (let leg of ['m1', 'm2']) {
                 const m = c[leg] || {};
                 if ((m.odds || 0) < 1.30) return false;
-                if ((m.domination_score || 0) < 35) return false;
+                const sc = m.domination_score;
+                if (sc !== undefined && sc !== null && sc < 35) return false;
             }
             return true;
         }

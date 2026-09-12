@@ -341,13 +341,14 @@ def sync():
     MIN_M2_FAV_ODDS   = 1.30
     MIN_M2_FAV_SCORE  = 35
     def _m2_conforms(c):
-        if c.get("odds", 0) < MIN_M2_COMBO_ODDS:
+        if (c.get("odds") or 0) < MIN_M2_COMBO_ODDS:
             return False
         for leg in ["m1", "m2"]:
             m = c.get(leg, {})
-            if m.get("odds", 0) < MIN_M2_FAV_ODDS:
+            if (m.get("odds") or 0) < MIN_M2_FAV_ODDS:
                 return False
-            if m.get("domination_score", 0) < MIN_M2_FAV_SCORE:
+            sc = m.get("domination_score")
+            if sc is not None and sc < MIN_M2_FAV_SCORE:
                 return False
         return True
 
