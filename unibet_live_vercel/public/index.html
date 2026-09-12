@@ -942,6 +942,51 @@
             return !!(st && (st.type === 'won-lead2' || st.type === 'won-final'));
         }
 
+        // 🔍 DÉTECTION PARTENAIRE PERDU & EXCLUSION DES MATCHS MORTS
+        function isPartnerLegLost(partnerLeg) {
+            if (!partnerLeg) return false;
+            
+            // 1. Si le partenaire a un match live en mémoire
+            const pg = partnerLeg._liveGame;
+            if (pg) {
+                if (pg.status_type === 'FINISHED') {
+                    const isFavHome = (partnerLeg.fav_side === 'dom' || partnerLeg.fav_team === partnerLeg.home);
+                    const favScore = isFavHome ? pg.score_dom : pg.score_ext;
+                    const oppScore = isFavHome ? pg.score_ext : pg.score_dom;
+                    if (favScore <= oppScore) return true; // Match terminé et le favori n'a pas gagné -> PERDU
+                }
+            }
+            
+            // 2. Évaluation dynamique avec scores actuels
+            const evalRes = evalLegLive(partnerLeg);
+            if (evalRes.selStatus === 'LOST') return true;
+            if (evalRes.status === 'FINISHED' && !evalRes.selStatus.startsWith('WON')) return true;
+            
+            // 3. Statut dans les données brutes (data.json)
+            if (partnerLeg.selection_status === 'LOST') return true;
+            if (partnerLeg.status === 'FINISHED' && partnerLeg.selection_status !== 'WON_LEAD2' && partnerLeg.selection_status !== 'WON_FINAL') return true;
+            
+            return false;
+        }
+
+        // Vérifie si un match est devenu inutile (tous ses combinés M1 et M2 sont déjà morts)
+        function isMatchUselessDead(g) {
+            const tags = g._comboTags || [];
+            if (!tags.length) return true;
+            
+            // Si le match a déjà gagné (+2b d'avance ou victoire finale), il reste affiché dans le secteur gagné
+            if (isMatchWon(g)) return false;
+            
+            // Un match est UTILE s'il a au moins UN combiné (M1 ou M2) dont le partenaire est ENCORE EN VIE (non perdu)
+            const hasAlivePartner = tags.some(t => {
+                const partnerLeg = (t.ticket.m1 === t.leg) ? t.ticket.m2 : t.ticket.m1;
+                return !isPartnerLegLost(partnerLeg);
+            });
+            
+            // S'il n'a aucun partenaire en vie, le match ne sert plus à rien -> MASQUÉ
+            return !hasAlivePartner;
+        }
+
         function openComboFromTag(e, method, ticketNum) {
             if (e) e.stopPropagation();
             currentMethod = method;
@@ -960,7 +1005,8 @@
                 return;
             }
 
-            const comboGames = cachedComboGames;
+            // Exclut les matchs dont tous les combinés (M1 et M2) sont déjà perdus par l'autre match
+            const comboGames = cachedComboGames.filter(g => !isMatchUselessDead(g));
             const wonMatches = comboGames.filter(g => isMatchWon(g));
             const liveActiveMatches = comboGames.filter(g => g.status_type === 'LIVE' && !isMatchWon(g));
             const preMatches = comboGames.filter(g => g.status_type === 'PRE_MATCH');
@@ -1141,14 +1187,21 @@
             const comboTags = g._comboTags || [];
             const wonStatus = getGameWonStatus(g);
 
-            const hasM1 = comboTags.some(t => t.method === 'm1');
-            const hasM2 = comboTags.some(t => t.method === 'm2');
+            // N'affiche que les tickets dont le partenaire est encore en vie (non perdu)
+            const aliveComboTags = comboTags.filter(t => {
+                const partnerLeg = (t.ticket.m1 === t.leg) ? t.ticket.m2 : t.ticket.m1;
+                return !isPartnerLegLost(partnerLeg);
+            });
+            const effectiveTags = aliveComboTags.length > 0 ? aliveComboTags : comboTags;
+
+            const hasM1 = effectiveTags.some(t => t.method === 'm1');
+            const hasM2 = effectiveTags.some(t => t.method === 'm2');
             let methodScoreClass = 'm1';
             if (hasM1 && hasM2) methodScoreClass = 'm-both';
             else if (hasM2) methodScoreClass = 'm2';
             else methodScoreClass = 'm1';
 
-            const comboTagsHtml = comboTags.map(t => 
+            const comboTagsHtml = effectiveTags.map(t => 
                 `<span class="badge-combo-indicator ${t.method}" onclick="openComboFromTag(event, '${t.method}', ${t.num})">${t.label}</span>`
             ).join(' ');
 
@@ -1524,6 +1577,7 @@
                     // Détection des buts
                     const now = Date.now();
                     cachedComboGames.forEach(g => {
+                        if (isMatchUselessDead(g)) return; // Ignore les alertes buts sur les matchs dont tous les combinés sont déjà perdus !
                         const key = g.id;
                         const scoreStr = `${g.score_dom}-${g.score_ext}`;
                         if (prevScores[key] !== undefined && prevScores[key] !== scoreStr) {
