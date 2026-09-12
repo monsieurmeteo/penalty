@@ -584,6 +584,7 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
     ls_events = []
     now_ls = datetime.now()
     dates_to_check = [
+        (now_ls - timedelta(days=2)).strftime("%Y%m%d"),
         (now_ls - timedelta(days=1)).strftime("%Y%m%d"),
         now_ls.strftime("%Y%m%d")
     ]
@@ -624,10 +625,21 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         "nommeunite": ["nommeunited"],
         "aekathenes": ["aekathens", "aek"],
         "intermilan": ["inter"],
+        "celikzenica": ["celik", "nkcelik"],
+        "stpatricks": ["stpatricksathletic", "stpats"],
+        "drogheda": ["droghedaunited"],
+        "fcseville": ["sevilla", "seville"],
+        "seville": ["sevilla"],
+        "cfvalence": ["valencia", "valence"],
+        "valence": ["valencia"],
+        "shelbournefc": ["shelbourne"],
+        "barrytownfc": ["barrytown"],
+        "defensayjus": ["defensayjusticia", "defensa"],
+        "jaguares": ["cdjaguares", "jaguaresdecordoba"]
     }
-    STOPWORDS = {'fc', 'cf', 'sc', 'cd', 'cs', 'de', 'la', 'le', 'el', 'club', 'deportes', 'real', 'city', 'united', 'athletic', 'sporting'}
+    STOPWORDS = {'fc', 'cf', 'sc', 'cd', 'cs', 'de', 'la', 'le', 'el', 'club', 'deportes', 'real', 'city', 'united', 'athletic', 'sporting', 'athletique'}
 
-    def clean_n(x): return re.sub(r'[^a-z0-9]', '', (x or '').lower())
+    def clean_n(x): return _clean_team_key(x)
     def sim_score(a, b):
         ca, cb = clean_n(a), clean_n(b)
         if not ca or not cb: return 0.0
@@ -651,6 +663,18 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         (_clean_team_key(m.get("home", "")), _clean_team_key(m.get("away", ""))): m
         for m in existing_docs.get("matches_today", [])
     }
+    for c in existing_docs.get("methode2_combos", []):
+        for leg in [c.get("m1", {}), c.get("m2", {})]:
+            if leg.get("home") and leg.get("away"):
+                k = (_clean_team_key(leg.get("home", "")), _clean_team_key(leg.get("away", "")))
+                if k not in existing_matches_map:
+                    existing_matches_map[k] = leg
+    for c in existing_docs.get("combos_today", []):
+        for leg in [c.get("m1", {}), c.get("m2", {})]:
+            if leg.get("home") and leg.get("away"):
+                k = (_clean_team_key(leg.get("home", "")), _clean_team_key(leg.get("away", "")))
+                if k not in existing_matches_map:
+                    existing_matches_map[k] = leg
 
     # ponytail: Actualiser en direct les cotes de matches_today avec le scan Unibet frais
     if all_scanned:
@@ -731,9 +755,8 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
         fav_team = item.get("fav_team", dom)
         odds_val = item.get("odds", 1.50)
 
-        m_time = item.get("time", "")
-        has_day = any(d in m_time for d in DAYS_FR)
-        if has_day and not any(d in m_time for d in eligible_days):
+        # Si le match est déjà terminé et validé, pas besoin de le re-scanner
+        if item.get("is_finished") and item.get("status") == "FINISHED":
             continue
 
         best_ev = None
@@ -1105,7 +1128,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m1["score_display"] = src.get("score_display", m1.get("score_display"))
             m1["selection_status"] = src.get("selection_status", m1.get("selection_status"))
             m1["minute"] = src.get("minute", m1.get("minute"))
-            m1["profit"] = src.get("profit", m1.get("profit", 0.0))
+            m1["home_score"] = src.get("home_score", m1.get("home_score"))
+            m1["away_score"] = src.get("away_score", m1.get("away_score"))
+            m1["is_finished"] = src.get("is_finished", m1.get("is_finished"))
+            m1["is_live"] = src.get("is_live", m1.get("is_live"))
             if src.get("odds"):
                 m1["odds"] = float(src.get("odds"))
             if src.get("domination_score") is not None:
@@ -1118,6 +1144,10 @@ def sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=None):
             m2["selection_status"] = src.get("selection_status", m2.get("selection_status"))
             m2["minute"] = src.get("minute", m2.get("minute"))
             m2["profit"] = src.get("profit", m2.get("profit", 0.0))
+            m2["home_score"] = src.get("home_score", m2.get("home_score"))
+            m2["away_score"] = src.get("away_score", m2.get("away_score"))
+            m2["is_finished"] = src.get("is_finished", m2.get("is_finished"))
+            m2["is_live"] = src.get("is_live", m2.get("is_live"))
             if src.get("odds"):
                 m2["odds"] = float(src.get("odds"))
             if src.get("domination_score") is not None:

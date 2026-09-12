@@ -5312,7 +5312,8 @@
         "league": "Japon • D1 Japon",
         "time": "Dim. 06/09 à 12h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 55
+        "domination_score": 55,
+        "profit": 0.57
       },
       "m2": {
         "unibet_num": 4430,
@@ -5328,7 +5329,8 @@
         "league": "Estonie • D1 Estonie",
         "time": "Dim. 06/09 à 13h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 62
+        "domination_score": 62,
+        "profit": 0.5
       }
     },
     {
@@ -5354,7 +5356,8 @@
         "league": "Espagne • Laliga 2",
         "time": "Dim. 06/09 à 14h00",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 59
+        "domination_score": 59,
+        "profit": 0.9
       },
       "m2": {
         "unibet_num": 3795,
@@ -5370,7 +5373,8 @@
         "league": "Ecosse • D1 Ecosse",
         "time": "Dim. 06/09 à 16h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 74
+        "domination_score": 74,
+        "profit": 0.45
       }
     },
     {
@@ -5380,7 +5384,7 @@
       "default_stake": 3.0,
       "ticket_status": "LOST",
       "profit_unit": -1.0,
-      "gain_eur": 0.0,
+      "gain_eur": 5.4,
       "profit_eur": -3.0,
       "m1": {
         "unibet_num": 3997,
@@ -5396,7 +5400,8 @@
         "league": "Islande • D1 Islande",
         "time": "Dim. 06/09 à 16h00",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 61
+        "domination_score": 61,
+        "profit": -1.0
       },
       "m2": {
         "unibet_num": 19498,
@@ -5412,7 +5417,8 @@
         "league": "Espagne • Laliga",
         "time": "Dim. 06/09 à 16h15",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 56
+        "domination_score": 56,
+        "profit": 0.26
       }
     },
     {
@@ -5422,7 +5428,7 @@
       "default_stake": 3.0,
       "ticket_status": "LOST",
       "profit_unit": -1.0,
-      "gain_eur": 0.0,
+      "gain_eur": 8.64,
       "profit_eur": -3.0,
       "m1": {
         "unibet_num": 3878,
@@ -5438,7 +5444,8 @@
         "league": "Suisse • D1 Suisse",
         "time": "Dim. 06/09 à 16h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 59
+        "domination_score": 59,
+        "profit": 0.63
       },
       "m2": {
         "unibet_num": 2864,
@@ -5454,7 +5461,8 @@
         "league": "Pays Bas • D1 Pays Bas",
         "time": "Dim. 06/09 à 16h45",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 56
+        "domination_score": 56,
+        "profit": -1.0
       }
     },
     {
@@ -5464,7 +5472,7 @@
       "default_stake": 3.0,
       "ticket_status": "WON",
       "profit_unit": 0.87,
-      "gain_eur": 5.6,
+      "gain_eur": 5.61,
       "profit_eur": 2.61,
       "m1": {
         "unibet_num": 4460,
@@ -5480,7 +5488,8 @@
         "league": "Lettonie • D1 Lettonie",
         "time": "Dim. 06/09 à 17h00",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 62
+        "domination_score": 62,
+        "profit": 0.37
       },
       "m2": {
         "unibet_num": 4517,
@@ -5496,7 +5505,8 @@
         "league": "Slovaquie • D1 Slovaquie",
         "time": "Dim. 06/09 à 17h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 72
+        "domination_score": 72,
+        "profit": 0.48
       }
     },
     {
@@ -5505,7 +5515,7 @@
       "default_stake": 3.0,
       "ticket_status": "WON",
       "profit_unit": 1.24,
-      "gain_eur": 6.7,
+      "gain_eur": 6.72,
       "profit_eur": 3.72,
       "m1": {
         "time": "Dim. 06/09 à 17h00",
@@ -5558,7 +5568,7 @@
       "default_stake": 3.0,
       "ticket_status": "WON",
       "profit_unit": 1.22,
-      "gain_eur": 6.65,
+      "gain_eur": 6.66,
       "profit_eur": 3.66,
       "m1": {
         "unibet_num": 4305,
@@ -5574,7 +5584,8 @@
         "league": "Pologne • D1 Pologne",
         "time": "Dim. 06/09 à 17h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 57
+        "domination_score": 57,
+        "profit": 0.56
       },
       "m2": {
         "unibet_num": 6274,
@@ -5590,7 +5601,8 @@
         "league": "Afrique Du Sud • D1 Afrique Du Sud",
         "time": "Dim. 06/09 à 17h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 58
+        "domination_score": 58,
+        "profit": 0.54
       }
     },
     {
@@ -5600,7 +5612,7 @@
       "default_stake": 3.0,
       "ticket_status": "WON",
       "profit_unit": 1.11,
-      "gain_eur": 6.35,
+      "gain_eur": 6.33,
       "profit_eur": 3.33,
       "m1": {
         "unibet_num": 4272,
@@ -5616,7 +5628,8 @@
         "league": "Hongrie • D1 Hongrie",
         "time": "Dim. 06/09 à 17h45",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 72
+        "domination_score": 72,
+        "profit": 0.31
       },
       "m2": {
         "unibet_num": 19655,
@@ -5632,7 +5645,8 @@
         "league": "Angleterre • Premier League",
         "time": "Dim. 06/09 à 17h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 62
+        "domination_score": 62,
+        "profit": 0.67
       }
     },
     {
@@ -5642,7 +5656,7 @@
       "default_stake": 3.0,
       "ticket_status": "LOST",
       "profit_unit": -1.0,
-      "gain_eur": 8.2,
+      "gain_eur": 8.22,
       "profit_eur": -3.0,
       "m1": {
         "unibet_num": 3846,
@@ -5658,7 +5672,8 @@
         "league": "Grece • D1 Grece",
         "time": "Dim. 06/09 à 18h30",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 58
+        "domination_score": 58,
+        "profit": 0.96
       },
       "m2": {
         "unibet_num": 2847,
@@ -5674,7 +5689,8 @@
         "league": "Portugal • Liga Portugal",
         "time": "Dim. 06/09 à 19h00",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 63
+        "domination_score": 63,
+        "profit": -1.0
       }
     },
     {
@@ -5684,7 +5700,7 @@
       "default_stake": 3.0,
       "ticket_status": "LOST",
       "profit_unit": -1.0,
-      "gain_eur": 8.05,
+      "gain_eur": 8.07,
       "profit_eur": -3.0,
       "m1": {
         "unibet_num": 6391,
@@ -5700,7 +5716,8 @@
         "league": "Argentine • D1 Argentine",
         "time": "Dim. 06/09 à 19h45",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 55
+        "domination_score": 55,
+        "profit": -1.0
       },
       "m2": {
         "unibet_num": 4283,
@@ -5716,7 +5733,8 @@
         "league": "Hongrie • D2 Hongrie",
         "time": "Dim. 06/09 à 20h00",
         "badge_tier": "🥉 BRONZE",
-        "domination_score": 56
+        "domination_score": 56,
+        "profit": 0.82
       }
     },
     {
@@ -5726,7 +5744,7 @@
       "default_stake": 3.0,
       "ticket_status": "WON",
       "profit_unit": 0.73,
-      "gain_eur": 5.2,
+      "gain_eur": 5.19,
       "profit_eur": 2.19,
       "m1": {
         "unibet_num": 4508,
@@ -5742,7 +5760,8 @@
         "league": "Serbie • D1 Serbie",
         "time": "Dim. 06/09 à 21h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 74
+        "domination_score": 74,
+        "profit": 0.11
       },
       "m2": {
         "unibet_num": 6390,
@@ -5758,7 +5777,8 @@
         "league": "Paraguay • D1 Paraguay",
         "time": "Dim. 06/09 à 21h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 70
+        "domination_score": 70,
+        "profit": 0.56
       }
     },
     {
@@ -5768,7 +5788,7 @@
       "default_stake": 3.0,
       "ticket_status": "LOST",
       "profit_unit": -1.0,
-      "gain_eur": 6.2,
+      "gain_eur": 6.21,
       "profit_eur": -3.0,
       "m1": {
         "unibet_num": 3883,
@@ -5784,7 +5804,8 @@
         "league": "Espagne • Laliga 2",
         "time": "Dim. 06/09 à 21h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 71
+        "domination_score": 71,
+        "profit": 0.38
       },
       "m2": {
         "unibet_num": 6403,
@@ -5800,7 +5821,8 @@
         "league": "Chili • D1 Chili",
         "time": "Dim. 06/09 à 22h00",
         "badge_tier": "🥈 ARGENT",
-        "domination_score": 67
+        "domination_score": 67,
+        "profit": -1.0
       }
     },
     {
@@ -5829,7 +5851,7 @@
         "away_score": 0,
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.69
       },
       "m2": {
         "time": "Lun. 07/09 à 00h30",
@@ -5848,7 +5870,7 @@
         "away_score": 0,
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "id": "combo_13"
     },
@@ -5878,7 +5900,7 @@
         "away_score": 0,
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.31
       },
       "m2": {
         "time": "Lun. 07/09 à 02h00",
@@ -5897,7 +5919,7 @@
         "away_score": 0,
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "id": "combo_14"
     },
@@ -5976,7 +5998,7 @@
         "score_display": "0 - 2",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "time": "Lun. 07/09 à 19h00",
@@ -5993,7 +6015,7 @@
         "score_display": "1 - 4",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 1.05
       }
     },
     {
@@ -6021,7 +6043,7 @@
         "score_display": "0 - 1",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "time": "Lun. 07/09 à 19h30",
@@ -6038,7 +6060,7 @@
         "score_display": "4 - 0",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.5
       }
     },
     {
@@ -6066,7 +6088,7 @@
         "score_display": "0 - 2",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "time": "Lun. 07/09 à 20h30",
@@ -6083,7 +6105,7 @@
         "score_display": "3 - 2",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.98
       }
     },
     {
@@ -6111,7 +6133,7 @@
         "score_display": "3 - 1",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.49
       },
       "m2": {
         "time": "Mar. 08/09 à 01h00",
@@ -6128,7 +6150,7 @@
         "score_display": "3 - 0",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.46
       }
     },
     {
@@ -6156,7 +6178,7 @@
         "score_display": "1 - 0",
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 1.05
       },
       "m2": {
         "time": "Mar. 08/09 à 02h00",
@@ -6173,7 +6195,7 @@
         "score_display": "1 - 0",
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.56
       }
     },
     {
@@ -6201,7 +6223,7 @@
         "score_display": "1 - 0",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "time": "Mar. 08/09 à 16h30",
@@ -6218,7 +6240,7 @@
         "score_display": "2 - 2",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       }
     },
     {
@@ -6246,7 +6268,7 @@
         "score_display": "1 - 2",
         "minute": "Terminé",
         "selection_status": "LOST",
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "time": "Mar. 08/09 à 18h45",
@@ -6263,7 +6285,7 @@
         "score_display": "1 - 0",
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.65
       }
     },
     {
@@ -6291,7 +6313,7 @@
         "score_display": "2 - 1",
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.32
       },
       "m2": {
         "time": "Mar. 08/09 à 20h45",
@@ -6308,7 +6330,7 @@
         "score_display": "3 - 1",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.73
       }
     },
     {
@@ -6336,7 +6358,7 @@
         "score_display": "3 - 2",
         "minute": "Terminé",
         "selection_status": "WON_FINAL",
-        "profit": 0.0
+        "profit": 0.68
       },
       "m2": {
         "time": "Mar. 08/09 à 21h00",
@@ -6353,7 +6375,7 @@
         "score_display": "2 - 1",
         "minute": "Terminé",
         "selection_status": "WON_LEAD2",
-        "profit": 0.0
+        "profit": 0.54
       }
     },
     {
@@ -6386,7 +6408,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.07
       },
       "m2": {
         "id": "3372375",
@@ -6408,7 +6430,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.8
       }
     },
     {
@@ -6441,7 +6463,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.54
       },
       "m2": {
         "id": "3377450",
@@ -6463,7 +6485,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.47
       }
     },
     {
@@ -6498,7 +6520,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3375769",
@@ -6522,7 +6544,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.6
       }
     },
     {
@@ -6558,7 +6580,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.72
       },
       "m2": {
         "id": "3378091",
@@ -6583,7 +6605,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.39
       }
     },
     {
@@ -6619,7 +6641,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.62
       },
       "m2": {
         "id": "3357740",
@@ -6644,7 +6666,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.33
       }
     },
     {
@@ -6680,7 +6702,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.76
       },
       "m2": {
         "id": "3357743",
@@ -6705,7 +6727,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.31
       }
     },
     {
@@ -6741,7 +6763,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3374525",
@@ -6766,7 +6788,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       }
     },
     {
@@ -6802,7 +6824,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3373245",
@@ -6827,7 +6849,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.39
       }
     },
     {
@@ -6863,7 +6885,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3377156",
@@ -6888,7 +6910,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       }
     },
     {
@@ -6924,7 +6946,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.33
       },
       "m2": {
         "id": "3377817",
@@ -6949,7 +6971,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 1.05
       }
     },
     {
@@ -6985,7 +7007,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.58
       },
       "m2": {
         "id": "3357721",
@@ -7010,7 +7032,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.68
       }
     },
     {
@@ -7046,7 +7068,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.2
       },
       "m2": {
         "id": "3378008",
@@ -7071,7 +7093,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       }
     },
     {
@@ -7107,7 +7129,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3360636",
@@ -7124,15 +7146,15 @@
         "domination_score": 62,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 50,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
+        "status": "FINISHED",
+        "selection_status": "WON_LEAD2",
+        "score_display": "3 - 1",
         "home_score": 0,
         "away_score": 0,
-        "minute": "Ven. 11/09 à 20h30",
+        "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.49
       }
     },
     {
@@ -7168,7 +7190,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3377996",
@@ -7193,7 +7215,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.43
       }
     },
     {
@@ -7229,7 +7251,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.63
       },
       "m2": {
         "id": "3376863",
@@ -7254,7 +7276,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       }
     },
     {
@@ -7290,7 +7312,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.45
       },
       "m2": {
         "id": "3377732",
@@ -7315,7 +7337,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.49
       }
     },
     {
@@ -7473,7 +7495,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": -1.0
       },
       "m2": {
         "id": "3378358",
@@ -7498,7 +7520,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.35
       }
     },
     {
@@ -7595,7 +7617,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.96
       },
       "m2": {
         "id": "3379171",
@@ -7620,7 +7642,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.32
       }
     },
     {
@@ -7900,7 +7922,7 @@
         "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.8
       },
       "m2": {
         "id": "3367852",
@@ -7917,15 +7939,15 @@
         "domination_score": 53,
         "badge_tier": "🥉 BRONZE",
         "win_pct_historical": 30,
-        "status": "LIVE",
+        "status": "FINISHED",
         "selection_status": "WON_LEAD2",
-        "score_display": "3 - 0",
+        "score_display": "3 - 1",
         "home_score": 0,
         "away_score": 0,
-        "minute": "78'",
+        "minute": "Terminé",
         "is_live": false,
         "is_finished": false,
-        "profit": 0.0
+        "profit": 0.42
       }
     },
     {
@@ -10944,15 +10966,15 @@
         "home": "AC Pisa 1909",
         "away": "Virtus Entella",
         "odds": 1.67,
-        "status": "LIVE",
-        "selection_status": "IN_PROGRESS",
-        "score_display": "0 - 3",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Mi-temps",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "1 - 4",
+        "home_score": 1,
+        "away_score": 4,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0,
+        "is_finished": true,
+        "profit": -1.0,
         "domination_score": 62
       },
       "m2": {
@@ -10966,11 +10988,11 @@
         "status": "FINISHED",
         "selection_status": "LOST",
         "score_display": "1 - 1",
-        "home_score": null,
-        "away_score": null,
+        "home_score": 1,
+        "away_score": 1,
         "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": -1.0,
         "domination_score": 51
       },
@@ -10994,14 +11016,14 @@
         "home": "Boca Juniors",
         "away": "CentralCordoba",
         "odds": 1.42,
-        "status": "LIVE",
+        "status": "FINISHED",
         "selection_status": "WON_LEAD2",
-        "score_display": "3 - 0",
-        "home_score": null,
-        "away_score": null,
-        "minute": "78'",
+        "score_display": "3 - 1",
+        "home_score": 3,
+        "away_score": 1,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": 0.42,
         "domination_score": 53
       },
@@ -11016,11 +11038,11 @@
         "status": "FINISHED",
         "selection_status": "WON_FINAL",
         "score_display": "1 - 0",
-        "home_score": null,
-        "away_score": null,
+        "home_score": 1,
+        "away_score": 0,
         "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": 1.3,
         "domination_score": 76
       },
@@ -11032,10 +11054,10 @@
       "session": "2026-09-11",
       "odds": 3.57,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "WON",
+      "profit_unit": 2.57,
       "gain_eur": 10.71,
-      "profit_eur": 0.0,
+      "profit_eur": 7.71,
       "m1": {
         "id": "3378970",
         "time": "Ven. 11/09 à 20h00",
@@ -11044,15 +11066,15 @@
         "home": "Celik Zenica",
         "away": "Rad.Bijeljina",
         "odds": 1.89,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h00",
+        "status": "FINISHED",
+        "selection_status": "WON",
+        "score_display": "3 - 2",
+        "home_score": 3,
+        "away_score": 2,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 0.89
       },
       "m2": {
         "id": "3378005",
@@ -11062,15 +11084,15 @@
         "home": "Dijon",
         "away": "Laval",
         "odds": 1.89,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h00",
+        "status": "FINISHED",
+        "selection_status": "WON",
+        "score_display": "3 - 2",
+        "home_score": 3,
+        "away_score": 2,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 0.89
       },
       "email_ticket_num": 1
     },
@@ -11080,10 +11102,10 @@
       "session": "2026-09-11",
       "odds": 4.3,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 12.9,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3368359",
         "time": "Ven. 11/09 à 20h45",
@@ -11092,15 +11114,15 @@
         "home": "Shelbourne FC",
         "away": "Derry City",
         "odds": 2.15,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "0 - 1",
+        "home_score": 0,
+        "away_score": 1,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "m2": {
         "id": "3379170",
@@ -11110,15 +11132,15 @@
         "home": "Barry Town FC",
         "away": "Llandudno FC",
         "odds": 2.0,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
+        "status": "FINISHED",
+        "selection_status": "WON (+2b)",
+        "score_display": "4 - 1",
+        "home_score": 4,
+        "away_score": 1,
+        "minute": "Gagné (+2b)",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 1.0
       },
       "email_ticket_num": 2
     },
@@ -11128,10 +11150,10 @@
       "session": "2026-09-11",
       "odds": 3.38,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "WON",
+      "profit_unit": 2.38,
       "gain_eur": 10.14,
-      "profit_eur": 0.0,
+      "profit_eur": 7.14,
       "m1": {
         "id": "3378041",
         "time": "Ven. 11/09 à 20h45",
@@ -11140,15 +11162,15 @@
         "home": "Drogheda",
         "away": "Sligo",
         "odds": 1.65,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
+        "status": "FINISHED",
+        "selection_status": "WON (+2b)",
+        "score_display": "2 - 0",
+        "home_score": 2,
+        "away_score": 0,
+        "minute": "Gagné (+2b)",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 0.65
       },
       "m2": {
         "id": "3378042",
@@ -11158,15 +11180,15 @@
         "home": "St Patricks",
         "away": "Shamrock",
         "odds": 2.05,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 21h00",
+        "status": "FINISHED",
+        "selection_status": "WON (+2b)",
+        "score_display": "2 - 0",
+        "home_score": 2,
+        "away_score": 0,
+        "minute": "Gagné (+2b)",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 1.05
       },
       "email_ticket_num": 3
     },
@@ -11176,10 +11198,10 @@
       "session": "2026-09-11",
       "odds": 3.89,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 11.67,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3360716",
         "time": "Ven. 11/09 à 21h00",
@@ -11188,15 +11210,15 @@
         "home": "FC Séville",
         "away": "CF Valence",
         "odds": 1.9,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 21h00",
+        "status": "FINISHED",
+        "selection_status": "WON",
+        "score_display": "1 - 0",
+        "home_score": 1,
+        "away_score": 0,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 0.9
       },
       "m2": {
         "id": "3378560",
@@ -11206,15 +11228,15 @@
         "home": "Academica",
         "away": "Benfica B",
         "odds": 2.05,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 21h45",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "0 - 3",
+        "home_score": 0,
+        "away_score": 3,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "email_ticket_num": 4
     },
@@ -11224,10 +11246,10 @@
       "session": "2026-09-11",
       "odds": 3.91,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 11.73,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3367854",
         "time": "Sam. 12/09 à 00h15",
@@ -11239,11 +11261,11 @@
         "status": "FINISHED",
         "selection_status": "WON_LEAD2",
         "score_display": "2 - 0",
-        "home_score": null,
-        "away_score": null,
+        "home_score": 2,
+        "away_score": 0,
         "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": 0.82,
         "domination_score": 58
       },
@@ -11255,15 +11277,15 @@
         "home": "Jaguares",
         "away": "Fortaleza FC",
         "odds": 2.15,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 01h15",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "2 - 2",
+        "home_score": 2,
+        "away_score": 2,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "email_ticket_num": 5
     },
@@ -11313,7 +11335,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 6
+      "email_ticket_num": 1
     },
     {
       "id": "m2_combo_69",
@@ -11362,7 +11384,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 7
+      "email_ticket_num": 2
     },
     {
       "id": "m2_combo_72",
@@ -11410,7 +11432,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 8
+      "email_ticket_num": 3
     },
     {
       "id": "m2_combo_73",
@@ -11459,7 +11481,7 @@
         "profit": 0.0,
         "domination_score": 56
       },
-      "email_ticket_num": 9
+      "email_ticket_num": 4
     },
     {
       "id": "m2_combo_76",
@@ -11509,7 +11531,7 @@
         "profit": 0.0,
         "domination_score": 59
       },
-      "email_ticket_num": 10
+      "email_ticket_num": 5
     },
     {
       "id": "m2_combo_78",
@@ -11557,7 +11579,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 11
+      "email_ticket_num": 6
     },
     {
       "id": "m2_combo_79",
@@ -11605,7 +11627,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 12
+      "email_ticket_num": 7
     },
     {
       "id": "m2_combo_81",
@@ -11653,7 +11675,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 13
+      "email_ticket_num": 8
     },
     {
       "id": "m2_combo_84",
@@ -11702,7 +11724,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 14
+      "email_ticket_num": 9
     },
     {
       "id": "m2_combo_86",
@@ -11750,7 +11772,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 15
+      "email_ticket_num": 10
     },
     {
       "id": "m2_combo_87",
@@ -11798,7 +11820,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 16
+      "email_ticket_num": 11
     },
     {
       "id": "m2_combo_88",
@@ -11846,7 +11868,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 17
+      "email_ticket_num": 12
     },
     {
       "id": "m2_combo_89",
@@ -11894,7 +11916,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 18
+      "email_ticket_num": 13
     },
     {
       "id": "m2_combo_93",
@@ -11917,11 +11939,11 @@
         "status": "FINISHED",
         "selection_status": "LOST",
         "score_display": "0 - 0",
-        "home_score": null,
-        "away_score": null,
+        "home_score": 0,
+        "away_score": 0,
         "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": -1.0,
         "domination_score": 59
       },
@@ -11933,15 +11955,15 @@
         "home": "Club Necaxa",
         "away": "Club Puebla",
         "odds": 1.89,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Sam. 12/09 à 03h00",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "0 - 1",
+        "home_score": 0,
+        "away_score": 1,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "email_ticket_num": 58
     },
@@ -11951,10 +11973,10 @@
       "session": "2026-09-11",
       "odds": 4.71,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 14.13,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3377947",
         "time": "Ven. 11/09 à 19h45",
@@ -11963,15 +11985,15 @@
         "home": "Torreense",
         "away": "Leixoes",
         "odds": 2.05,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 19h45",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "0 - 0",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "m2": {
         "id": "3378004",
@@ -11981,15 +12003,15 @@
         "home": "Clermont",
         "away": "Boulogne",
         "odds": 2.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h00",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "0 - 0",
+        "home_score": 0,
+        "away_score": 0,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "email_ticket_num": 19
     },
@@ -11999,10 +12021,10 @@
       "session": "2026-09-11",
       "odds": 5.17,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "LOST",
+      "profit_unit": -1.0,
       "gain_eur": 15.51,
-      "profit_eur": 0.0,
+      "profit_eur": -3.0,
       "m1": {
         "id": "3367247",
         "time": "Ven. 11/09 à 20h30",
@@ -12011,15 +12033,15 @@
         "home": "Union Berlin",
         "away": "Schalke 04",
         "odds": 2.3,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h30",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "1 - 3",
+        "home_score": 1,
+        "away_score": 3,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "m2": {
         "id": "3377983",
@@ -12029,15 +12051,15 @@
         "home": "Waterford",
         "away": "Dundalk",
         "odds": 2.25,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
+        "status": "FINISHED",
+        "selection_status": "LOST",
+        "score_display": "1 - 1",
+        "home_score": 1,
+        "away_score": 1,
+        "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": -1.0
       },
       "email_ticket_num": 20
     },
@@ -12087,7 +12109,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 21
+      "email_ticket_num": 14
     },
     {
       "id": "m2_combo_97",
@@ -12135,7 +12157,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 22
+      "email_ticket_num": 15
     },
     {
       "id": "m2_combo_98",
@@ -12183,7 +12205,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 23
+      "email_ticket_num": 16
     },
     {
       "id": "m2_combo_99",
@@ -12232,7 +12254,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 24
+      "email_ticket_num": 17
     },
     {
       "id": "m2_combo_103",
@@ -12281,7 +12303,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 25
+      "email_ticket_num": 18
     },
     {
       "id": "m2_combo_104",
@@ -12289,10 +12311,10 @@
       "session": "2026-09-11",
       "odds": 4.61,
       "default_stake": 3.0,
-      "ticket_status": "PENDING",
-      "profit_unit": 0.0,
+      "ticket_status": "WON",
+      "profit_unit": 3.61,
       "gain_eur": 13.83,
-      "profit_eur": 0.0,
+      "profit_eur": 10.83,
       "m1": {
         "id": "3368339",
         "time": "Ven. 11/09 à 18h30",
@@ -12304,11 +12326,11 @@
         "status": "FINISHED",
         "selection_status": "WON_FINAL",
         "score_display": "2 - 1",
-        "home_score": null,
-        "away_score": null,
+        "home_score": 2,
+        "away_score": 1,
         "minute": "Terminé",
         "is_live": false,
-        "is_finished": false,
+        "is_finished": true,
         "profit": 1.25,
         "domination_score": 54
       },
@@ -12320,15 +12342,15 @@
         "home": "Haverfordwest",
         "away": "Briton Ferry L",
         "odds": 2.05,
-        "status": "UPCOMING",
-        "selection_status": "PENDING",
-        "score_display": "VS",
-        "home_score": null,
-        "away_score": null,
-        "minute": "Ven. 11/09 à 20h45",
+        "status": "FINISHED",
+        "selection_status": "WON (+2b)",
+        "score_display": "3 - 1",
+        "home_score": 3,
+        "away_score": 1,
+        "minute": "Gagné (+2b)",
         "is_live": false,
-        "is_finished": false,
-        "profit": 0.0
+        "is_finished": true,
+        "profit": 1.05
       },
       "email_ticket_num": 26
     },
@@ -12380,7 +12402,7 @@
         "profit": 0.0,
         "domination_score": 50
       },
-      "email_ticket_num": 27
+      "email_ticket_num": 19
     },
     {
       "id": "m2_combo_107",
@@ -12429,7 +12451,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 28
+      "email_ticket_num": 20
     },
     {
       "id": "m2_combo_108",
@@ -12477,7 +12499,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 29
+      "email_ticket_num": 21
     },
     {
       "id": "m2_combo_110",
@@ -12526,7 +12548,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 30
+      "email_ticket_num": 22
     },
     {
       "id": "m2_combo_111",
@@ -12574,7 +12596,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 31
+      "email_ticket_num": 23
     },
     {
       "id": "m2_combo_113",
@@ -12623,7 +12645,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 32
+      "email_ticket_num": 24
     },
     {
       "id": "m2_combo_114",
@@ -12672,7 +12694,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 33
+      "email_ticket_num": 25
     },
     {
       "id": "m2_combo_116",
@@ -12720,7 +12742,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 34
+      "email_ticket_num": 26
     },
     {
       "id": "m2_combo_117",
@@ -12768,7 +12790,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 35
+      "email_ticket_num": 27
     },
     {
       "id": "m2_combo_118",
@@ -12816,7 +12838,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 36
+      "email_ticket_num": 28
     },
     {
       "id": "m2_combo_119",
@@ -12864,7 +12886,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 37
+      "email_ticket_num": 29
     },
     {
       "id": "m2_combo_125",
@@ -12912,7 +12934,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 38
+      "email_ticket_num": 30
     },
     {
       "id": "m2_combo_126",
@@ -12960,7 +12982,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 39
+      "email_ticket_num": 31
     },
     {
       "id": "m2_combo_127",
@@ -13008,7 +13030,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 40
+      "email_ticket_num": 32
     },
     {
       "id": "m2_combo_129",
@@ -13056,7 +13078,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 41
+      "email_ticket_num": 33
     },
     {
       "id": "m2_combo_130",
@@ -13104,7 +13126,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 42
+      "email_ticket_num": 34
     },
     {
       "id": "m2_combo_135",
@@ -13152,7 +13174,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 43
+      "email_ticket_num": 35
     },
     {
       "id": "m2_combo_136",
@@ -13200,7 +13222,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 44
+      "email_ticket_num": 36
     },
     {
       "id": "m2_combo_138",
@@ -13248,7 +13270,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 45
+      "email_ticket_num": 37
     },
     {
       "id": "m2_combo_139",
@@ -13296,7 +13318,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 46
+      "email_ticket_num": 38
     },
     {
       "id": "m2_combo_142",
@@ -13345,7 +13367,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 47
+      "email_ticket_num": 39
     },
     {
       "id": "m2_combo_146",
@@ -13393,7 +13415,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 48
+      "email_ticket_num": 40
     },
     {
       "id": "m2_combo_147",
@@ -13441,7 +13463,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 49
+      "email_ticket_num": 41
     },
     {
       "id": "m2_combo_148",
@@ -13489,7 +13511,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 50
+      "email_ticket_num": 42
     },
     {
       "id": "m2_combo_149",
@@ -13537,7 +13559,7 @@
         "is_finished": false,
         "profit": 0.0
       },
-      "email_ticket_num": 51
+      "email_ticket_num": 43
     },
     {
       "id": "m2_combo_150",
