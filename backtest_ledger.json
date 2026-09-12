@@ -27273,5 +27273,567 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3376459",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Urawa Reds vs Okayama",
+    "league": "Japon • D1 Japon",
+    "date_str": "Dim. 13/09 à 11h30",
+    "fav_team": "Urawa Reds",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 36,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3360659",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Valladolid vs Real Oviedo",
+    "league": "Espagne • Laliga 2",
+    "date_str": "Dim. 13/09 à 16h15",
+    "fav_team": "Valladolid",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368823",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Malmö vs Örgryte",
+    "league": "Suede • D1 Suede",
+    "date_str": "Dim. 13/09 à 16h30",
+    "fav_team": "Malmö",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 61,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.31,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368827",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Lucerne vs FC Bâle",
+    "league": "Suisse • D1 Suisse",
+    "date_str": "Dim. 13/09 à 16h30",
+    "fav_team": "Lucerne",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 55,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378813",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Amarante FC vs Uniao Leiria",
+    "league": "Portugal • D2 Portugal",
+    "date_str": "Dim. 13/09 à 16h30",
+    "fav_team": "Uniao Leiria",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.2,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368828",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "FC Lausanne vs Servette FC",
+    "league": "Suisse • D1 Suisse",
+    "date_str": "Dim. 13/09 à 16h30",
+    "fav_team": "Servette FC",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368800",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Zwolle vs Feyenoord",
+    "league": "Pays Bas • D1 Pays Bas",
+    "date_str": "Dim. 13/09 à 16h45",
+    "fav_team": "Feyenoord",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 58,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.36,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376859",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Botev Vratsa vs Levski Sofia",
+    "league": "Bulgarie • D1 Bulgarie",
+    "date_str": "Dim. 13/09 à 16h45",
+    "fav_team": "Levski Sofia",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.33,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3371815",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Sturm Graz vs Lask Linz",
+    "league": "Autriche • D1 Autriche",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Lask Linz",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 31,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 1.98,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372010",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Podbrezova vs KFC Komarno",
+    "league": "Slovaquie • D1 Slovaquie",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Podbrezova",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 42,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.87,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378410",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Parti.Belgrade vs Vojvodina",
+    "league": "Serbie • D1 Serbie",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Parti.Belgrade",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 50,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.1,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368805",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "HamKam vs Molde",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Molde",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 33,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.62,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3375652",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Istra 1961 vs NK Rudes",
+    "league": "Croatie • D1 Croatie",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Istra 1961",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 45,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.4,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368803",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Start vs SK Brann",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "SK Brann",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 43,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.87,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368804",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Kfum Oslo vs Aalesunds",
+    "league": "Norvege • D1 Norvege",
+    "date_str": "Dim. 13/09 à 17h00",
+    "fav_team": "Kfum Oslo",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 48,
+      "pct_fav_success": 40,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.15,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369060",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Mantova vs Sampdoria",
+    "league": "Italie • Serie B",
+    "date_str": "Dim. 13/09 à 17h15",
+    "fav_team": "Mantova",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 60,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 40
+    },
+    "odds": {
+      "fav_odds": 2.0,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369063",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Avellino vs Palerme",
+    "league": "Italie • Serie B",
+    "date_str": "Dim. 13/09 à 17h15",
+    "fav_team": "Palerme",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 32,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 1.86,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376242",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Le Mans vs Lens",
+    "league": "France • Ligue 1 Mcdonalds",
+    "date_str": "Dim. 13/09 à 17h15",
+    "fav_team": "Lens",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 38,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.58,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372832",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Legia Varsovie vs Widzew Lodz",
+    "league": "Pologne • D1 Pologne",
+    "date_str": "Dim. 13/09 à 17h30",
+    "fav_team": "Legia Varsovie",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.73,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3376215",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Man. United vs Man. City",
+    "league": "Angleterre • Premier League",
+    "date_str": "Dim. 13/09 à 17h30",
+    "fav_team": "Man. City",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 41,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368810",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "TS Galaxy FC vs Kruger United",
+    "league": "Afrique Du Sud • D1 Afrique Du Sud",
+    "date_str": "Dim. 13/09 à 17h30",
+    "fav_team": "TS Galaxy FC",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 17,
+      "pct_fav_success": 10,
+      "pct_fav_lead2": 0
+    },
+    "odds": {
+      "fav_odds": 2.05,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3372455",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Nordsjaelland vs Aarhus GF",
+    "league": "Danemark • D1 Danemark",
+    "date_str": "Dim. 13/09 à 18h00",
+    "fav_team": "Nordsjaelland",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 54,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 20
+    },
+    "odds": {
+      "fav_odds": 1.68,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3378519",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Iberia 1999 vs FC Spaeri",
+    "league": "Georgie • D1 Georgie",
+    "date_str": "Dim. 13/09 à 18h00",
+    "fav_team": "Iberia 1999",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 53,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.56,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3368587",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Teplice vs Slavia Prague",
+    "league": "Rep Tcheque • D1 Rep Tcheque",
+    "date_str": "Dim. 13/09 à 18h00",
+    "fav_team": "Slavia Prague",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 56,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 70
+    },
+    "odds": {
+      "fav_odds": 1.48,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3374313",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Asteras T. vs AEK Athènes",
+    "league": "Grece • D1 Grece",
+    "date_str": "Dim. 13/09 à 18h00",
+    "fav_team": "AEK Athènes",
+    "fav_side": "ext",
+    "scores": {
+      "fav_score": 49,
+      "pct_fav_success": 30,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.31,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
+  },
+  {
+    "match_id": "3369058",
+    "timestamp_utc": "2026-09-12T04:04:09.333098+00:00",
+    "match": "Naples vs Bologne",
+    "league": "Italie • Serie A",
+    "date_str": "Dim. 13/09 à 18h00",
+    "fav_team": "Naples",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 47,
+      "pct_fav_success": 60,
+      "pct_fav_lead2": 10
+    },
+    "odds": {
+      "fav_odds": 1.72,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [],
+    "result": null,
+    "won_p2": null
   }
 ]
