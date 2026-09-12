@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>⚡ Flashscore Live — Suivi Exclusif Combinés M1 & M2</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0b0f19">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Flashscore Combos">
@@ -13,21 +13,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8fafc;
-            --panel: #ffffff;
-            --header-bg: #ffffff;
-            --border: #e2e8f0;
-            --border-subtle: #f1f5f9;
-            --accent: #059669;
-            --text: #0f172a;
-            --text-secondary: #475569;
+            --bg: #0b0f19;
+            --panel: #131b2e;
+            --header-bg: #131b2e;
+            --border: #1e293b;
+            --border-subtle: #192237;
+            --accent: #10b981;
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
             --muted: #64748b;
             --yellow-star: #f59e0b;
-            --blue-pre: #2563eb;
-            --crimson: #dc2626;
-            --crimson-soft: #fef2f2;
-            --crimson-border: #f87171;
-            --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --blue-pre: #38bdf8;
+            --crimson: #ef4444;
+            --crimson-soft: #450a0a;
+            --crimson-border: #991b1b;
+            --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background-color: var(--bg); color: var(--text); padding: 8px 8px 80px 8px; min-height: 100vh; }
@@ -49,19 +49,19 @@
             font-size: 15px; 
             font-weight: 900; 
             letter-spacing: -0.2px;
-            color: #0f172a;
+            color: #f8fafc;
             display: flex;
             align-items: center;
             gap: 5px;
         }
         .logo span.bolt { color: #10b981; }
-        .logo span.sub { font-size: 9px; font-weight: 800; background: #ede9fe; color: #6d28d9; padding: 1px 5px; border-radius: 4px; border: 1px solid #c4b5fd; }
+        .logo span.sub { font-size: 9px; font-weight: 800; background: #2e1065; color: #c084fc; padding: 1px 5px; border-radius: 4px; border: 1px solid #581c87; }
         
         .header-actions { display: flex; align-items: center; gap: 5px; }
         .sound-btn { 
-            background: #f8fafc; 
-            border: 1px solid #cbd5e1; 
-            color: #334155; 
+            background: #1e293b; 
+            border: 1px solid #334155; 
+            color: #cbd5e1; 
             padding: 4px 8px; 
             border-radius: 12px; 
             font-size: 10px; 
@@ -72,24 +72,24 @@
             gap: 3px; 
             transition: all 0.15s;
         }
-        .sound-btn:hover { background: #f1f5f9; }
-        .sound-btn.active { background: #ecfdf5; border-color: #10b981; color: #047857; }
-        .sound-btn.test-btn { background: #ede9fe; border-color: #8b5cf6; color: #6d28d9; }
-        .sound-btn.test-btn:hover { background: #ddd6fe; }
+        .sound-btn:hover { background: #27354d; }
+        .sound-btn.active { background: #064e3b; border-color: #059669; color: #34d399; }
+        .sound-btn.test-btn { background: #2e1065; border-color: #7c3aed; color: #d8b4fe; }
+        .sound-btn.test-btn:hover { background: #3b0764; }
 
         .live-badge { 
             display: flex; 
             align-items: center; 
             gap: 4px; 
-            background: #ecfdf5; 
-            border: 1px solid #a7f3d0; 
+            background: #064e3b; 
+            border: 1px solid #059669; 
             padding: 3px 7px; 
             border-radius: 12px; 
             font-size: 9px; 
             font-weight: 800; 
-            color: #059669; 
+            color: #34d399; 
         }
-        .live-badge.offline { background: #fef2f2; border-color: #fecaca; color: #dc2626; }
+        .live-badge.offline { background: #450a0a; border-color: #991b1b; color: #f87171; }
         .pulse { width: 5px; height: 5px; background: #10b981; border-radius: 50%; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
@@ -99,29 +99,30 @@
             width: 100%; 
             padding: 6px 12px; 
             border-radius: 8px; 
-            border: 1px solid var(--border); 
-            background: #ffffff; 
-            color: #0f172a; 
+            border: 1px solid #222f46; 
+            background: #131b2e; 
+            color: #f8fafc; 
             font-size: 12px; 
             outline: none; 
             box-shadow: var(--card-shadow);
         }
-        .search-bar::placeholder { color: #94a3b8; }
+        .search-bar::placeholder { color: #64748b; }
         .search-bar:focus { border-color: #3b82f6; }
         
         .tabs-row { 
             display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(6, 1fr); 
             gap: 3px; 
             width: 100%; 
-            background: #e2e8f0;
+            background: #0b111e;
+            border: 1px solid #1e293b;
             padding: 3px;
             border-radius: 8px;
         }
         .tab-btn { 
             background: transparent; 
             border: none; 
-            color: #475569; 
+            color: #94a3b8; 
             padding: 5px 2px; 
             border-radius: 6px; 
             font-size: 10px; 
@@ -134,12 +135,13 @@
             white-space: nowrap; 
             transition: background 0.1s, color 0.1s;
         }
-        .tab-btn:hover { color: #0f172a; }
-        .tab-btn.active { background: #ffffff; color: #0f172a; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-        .tab-btn.active-live { background: #fee2e2; color: #b91c1c; }
-        .tab-btn.active-pre { background: #dbeafe; color: #1d4ed8; }
-        .tab-btn.active-fav { background: #fef3c7; color: #b45309; }
-        .tab-btn.active-combos { background: #ede9fe; color: #6d28d9; }
+        .tab-btn:hover { color: #f1f5f9; }
+        .tab-btn.active { background: #1e293b; color: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.4); }
+        .tab-btn.active-live { background: #7f1d1d; color: #fecaca; }
+        .tab-btn.active-won { background: #065f46; color: #a7f3d0; }
+        .tab-btn.active-pre { background: #1e3a8a; color: #bfdbfe; }
+        .tab-btn.active-fav { background: #78350f; color: #fef3c7; }
+        .tab-btn.active-combos { background: #4c1d95; color: #ede9fe; }
 
         /* 📋 TABLEAU COMPACT FLASHSCORE PRO */
         .league-group { 
@@ -151,11 +153,11 @@
             box-shadow: var(--card-shadow);
         }
         .league-header { 
-            background: #f1f5f9; 
+            background: #162035; 
             padding: 4px 8px; 
             font-size: 10px; 
             font-weight: 800; 
-            color: #334155; 
+            color: #94a3b8; 
             border-bottom: 1px solid var(--border); 
             display: flex; 
             justify-content: space-between; 
@@ -163,153 +165,124 @@
             text-transform: uppercase; 
             letter-spacing: 0.3px; 
         }
-        .league-header span.count { background: #e2e8f0; padding: 1px 5px; border-radius: 4px; font-size: 9px; color: #475569; font-weight: 800; }
+        .league-header span.count { background: #1e293b; padding: 1px 5px; border-radius: 4px; font-size: 9px; color: #94a3b8; font-weight: 800; }
         
-        /* MATCH ROW - DESIGN FLASHSCORE PRO (MOBILE ET DESKTOP) */
+        /* ⚡ LIGNE UNIQUE PAR MATCH (FLASHSCORE COMPACT PRO) */
         .match-row { 
             display: flex; 
             align-items: center; 
-            padding: 8px 10px; 
+            padding: 6px 8px; 
             border-bottom: 1px solid var(--border-subtle); 
-            cursor: pointer; 
-            gap: 10px; 
-            background: #ffffff;
+            gap: 6px; 
+            background: #131b2e;
             transition: background 0.1s;
             position: relative;
+            white-space: nowrap;
         }
         .match-row:last-child { border-bottom: none; }
-        .match-row:hover { background: #f8fafc; }
+        .match-row:hover { background: #182238; }
         
-        .match-left-meta {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 0 0 auto;
-            min-width: 58px;
+        .star-col { 
+            width: 16px; 
+            text-align: center; 
+            cursor: pointer; 
+            color: #475569; 
+            font-size: 14px; 
+            user-select: none; 
+            flex: 0 0 16px; 
         }
-        .star-col { width: 16px; text-align: center; cursor: pointer; color: #cbd5e1; font-size: 15px; user-select: none; }
         .star-col.starred { color: var(--yellow-star); }
 
         .status-col { 
+            width: 44px; 
             font-size: 11px; 
             font-weight: 900; 
             color: var(--accent); 
+            flex: 0 0 44px; 
             white-space: nowrap;
             letter-spacing: -0.2px;
         }
-        .status-col.pre-match { color: var(--blue-pre); font-size: 11px; font-weight: 800; }
+        .status-col.pre-match { color: var(--blue-pre); font-size: 10px; font-weight: 800; }
         .status-col.finished { color: var(--muted); font-size: 10px; font-weight: 800; }
 
-        /* ÉQUIPES EN 2 LIGNES NATURELLES (ZÉRO TRONCATURE, 100% LISIBLE) */
-        .match-teams-col {
-            flex: 1 1 auto;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .team-row-line {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-        }
-        .team-name-text { 
+        /* ÉQUIPES GAUCHE ET DROITE DU SCORE */
+        .team-home { 
+            text-align: right; 
+            flex: 1 1 0; 
+            min-width: 0; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
             font-weight: 700; 
-            color: #0f172a; 
+            color: #f1f5f9; 
             font-size: 12px;
-            flex: 1 1 auto;
-            min-width: 0;
             letter-spacing: -0.1px;
         }
-        .team-name-text.fav-team {
-            color: #1e40af;
+        .team-away { 
+            text-align: left; 
+            flex: 1 1 0; 
+            min-width: 0; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            font-weight: 700; 
+            color: #f1f5f9; 
+            font-size: 12px;
+            letter-spacing: -0.1px;
+        }
+        .team-home.is-fav, .team-away.is-fav {
+            color: #60a5fa;
             font-weight: 800;
         }
-
-        /* SCORES PAR ÉQUIPE (M1 BLEU / M2 VIOLET / BOTH) */
-        .team-score-num, .ticket-leg-score {
-            font-size: 12px;
-            font-weight: 900;
-            padding: 1px 6px;
-            border-radius: 4px;
-            min-width: 22px;
-            text-align: center;
-            background: #f1f5f9;
-            border: 1px solid #cbd5e1;
-            color: #0f172a;
-            flex: 0 0 auto;
+        
+        /* CADRE SCORE AU MILIEU (COULEUR SELON LA MÉTHODE) */
+        .score-box { 
+            text-align: center; 
+            font-size: 12px; 
+            font-weight: 900; 
+            background: #182238; 
+            border: 1.5px solid #2d3c54;
+            padding: 1px 7px; 
+            border-radius: 5px; 
+            color: #f8fafc; 
+            flex: 0 0 auto; 
+            min-width: 42px; 
+            letter-spacing: 0.5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: all 0.2s ease;
         }
-        .team-score-num.m1, .ticket-leg-score.m1 {
-            background: #eff6ff !important;
-            border-color: #3b82f6 !important;
-            color: #1d4ed8 !important;
+        .score-box.m1, .ticket-leg-score.m1 {
+            background: #172554 !important;
+            border-color: #2563eb !important;
+            color: #60a5fa !important;
+            box-shadow: 0 0 8px rgba(37, 99, 235, 0.35) !important;
         }
-        .team-score-num.m2, .ticket-leg-score.m2 {
-            background: #faf5ff !important;
-            border-color: #a855f7 !important;
-            color: #6b21a8 !important;
+        .score-box.m2, .ticket-leg-score.m2 {
+            background: #2e1065 !important;
+            border-color: #7c3aed !important;
+            color: #c084fc !important;
+            box-shadow: 0 0 8px rgba(124, 58, 237, 0.35) !important;
         }
-        .team-score-num.m-both, .ticket-leg-score.m-both {
-            background: #f5f3ff !important;
+        .score-box.m-both, .ticket-leg-score.m-both {
+            background: linear-gradient(135deg, #172554 0%, #2e1065 100%) !important;
             border-color: #6366f1 !important;
-            color: #4338ca !important;
+            color: #a5b4fc !important;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4) !important;
         }
 
-        /* DROITE : BADGES (STATUT GAGNÉ ET TICKETS COMBINÉS) */
-        .match-right-meta {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 3px;
-            flex: 0 0 auto;
-            min-width: 65px;
-        }
-        .won-badge-box {
-            display: flex;
-            align-items: center;
-        }
-        .score-status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 9px;
-            font-weight: 900;
-            white-space: nowrap;
-        }
-        .score-status-badge.won-lead2 {
-            background: #dcfce7;
-            border: 1px solid #86efac;
-            color: #15803d;
-        }
-        .score-status-badge.won-final {
-            background: #dcfce7;
-            border: 1px solid #86efac;
-            color: #15803d;
-        }
-        .score-status-badge.lost {
-            background: #fee2e2;
-            border: 1px solid #fca5a5;
-            color: #b91c1c;
-        }
-
+        /* COLONNE DROITE : TICKETS ET BADGES COMPACTS */
         .combos-tag-col {
+            flex: 0 0 auto;
             display: flex;
             align-items: center;
             gap: 3px;
-            flex-wrap: wrap;
             justify-content: flex-end;
         }
         .badge-combo-indicator { 
             font-size: 8px; 
             font-weight: 900; 
-            padding: 1px 5px; 
-            border-radius: 4px; 
+            padding: 1px 4px; 
+            border-radius: 3px; 
             text-transform: uppercase; 
             cursor: pointer;
             display: inline-flex;
@@ -317,46 +290,70 @@
             white-space: nowrap;
         }
         .badge-combo-indicator.m1 { 
-            background: #dbeafe; 
-            color: #1e40af; 
-            border: 1px solid #93c5fd; 
+            background: #1e3a8a; 
+            color: #bfdbfe; 
+            border: 1px solid #3b82f6; 
         }
         .badge-combo-indicator.m2 { 
-            background: #ede9fe; 
-            color: #5b21b6; 
-            border: 1px solid #c4b5fd; 
+            background: #4c1d95; 
+            color: #ddd6fe; 
+            border: 1px solid #8b5cf6; 
+        }
+
+        .score-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 8px;
+            font-weight: 900;
+            white-space: nowrap;
+        }
+        .score-status-badge.won-lead2 {
+            background: #064e3b;
+            border: 1px solid #059669;
+            color: #34d399;
+        }
+        .score-status-badge.won-final {
+            background: #064e3b;
+            border: 1px solid #059669;
+            color: #34d399;
+        }
+
+        /* 👑 SECTEUR GAGNÉ (+2B VALIDÉS) */
+        .league-group.won-group {
+            border-color: #059669;
+            margin-top: 10px;
+            margin-bottom: 8px;
+            background: #062b20;
+        }
+        .league-header.won-header {
+            background: #059669;
+            color: #ffffff;
+            font-weight: 900;
+        }
+        .league-header.won-header span.count {
+            background: rgba(0,0,0,0.3);
+            color: #ffffff;
         }
 
         /* 🚨 ALERTE BUT (20 SECONDES) - RESTE PRIORITAIRE SUR TOUTES LES COULEURS */
         .match-row.goal-flash {
-            background: #fff5f5 !important;
+            background: #3b1219 !important;
             border-left: 3px solid #ef4444 !important;
         }
         .match-row.goal-flash .score-box {
-            background: #fee2e2 !important;
+            background: #7f1d1d !important;
             border-color: #ef4444 !important;
-            color: #b91c1c !important;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.5) !important;
+            color: #fecaca !important;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.6) !important;
             animation: pulseScore 0.6s infinite alternate !important;
         }
         @keyframes pulseScore {
             0% { transform: scale(1); }
             100% { transform: scale(1.08); }
         }
-
-        /* TIROIR ÉVÉNEMENTS AU CLIC */
-        .match-drawer {
-            background: #f8fafc;
-            border-bottom: 1px solid var(--border);
-            padding: 4px 10px 6px 36px;
-            font-size: 10px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-        }
-        .event-pill-mini { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; display: inline-flex; align-items: center; gap: 2px; background: #ffffff; border: 1px solid #e2e8f0; color: #334155; }
-        .event-pill-mini.goal { background: #ecfdf5; border-color: #a7f3d0; color: #047857; font-weight: 800; }
-        .event-pill-mini.redcard { background: #fee2e2; border-color: #fecaca; color: #b91c1c; font-weight: 800; }
 
         /* 📱 BARRE FIXE BAS */
         .bottom-nav { 
@@ -365,71 +362,72 @@
             left: 0; 
             right: 0; 
             height: 48px; 
-            background: rgba(255, 255, 255, 0.96); 
+            background: rgba(19, 27, 46, 0.95); 
             backdrop-filter: blur(10px); 
             -webkit-backdrop-filter: blur(10px);
-            border-top: 1px solid var(--border); 
+            border-top: 1px solid #1e293b; 
             display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(6, 1fr); 
             z-index: 9999; 
-            box-shadow: 0 -1px 4px rgba(0,0,0,0.03);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: var(--muted); text-decoration: none; font-size: 9px; font-weight: 800; cursor: pointer; }
-        .nav-item .icon { font-size: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; color: #64748b; text-decoration: none; font-size: 9px; font-weight: 800; cursor: pointer; }
+        .nav-item .icon { font-size: 14px; }
         .nav-item.active { color: #10b981; }
         .nav-item.active-live { color: #ef4444; }
-        .nav-item.active-pre { color: #2563eb; }
+        .nav-item.active-won { color: #10b981; }
+        .nav-item.active-pre { color: #38bdf8; }
         .nav-item.active-fav { color: #f59e0b; }
-        .nav-item.active-combos { color: #7c3aed; }
+        .nav-item.active-combos { color: #a855f7; }
 
         /* 🎫 VUE COMBINÉS */
         .combos-container-view { display: flex; flex-direction: column; gap: 8px; }
         .combos-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 2px; }
         .combos-kpi-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 6px 3px; text-align: center; box-shadow: var(--card-shadow); }
-        .combos-kpi-val { font-size: 14px; font-weight: 900; }
+        .combos-kpi-val { font-size: 14px; font-weight: 900; color: #f1f5f9; }
         .combos-kpi-sub { font-size: 8px; color: var(--muted); font-weight: 800; text-transform: uppercase; margin-top: 1px; }
 
         .combos-subtabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 2px; }
         .subtab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 6px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; text-align: center; box-shadow: var(--card-shadow); }
-        .subtab-btn.active { background: #dbeafe; border-color: #3b82f6; color: #1e40af; }
-        .subtab-btn.active-m2 { background: #ede9fe; border-color: #8b5cf6; color: #5b21b6; }
+        .subtab-btn.active { background: #1e3a8a; border-color: #3b82f6; color: #bfdbfe; }
+        .subtab-btn.active-m2 { background: #4c1d95; border-color: #8b5cf6; color: #ddd6fe; }
 
         .combos-filters-row { display: flex; gap: 3px; margin-bottom: 4px; overflow-x: auto; padding-bottom: 2px; }
         .cfilter-btn { background: var(--panel); border: 1px solid var(--border); color: var(--muted); padding: 3px 8px; border-radius: 10px; font-size: 9px; font-weight: 800; cursor: pointer; white-space: nowrap; }
-        .cfilter-btn.active { background: #0f172a; border-color: #0f172a; color: #fff; }
+        .cfilter-btn.active { background: #334155; border-color: #475569; color: #ffffff; }
 
-        .stake-bar-mini { display: flex; justify-content: space-between; align-items: center; background: #ffffff; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; margin-bottom: 4px; font-size: 10px; font-weight: 800; }
-        .stake-btn-mini { background: #f1f5f9; border: 1px solid #cbd5e1; color: #475569; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; cursor: pointer; }
-        .stake-btn-mini.active { background: #2563eb; border-color: #1d4ed8; color: #fff; }
+        .stake-bar-mini { display: flex; justify-content: space-between; align-items: center; background: #131b2e; border: 1px solid var(--border); border-radius: 6px; padding: 4px 8px; margin-bottom: 4px; font-size: 10px; font-weight: 800; color: #cbd5e1; }
+        .stake-btn-mini { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 800; cursor: pointer; }
+        .stake-btn-mini.active { background: #2563eb; color: #ffffff; border-color: #3b82f6; }
 
         .ticket-card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; overflow: hidden; box-shadow: var(--card-shadow); }
-        .ticket-card.is-won { border-left: 4px solid #10b981; background: #f0fdf4; }
+        .ticket-card.is-won { border-left: 4px solid #10b981; background: #062b20; }
         .ticket-card.is-lost { border-left: 4px solid #ef4444; }
         .ticket-card.is-live { border-left: 4px solid #f59e0b; }
 
-        .ticket-header { background: #f8fafc; padding: 5px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--border); }
-        .ticket-odds-badge { background: #2563eb; color: #fff; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-weight: 900; }
+        .ticket-header { background: #182238; padding: 5px 8px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 800; border-bottom: 1px solid var(--border); color: #f1f5f9; }
+        .ticket-odds-badge { background: #2563eb; color: #ffffff; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-weight: 900; }
         .ticket-res-badge { padding: 2px 5px; border-radius: 4px; font-size: 9px; font-weight: 800; }
-        .ticket-res-badge.won { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
-        .ticket-res-badge.lost { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
-        .ticket-res-badge.live { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
-        .ticket-res-badge.pending { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+        .ticket-res-badge.won { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+        .ticket-res-badge.lost { background: #450a0a; color: #f87171; border: 1px solid #991b1b; }
+        .ticket-res-badge.live { background: #451a03; color: #fbbf24; border: 1px solid #78350f; }
+        .ticket-res-badge.pending { background: #1e293b; color: #94a3b8; border: 1px solid #334155; }
 
         .ticket-leg { padding: 5px 8px; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: 11px; }
         .ticket-leg:last-child { border-bottom: none; }
         .ticket-leg-left { flex: 1; min-width: 0; }
-        .ticket-leg-match { font-weight: 800; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .ticket-leg-match { font-weight: 800; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .ticket-leg-sub { font-size: 9px; color: var(--muted); margin-top: 1px; display: flex; gap: 4px; align-items: center; }
-        .ticket-leg-fav { color: #0284c7; font-weight: 800; }
+        .ticket-leg-fav { color: #38bdf8; font-weight: 800; }
         .ticket-leg-right { display: flex; align-items: center; gap: 5px; flex: 0 0 auto; }
-        .ticket-leg-score { font-size: 11px; font-weight: 900; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 1px 5px; border-radius: 4px; color: #0f172a; }
+        .ticket-leg-score { font-size: 11px; font-weight: 900; background: #182238; border: 1px solid #2d3c54; padding: 1px 5px; border-radius: 4px; color: #f8fafc; }
         .ticket-leg-badge { font-size: 9px; font-weight: 800; padding: 1px 5px; border-radius: 4px; }
-        .pin-match-btn { background: #fffbeb; border: 1px solid #fde68a; color: #b45309; padding: 1px 5px; border-radius: 4px; font-size: 9px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; }
+        .pin-match-btn { background: #451a03; border: 1px solid #78350f; color: #fef3c7; padding: 1px 5px; border-radius: 4px; font-size: 9px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; }
 
         .empty-state { text-align: center; padding: 30px 15px; color: var(--muted); font-size: 12px; }
-        .empty-state-card { background: #ffffff; border: 1px solid var(--border); border-radius: 10px; padding: 25px 15px; text-align: center; box-shadow: var(--card-shadow); }
+        .empty-state-card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 25px 15px; text-align: center; box-shadow: var(--card-shadow); }
         .empty-icon { font-size: 28px; margin-bottom: 6px; }
-        .empty-title { font-weight: 800; font-size: 14px; color: #0f172a; margin-bottom: 3px; }
+        .empty-title { font-weight: 800; font-size: 14px; color: #f1f5f9; margin-bottom: 3px; }
         .empty-desc { color: var(--muted); font-size: 11px; margin-bottom: 12px; line-height: 1.4; }
         .empty-actions { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; }
 
@@ -468,6 +466,7 @@
             <div class="tabs-row">
                 <button id="tabAll" class="tab-btn active" onclick="setFilter('all')">Tous (<span id="countAll">0</span>)</button>
                 <button id="tabLive" class="tab-btn" onclick="setFilter('live')">🔴 Live (<span id="countLive">0</span>)</button>
+                <button id="tabWon" class="tab-btn" onclick="setFilter('won')">👑 Gagnés (<span id="countWon">0</span>)</button>
                 <button id="tabPre" class="tab-btn" onclick="setFilter('pre')">🕒 Pré (<span id="countPre">0</span>)</button>
                 <button id="tabFav" class="tab-btn" onclick="setFilter('fav')">⭐ Fav (<span id="countFav">0</span>)</button>
                 <button id="tabCombos" class="tab-btn" onclick="setFilter('combos')">🎫 Combos (<span id="countCombos">0</span>)</button>
@@ -491,6 +490,10 @@
             <span class="icon">🔴</span>
             <span>Live</span>
         </div>
+        <div id="navWon" class="nav-item" onclick="setFilter('won')">
+            <span class="icon">👑</span>
+            <span>Gagnés</span>
+        </div>
         <div id="navPre" class="nav-item" onclick="setFilter('pre')">
             <span class="icon">🕒</span>
             <span>Pré</span>
@@ -512,18 +515,21 @@
         
         const countAllEl = document.getElementById('countAll');
         const countLiveEl = document.getElementById('countLive');
+        const countWonEl = document.getElementById('countWon');
         const countPreEl = document.getElementById('countPre');
         const countFavEl = document.getElementById('countFav');
         const countCombosEl = document.getElementById('countCombos');
         
         const tabAllBtn = document.getElementById('tabAll');
         const tabLiveBtn = document.getElementById('tabLive');
+        const tabWonBtn = document.getElementById('tabWon');
         const tabPreBtn = document.getElementById('tabPre');
         const tabFavBtn = document.getElementById('tabFav');
         const tabCombosBtn = document.getElementById('tabCombos');
 
         const navAll = document.getElementById('navAll');
         const navLive = document.getElementById('navLive');
+        const navWon = document.getElementById('navWon');
         const navPre = document.getElementById('navPre');
         const navFav = document.getElementById('navFav');
         const navCombos = document.getElementById('navCombos');
@@ -562,16 +568,6 @@
                 favoritesSet.add(id);
             }
             localStorage.setItem('flashscore_favs', JSON.stringify(Array.from(favoritesSet)));
-            renderFlashscore();
-        }
-
-        function toggleExpand(id) {
-            if (expandedSet.has(id)) {
-                expandedSet.delete(id);
-            } else {
-                expandedSet.add(id);
-            }
-            localStorage.setItem('flashscore_expanded', JSON.stringify(Array.from(expandedSet)));
             renderFlashscore();
         }
 
@@ -717,13 +713,15 @@
         // ==========================================
         function setFilter(tab) {
             activeTab = tab;
-            [tabAllBtn, tabLiveBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
-            [navAll, navLive, navPre, navFav, navCombos].forEach(nav => { if (nav) nav.className = 'nav-item'; });
+            [tabAllBtn, tabLiveBtn, tabWonBtn, tabPreBtn, tabFavBtn, tabCombosBtn].forEach(btn => { if (btn) btn.className = 'tab-btn'; });
+            [navAll, navLive, navWon, navPre, navFav, navCombos].forEach(nav => { if (nav) nav.className = 'nav-item'; });
 
             if (tab === 'all') {
                 tabAllBtn.classList.add('active'); navAll.classList.add('active');
             } else if (tab === 'live') {
                 tabLiveBtn.classList.add('active-live'); navLive.classList.add('active-live');
+            } else if (tab === 'won') {
+                tabWonBtn.classList.add('active-won'); navWon.classList.add('active-won');
             } else if (tab === 'pre') {
                 tabPreBtn.classList.add('active-pre'); navPre.classList.add('active-pre');
             } else if (tab === 'fav') {
@@ -939,6 +937,11 @@
             return null;
         }
 
+        function isMatchWon(g) {
+            const st = getGameWonStatus(g);
+            return !!(st && (st.type === 'won-lead2' || st.type === 'won-final'));
+        }
+
         function openComboFromTag(e, method, ticketNum) {
             if (e) e.stopPropagation();
             currentMethod = method;
@@ -958,11 +961,16 @@
             }
 
             const comboGames = cachedComboGames;
+            const wonMatches = comboGames.filter(g => isMatchWon(g));
+            const liveActiveMatches = comboGames.filter(g => g.status_type === 'LIVE' && !isMatchWon(g));
+            const preMatches = comboGames.filter(g => g.status_type === 'PRE_MATCH');
+            const favMatchesAll = comboGames.filter(g => favoritesSet.has(g.id));
 
-            countAllEl.textContent = comboGames.length;
-            countLiveEl.textContent = comboGames.filter(g => g.status_type === 'LIVE').length;
-            countPreEl.textContent = comboGames.filter(g => g.status_type === 'PRE_MATCH').length;
-            countFavEl.textContent = comboGames.filter(g => favoritesSet.has(g.id)).length;
+            if (countAllEl) countAllEl.textContent = comboGames.length;
+            if (countLiveEl) countLiveEl.textContent = liveActiveMatches.length;
+            if (countWonEl) countWonEl.textContent = wonMatches.length;
+            if (countPreEl) countPreEl.textContent = preMatches.length;
+            if (countFavEl) countFavEl.textContent = favMatchesAll.length;
 
             if (activeTab === 'combos') {
                 renderCombosView();
@@ -979,11 +987,60 @@
             }
 
             if (activeTab === 'live') {
-                filtered = filtered.filter(g => g.status_type === 'LIVE');
+                // EXCLUSION STRICTE : Les matchs gagnés (+2b validés) sortent du live en cours
+                filtered = filtered.filter(g => g.status_type === 'LIVE' && !isMatchWon(g));
+            } else if (activeTab === 'won') {
+                filtered = filtered.filter(g => isMatchWon(g));
             } else if (activeTab === 'pre') {
                 filtered = filtered.filter(g => g.status_type === 'PRE_MATCH');
             } else if (activeTab === 'fav') {
                 filtered = filtered.filter(g => favoritesSet.has(g.id));
+            }
+
+            let html = '';
+
+            // CAS : ONGLET GAGNÉS SPÉCIFIQUE
+            if (activeTab === 'won') {
+                if (filtered.length === 0) {
+                    container.innerHTML = `
+                    <div class="empty-state-card">
+                        <div class="empty-icon">⏳</div>
+                        <div class="empty-title">Aucun match encore validé à +2 buts</div>
+                        <div class="empty-desc">Dès qu'une équipe favorite prend 2 buts d'avance ou gagne le match, il apparaît instantanément ici.</div>
+                    </div>`;
+                    return;
+                }
+                html += `
+                <div class="league-group won-group">
+                    <div class="league-header won-header">
+                        <span>👑 SECTEUR GAGNÉ (+2b VALIDÉS)</span>
+                        <span class="count">${filtered.length} VALIDÉ(S)</span>
+                    </div>
+                    ${filtered.map(g => renderCompactMatchRow(g, now)).join('')}
+                </div>`;
+                container.innerHTML = html;
+                return;
+            }
+
+            // CAS : ONGLET LIVE SANS MATCH EN COURS MAIS AVEC MATCHS DÉJÀ GAGNÉS
+            if (activeTab === 'live' && filtered.length === 0) {
+                if (wonMatches.length > 0) {
+                    html += `
+                    <div class="empty-state-card" style="margin-bottom:8px; border-color:#059669; background:#062b20;">
+                        <div class="empty-icon">👑</div>
+                        <div class="empty-title" style="color:#34d399;">Tous les matchs de vos combinés en direct sont GAGNÉS (+2b) !</div>
+                        <div class="empty-desc">${wonMatches.length} match(s) ont pris 2 buts d'avance et sont sécurisés.</div>
+                    </div>
+                    <div class="league-group won-group">
+                        <div class="league-header won-header">
+                            <span>👑 SECTEUR GAGNÉ (+2b VALIDÉS)</span>
+                            <span class="count">${wonMatches.length} VALIDÉ(S)</span>
+                        </div>
+                        ${wonMatches.map(g => renderCompactMatchRow(g, now)).join('')}
+                    </div>`;
+                    container.innerHTML = html;
+                    return;
+                }
             }
 
             if (filtered.length === 0) {
@@ -1009,17 +1066,15 @@
                 return;
             }
 
-            let html = '';
-
             // BUTS RÉCENTS (20s)
             const goalAlertMatches = filtered.filter(g => (now - (goalTimestamps[g.id] || 0)) < GOAL_ALERT_DURATION);
             if (goalAlertMatches.length > 0) {
                 goalAlertMatches.sort((a, b) => (goalTimestamps[b.id] || 0) - (goalTimestamps[a.id] || 0));
                 html += `
-                <div class="league-group" style="border-color:#f87171; margin-bottom: 8px;">
-                    <div class="league-header" style="background:#ef4444; color:#fff; font-size: 10px;">
+                <div class="league-group" style="border-color:#ef4444; margin-bottom: 8px;">
+                    <div class="league-header" style="background:#7f1d1d; color:#fecaca; font-size: 10px;">
                         <span>⚽ ALERTE BUT (COMBINÉS)</span>
-                        <span class="count" style="background:rgba(0,0,0,0.25); color:#fff;">20s</span>
+                        <span class="count" style="background:rgba(0,0,0,0.35); color:#fff;">20s</span>
                     </div>
                     ${goalAlertMatches.map(g => renderCompactMatchRow(g, now)).join('')}
                 </div>`;
@@ -1030,16 +1085,16 @@
             if (favMatches.length > 0) {
                 favMatches.sort((a, b) => getStatusPriority(a) - getStatusPriority(b));
                 html += `
-                <div class="league-group" style="border-color:#fde68a; margin-bottom: 8px;">
-                    <div class="league-header" style="background:#f59e0b; color:#fff; font-size: 10px;">
+                <div class="league-group" style="border-color:#d97706; margin-bottom: 8px;">
+                    <div class="league-header" style="background:#78350f; color:#fef3c7; font-size: 10px;">
                         <span>⭐ FAVORIS COMBINÉS (${favMatches.length})</span>
-                        <span class="count" style="background:rgba(0,0,0,0.25); color:#fff;">DIRECT</span>
+                        <span class="count" style="background:rgba(0,0,0,0.35); color:#fff;">DIRECT</span>
                     </div>
                     ${favMatches.map(g => renderCompactMatchRow(g, now)).join('')}
                 </div>`;
             }
 
-            // MATCHS PAR CHAMPIONNAT
+            // MATCHS PAR CHAMPIONNAT (HORS FAVORIS ET BUTS RÉCENTS)
             if (activeTab !== 'fav') {
                 const normalMatches = filtered.filter(g => !favoritesSet.has(g.id) && (now - (goalTimestamps[g.id] || 0)) >= GOAL_ALERT_DURATION);
                 const leaguesMap = {};
@@ -1060,19 +1115,29 @@
                 }
             }
 
+            // 👑 SECTEUR GAGNÉ (+2b VALIDÉS) : AJOUTÉ EN BAS LORSQU'ON EST SUR LIVE OU TOUS
+            if ((activeTab === 'live' || activeTab === 'all') && wonMatches.length > 0) {
+                html += `
+                <div class="league-group won-group">
+                    <div class="league-header won-header">
+                        <span>👑 SECTEUR GAGNÉ (+2b VALIDÉS)</span>
+                        <span class="count">${wonMatches.length} VALIDÉ(S)</span>
+                    </div>
+                    ${wonMatches.map(g => renderCompactMatchRow(g, now)).join('')}
+                </div>`;
+            }
+
             container.innerHTML = html;
         }
 
         // ==========================================
-        // ⚡ LIGNE COMPACTE (38PX)
+        // ⚡ LIGNE COMPACTE UNIQUE (FLASHSCORE PRO)
         // ==========================================
         function renderCompactMatchRow(g, now) {
             const key = g.id;
             const goalTime = goalTimestamps[key] || 0;
             const isRecentGoal = (now - goalTime) < GOAL_ALERT_DURATION;
             const isStarred = favoritesSet.has(key);
-            const isExpanded = expandedSet.has(key);
-            const incs = g.incidents || [];
             const comboTags = g._comboTags || [];
             const wonStatus = getGameWonStatus(g);
 
@@ -1095,26 +1160,6 @@
 
             const scoreDisplay = (g.status_type === 'PRE_MATCH') ? 'VS' : `${g.score_dom} - ${g.score_ext}`;
 
-            let drawerHtml = '';
-            if (isExpanded && incs.length > 0) {
-                const pills = incs.map(inc => {
-                    const playerName = inc.player ? inc.player.toUpperCase() : 'BUT';
-                    if (inc.type === 'penalty') return `<span class="event-pill-mini goal">⚽ ${inc.min}' PENALTY</span>`;
-                    if (inc.type === 'goal') return `<span class="event-pill-mini goal">⚽ ${inc.min}' ${playerName}</span>`;
-                    if (inc.type === 'csc') return `<span class="event-pill-mini goal">⚽ ${inc.min}' CSC ${playerName}</span>`;
-                    if (inc.type === 'card' && inc.card_type === 'red') return `<span class="event-pill-mini redcard">🟥 ${inc.min}' ${playerName}</span>`;
-                    return '';
-                }).filter(Boolean).join('');
-
-                if (pills) {
-                    drawerHtml = `<div class="match-drawer">${pills}</div>`;
-                }
-            }
-
-            const isPre = (g.status_type === 'PRE_MATCH');
-            const homeScoreDisplay = isPre ? '-' : g.score_dom;
-            const awayScoreDisplay = isPre ? '-' : g.score_ext;
-
             let isFavHome = false;
             let isFavAway = false;
             comboTags.forEach(t => {
@@ -1125,29 +1170,17 @@
             });
 
             return `
-            <div class="match-row ${isRecentGoal ? 'goal-flash' : ''}" onclick="toggleExpand('${key}')">
-                <div class="match-left-meta">
-                    <div class="star-col ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
-                    <div class="${statusClass}">${statusText}</div>
+            <div class="match-row ${isRecentGoal ? 'goal-flash' : ''}">
+                <div class="star-col ${isStarred ? 'starred' : ''}" onclick="toggleFav(event, '${key}')">${isStarred ? '★' : '☆'}</div>
+                <div class="${statusClass}">${statusText}</div>
+                <div class="team-home ${isFavHome ? 'is-fav' : ''}">${isFavHome ? '👑 ' : ''}${g.dom}</div>
+                <div class="score-box ${methodScoreClass}">${scoreDisplay}</div>
+                <div class="team-away ${isFavAway ? 'is-fav' : ''}">${isFavAway ? '👑 ' : ''}${g.ext}</div>
+                <div class="combos-tag-col">
+                    ${wonStatus ? `<span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span>` : ''}
+                    ${comboTagsHtml}
                 </div>
-                <div class="match-teams-col">
-                    <div class="team-row-line">
-                        <span class="team-name-text ${isFavHome ? 'fav-team' : ''}">${isFavHome ? '👑 ' : ''}${g.dom}</span>
-                        <span class="team-score-num ${methodScoreClass}">${homeScoreDisplay}</span>
-                    </div>
-                    <div class="team-row-line">
-                        <span class="team-name-text ${isFavAway ? 'fav-team' : ''}">${isFavAway ? '👑 ' : ''}${g.ext}</span>
-                        <span class="team-score-num ${methodScoreClass}">${awayScoreDisplay}</span>
-                    </div>
-                </div>
-                <div class="match-right-meta">
-                    ${wonStatus ? `<div class="won-badge-box"><span class="score-status-badge ${wonStatus.type}">${wonStatus.text}</span></div>` : ''}
-                    <div class="combos-tag-col">
-                        ${comboTagsHtml}
-                    </div>
-                </div>
-            </div>
-            ${drawerHtml}`;
+            </div>`;
         }
 
         // ==========================================
