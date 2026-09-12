@@ -1382,33 +1382,28 @@
         }
 
         async function fetchCombosData() {
-            try {
-                let res = await fetch('/api/combos?t=' + Date.now());
-                if (!res.ok) {
-                    res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
-                }
-                if (res.ok) {
-                    globalCombosData = await res.json();
-                    precompileComboLegs();
-                    const m1Count = (globalCombosData.combos_today || []).length;
-                    const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
-                    if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
-                    if (activeTab === 'combos') renderCombosView();
-                    else renderFlashscore();
-                }
-            } catch(e) {
+            const urls = [
+                '/api/combos?t=' + Date.now(),
+                'https://raw.githubusercontent.com/mto-user84925/penalty/master/docs/data.json?t=' + Date.now(),
+                'https://mto-user84925.github.io/penalty/data.json?t=' + Date.now()
+            ];
+            for (const url of urls) {
                 try {
-                    const res = await fetch('https://mto-user84925.github.io/penalty/data.json?t=' + Date.now());
+                    const res = await fetch(url);
                     if (res.ok) {
-                        globalCombosData = await res.json();
-                        precompileComboLegs();
-                        const m1Count = (globalCombosData.combos_today || []).length;
-                        const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
-                        if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
-                        if (activeTab === 'combos') renderCombosView();
-                        else renderFlashscore();
+                        const data = await res.json();
+                        if (data && (data.combos_today || data.methode2_combos)) {
+                            globalCombosData = data;
+                            precompileComboLegs();
+                            const m1Count = (globalCombosData.combos_today || []).length;
+                            const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
+                            if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
+                            if (activeTab === 'combos') renderCombosView();
+                            else renderFlashscore();
+                            return;
+                        }
                     }
-                } catch(err) {}
+                } catch(e) {}
             }
         }
 

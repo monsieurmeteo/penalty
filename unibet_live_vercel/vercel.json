@@ -2,6 +2,7 @@
   "version": 2,
   "rewrites": [
     { "source": "/api/live", "destination": "/api/live.py" },
+    { "source": "/api/combos", "destination": "/api/combos.py" },
     { "source": "/(.*)", "destination": "/public/$1" }
   ]
 }
