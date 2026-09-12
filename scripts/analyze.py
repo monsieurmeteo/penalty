@@ -1261,21 +1261,23 @@ def analyze_pure_stats_20(home_query, away_query, fixtures_data=None, is_batch=F
     for m in recent_h_dom[:10]:
         dt = m.get("date", "N/A")
         opp = m.get("vs", m.get("awayTeam", "Adversaire"))
+        opp_str = opp.get("name", str(opp)) if isinstance(opp, dict) else str(opp)
         hg = m.get("homeGoals", m.get("homeGoalsFt", 0))
         ag = m.get("awayGoals", m.get("awayGoalsFt", 0))
         tot = int(hg) + int(ag)
         icon = "🔥 3+ buts" if tot >= 3 else "⚪ < 3 buts"
-        print(f"  • {dt} vs {opp:<20} | Score : {hg}-{ag} ({tot} buts) [{icon}]")
+        print(f"  • {dt} vs {opp_str:<20} | Score : {hg}-{ag} ({tot} buts) [{icon}]")
 
     print("\n### 📜 10 DERNIERS SCORES À L'EXTÉRIEUR — " + team_b.upper())
     for m in recent_a_ext[:10]:
         dt = m.get("date", "N/A")
         opp = m.get("vs", m.get("homeTeam", "Adversaire"))
+        opp_str = opp.get("name", str(opp)) if isinstance(opp, dict) else str(opp)
         hg = m.get("homeGoals", m.get("homeGoalsFt", 0))
         ag = m.get("awayGoals", m.get("awayGoalsFt", 0))
         tot = int(hg) + int(ag)
         icon = "🔥 3+ buts" if tot >= 3 else "⚪ < 3 buts"
-        print(f"  • {dt} vs {opp:<20} | Score : {hg}-{ag} ({tot} buts) [{icon}]")
+        print(f"  • {dt} vs {opp_str:<20} | Score : {hg}-{ag} ({tot} buts) [{icon}]")
 
     print("\n### VERDICT FINAL")
     print(f"{verdict}\n")

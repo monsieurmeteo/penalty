@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>⚡ Flashscore Live — Suivi Exclusif Combinés M1 & M2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>⚡ Flashscore Live — Suivi Exclusif Méthode 1</title>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/color/48/football2--v1.png">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#0b0f19">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -866,24 +867,6 @@
                 });
             });
 
-            const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
-            m2List.forEach(c => {
-                [c.m1, c.m2].forEach(leg => {
-                    if (leg && leg.home && leg.away) {
-                        legs.push({
-                            leg: leg,
-                            ticket: c,
-                            method: 'm2',
-                            num: c.email_ticket_num || c.ticket_num,
-                            tHome: getTokens(leg.home),
-                            tAway: getTokens(leg.away),
-                            isYouth: isYouthOrWomen((leg.home || '') + ' ' + (leg.away || '')),
-                            label: `🎯 M2 #${c.email_ticket_num || c.ticket_num}`
-                        });
-                    }
-                });
-            });
-
             cachedComboLegs = legs;
         }
 
@@ -1250,12 +1233,7 @@
             });
             const effectiveTags = aliveComboTags.length > 0 ? aliveComboTags : comboTags;
 
-            const hasM1 = effectiveTags.some(t => t.method === 'm1');
-            const hasM2 = effectiveTags.some(t => t.method === 'm2');
-            let methodScoreClass = 'm1';
-            if (hasM1 && hasM2) methodScoreClass = 'm-both';
-            else if (hasM2) methodScoreClass = 'm2';
-            else methodScoreClass = 'm1';
+            const methodScoreClass = 'm1';
 
             const comboTagsHtml = effectiveTags.map(t => 
                 `<span class="badge-combo-indicator ${t.method}" onclick="openComboFromTag(event, '${t.method}', ${t.num})">${t.label}</span>`
@@ -1335,9 +1313,7 @@
                 return;
             }
 
-            const m1List = globalCombosData.combos_today || [];
-            const m2List = (globalCombosData.methode2_combos || []).filter(isM2Conform);
-            const activeList = (currentMethod === 'm1') ? m1List : m2List;
+            const activeList = globalCombosData.combos_today || [];
 
             const evaluatedList = activeList.map(c => {
                 const evalRes = evalTicketLive(c);
@@ -1378,14 +1354,6 @@
 
             let html = `
             <div class="combos-container-view">
-                <div class="combos-subtabs">
-                    <div class="subtab-btn ${currentMethod === 'm1' ? 'active' : ''}" onclick="setCombosMethod('m1')">
-                        🎟️ Méthode 1 (+2b) (${m1List.length})
-                    </div>
-                    <div class="subtab-btn ${currentMethod === 'm2' ? 'active-m2' : ''}" onclick="setCombosMethod('m2')">
-                        🎯 Méthode 2 (@3.50+) (${m2List.length})
-                    </div>
-                </div>
 
                 <div class="combos-kpi-grid">
                     <div class="combos-kpi-card">
@@ -1597,12 +1565,11 @@
                     const res = await fetch(url);
                     if (res.ok) {
                         const data = await res.json();
-                        if (data && (data.combos_today || data.methode2_combos)) {
+                        if (data && data.combos_today) {
                             globalCombosData = data;
                             precompileComboLegs();
                             const m1Count = (globalCombosData.combos_today || []).length;
-                            const m2Count = (globalCombosData.methode2_combos || []).filter(isM2Conform).length;
-                            if (countCombosEl) countCombosEl.textContent = m1Count + m2Count;
+                            if (countCombosEl) countCombosEl.textContent = m1Count;
                             if (activeTab === 'combos') renderCombosView();
                             else renderFlashscore();
                             return;
