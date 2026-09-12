@@ -1,5 +1,5 @@
 # ⚽ SÉLECTION OFFICIELLE UNIBET — +2 GAGNANT (MÈNE DE 2 BUTS OU GAGNE)
-**Généré le** : 12/09/2026 à 18:57 UTC  |  **Matchs scannés** : 179  |  **Favoris analysés** : 39  |  **Favoris retenus** : 9
+**Généré le** : 12/09/2026 à 19:09 UTC  |  **Matchs scannés** : 171  |  **Favoris analysés** : 38  |  **Favoris retenus** : 9
 **Règle d'or Unibet** : Si l'équipe mène de 2 buts (2-0, 3-1, 4-2...) à n'importe quel moment du match, le pari est PAYÉ GAGNANT immédiatement (même en cas d'égalisation à 2-2 ou défaite 2-3). Si l'équipe gagne simplement 1-0 ou 2-1, le pari est également gagnant à la fin du match.
 
 ## 📅 Planning Chronologique des Favoris Retenus
@@ -15,7 +15,7 @@
 | Dim. 13/09 à 20h00 | Grece • D1 Grece | **PAOK Salonique vs Aris Salonique** | **PAOK Salonique** | **@1.41 (1N2)** | **58/100** (🥉 BRONZE) | **50%** |
 | Lun. 14/09 à 03h00 | Mexique • D1 Mexique | **Santos Laguna vs FC Juarez** | **Santos Laguna** | **@1.82 (1N2)** | **61/100** (🥉 BRONZE) | **60%** |
 
-## 📊 Tous les Favoris Analysés (39)
+## 📊 Tous les Favoris Analysés (38)
 
 | Heure | Ligue | Match | Favori | Cote | Score Domination | Réussite Win/+2b | Statut |
 | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
