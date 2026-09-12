@@ -514,6 +514,17 @@
             return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0');
         }
 
+        // ponytail: Helper conformité Méthode 2 (combo >= 3.25, fav >= 1.30, score >= 33)
+        function isM2Conform(c) {
+            if ((c.odds || 0) < 3.25) return false;
+            for (let leg of ['m1', 'm2']) {
+                const m = c[leg] || {};
+                if ((m.odds || 0) < 1.30) return false;
+                if ((m.domination_score || 0) < 33) return false;
+            }
+            return true;
+        }
+
         function matchesPeriod(c) {
             if (currentPeriod === 'ALL') return true;
             const cd = getComboDate(c);
@@ -701,15 +712,15 @@
                 let profitUnits = 0.0;
 
                 combos.forEach(c => {
-                    if (c.ticket_status === 'WON') {
+                    if (c.ticket_status === 'WON' && isM2Conform(c)) {
                         won++;
                         profitUnits += (c.odds - 1.0);
-                    } else if (c.ticket_status === 'LOST') {
+                    } else if (c.ticket_status === 'LOST' && isM2Conform(c)) {
                         lost++;
                         profitUnits -= 1.0;
                     } else if (c.ticket_status === 'LIVE') {
                         live++;
-                    } else {
+                    } else if (c.ticket_status === 'PENDING') {
                         upcoming++;
                     }
                 });
@@ -721,7 +732,7 @@
 
                 document.getElementById('kpi-title-won').textContent = '🏆 Combinés M2 Gagnés';
                 document.getElementById('stat-won').textContent = won;
-                document.getElementById('stat-finished').textContent = `sur ${decided} combinés terminés`;
+                document.getElementById('stat-finished').textContent = `sur ${decided} combinés conformes terminés`;
 
                 document.getElementById('kpi-title-rate').textContent = '🎯 Taux Réussite M2 (Dom. @3.25+)';
                 document.getElementById('stat-rate').textContent = `${winRate}%`;
@@ -959,8 +970,8 @@
             let filtered = combos.filter(c => {
                 if (!matchesPeriod(c)) return false;
                 if (currentFilter === 'LIVE') return c.ticket_status === 'LIVE';
-                if (currentFilter === 'WON') return c.ticket_status === 'WON';
-                if (currentFilter === 'LOST') return c.ticket_status === 'LOST';
+                if (currentFilter === 'WON') return c.ticket_status === 'WON' && isM2Conform(c);
+                if (currentFilter === 'LOST') return c.ticket_status === 'LOST' && isM2Conform(c);
                 if (currentFilter === 'UPCOMING') return c.ticket_status === 'PENDING';
                 return true;
             });
