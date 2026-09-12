@@ -1490,7 +1490,7 @@ def main():
 
     # ── Construction des Combinés Chronologiques de 2 Matchs (Mise 3€) ──────
     # ponytail: Source Unique de Vérité (docs/data.json). 100% de parité stricte Email & GitHub Pages.
-    existing_docs, active_combos, m2_active = sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=scanned_results)
+    existing_docs, active_combos = sync_and_update_docs_data(retained_favs, rejected_favs, all_scanned=scanned_results)
 
     combos_html = ""
     default_combo_stake = 3.0
