@@ -29103,5 +29103,28 @@
     "selected_markets": [],
     "result": null,
     "won_p2": null
+  },
+  {
+    "match_id": "3373747",
+    "timestamp_utc": "2026-09-13T02:04:23.632970+00:00",
+    "match": "Dynamo Kiev vs Epitsentr",
+    "league": "Ukraine • D1 Ukraine",
+    "date_str": "Lun. 14/09 à 14h30",
+    "fav_team": "Dynamo Kiev",
+    "fav_side": "dom",
+    "scores": {
+      "fav_score": 60,
+      "pct_fav_success": 70,
+      "pct_fav_lead2": 30
+    },
+    "odds": {
+      "fav_odds": 1.45,
+      "p2_fav_odds": null
+    },
+    "selected_markets": [
+      "FAV_1N2"
+    ],
+    "result": null,
+    "won_p2": null
   }
 ]
